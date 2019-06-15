@@ -8,23 +8,26 @@ namespace GuiControls
         protected readonly VerticalAlignment VerticalAlignment;
         protected readonly HorizontalAlignment HorizontalAlignment;
         protected readonly Vector2 Position; // Position of the control relative to it's alignment
+        protected readonly Vector2 Size;
+        protected readonly float Scale;
 
-        protected Vector2 Size;
         protected int ScaledWidth => (int)(Size.X * Scale);
         protected int ScaledHeight => (int)(Size.Y * Scale);
 
         public Rectangle Area => DetermineArea(VerticalAlignment, HorizontalAlignment, Position, ScaledWidth, ScaledHeight);
         public Vector2 TopLeft => new Vector2(Area.Left, Area.Top);
         public Vector2 TopRight => new Vector2(Area.Right, Area.Top);
+        public Vector2 BottomLeft => new Vector2(Area.Left, Area.Bottom);
+        public Vector2 BottomRight => new Vector2(Area.Right, Area.Bottom);
+        public Vector2 Center => new Vector2(Area.Center.X, Area.Center.Y);
 
-        public float Scale { get; set; }
-        public float Alpha { get; set; }
-
-        protected Control(VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 position)
+        protected Control(Vector2 position, Vector2 size, VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, float scale)
         {
+            Position = position;
+            Size = size;
             VerticalAlignment = verticalAlignment;
             HorizontalAlignment = horizontalAlignment;
-            Position = position;
+            Scale = scale;
         }
 
         private Rectangle DetermineArea(VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 position, int scaledWidth, int scaledHeight)
@@ -36,7 +39,7 @@ namespace GuiControls
             return area;
         }
 
-        protected Vector2 DetermineTopLeftPosition(VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 position, int scaledWidth, int scaledHeight)
+        private Vector2 DetermineTopLeftPosition(VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 position, int scaledWidth, int scaledHeight)
         {
             Vector2 offset;
 

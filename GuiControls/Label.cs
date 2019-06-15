@@ -7,62 +7,40 @@ namespace GuiControls
     {
         private readonly SpriteFont _font;
         private readonly Color _textColor;
-        private string _text;
+        private readonly Color? _textShadowColor;
+        private readonly Color? _borderColor;
 
-        public bool TextShadow { get; set; }
-        public Vector2 TextShadowOffset { get; set; } = Vector2.One;
-        public Color TextShadowColor { get; set; } = Color.Gray;
+        public string Text { get; set; }
 
-        public bool DrawBorder { get; set; }
-        public Color DrawBorderColor { get; set; } = Color.DarkGray;
-
-        public string Text
-        {
-            get => _text;
-            set
-            {
-                _text = value;
-                AutoSize(_text);
-            }
-        }
-
-        public Label(SpriteFont font, Vector2 position, VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, string text, Color textColor, float scale = 1.0f, float alpha = 1.0f) :
-            base(verticalAlignment, horizontalAlignment, position)
+        public Label(SpriteFont font, Vector2 position, Vector2 size, VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, string text, Color textColor, Color? textShadowColor = null, Color? borderColor = null, float scale = 1.0f) :
+            base(position, size, verticalAlignment, horizontalAlignment, scale)
         {
             _font = font;
-            _text = text;
+            Text = text;
             _textColor = textColor;
-            Scale = scale;
-            Alpha = alpha;
-
-            AutoSize(text);
-        }
-
-        private void AutoSize(string text)
-        {
-            Vector2 v = _font.MeasureString(text);
-            Size = new Vector2(v.X, v.Y);
+            _textShadowColor = textShadowColor;
+            _borderColor = borderColor;
         }
 
         public void Update(GameTime gameTime)
         {
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
-            Vector2 position = DetermineTopLeftPosition(VerticalAlignment, HorizontalAlignment, Position, ScaledWidth, ScaledHeight);
+            Vector2 position = TopLeft;
 
-            if (TextShadow)
+            if (_textShadowColor != null)
             {
-                spriteBatch.DrawString(_font, _text, position + TextShadowOffset, TextShadowColor * Alpha, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0.0f);
+                spriteBatch.DrawString(_font, Text, position + Vector2.One, _textShadowColor.Value, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0.0f);
             }
 
-            spriteBatch.DrawString(_font, _text, position, _textColor * Alpha, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0.0f);
-
-            if (DrawBorder)
+            if (_borderColor != null)
             {
-                //spriteBatch.DrawRectangle(Area, DrawBorderColor);
+                spriteBatch.DrawRectangle(Area, _borderColor.Value);
             }
+
+            spriteBatch.DrawString(_font, Text, position, _textColor, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0.0f);
         }
     }
 }

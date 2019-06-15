@@ -1,0 +1,32 @@
+{
+  "SpriteSheetName": "fantasyhextiles_v4",
+  "Duration": 160,
+  "NumberOfFrames": 4,
+  "Repeating": true,
+  "Frames": [
+    {
+      "X": 0.0,
+      "Y": 0.0,
+      "Width": 16.0,
+      "Height": 16.0
+    },
+    {
+      "X": 16.0,
+      "Y": 0.0,
+      "Width": 16.0,
+      "Height": 16.0
+    },
+    {
+      "X": 32.0,
+      "Y": 0.0,
+      "Width": 16.0,
+      "Height": 16.0
+    },
+    {
+      "X": 48.0,
+      "Y": 0.0,
+      "Width": 16.0,
+      "Height": 16.0
+    }
+  ]
+}
