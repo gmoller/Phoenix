@@ -14,6 +14,8 @@ namespace GuiControls
         protected int ScaledHeight => (int)(Size.Y * Scale);
 
         public Rectangle Area => DetermineArea(VerticalAlignment, HorizontalAlignment, Position, ScaledWidth, ScaledHeight);
+        public Vector2 TopLeft => new Vector2(Area.Left, Area.Top);
+        public Vector2 TopRight => new Vector2(Area.Right, Area.Top);
 
         public float Scale { get; set; }
         public float Alpha { get; set; }

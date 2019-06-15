@@ -37,7 +37,7 @@ namespace Phoenix
             ContentLoader.LoadContent(GraphicsDevice);
             var font = AssetsManager.Instance.GetSpriteFont("TimesSanSerif");
             _lblMemory = new Label(font, new Vector2(0.0f, _graphicsDeviceManager.GraphicsDevice.Viewport.Height), VerticalAlignment.Bottom, HorizontalAlignment.Left, "MEM: ", Color.LawnGreen, 0.5f) { TextShadow = true, TextShadowColor = Color.DarkRed };
-            _lblFps = new Label(font, new Vector2(0.0f, _graphicsDeviceManager.GraphicsDevice.Viewport.Height - 20.0f), VerticalAlignment.Bottom, HorizontalAlignment.Left, "FPS: ", Color.LawnGreen, 0.5f) { TextShadow = true, TextShadowColor = Color.DarkRed };
+            _lblFps = new Label(font, _lblMemory.TopLeft, VerticalAlignment.Bottom, HorizontalAlignment.Left, "FPS: ", Color.LawnGreen, 0.5f) { TextShadow = true, TextShadowColor = Color.DarkRed };
         }
 
         protected override void UnloadContent()
@@ -53,7 +53,6 @@ namespace Phoenix
                 Exit();
 
             _fps.Update(gameTime);
-            //_lblFps.Text = "abcdefghijklmnopqrstuvwxyz";
             _lblFps.Text = $"FPS: {_fps.FramesPerSecond}";
             _lblMemory.Text = $"MEM: {GC.GetTotalMemory(false) / 1024} KB";
 
