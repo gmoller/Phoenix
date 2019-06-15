@@ -12,8 +12,18 @@ namespace GuiControls
 
         public string Text { get; set; }
 
-        public Label(SpriteFont font, Vector2 position, Vector2 size, VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, string text, Color textColor, Color? textShadowColor = null, Color? borderColor = null, float scale = 1.0f) :
-            base(position, size, verticalAlignment, horizontalAlignment, scale)
+        public Label(SpriteFont font, Vector2 position, VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 size, string text, Color textColor, Color? textShadowColor = null, Color? borderColor = null, float scale = 1.0f) :
+            base(position, verticalAlignment, horizontalAlignment, size, scale)
+        {
+            _font = font;
+            Text = text;
+            _textColor = textColor;
+            _textShadowColor = textShadowColor;
+            _borderColor = borderColor;
+        }
+
+        public Label(SpriteFont font, Control controlToDockTo, VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 size, string text, Color textColor, Color? textShadowColor = null, Color? borderColor = null, float scale = 1.0f) :
+            base(controlToDockTo, verticalAlignment, horizontalAlignment, size, scale)
         {
             _font = font;
             Text = text;

@@ -21,12 +21,61 @@ namespace GuiControls
         public Vector2 BottomRight => new Vector2(Area.Right, Area.Bottom);
         public Vector2 Center => new Vector2(Area.Center.X, Area.Center.Y);
 
-        protected Control(Vector2 position, Vector2 size, VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, float scale)
+        protected Control(Vector2 position, VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 size, float scale)
         {
             Position = position;
-            Size = size;
             VerticalAlignment = verticalAlignment;
             HorizontalAlignment = horizontalAlignment;
+            Size = size;
+            Scale = scale;
+        }
+
+        protected Control(Control controlToDockTo, VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 size, float scale)
+        {
+            if (verticalAlignment == VerticalAlignment.Top)
+            {
+                if (horizontalAlignment == HorizontalAlignment.Left)
+                {
+                    Position = controlToDockTo.TopLeft;
+                    VerticalAlignment = VerticalAlignment.Bottom;
+                    HorizontalAlignment = HorizontalAlignment.Left;
+                }
+                else if (horizontalAlignment == HorizontalAlignment.Right)
+                {
+                    Position = controlToDockTo.TopRight;
+                    VerticalAlignment = VerticalAlignment.Top;
+                    HorizontalAlignment = HorizontalAlignment.Left;
+                }
+                else
+                {
+                    throw new Exception($"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
+                }
+            }
+            else if (verticalAlignment == VerticalAlignment.Bottom)
+            {
+                if (horizontalAlignment == HorizontalAlignment.Left)
+                {
+                    Position = controlToDockTo.BottomLeft;
+                    VerticalAlignment = VerticalAlignment.Top;
+                    HorizontalAlignment = HorizontalAlignment.Left;
+                }
+                else if (horizontalAlignment == HorizontalAlignment.Right)
+                {
+                    Position = controlToDockTo.BottomRight;
+                    VerticalAlignment = VerticalAlignment.Top;
+                    HorizontalAlignment = HorizontalAlignment.Right;
+                }
+                else
+                {
+                    throw new Exception($"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
+                }
+            }
+            else
+            {
+                throw new Exception($"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
+            }
+
+            Size = size;
             Scale = scale;
         }
 

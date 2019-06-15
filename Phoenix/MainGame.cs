@@ -37,8 +37,9 @@ namespace Phoenix
             ContentLoader.LoadContent(GraphicsDevice);
             var font = AssetsManager.Instance.GetSpriteFont("TimesSanSerif");
             Vector2 size = font.MeasureString("MEM: 2400 KB");
-            _lblMemory = new Label(font, new Vector2(0.0f, _graphicsDeviceManager.GraphicsDevice.Viewport.Height), size, VerticalAlignment.Bottom, HorizontalAlignment.Left, "MEM: ", Color.LawnGreen, Color.DarkRed, Color.White, 0.5f);
-            _lblFps = new Label(font, _lblMemory.TopLeft, size, VerticalAlignment.Bottom, HorizontalAlignment.Left, "FPS: ", Color.LawnGreen, Color.DarkRed, Color.White, 0.5f);
+            Vector2 pos = new Vector2(0.0f, _graphicsDeviceManager.GraphicsDevice.Viewport.Height);
+            _lblMemory = new Label(font, pos, VerticalAlignment.Bottom, HorizontalAlignment.Left, size, "MEM: ", Color.LawnGreen, Color.DarkRed, Color.White, 0.5f);
+            _lblFps = new Label(font, _lblMemory, VerticalAlignment.Top, HorizontalAlignment.Left, size, "FPS: ", Color.LawnGreen, Color.DarkRed, Color.White, 0.5f);
         }
 
         protected override void UnloadContent()
