@@ -12,6 +12,7 @@ namespace AssetsLibrary
 
         private readonly Dictionary<string, Texture2D> _textures;
         private readonly Dictionary<string, AnimationSpec> _animations;
+        private readonly Dictionary<string, AtlasSpec2> _atlases;
         private readonly Dictionary<string, SoundEffect> _sounds;
         private readonly Dictionary<string, SpriteFont> _spriteFonts;
 
@@ -23,6 +24,7 @@ namespace AssetsLibrary
         {
             _textures = new Dictionary<string, Texture2D>();
             _animations = new Dictionary<string, AnimationSpec>();
+            _atlases = new Dictionary<string, AtlasSpec2>();
             _sounds = new Dictionary<string, SoundEffect>();
             _spriteFonts = new Dictionary<string, SpriteFont>();
         }
@@ -90,6 +92,35 @@ namespace AssetsLibrary
                 throw new Exception($"Key [{key}] not found in Animations.", e);
             }
         }
+        #endregion
+
+        #region Atlases
+
+        public void AddAtlas(string key, AtlasSpec spec)
+        {
+            var spec2 = new AtlasSpec2();
+            spec2.SpriteSheetName = spec.SpriteSheetName;
+            spec2.Frames = new AtlasFrames();
+            foreach (var item in spec.Frames)
+            {
+                spec2.Frames.Add(item);
+            }
+
+            _atlases.Add(key, spec2);
+        }
+
+        public AtlasSpec2 GetAtlas(string key)
+        {
+            try
+            {
+                return _atlases[key];
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Key [{key}] not found in Atlases.", e);
+            }
+        }
+
         #endregion
 
         #region Sounds

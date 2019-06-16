@@ -1,0 +1,117 @@
+{
+  "SpriteSheetName": "fantasyhextiles_v4",
+  "Frames": [
+    {
+	  "Name": "Grassland",
+      "X": 0,
+      "Y": 0,
+      "Width": 32,
+      "Height": 48
+    },
+    {
+	  "Name": "GrasslandForestSparse",
+      "X": 32,
+      "Y": 0,
+      "Width": 32,
+      "Height": 48
+    },
+    {
+	  "Name": "GrasslandForest",
+      "X": 64,
+      "Y": 0,
+      "Width": 32,
+      "Height": 48
+    },
+    {
+	  "Name": "GrasslandHills",
+      "X": 96,
+      "Y": 0,
+      "Width": 32,
+      "Height": 48
+    },
+    {
+	  "Name": "GrasslandForestHills",
+      "X": 128,
+      "Y": 0,
+      "Width": 32,
+      "Height": 48
+    },
+	{
+	  "Name": "Mountain",
+      "X": 160,
+      "Y": 0,
+      "Width": 32,
+      "Height": 48
+    },
+	{
+	  "Name": "Coast",
+      "X": 192,
+      "Y": 0,
+      "Width": 32,
+      "Height": 48
+    },
+	{
+	  "Name": "Ocean",
+      "X": 224,
+      "Y": 0,
+      "Width": 32,
+      "Height": 48
+    },
+	{
+	  "Name": "Plains",
+      "X": 0,
+      "Y": 48,
+      "Width": 32,
+      "Height": 48
+    },
+    {
+	  "Name": "PlainsForestSparse",
+      "X": 32,
+      "Y": 48,
+      "Width": 32,
+      "Height": 48
+    },
+    {
+	  "Name": "PlainsForest",
+      "X": 64,
+      "Y": 48,
+      "Width": 32,
+      "Height": 48
+    },
+    {
+	  "Name": "PlainsMarsh",
+      "X": 96,
+      "Y": 48,
+      "Width": 32,
+      "Height": 48
+    },
+    {
+	  "Name": "Swamp",
+      "X": 128,
+      "Y": 48,
+      "Width": 32,
+      "Height": 48
+    },
+	{
+	  "Name": "CoastHarborLeft",
+      "X": 160,
+      "Y": 48,
+      "Width": 32,
+      "Height": 48
+    },
+	{
+	  "Name": "CoastHarborRight",
+      "X": 192,
+      "Y": 48,
+      "Width": 32,
+      "Height": 48
+    },
+	{
+	  "Name": "CoastLighthouse",
+      "X": 224,
+      "Y": 48,
+      "Width": 32,
+      "Height": 48
+    }
+  ]
+}

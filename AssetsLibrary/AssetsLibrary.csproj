@@ -35,6 +35,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdPartyBinaries\MonoGame.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\3rdPartyBinaries\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SpriteFontPlus">
       <HintPath>..\3rdPartyBinaries\SpriteFontPlus.dll</HintPath>
     </Reference>
@@ -43,6 +46,9 @@
   <ItemGroup>
     <Compile Include="AnimationSpec.cs" />
     <Compile Include="AssetsManager.cs" />
+    <Compile Include="AnimationSpecCreator.cs" />
+    <Compile Include="AtlasFrame.cs" />
+    <Compile Include="AtlasSpec.cs" />
     <Compile Include="ContentLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
