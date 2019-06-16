@@ -1,0 +1,285 @@
+{
+  "SpriteSheetName": "terrain_hextiles_basic_1",
+  "Frames": [
+    {
+	  "Name": "Plains_01",
+      "X": 0,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Plains_02",
+      "X": 256,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Plains_03",
+      "X": 512,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Plains_04",
+      "X": 768,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Ocean_01",
+      "X": 1024,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Ocean_02",
+      "X": 1280,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Ocean_03",
+      "X": 1536,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Ocean_04",
+      "X": 1792,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Mountain_01",
+      "X": 0,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Mountain_02",
+      "X": 256,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Mountain_03",
+      "X": 512,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Mountain_04",
+      "X": 768,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "DesertDunes_01",
+      "X": 1024,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "DesertDunes_02",
+      "X": 1280,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "DesertDunes_03",
+      "X": 1536,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "DesertDunes_04",
+      "X": 1792,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "ForestBroadleaf_01",
+      "X": 0,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "ForestBroadleaf_02",
+      "X": 256,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "ForestBroadleaf_03",
+      "X": 512,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "ForestBroadleaf_04",
+      "X": 768,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Marsh_01",
+      "X": 1024,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Marsh_02",
+      "X": 1280,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Marsh_03",
+      "X": 1536,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Marsh_04",
+      "X": 1792,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Dirt_01",
+      "X": 0,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Dirt_02",
+      "X": 256,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Dirt_03",
+      "X": 512,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Dirt_04",
+      "X": 768,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Void_01",
+      "X": 1024,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Void_01",
+      "X": 1280,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Void_01",
+      "X": 1536,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Void_01",
+      "X": 1792,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Hills_01",
+      "X": 0,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Hills_02",
+      "X": 256,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Hills_03",
+      "X": 512,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Hills_04",
+      "X": 768,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Base_01",
+      "X": 1024,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Base_02",
+      "X": 1280,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Base_03",
+      "X": 1536,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Base_04",
+      "X": 1792,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    }
+  ]
+}

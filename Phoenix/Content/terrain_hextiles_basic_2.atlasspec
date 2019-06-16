@@ -1,0 +1,89 @@
+{
+  "SpriteSheetName": "terrain_hextiles_basic_2",
+  "Frames": [
+    {
+	  "Name": "Highlands_01",
+      "X": 0,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Highlands_02",
+      "X": 256,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Highlands_03",
+      "X": 512,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Highlands_04",
+      "X": 768,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Scrublands_01",
+      "X": 0,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Scrublands_02",
+      "X": 256,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Scrublands_03",
+      "X": 512,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Scrublands_04",
+      "X": 768,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "Woodlands_01",
+      "X": 0,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Woodlands_02",
+      "X": 256,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Woodlands_03",
+      "X": 512,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "Woodlands_04",
+      "X": 768,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    }
+  ]
+}

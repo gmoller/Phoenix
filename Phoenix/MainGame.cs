@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using AssetsLibrary;
 using Input;
+using PhoenixGameLibrary;
 
 namespace Phoenix
 {
@@ -13,6 +14,7 @@ namespace Phoenix
         private SpriteBatch _spriteBatch;
 
         private MetricsPanel _metricsPanel;
+        private PhoenixGame _game;
 
         public MainGame()
         {
@@ -27,15 +29,16 @@ namespace Phoenix
             SetGraphicsResolution(GraphicsDevice.DisplayMode.Width, GraphicsDevice.DisplayMode.Height);
             KeyboardHandler.Initialize();
             MouseHandler.Initialize();
+            _game = new PhoenixGame();
 
             base.Initialize();
         }
 
         private void SetGraphicsResolution(int width, int height)
         {
-            _graphicsDeviceManager.PreferredBackBufferWidth = width;
-            _graphicsDeviceManager.PreferredBackBufferHeight = height;
-            _graphicsDeviceManager.IsFullScreen = true;
+            _graphicsDeviceManager.PreferredBackBufferWidth = 800;
+            _graphicsDeviceManager.PreferredBackBufferHeight = 600;
+            //_graphicsDeviceManager.IsFullScreen = true;
             _graphicsDeviceManager.ApplyChanges();
         }
 
@@ -58,6 +61,8 @@ namespace Phoenix
 
             ContentLoader.LoadContent(GraphicsDevice);
             _metricsPanel = new MetricsPanel(new Vector2(0.0f, _graphicsDeviceManager.GraphicsDevice.Viewport.Height));
+
+            _game.LoadContent();
         }
 
         protected override void UnloadContent()
@@ -72,6 +77,7 @@ namespace Phoenix
 
             if (KeyboardHandler.IsKeyDown(Keys.Escape)) Exit();
 
+            _game.Update(gameTime);
             _metricsPanel.Update(gameTime);
 
             base.Update(gameTime);
@@ -79,9 +85,10 @@ namespace Phoenix
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            _game.Draw(_spriteBatch);
             _metricsPanel.Draw(_spriteBatch);
             _spriteBatch.End();
 
