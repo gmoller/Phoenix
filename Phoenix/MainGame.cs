@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using AssetsLibrary;
+using Input;
 
 namespace Phoenix
 {
@@ -24,6 +25,8 @@ namespace Phoenix
         {
             VariableTimeStep();
             SetGraphicsResolution(GraphicsDevice.DisplayMode.Width, GraphicsDevice.DisplayMode.Height);
+            KeyboardHandler.Initialize();
+            MouseHandler.Initialize();
 
             base.Initialize();
         }
@@ -64,9 +67,10 @@ namespace Phoenix
 
         protected override void Update(GameTime gameTime)
         {
-            var keyboardState = Keyboard.GetState();
+            KeyboardHandler.Update();
+            MouseHandler.Update();
 
-            if (keyboardState.IsKeyDown(Keys.Escape)) Exit();
+            if (KeyboardHandler.IsKeyDown(Keys.Escape)) Exit();
 
             _metricsPanel.Update(gameTime);
 
