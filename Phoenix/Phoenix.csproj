@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="FramesPerSecondCounter.cs" />
     <Compile Include="MainGame.cs" />
+    <Compile Include="MetricsPanel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
