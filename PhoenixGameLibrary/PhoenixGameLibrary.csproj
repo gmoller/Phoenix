@@ -38,6 +38,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Camera.cs" />
+    <Compile Include="MapGenerator.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Hex.cs" />
     <Compile Include="HexGrid.cs" />
     <Compile Include="PhoenixGame.cs" />
@@ -51,6 +54,14 @@
     <ProjectReference Include="..\GuiControls\GuiControls.csproj">
       <Project>{4dc55750-af93-4079-8328-5394e408dda7}</Project>
       <Name>GuiControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Input\Input.csproj">
+      <Project>{28c5fb3b-8e55-42e0-94ec-8355de9f3077}</Project>
+      <Name>Input</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Noise\Noise.csproj">
+      <Project>{aec160e5-c4db-4b2c-a16c-edeb6b1bd2c4}</Project>
+      <Name>Noise</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{5320ff4a-6c80-4627-9b74-9e7cb1a109fd}</Project>

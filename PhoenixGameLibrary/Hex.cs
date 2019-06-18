@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
@@ -10,94 +9,73 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public struct Hex
     {
-        private const float Scale = 1.0f;
-        private const float SideLength = 16.0f * Scale;
-
         private readonly int _colQ;
         private readonly int _rowR;
         private readonly int _frameId;
+        private readonly float _layerDepth;
 
-        private Vector2 Position { get; } // center position of hex
-        private Vector2[] Points { get; }
+        private readonly Vector2 _centerPosition;
 
-        public Hex(int colQ, int rowR, int frameId)
+        public Hex(int colQ, int rowR, int frameId, float layerDepth, Camera camera)
         {
             _colQ = colQ;
             _rowR = rowR;
             _frameId = frameId;
+            _layerDepth = layerDepth;
 
-            var h = (float)Math.Sin(MathHelper.ToRadians(30)) * SideLength;
-            var r = (float)Math.Cos(MathHelper.ToRadians(30)) * SideLength;
-
-            Position = Vector2.Zero;
-            Points = new Vector2[0];
-
-            Position = CalculateWorldPosition(colQ, rowR, h, r);
-            Points = CalculateVertices(Position, SideLength, h, r);
+            _centerPosition = new Vector2();
+            _centerPosition = CalculateWorldPosition(colQ, rowR) - new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
         }
 
-        private Vector2 CalculateWorldPosition(int colQ, int rowR, float h, float r)
+        public void Draw(SpriteBatch spriteBatch, Texture2D texture, AtlasSpec2 spec, Camera camera)
         {
-            float hexWideWidth = SideLength + h + h;
-            float hexNarrowWidth = (h * 3) + 0;
-            float hexHeight = (r * 2) + 0;
-
-            //var basePosition = new Vector2(16.0f, 24.0f);
-            var basePosition = Vector2.Zero;
-            float x = basePosition.X + (hexNarrowWidth * colQ);
-            float y = basePosition.Y + (hexHeight * (colQ * 0.5f + rowR)) - (colQ / 2 * hexHeight);
-
-            return new Vector2(x, y);
+            if (camera.VisibleArea.X - 50 < _centerPosition.X && 
+                camera.VisibleArea.X + camera.VisibleArea.Width + 50 > _centerPosition.X &&
+                camera.VisibleArea.Y - 50 < _centerPosition.Y &&
+                camera.VisibleArea.Y + camera.VisibleArea.Height + 50 > _centerPosition.Y)
+            {
+                var frame = spec.Frames[_frameId];
+                var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
+                spriteBatch.Draw(texture, _centerPosition, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, _layerDepth);
+            }
         }
 
-        private Vector2[] CalculateVertices(Vector2 position, float sideLength, float h, float r)
+        public void DrawHexBorder(SpriteBatch spriteBatch, Camera camera)
         {
-            var vertices = new Vector2[6];
+            var color = Color.PeachPuff;
+            var centerPosition = CalculateWorldPosition(_colQ, _rowR) - new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
+            var point0 = new Vector2(0.0f, 0.0f - Constants.HEX_HALF_HEIGHT);
+            var point1 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f - Constants.HEX_ONE_QUARTER_HEIGHT);
+            var point2 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f + Constants.HEX_ONE_QUARTER_HEIGHT);
+            var point3 = new Vector2(0.0f, 0.0f + Constants.HEX_HALF_HEIGHT);
+            var point4 = new Vector2(0.0f - Constants.HEX_HALF_WIDTH, 0.0f + Constants.HEX_ONE_QUARTER_HEIGHT);
+            var point5 = new Vector2(0.0f - Constants.HEX_HALF_WIDTH, 0.0f - Constants.HEX_ONE_QUARTER_HEIGHT);
 
-            vertices[0] = new Vector2(-sideLength / 2.0f, -r);
-            //vertices[0] = GetFlatHexCornerOffset(sideLength, 4);
-
-            vertices[1] = new Vector2(sideLength / 2.0f, -r);
-            //vertices[1] = GetFlatHexCornerOffset(sideLength, 5);
-
-            vertices[2] = new Vector2(sideLength / 2.0f + h, 0.0f);
-            //vertices[2] = GetFlatHexCornerOffset(sideLength, 0);
-
-            vertices[3] = new Vector2(sideLength / 2.0f, r);
-            //vertices[3] = GetFlatHexCornerOffset(sideLength, 1);
-
-            vertices[4] = new Vector2(-sideLength / 2.0f, r);
-            //vertices[4] = GetFlatHexCornerOffset(sideLength, 2);
-
-            vertices[5] = new Vector2(-sideLength / 2.0f - h, 0.0f);
-            //vertices[5] = GetFlatHexCornerOffset(sideLength, 3);
-
-            return vertices;
+            spriteBatch.DrawLine(centerPosition + point0, centerPosition + point1, color);
+            spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, color);
+            spriteBatch.DrawLine(centerPosition + point2, centerPosition + point3, color);
+            spriteBatch.DrawLine(centerPosition + point3, centerPosition + point4, color);
+            spriteBatch.DrawLine(centerPosition + point4, centerPosition + point5, color);
+            spriteBatch.DrawLine(centerPosition + point5, centerPosition + point0, color);
         }
 
-        //private Vector2 GetFlatHexCornerOffset(float sideLength, byte corner)
-        //{
-        //    var angleInDegrees = 60 * corner;
-        //    var angleInRadians = MathHelper.ToRadians(angleInDegrees);
-        //    var x = (float)(sideLength * Math.Cos(angleInRadians));
-        //    var y = (float)(sideLength * Math.Sin(angleInRadians));
-
-        //    return new Vector2(x, y);
-        //}
-
-        public void Draw(SpriteBatch spriteBatch, Texture2D texture, AtlasSpec2 spec)
+        private Vector2 CalculateWorldPosition(int colQ, int rowR)
         {
-            var frame = spec.Frames[_frameId];
-            var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
-            spriteBatch.Draw(texture, Position, sourceRectangle, Color.White, 0.0f, new Vector2(16.0f, 24.0f + 10.0f), Scale, SpriteEffects.None, 0.0f); // why 10.0f???
+            // odd-r horizontal layout
+            float x;
+            if (rowR % 2 == 0)
+            {
+                x = Constants.HEX_WIDTH * colQ;
+            }
+            else
+            {
+                x = Constants.HEX_WIDTH * colQ + Constants.HEX_HALF_WIDTH;
+            }
+            float y = Constants.HEX_THREE_QUARTER_HEIGHT * rowR;
 
-            //var color = Color.PeachPuff;
-            //spriteBatch.DrawLine(Position + Points[0], Position + Points[1], color);
-            //spriteBatch.DrawLine(Position + Points[1], Position + Points[2], color);
-            //spriteBatch.DrawLine(Position + Points[2], Position + Points[3], color);
-            //spriteBatch.DrawLine(Position + Points[3], Position + Points[4], color);
-            //spriteBatch.DrawLine(Position + Points[4], Position + Points[5], color);
-            //spriteBatch.DrawLine(Position + Points[5], Position + Points[0], color);
+            var position = new Vector2(x, y);
+
+            return position;
         }
 
         private string DebuggerDisplay

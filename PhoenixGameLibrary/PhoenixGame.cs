@@ -9,12 +9,7 @@ namespace PhoenixGameLibrary
 
         public PhoenixGame()
         {
-            //_hex1 = new Hex(new Vector2(16.0f, 24.0f), 0);
-            //_hex2 = new Hex(new Vector2(16.0f + 25.0f, 24.0f - 15.0f), 0); // 24.0f, 8.0f
-            //_hex3 = new Hex(new Vector2(16.0f + 50.0f, 24.0f), 0);
-            //_hex4 = new Hex(new Vector2(16.0f + 25.0f, 24.0f + 15.0f), 0); // 24.0f, 8.0f
-
-            _hexGrid = new HexGrid(30, 15);
+            _hexGrid = new HexGrid(60, 40);
         }
 
         public void LoadContent()
@@ -24,6 +19,7 @@ namespace PhoenixGameLibrary
 
         public void Update(GameTime gameTime)
         {
+            _hexGrid.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
