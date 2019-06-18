@@ -29,10 +29,10 @@ namespace PhoenixGameLibrary
 
         public void Draw(SpriteBatch spriteBatch, Texture2D texture, AtlasSpec2 spec, Camera camera)
         {
-            if (camera.VisibleArea.X - 50 < _centerPosition.X && 
-                camera.VisibleArea.X + camera.VisibleArea.Width + 50 > _centerPosition.X &&
-                camera.VisibleArea.Y - 50 < _centerPosition.Y &&
-                camera.VisibleArea.Y + camera.VisibleArea.Height + 50 > _centerPosition.Y)
+            if (camera.VisibleArea.X - Constants.HEX_WIDTH < _centerPosition.X && 
+                camera.VisibleArea.X + camera.VisibleArea.Width + Constants.HEX_WIDTH > _centerPosition.X &&
+                camera.VisibleArea.Y - Constants.HEX_HEIGHT < _centerPosition.Y &&
+                camera.VisibleArea.Y + camera.VisibleArea.Height + Constants.HEX_HEIGHT > _centerPosition.Y)
             {
                 var frame = spec.Frames[_frameId];
                 var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);

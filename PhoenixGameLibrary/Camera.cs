@@ -8,8 +8,8 @@ namespace PhoenixGameLibrary
     public class Camera
     {
         private float _zoom;
-        private float _rotation;
-        private Rectangle _bounds;
+        private readonly float _rotation;
+        private readonly Rectangle _bounds;
         private Vector2 _position;
 
         public Rectangle VisibleArea { get; private set; }
@@ -28,7 +28,7 @@ namespace PhoenixGameLibrary
         {
             float moveSpeed = 3.0f - _zoom; // 1.0f
             moveSpeed *= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-
+            //moveSpeed = 0.1f;
             Vector2 cameraMovement = Vector2.Zero;
 
             if (KeyboardHandler.IsKeyDown(Keys.Up))
@@ -76,7 +76,11 @@ namespace PhoenixGameLibrary
 
         private void MoveCamera(Vector2 movePosition)
         {
+            // TODO: scale not taken into account!
             Vector2 newPosition = _position + movePosition;
+            newPosition.X = MathHelper.Clamp(newPosition.X, 0.0f, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Width);
+            newPosition.Y = MathHelper.Clamp(newPosition.Y, 0.0f, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Height);
+
             _position = newPosition;
         }
 

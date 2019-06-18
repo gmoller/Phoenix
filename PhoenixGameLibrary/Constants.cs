@@ -4,6 +4,14 @@ namespace PhoenixGameLibrary
 {
     public static class Constants
     {
+        public const int WORLD_MAP_WIDTH_IN_HEXES = 60; // 60
+        public const int WORLD_MAP_HEIGHT_IN_HEXES = 40; // 40
+
+        public const int WORLD_MAP_WIDTH_IN_PIXELS = WORLD_MAP_WIDTH_IN_HEXES * (int)HEX_WIDTH - (int)HEX_HALF_WIDTH;
+        public const int WORLD_MAP_HEIGHT_IN_PIXELS = (WORLD_MAP_HEIGHT_IN_HEXES / 2 * (int)HEX_HEIGHT) + (WORLD_MAP_HEIGHT_IN_HEXES / 2 * (int)HEX_SIDE) - (int)HEX_HALF_HEIGHT;
+
+        //----------------------------------
+
         public const float HEX_SCALE = 0.5f;
 
         public const float HEX_ACTUAL_WIDTH = 256.0f;

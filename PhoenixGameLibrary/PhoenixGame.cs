@@ -9,7 +9,7 @@ namespace PhoenixGameLibrary
 
         public PhoenixGame()
         {
-            _hexGrid = new HexGrid(60, 40);
+            _hexGrid = new HexGrid(Constants.WORLD_MAP_WIDTH_IN_HEXES, Constants.WORLD_MAP_HEIGHT_IN_HEXES);
         }
 
         public void LoadContent()
