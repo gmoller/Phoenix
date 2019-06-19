@@ -40,7 +40,7 @@ namespace PhoenixGameLibrary
         public void Draw(SpriteBatch spriteBatch)
         {
             var original = DeviceManager.Instance.GraphicsDevice.Viewport;
-            DeviceManager.Instance.GraphicsDevice.Viewport = new Viewport(50, 50, 1500, 550, 0, 1);
+            DeviceManager.Instance.GraphicsDevice.Viewport = DeviceManager.Instance.MapViewport;
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
             foreach (Hex hex in _hexGrid)
@@ -49,7 +49,7 @@ namespace PhoenixGameLibrary
             }
             spriteBatch.End();
 
-            //spriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, blendState: BlendState.NonPremultiplied);
+            //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
             //foreach (Hex hex in _hexGrid)
             //{
             //    hex.DrawHexBorder(spriteBatch, _camera);

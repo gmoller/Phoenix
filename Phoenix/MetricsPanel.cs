@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
+using Utilities;
 
 namespace Phoenix
 {
@@ -45,12 +46,21 @@ namespace Phoenix
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            var original = DeviceManager.Instance.GraphicsDevice.Viewport;
+            DeviceManager.Instance.GraphicsDevice.Viewport = DeviceManager.Instance.MetricsViewport;
+
+            spriteBatch.Begin();
+
             _lblFps1.Draw(spriteBatch);
             _lblFps2.Draw(spriteBatch);
             _lblMemory1.Draw(spriteBatch);
             _lblMemory2.Draw(spriteBatch);
             _lblGCCount1.Draw(spriteBatch);
             _lblGCCount2.Draw(spriteBatch);
+
+            spriteBatch.End();
+
+            DeviceManager.Instance.GraphicsDevice.Viewport = original;
 
             _fps.Draw();
         }

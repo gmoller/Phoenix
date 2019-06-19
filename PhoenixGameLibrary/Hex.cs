@@ -30,10 +30,8 @@ namespace PhoenixGameLibrary
 
         public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-            if (camera.VisibleArea.X - Constants.HEX_WIDTH < _centerPosition.X && 
-                camera.VisibleArea.X + camera.VisibleArea.Width + Constants.HEX_WIDTH > _centerPosition.X &&
-                camera.VisibleArea.Y - Constants.HEX_HEIGHT < _centerPosition.Y &&
-                camera.VisibleArea.Y + camera.VisibleArea.Height + Constants.HEX_HEIGHT > _centerPosition.Y)
+            var rect = new Rectangle(camera.VisibleArea.X - (int)Constants.HEX_WIDTH, camera.VisibleArea.Y - (int)Constants.HEX_HEIGHT, camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 2, camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
+            if (rect.Contains(_centerPosition))
             {
                 var texture = AssetsManager.Instance.GetTexture(_terrainType.TexturePalette);
                 var spec = AssetsManager.Instance.GetAtlas(_terrainType.TexturePalette);
@@ -45,21 +43,25 @@ namespace PhoenixGameLibrary
 
         public void DrawHexBorder(SpriteBatch spriteBatch, Camera camera)
         {
-            var color = Color.PeachPuff;
-            var centerPosition = CalculateWorldPosition(_colQ, _rowR) - new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
-            var point0 = new Vector2(0.0f, 0.0f - Constants.HEX_HALF_HEIGHT);
-            var point1 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f - Constants.HEX_ONE_QUARTER_HEIGHT);
-            var point2 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f + Constants.HEX_ONE_QUARTER_HEIGHT);
-            var point3 = new Vector2(0.0f, 0.0f + Constants.HEX_HALF_HEIGHT);
-            var point4 = new Vector2(0.0f - Constants.HEX_HALF_WIDTH, 0.0f + Constants.HEX_ONE_QUARTER_HEIGHT);
-            var point5 = new Vector2(0.0f - Constants.HEX_HALF_WIDTH, 0.0f - Constants.HEX_ONE_QUARTER_HEIGHT);
+            var rect = new Rectangle(camera.VisibleArea.X - (int)Constants.HEX_WIDTH, camera.VisibleArea.Y - (int)Constants.HEX_HEIGHT, camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 2, camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
+            if (rect.Contains(_centerPosition))
+            {
+                var color = Color.PeachPuff;
+                var centerPosition = CalculateWorldPosition(_colQ, _rowR) - new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
+                var point0 = new Vector2(0.0f, 0.0f - Constants.HEX_HALF_HEIGHT);
+                var point1 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f - Constants.HEX_ONE_QUARTER_HEIGHT);
+                var point2 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f + Constants.HEX_ONE_QUARTER_HEIGHT);
+                var point3 = new Vector2(0.0f, 0.0f + Constants.HEX_HALF_HEIGHT);
+                var point4 = new Vector2(0.0f - Constants.HEX_HALF_WIDTH, 0.0f + Constants.HEX_ONE_QUARTER_HEIGHT);
+                var point5 = new Vector2(0.0f - Constants.HEX_HALF_WIDTH, 0.0f - Constants.HEX_ONE_QUARTER_HEIGHT);
 
-            spriteBatch.DrawLine(centerPosition + point0, centerPosition + point1, color);
-            spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, color);
-            spriteBatch.DrawLine(centerPosition + point2, centerPosition + point3, color);
-            spriteBatch.DrawLine(centerPosition + point3, centerPosition + point4, color);
-            spriteBatch.DrawLine(centerPosition + point4, centerPosition + point5, color);
-            spriteBatch.DrawLine(centerPosition + point5, centerPosition + point0, color);
+                spriteBatch.DrawLine(centerPosition + point0, centerPosition + point1, color);
+                spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, color);
+                spriteBatch.DrawLine(centerPosition + point2, centerPosition + point3, color);
+                spriteBatch.DrawLine(centerPosition + point3, centerPosition + point4, color);
+                spriteBatch.DrawLine(centerPosition + point4, centerPosition + point5, color);
+                spriteBatch.DrawLine(centerPosition + point5, centerPosition + point0, color);
+            }
         }
 
         private Vector2 CalculateWorldPosition(int colQ, int rowR)

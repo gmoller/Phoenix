@@ -29,7 +29,7 @@ namespace Phoenix
             Logger.Instance.Log("Initializing...");
 
             VariableTimeStep();
-            SetGraphicsResolution(GraphicsDevice.DisplayMode.Width, GraphicsDevice.DisplayMode.Height);
+            SetGraphicsResolution(1600, 800);
             DeviceManager.Instance.GraphicsDevice = GraphicsDevice;
             DeviceManager.Instance.IsMouseVisible = IsMouseVisible;
             KeyboardHandler.Initialize();
@@ -43,8 +43,8 @@ namespace Phoenix
 
         private void SetGraphicsResolution(int width, int height)
         {
-            _graphicsDeviceManager.PreferredBackBufferWidth = 1600;
-            _graphicsDeviceManager.PreferredBackBufferHeight = 800;
+            _graphicsDeviceManager.PreferredBackBufferWidth = width;
+            _graphicsDeviceManager.PreferredBackBufferHeight = height;
             //_graphicsDeviceManager.IsFullScreen = true;
             _graphicsDeviceManager.ApplyChanges();
         }
@@ -69,7 +69,8 @@ namespace Phoenix
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             ContentLoader.LoadContent(GraphicsDevice);
-            _metricsPanel = new MetricsPanel(new Vector2(0.0f, _graphicsDeviceManager.GraphicsDevice.Viewport.Height));
+            //_metricsPanel = new MetricsPanel(new Vector2(0.0f, _graphicsDeviceManager.GraphicsDevice.Viewport.Height));
+            _metricsPanel = new MetricsPanel(new Vector2(0.0f, 200.0f));
 
             Logger.Instance.LogComplete();
         }
@@ -111,10 +112,7 @@ namespace Phoenix
                 GraphicsDevice.Clear(Color.Black);
 
                 _game.Draw(_spriteBatch);
-
-                _spriteBatch.Begin();
                 _metricsPanel.Draw(_spriteBatch);
-                _spriteBatch.End();
 
                 base.Draw(gameTime);
             }
