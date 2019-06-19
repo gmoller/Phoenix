@@ -5,26 +5,21 @@ namespace PhoenixGameLibrary
 {
     public class PhoenixGame
     {
-        private HexGrid _hexGrid;
+        private OverlandMap _overlandMap;
 
         public PhoenixGame()
         {
-            _hexGrid = new HexGrid(Constants.WORLD_MAP_WIDTH_IN_HEXES, Constants.WORLD_MAP_HEIGHT_IN_HEXES);
-        }
-
-        public void LoadContent()
-        {
-            _hexGrid.LoadContent();
+            _overlandMap = new OverlandMap();
         }
 
         public void Update(GameTime gameTime)
         {
-            _hexGrid.Update(gameTime);
+            _overlandMap.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            _hexGrid.Draw(spriteBatch);
+            _overlandMap.Draw(spriteBatch);
         }
     }
 }

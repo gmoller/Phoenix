@@ -1,281 +1,281 @@
 {
-  "SpriteSheetName": "terrain_hextiles_basic_1",
+  "SpriteSheetName": "terrain_hextiles_cold_1",
   "Frames": [
     {
-	  "Name": "Plains_01",
+	  "Name": "MountainSnow_01",
       "X": 0,
       "Y": 0,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Plains_02",
+	  "Name": "MountainSnow_02",
       "X": 256,
       "Y": 0,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Plains_03",
+	  "Name": "MountainSnow_03",
       "X": 512,
       "Y": 0,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Plains_04",
+	  "Name": "MountainSnow_04",
       "X": 768,
       "Y": 0,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Ocean_01",
+	  "Name": "DirtCold_01",
       "X": 1024,
       "Y": 0,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Ocean_02",
+	  "Name": "DirtCold_02",
       "X": 1280,
       "Y": 0,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Ocean_03",
+	  "Name": "DirtCold_03",
       "X": 1536,
       "Y": 0,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Ocean_04",
+	  "Name": "DirtCold_04",
       "X": 1792,
       "Y": 0,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Mountain_01",
+	  "Name": "PlainsColdSnowCovered_01",
       "X": 0,
       "Y": 384,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Mountain_02",
+	  "Name": "PlainsColdSnowCovered_02",
       "X": 256,
       "Y": 384,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Mountain_03",
+	  "Name": "PlainsColdSnowCovered_03",
       "X": 512,
       "Y": 384,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Mountain_04",
+	  "Name": "PlainsColdSnowCovered_04",
       "X": 768,
       "Y": 384,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "DesertDunes_01",
+	  "Name": "PlainsColdSnowTransition_01",
       "X": 1024,
       "Y": 384,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "DesertDunes_02",
+	  "Name": "PlainsColdSnowTransition_02",
       "X": 1280,
       "Y": 384,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "DesertDunes_03",
+	  "Name": "PlainsColdSnowTransition_03",
       "X": 1536,
       "Y": 384,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "DesertDunes_04",
+	  "Name": "PlainsColdSnowTransition_04",
       "X": 1792,
       "Y": 384,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "ForestBroadleaf_01",
+	  "Name": "ForestPineSnowCovered_01",
       "X": 0,
       "Y": 768,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "ForestBroadleaf_02",
+	  "Name": "ForestPineSnowCovered_02",
       "X": 256,
       "Y": 768,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "ForestBroadleaf_03",
+	  "Name": "ForestPineSnowCovered_03",
       "X": 512,
       "Y": 768,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "ForestBroadleaf_04",
+	  "Name": "ForestPineSnowCovered_04",
       "X": 768,
       "Y": 768,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Marsh_01",
+	  "Name": "ForestPineSnowTransition_01",
       "X": 1024,
       "Y": 768,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Marsh_02",
+	  "Name": "ForestPineSnowTransition_02",
       "X": 1280,
       "Y": 768,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Marsh_03",
+	  "Name": "ForestPineSnowTransition_03",
       "X": 1536,
       "Y": 768,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Marsh_04",
+	  "Name": "ForestPineSnowTransition_04",
       "X": 1792,
       "Y": 768,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Dirt_01",
+	  "Name": "HillsColdSnowCovered_01",
       "X": 0,
       "Y": 1152,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Dirt_02",
+	  "Name": "HillsColdSnowCovered_02",
       "X": 256,
       "Y": 1152,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Dirt_03",
+	  "Name": "HillsColdSnowCovered_03",
       "X": 512,
       "Y": 1152,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Dirt_04",
+	  "Name": "HillsColdSnowCovered_04",
       "X": 768,
       "Y": 1152,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Void_01",
+	  "Name": "HillsColdSnowTransition_01",
       "X": 1024,
       "Y": 1152,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Void_02",
+	  "Name": "HillsColdSnowTransition_02",
       "X": 1280,
       "Y": 1152,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Void_03",
+	  "Name": "HillsColdSnowTransition_03",
       "X": 1536,
       "Y": 1152,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Void_04",
+	  "Name": "HillsColdSnowTransition_04",
       "X": 1792,
       "Y": 1152,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Hills_01",
+	  "Name": "OceanIcebergs_01",
       "X": 0,
       "Y": 1536,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Hills_02",
+	  "Name": "OceanIcebergs_02",
       "X": 256,
       "Y": 1536,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Hills_03",
+	  "Name": "OceanIcebergs_03",
       "X": 512,
       "Y": 1536,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Hills_04",
+	  "Name": "OceanIcebergs_04",
       "X": 768,
       "Y": 1536,
       "Width": 256,
       "Height": 384
     },
     {
-	  "Name": "Base_01",
+	  "Name": "SnowField_01",
       "X": 1024,
       "Y": 1536,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Base_02",
+	  "Name": "SnowField_02",
       "X": 1280,
       "Y": 1536,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Base_03",
+	  "Name": "SnowField_03",
       "X": 1536,
       "Y": 1536,
       "Width": 256,
       "Height": 384
     },
 	{
-	  "Name": "Base_04",
+	  "Name": "SnowField_04",
       "X": 1792,
       "Y": 1536,
       "Width": 256,

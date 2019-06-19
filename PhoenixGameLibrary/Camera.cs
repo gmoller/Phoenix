@@ -28,7 +28,7 @@ namespace PhoenixGameLibrary
         {
             float moveSpeed = 3.0f - _zoom; // 1.0f
             moveSpeed *= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            //moveSpeed = 0.1f;
+
             Vector2 cameraMovement = Vector2.Zero;
 
             if (KeyboardHandler.IsKeyDown(Keys.Up))

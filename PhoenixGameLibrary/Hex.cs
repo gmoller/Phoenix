@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Utilities;
+using PhoenixGameLibrary.GameData;
 
 namespace PhoenixGameLibrary
 {
@@ -11,30 +12,32 @@ namespace PhoenixGameLibrary
     {
         private readonly int _colQ;
         private readonly int _rowR;
-        private readonly int _frameId;
+        private readonly TerrainType _terrainType;
         private readonly float _layerDepth;
 
         private readonly Vector2 _centerPosition;
 
-        public Hex(int colQ, int rowR, int frameId, float layerDepth, Camera camera)
+        public Hex(int colQ, int rowR, TerrainType terrainType, float layerDepth, Camera camera)
         {
             _colQ = colQ;
             _rowR = rowR;
-            _frameId = frameId;
+            _terrainType = terrainType;
             _layerDepth = layerDepth;
 
             _centerPosition = new Vector2();
             _centerPosition = CalculateWorldPosition(colQ, rowR) - new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Texture2D texture, AtlasSpec2 spec, Camera camera)
+        public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
             if (camera.VisibleArea.X - Constants.HEX_WIDTH < _centerPosition.X && 
                 camera.VisibleArea.X + camera.VisibleArea.Width + Constants.HEX_WIDTH > _centerPosition.X &&
                 camera.VisibleArea.Y - Constants.HEX_HEIGHT < _centerPosition.Y &&
                 camera.VisibleArea.Y + camera.VisibleArea.Height + Constants.HEX_HEIGHT > _centerPosition.Y)
             {
-                var frame = spec.Frames[_frameId];
+                var texture = AssetsManager.Instance.GetTexture(_terrainType.TexturePalette);
+                var spec = AssetsManager.Instance.GetAtlas(_terrainType.TexturePalette);
+                var frame = spec.Frames[_terrainType.TextureId];
                 var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
                 spriteBatch.Draw(texture, _centerPosition, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, _layerDepth);
             }
@@ -80,7 +83,7 @@ namespace PhoenixGameLibrary
 
         private string DebuggerDisplay
         {
-            get { return $"{_colQ},{_rowR}"; }
+            get { return $"{{{_colQ},{_rowR}}}"; }
         }
     }
 }

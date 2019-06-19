@@ -1,16 +1,17 @@
 ﻿using System;
+using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary
 {
     public static class MapGenerator
     {
-        public static int[,] Generate(int numberOfColumns, int numberOfRows)
+        public static TerrainType[,] Generate(int numberOfColumns, int numberOfRows, TerrainTypes terrainTypes)
         {
             // make some noise!
             float[,] noise = MakeNoise(numberOfColumns, numberOfRows);
 
-            int[,] terrain = TurnNoiseIntoTerrain(noise);
+            TerrainType[,] terrain = TurnNoiseIntoTerrain(noise, terrainTypes);
 
             return terrain;
         }
@@ -42,56 +43,55 @@ namespace PhoenixGameLibrary
             return val;
         }
 
-        private static int[,] TurnNoiseIntoTerrain(float[,] noise)
+        private static TerrainType[,] TurnNoiseIntoTerrain(float[,] noise, TerrainTypes terrainTypes)
         {
             int numberOfColumns = noise.GetLength(0);
             int numberOfRows = noise.GetLength(1);
-            var terrain = new int[numberOfColumns, numberOfRows];
+            var terrain = new TerrainType[numberOfColumns, numberOfRows];
 
             for (int y = 0; y < numberOfRows; ++y)
             {
                 for (int x = 0; x < numberOfColumns; ++x)
                 {
                     float val = noise[x, y];
-                    int terrainTypeId = DetermineTerrainTypeId(val);
-                    terrain[x, y] = terrainTypeId;
+                    TerrainType terrainType = DetermineTerrainTypeId(val, terrainTypes);
+                    terrain[x, y] = terrainType;
                 }
             }
 
             return terrain;
         }
 
-        private static int DetermineTerrainTypeId(float val)
+        private static TerrainType DetermineTerrainTypeId(float val, TerrainTypes terrainTypes)
         {
-            int terrainTypeId = -1;
+            TerrainType terrainType;
 
             if (IsOcean(val))
             {
-                terrainTypeId = RandomNumberGenerator.Instance.GetRandomInt(4, 7); // ocean
+                terrainType = terrainTypes[RandomNumberGenerator.Instance.GetRandomInt(28, 31)];
             }
             else if (IsGrassland(val))
             {
-                terrainTypeId = RandomNumberGenerator.Instance.GetRandomInt(0, 3); // grassland
+                terrainType = terrainTypes[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
             }
             //else if (IsForest(val))
             //{
-            //    terrainTypeId = RandomNumberGenerator.Instance.GetRandomInt(16, 19); // forest
+            //    terrainTypeId = RandomNumberGenerator.Instance.GetRandomInt(16, 19);
             //}
             else if (IsHill(val))
             {
-                terrainTypeId = RandomNumberGenerator.Instance.GetRandomInt(32, 35); // hill
+                terrainType = terrainTypes[RandomNumberGenerator.Instance.GetRandomInt(16, 19)];
             }
             else if (IsMountain(val))
             {
-                terrainTypeId = RandomNumberGenerator.Instance.GetRandomInt(8, 11); // mountain
+                terrainType = terrainTypes[RandomNumberGenerator.Instance.GetRandomInt(20, 23)];
             }
-
-            if (terrainTypeId == -1)
+            else
             {
                 throw new Exception($"That was unexpected! Val of {val} not supported.");
             }
 
-            return terrainTypeId;
+            return terrainType;
         }
 
         private static bool IsOcean(float val)

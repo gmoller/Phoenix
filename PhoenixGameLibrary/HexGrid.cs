@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using AssetsLibrary;
 using Utilities;
 using Microsoft.Xna.Framework;
+using PhoenixGameLibrary.GameData;
 
 namespace PhoenixGameLibrary
 {
@@ -9,15 +9,15 @@ namespace PhoenixGameLibrary
     {
         private Camera _camera;
 
-        private Texture2D _texture;
-        private AtlasSpec2 _spec;
+        private TerrainTypes _terrainTypes;
 
         private readonly Hex[,] _hexGrid;
 
         public HexGrid(int numberofcolumns, int numberOfRows)
         {
             _camera = new Camera(new Viewport(0, 0, 1500, 550));
-            var map = MapGenerator.Generate(numberofcolumns, numberOfRows);
+            _terrainTypes = TerrainTypes.Create(TerrainTypesLoader.GetTerrainTypes());
+            var map = MapGenerator.Generate(numberofcolumns, numberOfRows, _terrainTypes);
 
             float depth = 0.0f;
             _hexGrid = new Hex[numberofcolumns, numberOfRows];
@@ -30,12 +30,6 @@ namespace PhoenixGameLibrary
                     depth += 0.0001f;
                 }
             }
-        }
-
-        public void LoadContent()
-        {
-            _texture = AssetsManager.Instance.GetTexture("terrain_hextiles_basic_1");
-            _spec = AssetsManager.Instance.GetAtlas("terrain_hextiles_basic_1");
         }
 
         public void Update(GameTime gameTime)
@@ -51,7 +45,7 @@ namespace PhoenixGameLibrary
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
             foreach (Hex hex in _hexGrid)
             {
-                hex.Draw(spriteBatch, _texture, _spec, _camera);
+                hex.Draw(spriteBatch, _camera);
             }
             spriteBatch.End();
 

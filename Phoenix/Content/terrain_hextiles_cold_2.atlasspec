@@ -1,0 +1,180 @@
+{
+  "SpriteSheetName": "terrain_hextiles_cold_2",
+  "Frames": [
+    {
+	  "Name": "PlainsCold_01",
+      "X": 0,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "PlainsCold_02",
+      "X": 256,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "PlainsCold_03",
+      "X": 512,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "PlainsCold_04",
+      "X": 768,
+      "Y": 0,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "ForestPine_01",
+      "X": 0,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "ForestPine_02",
+      "X": 256,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "ForestPine_03",
+      "X": 512,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "ForestPine_04",
+      "X": 768,
+      "Y": 384,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "HillsCold_01",
+      "X": 0,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "HillsCold_02",
+      "X": 256,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "HillsCold_03",
+      "X": 512,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+    {
+	  "Name": "HillsCold_04",
+      "X": 768,
+      "Y": 768,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "PlainsColdSnowCoveredPond_01",
+      "X": 0,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "PlainsColdSnowTransitionPond_01",
+      "X": 256,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "PlainsColdPond_01",
+      "X": 512,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "HillsColdSnowCoveredCave_01",
+      "X": 768,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "HillsColdSnowTransitionCave_01",
+      "X": 1024,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "HillsColdCave_01",
+      "X": 1280,
+      "Y": 1152,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "MountainSnowCave_01",
+      "X": 0,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "MountainSnowCave_02",
+      "X": 256,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "MountainSnowCave_03",
+      "X": 512,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "MountainSnowCave_04",
+      "X": 768,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "ForestPineSnowCoveredClearing_01",
+      "X": 1024,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "ForestPineSnowTransitionClearing_01",
+      "X": 1280,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    },
+	{
+	  "Name": "ForestPineClearing_01",
+      "X": 1536,
+      "Y": 1536,
+      "Width": 256,
+      "Height": 384
+    }
+  ]
+}

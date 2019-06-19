@@ -71,8 +71,6 @@ namespace Phoenix
             ContentLoader.LoadContent(GraphicsDevice);
             _metricsPanel = new MetricsPanel(new Vector2(0.0f, _graphicsDeviceManager.GraphicsDevice.Viewport.Height));
 
-            _game.LoadContent();
-
             Logger.Instance.LogComplete();
         }
 

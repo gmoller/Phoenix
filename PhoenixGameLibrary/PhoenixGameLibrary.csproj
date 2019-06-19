@@ -39,10 +39,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="GameData\TerrainType.cs" />
+    <Compile Include="GameData\TerrainTypes.cs" />
+    <Compile Include="GameData\TerrainTypesLoader.cs" />
     <Compile Include="MapGenerator.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Hex.cs" />
     <Compile Include="HexGrid.cs" />
+    <Compile Include="OverlandMap.cs" />
     <Compile Include="PhoenixGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
