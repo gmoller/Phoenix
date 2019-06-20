@@ -10,44 +10,43 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public struct Hex
     {
-        private readonly int _colQ;
-        private readonly int _rowR;
-        private readonly TerrainType _terrainType;
-        private readonly float _layerDepth;
-
+        private readonly int _terrainTypeId;
         private readonly Vector2 _centerPosition;
 
-        public Hex(int colQ, int rowR, TerrainType terrainType, float layerDepth, Camera camera)
+        public Hex(int colQ, int rowR, int terrainTypeId, Camera camera)
         {
-            _colQ = colQ;
-            _rowR = rowR;
-            _terrainType = terrainType;
-            _layerDepth = layerDepth;
+            _terrainTypeId = terrainTypeId;
 
             _centerPosition = new Vector2();
             _centerPosition = CalculateWorldPosition(colQ, rowR) - new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Camera camera)
+        public void Draw(SpriteBatch spriteBatch, Camera camera, float layerDepth, TerrainTypes terrainTypes)
         {
-            var rect = new Rectangle(camera.VisibleArea.X - (int)Constants.HEX_WIDTH, camera.VisibleArea.Y - (int)Constants.HEX_HEIGHT, camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 2, camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
+            var rect = new Rectangle(
+                camera.VisibleArea.X - (int)Constants.HEX_WIDTH, 
+                camera.VisibleArea.Y - (int)Constants.HEX_HEIGHT, 
+                camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 3, 
+                camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
+
             if (rect.Contains(_centerPosition))
             {
-                var texture = AssetsManager.Instance.GetTexture(_terrainType.TexturePalette);
-                var spec = AssetsManager.Instance.GetAtlas(_terrainType.TexturePalette);
-                var frame = spec.Frames[_terrainType.TextureId];
+                var terrainType = terrainTypes[_terrainTypeId];
+                var texture = AssetsManager.Instance.GetTexture(terrainType.TexturePalette);
+                var spec = AssetsManager.Instance.GetAtlas(terrainType.TexturePalette);
+                var frame = spec.Frames[terrainType.TextureId];
                 var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
-                spriteBatch.Draw(texture, _centerPosition, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, _layerDepth);
+                spriteBatch.Draw(texture, _centerPosition, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, layerDepth);
             }
         }
 
-        public void DrawHexBorder(SpriteBatch spriteBatch, Camera camera)
+        public void DrawHexBorder(SpriteBatch spriteBatch, int colQ, int rowR, Camera camera)
         {
             var rect = new Rectangle(camera.VisibleArea.X - (int)Constants.HEX_WIDTH, camera.VisibleArea.Y - (int)Constants.HEX_HEIGHT, camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 2, camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
             if (rect.Contains(_centerPosition))
             {
                 var color = Color.PeachPuff;
-                var centerPosition = CalculateWorldPosition(_colQ, _rowR) - new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
+                var centerPosition = CalculateWorldPosition(colQ, rowR) - new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
                 var point0 = new Vector2(0.0f, 0.0f - Constants.HEX_HALF_HEIGHT);
                 var point1 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f - Constants.HEX_ONE_QUARTER_HEIGHT);
                 var point2 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f + Constants.HEX_ONE_QUARTER_HEIGHT);
@@ -85,7 +84,7 @@ namespace PhoenixGameLibrary
 
         private string DebuggerDisplay
         {
-            get { return $"{{{_colQ},{_rowR}}}"; }
+            get { return $"{{{_centerPosition}}}"; }
         }
     }
 }

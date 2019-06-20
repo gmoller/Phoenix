@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using Utilities;
 using Microsoft.Xna.Framework;
 using PhoenixGameLibrary.GameData;
+using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -19,22 +19,19 @@ namespace PhoenixGameLibrary
             _terrainTypes = TerrainTypes.Create(TerrainTypesLoader.GetTerrainTypes());
             var map = MapGenerator.Generate(numberofcolumns, numberOfRows, _terrainTypes);
 
-            float depth = 0.0f;
             _hexGrid = new Hex[numberofcolumns, numberOfRows];
             for (int r = 0; r < numberOfRows; ++r)
             {
                 for (int q = 0; q < numberofcolumns; ++q)
                 {
-                    //_hexGrid[q, r] = new Hex(q, r, RandomNumberGenerator.Instance.GetRandomInt(0, 39), depth, _camera);
-                    _hexGrid[q, r] = new Hex(q, r, map[q, r], depth, _camera);
-                    depth += 0.0001f;
+                    _hexGrid[q, r] = new Hex(q, r, map[q, r].Id, _camera);
                 }
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, InputHandler input)
         {
-            _camera.UpdateCamera(gameTime);
+            _camera.UpdateCamera(gameTime, input);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -43,16 +40,18 @@ namespace PhoenixGameLibrary
             DeviceManager.Instance.GraphicsDevice.Viewport = DeviceManager.Instance.MapViewport;
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
+            float depth = 0.0f;
             foreach (Hex hex in _hexGrid)
             {
-                hex.Draw(spriteBatch, _camera);
+                hex.Draw(spriteBatch, _camera, depth, _terrainTypes);
+                depth += 0.0001f;
             }
             spriteBatch.End();
 
             //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
             //foreach (Hex hex in _hexGrid)
             //{
-            //    hex.DrawHexBorder(spriteBatch, _camera);
+            //    hex.DrawHexBorder(spriteBatch, colQ, rowR, _camera);
             //}
             //spriteBatch.End();
 

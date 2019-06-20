@@ -14,6 +14,7 @@ namespace Phoenix
         private GraphicsDeviceManager _graphicsDeviceManager;
         private SpriteBatch _spriteBatch;
 
+        private InputHandler _input;
         private MetricsPanel _metricsPanel;
         private PhoenixGame _game;
 
@@ -32,8 +33,9 @@ namespace Phoenix
             SetGraphicsResolution(1600, 800);
             DeviceManager.Instance.GraphicsDevice = GraphicsDevice;
             DeviceManager.Instance.IsMouseVisible = IsMouseVisible;
-            KeyboardHandler.Initialize();
-            MouseHandler.Initialize();
+
+            _input = new InputHandler();
+            _input.Initialize();
             _game = new PhoenixGame();
 
             Logger.Instance.LogComplete();
@@ -69,7 +71,6 @@ namespace Phoenix
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             ContentLoader.LoadContent(GraphicsDevice);
-            //_metricsPanel = new MetricsPanel(new Vector2(0.0f, _graphicsDeviceManager.GraphicsDevice.Viewport.Height));
             _metricsPanel = new MetricsPanel(new Vector2(0.0f, 200.0f));
 
             Logger.Instance.LogComplete();
@@ -88,12 +89,10 @@ namespace Phoenix
         {
             try
             {
-                KeyboardHandler.Update();
-                MouseHandler.Update();
+                _input.Update(gameTime);
+                if (_input.Exit) Exit();
 
-                if (KeyboardHandler.IsKeyDown(Keys.Escape)) Exit();
-
-                _game.Update(gameTime);
+                _game.Update(gameTime, _input);
                 _metricsPanel.Update(gameTime);
 
                 base.Update(gameTime);

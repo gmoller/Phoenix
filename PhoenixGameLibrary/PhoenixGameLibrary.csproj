@@ -42,6 +42,7 @@
     <Compile Include="GameData\TerrainType.cs" />
     <Compile Include="GameData\TerrainTypes.cs" />
     <Compile Include="GameData\TerrainTypesLoader.cs" />
+    <Compile Include="InputHandler.cs" />
     <Compile Include="MapGenerator.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Hex.cs" />

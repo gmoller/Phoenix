@@ -21,6 +21,18 @@ namespace Input
 
         public static Point MousePosition => _currentState.Position;
 
+        public static Point MouseMovement => _currentState.Position - _previousState.Position;
+
+        public static bool IsLeftButtonDown()
+        {
+            return _currentState.LeftButton == ButtonState.Pressed;
+        }
+
+        public static bool IsRightButtonDown()
+        {
+            return _currentState.RightButton == ButtonState.Pressed;
+        }
+
         public static bool IsLeftButtonPressed()
         {
             return _previousState.LeftButton == ButtonState.Released && _currentState.LeftButton == ButtonState.Pressed;
@@ -49,6 +61,11 @@ namespace Input
         public static bool MouseWheelDown()
         {
             return _currentState.ScrollWheelValue < _previousState.ScrollWheelValue;
+        }
+
+        public static bool HasMouseMoved()
+        {
+            return _previousState.Position != _currentState.Position;
         }
     }
 }

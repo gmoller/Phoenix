@@ -12,9 +12,9 @@ namespace PhoenixGameLibrary
             _overlandMap = new OverlandMap();
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, InputHandler input)
         {
-            _overlandMap.Update(gameTime);
+            _overlandMap.Update(gameTime, input);
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -37,7 +37,7 @@ namespace PhoenixGameLibrary
             fastNoise.SetNoiseType(FastNoise.NoiseType.Value);
             fastNoise.SetInterp(interp);
             fastNoise.SetSeed(1336);
-            fastNoise.SetFrequency(0.1f);
+            fastNoise.SetFrequency(0.5f);
             float val = fastNoise.GetNoise(x, y);
 
             return val;

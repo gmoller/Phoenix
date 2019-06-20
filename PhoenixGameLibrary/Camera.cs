@@ -24,36 +24,15 @@ namespace PhoenixGameLibrary
             _position = Vector2.Zero;
         }
 
-        public void UpdateCamera(GameTime gameTime)
+        public void UpdateCamera(GameTime gameTime, InputHandler input)
         {
-            float moveSpeed = 3.0f - _zoom; // 1.0f
-            moveSpeed *= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            MoveCamera(new Vector2(-input.PanCameraDistance.X * 5.0f, -input.PanCameraDistance.Y * 5.0f));
 
-            Vector2 cameraMovement = Vector2.Zero;
-
-            if (KeyboardHandler.IsKeyDown(Keys.Up))
-            {
-                cameraMovement.Y = -moveSpeed;
-            }
-            if (KeyboardHandler.IsKeyDown(Keys.Down))
-            {
-                cameraMovement.Y = moveSpeed;
-            }
-            if (KeyboardHandler.IsKeyDown(Keys.Left))
-            {
-                cameraMovement.X = -moveSpeed;
-            }
-            if (KeyboardHandler.IsKeyDown(Keys.Right))
-            {
-                cameraMovement.X = moveSpeed;
-            }
-            MoveCamera(cameraMovement);
-
-            if (MouseHandler.MouseWheelUp())
+            if (input.CameraZoomIn)
             {
                 AdjustZoom(0.05f);
             }
-            if (MouseHandler.MouseWheelDown())
+            if (input.CameraZoomOut)
             {
                 AdjustZoom(-0.05f);
             }
