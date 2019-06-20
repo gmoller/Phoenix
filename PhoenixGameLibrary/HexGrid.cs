@@ -15,7 +15,7 @@ namespace PhoenixGameLibrary
 
         public HexGrid(int numberofcolumns, int numberOfRows)
         {
-            _camera = new Camera(new Viewport(0, 0, 1500, 550));
+            _camera = new Camera(new Viewport(0, 0, 1500, 725)); // 550
             _terrainTypes = TerrainTypes.Create(TerrainTypesLoader.GetTerrainTypes());
             var map = MapGenerator.Generate(numberofcolumns, numberOfRows, _terrainTypes);
 

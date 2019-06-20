@@ -1,10 +1,13 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GuiControls
 {
     public abstract class Control
     {
+        private readonly Texture2D _texture;
+
         protected readonly VerticalAlignment VerticalAlignment;
         protected readonly HorizontalAlignment HorizontalAlignment;
         protected readonly Vector2 Position; // Position of the control relative to it's alignment
@@ -15,26 +18,25 @@ namespace GuiControls
 
         public Rectangle Area => DetermineArea(VerticalAlignment, HorizontalAlignment, Position, Width, Height);
         public float Left => Area.Left;
-        public float Center => Area.Center.X;
         public float Right => Area.Right;
         public float Top => Area.Top;
-        public float Middle => Area.Center.Y;
         public float Bottom => Area.Bottom;
         public Vector2 TopLeft => new Vector2(Area.Left, Area.Top);
         public Vector2 TopRight => new Vector2(Area.Right, Area.Top);
         public Vector2 BottomLeft => new Vector2(Area.Left, Area.Bottom);
         public Vector2 BottomRight => new Vector2(Area.Right, Area.Bottom);
-        //public Vector2 Center => new Vector2(Area.Center.X, Area.Center.Y);
+        public Vector2 Center => new Vector2(Area.Center.X, Area.Center.Y);
 
-        protected Control(Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size)
+        protected Control(Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, Texture2D texture)
         {
             Position = position;
             HorizontalAlignment = horizontalAlignment;
             VerticalAlignment = verticalAlignment;
             Size = new Vector2(size.X % 2 == 0 ? size.X : size.X + 1, size.Y % 2 == 0 ? size.Y : size.Y + 1);
+            _texture = texture;
         }
 
-        protected Control(Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size)
+        protected Control(Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, Texture2D texture)
         {
             if (verticalAlignment == VerticalAlignment.Top)
             {
@@ -46,7 +48,7 @@ namespace GuiControls
                 }
                 else if (horizontalAlignment == HorizontalAlignment.Center)
                 {
-                    Position = new Vector2(controlToDockTo.Center, controlToDockTo.Top);
+                    Position = new Vector2(controlToDockTo.Center.X, controlToDockTo.Top);
                     VerticalAlignment = VerticalAlignment.Bottom;
                     HorizontalAlignment = HorizontalAlignment.Center;
                 }
@@ -65,19 +67,19 @@ namespace GuiControls
             {
                 if (horizontalAlignment == HorizontalAlignment.Left)
                 {
-                    Position = new Vector2(controlToDockTo.Left, controlToDockTo.Middle);
+                    Position = new Vector2(controlToDockTo.Left, controlToDockTo.Center.Y);
                     VerticalAlignment = VerticalAlignment.Middle;
                     HorizontalAlignment = HorizontalAlignment.Right;
                 }
                 else if (horizontalAlignment == HorizontalAlignment.Center)
                 {
-                    Position = new Vector2(controlToDockTo.Center, controlToDockTo.Middle);
+                    Position = new Vector2(controlToDockTo.Center.X, controlToDockTo.Center.Y);
                     VerticalAlignment = VerticalAlignment.Middle;
                     HorizontalAlignment = HorizontalAlignment.Center;
                 }
                 else if (horizontalAlignment == HorizontalAlignment.Right)
                 {
-                    Position = new Vector2(controlToDockTo.Right, controlToDockTo.Middle);
+                    Position = new Vector2(controlToDockTo.Right, controlToDockTo.Center.Y);
                     VerticalAlignment = VerticalAlignment.Middle;
                     HorizontalAlignment = HorizontalAlignment.Left;
                 }
@@ -96,7 +98,7 @@ namespace GuiControls
                 }
                 else if (horizontalAlignment == HorizontalAlignment.Center)
                 {
-                    Position = new Vector2(controlToDockTo.Center, controlToDockTo.Bottom);
+                    Position = new Vector2(controlToDockTo.Center.X, controlToDockTo.Bottom);
                     VerticalAlignment = VerticalAlignment.Top;
                     HorizontalAlignment = HorizontalAlignment.Center;
                 }
@@ -117,6 +119,15 @@ namespace GuiControls
             }
 
             Size = new Vector2(size.X % 2 == 0 ? size.X : size.X + 1, size.Y % 2 == 0 ? size.Y : size.Y + 1);
+            _texture = texture;
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            if (_texture != null)
+            {
+                spriteBatch.Draw(_texture, Area, Color.White);
+            }
         }
 
         private Rectangle DetermineArea(VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 position, int width, int height)

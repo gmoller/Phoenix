@@ -18,11 +18,14 @@ namespace Phoenix
         private Label _lblGCCount1;
         private Label _lblGCCount2;
 
+        private Label _lblTest;
+
         public MetricsPanel(Vector2 position)
         {
             _fps = new FramesPerSecondCounter();
 
             var font = AssetsManager.Instance.GetSpriteFont("TimesSanSerif");
+            //var font = AssetsManager.Instance.GetSpriteFont("carolingia");
             Vector2 size = new Vector2(270.0f, 50.0f);
 
             _lblMemory1 = new Label(font, position, HorizontalAlignment.Left, VerticalAlignment.Bottom, size, "MEM:", Color.LawnGreen, Color.DarkRed, Color.White);
@@ -33,6 +36,8 @@ namespace Phoenix
 
             _lblGCCount1 = new Label(font, _lblFps1, HorizontalAlignment.Center, VerticalAlignment.Top, size, "GC COUNT:", Color.LawnGreen, Color.DarkRed, Color.White);
             _lblGCCount2 = new Label(font, _lblGCCount1, HorizontalAlignment.Right, VerticalAlignment.Middle, size, string.Empty, Color.LawnGreen, Color.DarkRed, Color.White);
+
+            _lblTest = new Label(font, new Vector2(1450.0f, 175.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, new Vector2(245.0f ,56.0f), "", Color.Yellow, null, null, AssetsManager.Instance.GetTexture("reg_button_n"));
         }
 
         public void Update(GameTime gameTime)
@@ -57,6 +62,8 @@ namespace Phoenix
             _lblMemory2.Draw(spriteBatch);
             _lblGCCount1.Draw(spriteBatch);
             _lblGCCount2.Draw(spriteBatch);
+
+            _lblTest.Draw(spriteBatch);
 
             spriteBatch.End();
 

@@ -13,8 +13,8 @@ namespace GuiControls
 
         public string Text { get; set; }
 
-        public Label(SpriteFont font, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, Color textColor, Color? textShadowColor = null, Color? borderColor = null) :
-            base(position, horizontalAlignment, verticalAlignment, size)
+        public Label(SpriteFont font, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, Color textColor, Color? textShadowColor = null, Color? borderColor = null, Texture2D texture = null) :
+            base(position, horizontalAlignment, verticalAlignment, size, texture)
         {
             _font = font;
             Text = text;
@@ -23,8 +23,8 @@ namespace GuiControls
             _borderColor = borderColor;
         }
 
-        public Label(SpriteFont font, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, Color textColor, Color? textShadowColor = null, Color? borderColor = null) :
-            base(controlToDockTo, horizontalAlignment, verticalAlignment, size)
+        public Label(SpriteFont font, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, Color textColor, Color? textShadowColor = null, Color? borderColor = null, Texture2D texture = null) :
+            base(controlToDockTo, horizontalAlignment, verticalAlignment, size, texture)
         {
             _font = font;
             Text = text;
@@ -37,8 +37,10 @@ namespace GuiControls
         {
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
+            base.Draw(spriteBatch);
+
             Vector2 position = TopLeft;
 
             if (_textShadowColor != null)
@@ -51,6 +53,8 @@ namespace GuiControls
                 spriteBatch.DrawRectangle(Area, _borderColor.Value);
             }
 
+            //Vector2 textSize = _font.MeasureString(Text);
+            //spriteBatch.DrawString(_font, Text, Position, _textColor, 0.0f, textSize / 2.0f, 1.0f, SpriteEffects.None, 0.0f);
             spriteBatch.DrawString(_font, Text, position, _textColor, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
         }
     }
