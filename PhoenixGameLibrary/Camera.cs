@@ -57,8 +57,21 @@ namespace PhoenixGameLibrary
         {
             // TODO: scale not taken into account!
             Vector2 newPosition = _position + movePosition;
-            newPosition.X = MathHelper.Clamp(newPosition.X, 0.0f, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Width);
-            newPosition.Y = MathHelper.Clamp(newPosition.Y, 0.0f, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Height);
+            //if (_zoom == 1.0f)
+            {
+                newPosition.X = MathHelper.Clamp(newPosition.X, 0.0f, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Width - Constants.HEX_THREE_QUARTER_WIDTH);
+                newPosition.Y = MathHelper.Clamp(newPosition.Y, 0.0f, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Height - Constants.HEX_ONE_QUARTER_HEIGHT);
+            }
+            //else if (_zoom > 1.0f)
+            //{
+            //    newPosition.X = MathHelper.Clamp(newPosition.X, 0.0f - Constants.HEX_WIDTH / _zoom, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Width);
+            //    newPosition.Y = MathHelper.Clamp(newPosition.Y, 0.0f - Constants.HEX_HEIGHT / _zoom, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Height);
+            //}
+            //else if (_zoom < 1.0f)
+            //{
+            //    newPosition.X = MathHelper.Clamp(newPosition.X, 0.0f + Constants.HEX_WIDTH / _zoom, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Width);
+            //    newPosition.Y = MathHelper.Clamp(newPosition.Y, 0.0f + Constants.HEX_HEIGHT / _zoom, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Height);
+            //}
 
             _position = newPosition;
         }

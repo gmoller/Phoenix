@@ -68,23 +68,23 @@ namespace PhoenixGameLibrary
 
             if (IsOcean(val))
             {
-                terrainType = terrainTypes[RandomNumberGenerator.Instance.GetRandomInt(28, 31)];
+                terrainType = terrainTypes[11];
             }
             else if (IsGrassland(val))
             {
-                terrainType = terrainTypes[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
+                terrainType = terrainTypes[0];
             }
             //else if (IsForest(val))
             //{
-            //    terrainTypeId = RandomNumberGenerator.Instance.GetRandomInt(16, 19);
+            //    terrainType = terrainTypes[1];
             //}
             else if (IsHill(val))
             {
-                terrainType = terrainTypes[RandomNumberGenerator.Instance.GetRandomInt(16, 19)];
+                terrainType = terrainTypes[6];
             }
             else if (IsMountain(val))
             {
-                terrainType = terrainTypes[RandomNumberGenerator.Instance.GetRandomInt(20, 23)];
+                terrainType = terrainTypes[7];
             }
             else
             {

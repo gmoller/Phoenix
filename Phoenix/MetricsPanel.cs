@@ -24,20 +24,20 @@ namespace Phoenix
         {
             _fps = new FramesPerSecondCounter();
 
-            var font = AssetsManager.Instance.GetSpriteFont("TimesSanSerif");
-            //var font = AssetsManager.Instance.GetSpriteFont("carolingia");
-            Vector2 size = new Vector2(270.0f, 50.0f);
+            var font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
+            var size1 = font.MeasureString("GC COUNT:") + new Vector2(10.0f, 0.0f);
+            var size2 = size1 - new Vector2(10.0f, 0.0f);
 
-            _lblMemory1 = new Label(font, position, HorizontalAlignment.Left, VerticalAlignment.Bottom, size, "MEM:", Color.LawnGreen, Color.DarkRed, Color.White);
-            _lblMemory2 = new Label(font, _lblMemory1, HorizontalAlignment.Right, VerticalAlignment.Middle, new Vector2(size.X, size.Y), string.Empty, Color.LawnGreen, Color.DarkRed, Color.White);
+            _lblMemory1 = new Label(font, position, HorizontalAlignment.Left, VerticalAlignment.Bottom, size1, "MEM:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblMemory2 = new Label(font, _lblMemory1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
-            _lblFps1 = new Label(font, _lblMemory1, HorizontalAlignment.Center, VerticalAlignment.Top, size, "FPS (U/D):", Color.LawnGreen, Color.DarkRed, Color.White);
-            _lblFps2 = new Label(font, _lblFps1, HorizontalAlignment.Right, VerticalAlignment.Middle, size, string.Empty, Color.LawnGreen, Color.DarkRed, Color.White);
+            _lblFps1 = new Label(font, _lblMemory1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "FPS (U/D):", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblFps2 = new Label(font, _lblFps1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
-            _lblGCCount1 = new Label(font, _lblFps1, HorizontalAlignment.Center, VerticalAlignment.Top, size, "GC COUNT:", Color.LawnGreen, Color.DarkRed, Color.White);
-            _lblGCCount2 = new Label(font, _lblGCCount1, HorizontalAlignment.Right, VerticalAlignment.Middle, size, string.Empty, Color.LawnGreen, Color.DarkRed, Color.White);
+            _lblGCCount1 = new Label(font, _lblFps1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "GC COUNT:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblGCCount2 = new Label(font, _lblGCCount1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
-            _lblTest = new Label(font, new Vector2(1450.0f, 175.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, new Vector2(245.0f ,56.0f), "", Color.Yellow, null, null, AssetsManager.Instance.GetTexture("reg_button_n"));
+            _lblTest = new Label(font, new Vector2(1450.0f, 170.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, new Vector2(245.0f, 56.0f), "Next Turn", HorizontalAlignment.Center, Color.White, Color.Blue, null, null, AssetsManager.Instance.GetTexture("reg_button_n"));
         }
 
         public void Update(GameTime gameTime)

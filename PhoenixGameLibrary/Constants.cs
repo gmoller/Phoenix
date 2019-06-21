@@ -16,6 +16,7 @@ namespace PhoenixGameLibrary
 
         public const float HEX_ACTUAL_WIDTH = 256.0f;
         public const float HEX_WIDTH = 256.0f * HEX_SCALE;
+        public const float HEX_THREE_QUARTER_WIDTH = HEX_WIDTH * 0.75F;
         public const float HEX_HALF_WIDTH = HEX_WIDTH * 0.5f;
 
         public const float HEX_ACTUAL_HEIGHT = 256.0f;

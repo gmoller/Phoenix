@@ -13,3 +13,52 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin CrimsonText-Regular-12.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:CrimsonText-Regular-12.spritefont
+
+#begin CrimsonText-Regular-18.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:CrimsonText-Regular-18.spritefont
+
+#begin CrimsonText-Regular-24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:CrimsonText-Regular-24.spritefont
+
+#begin CrimsonText-Regular-36.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:CrimsonText-Regular-36.spritefont
+
+#begin CrimsonText-Regular-48.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:CrimsonText-Regular-48.spritefont
+
+#begin CrimsonText-Regular-60.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:CrimsonText-Regular-60.spritefont
+
+#begin CrimsonText-Regular-72.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:CrimsonText-Regular-72.spritefont
+

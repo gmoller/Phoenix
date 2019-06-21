@@ -11,11 +11,13 @@ namespace PhoenixGameLibrary
     public struct Hex
     {
         private readonly int _terrainTypeId;
+        private readonly GameData.Texture _texture;
         private readonly Vector2 _centerPosition;
 
-        public Hex(int colQ, int rowR, int terrainTypeId, Camera camera)
+        public Hex(int colQ, int rowR, TerrainType terrainType, Camera camera)
         {
-            _terrainTypeId = terrainTypeId;
+            _terrainTypeId = terrainType.Id;
+            _texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
 
             _centerPosition = new Vector2();
             _centerPosition = CalculateWorldPosition(colQ, rowR) - new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
@@ -32,9 +34,9 @@ namespace PhoenixGameLibrary
             if (rect.Contains(_centerPosition))
             {
                 var terrainType = terrainTypes[_terrainTypeId];
-                var texture = AssetsManager.Instance.GetTexture(terrainType.TexturePalette);
-                var spec = AssetsManager.Instance.GetAtlas(terrainType.TexturePalette);
-                var frame = spec.Frames[terrainType.TextureId];
+                var texture = AssetsManager.Instance.GetTexture(_texture.TexturePalette);
+                var spec = AssetsManager.Instance.GetAtlas(_texture.TexturePalette);
+                var frame = spec.Frames[_texture.TextureId];
                 var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
                 spriteBatch.Draw(texture, _centerPosition, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, layerDepth);
             }
@@ -42,7 +44,12 @@ namespace PhoenixGameLibrary
 
         public void DrawHexBorder(SpriteBatch spriteBatch, int colQ, int rowR, Camera camera)
         {
-            var rect = new Rectangle(camera.VisibleArea.X - (int)Constants.HEX_WIDTH, camera.VisibleArea.Y - (int)Constants.HEX_HEIGHT, camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 2, camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
+            var rect = new Rectangle(
+                camera.VisibleArea.X - (int)Constants.HEX_WIDTH, 
+                camera.VisibleArea.Y - (int)Constants.HEX_HEIGHT, 
+                camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 2, 
+                camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
+
             if (rect.Contains(_centerPosition))
             {
                 var color = Color.PeachPuff;
@@ -82,9 +89,6 @@ namespace PhoenixGameLibrary
             return position;
         }
 
-        private string DebuggerDisplay
-        {
-            get { return $"{{{_centerPosition}}}"; }
-        }
+        private string DebuggerDisplay => $"{{TerrainTypeId={_terrainTypeId},CenterPosition={_centerPosition}}}";
     }
 }

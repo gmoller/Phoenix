@@ -1,9 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using AssetsLibrary;
-using Input;
 using PhoenixGameLibrary;
 using Utilities;
 
@@ -22,7 +20,6 @@ namespace Phoenix
         {
             _graphicsDeviceManager = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
         }
 
         protected override void Initialize()
@@ -71,7 +68,17 @@ namespace Phoenix
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             ContentLoader.LoadContent(GraphicsDevice);
+            AssetsManager.Instance.ContentManager = Content;
+            AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-12");
+            AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-18");
+            AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-24");
+            AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-36");
+            AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-48");
+            AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-60");
+            AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-72");
             _metricsPanel = new MetricsPanel(new Vector2(0.0f, 200.0f));
+
+            _game.LoadContent();
 
             Logger.Instance.LogComplete();
         }

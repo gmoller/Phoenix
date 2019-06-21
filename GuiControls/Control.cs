@@ -1,13 +1,10 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace GuiControls
 {
     public abstract class Control
     {
-        private readonly Texture2D _texture;
-
         protected readonly VerticalAlignment VerticalAlignment;
         protected readonly HorizontalAlignment HorizontalAlignment;
         protected readonly Vector2 Position; // Position of the control relative to it's alignment
@@ -27,16 +24,15 @@ namespace GuiControls
         public Vector2 BottomRight => new Vector2(Area.Right, Area.Bottom);
         public Vector2 Center => new Vector2(Area.Center.X, Area.Center.Y);
 
-        protected Control(Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, Texture2D texture)
+        protected Control(Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size)
         {
             Position = position;
             HorizontalAlignment = horizontalAlignment;
             VerticalAlignment = verticalAlignment;
             Size = new Vector2(size.X % 2 == 0 ? size.X : size.X + 1, size.Y % 2 == 0 ? size.Y : size.Y + 1);
-            _texture = texture;
         }
 
-        protected Control(Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, Texture2D texture)
+        protected Control(Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size)
         {
             if (verticalAlignment == VerticalAlignment.Top)
             {
@@ -119,15 +115,6 @@ namespace GuiControls
             }
 
             Size = new Vector2(size.X % 2 == 0 ? size.X : size.X + 1, size.Y % 2 == 0 ? size.Y : size.Y + 1);
-            _texture = texture;
-        }
-
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-            if (_texture != null)
-            {
-                spriteBatch.Draw(_texture, Area, Color.White);
-            }
         }
 
         private Rectangle DetermineArea(VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 position, int width, int height)

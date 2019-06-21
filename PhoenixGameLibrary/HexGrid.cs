@@ -7,24 +7,27 @@ namespace PhoenixGameLibrary
 {
     public class HexGrid
     {
-        private Camera _camera;
+        private readonly Camera _camera;
+        private readonly TerrainTypes _terrainTypes;
 
-        private TerrainTypes _terrainTypes;
-
+        private readonly int _numberOfColumns;
+        private readonly int _numberOfRows;
         private readonly Hex[,] _hexGrid;
 
-        public HexGrid(int numberofcolumns, int numberOfRows)
+        public HexGrid(int numberOfColumns, int numberOfRows)
         {
-            _camera = new Camera(new Viewport(0, 0, 1500, 725)); // 550
+            _camera = new Camera(new Viewport(0, 0, 1500, 755)); // 550
             _terrainTypes = TerrainTypes.Create(TerrainTypesLoader.GetTerrainTypes());
-            var map = MapGenerator.Generate(numberofcolumns, numberOfRows, _terrainTypes);
+            var map = MapGenerator.Generate(numberOfColumns, numberOfRows, _terrainTypes);
 
-            _hexGrid = new Hex[numberofcolumns, numberOfRows];
+            _numberOfColumns = numberOfColumns;
+            _numberOfRows = numberOfRows;
+            _hexGrid = new Hex[numberOfColumns, numberOfRows];
             for (int r = 0; r < numberOfRows; ++r)
             {
-                for (int q = 0; q < numberofcolumns; ++q)
+                for (int q = 0; q < numberOfColumns; ++q)
                 {
-                    _hexGrid[q, r] = new Hex(q, r, map[q, r].Id, _camera);
+                    _hexGrid[q, r] = new Hex(q, r, map[q, r], _camera);
                 }
             }
         }
@@ -40,19 +43,32 @@ namespace PhoenixGameLibrary
             DeviceManager.Instance.GraphicsDevice.Viewport = DeviceManager.Instance.MapViewport;
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
-            float depth = 0.0f;
-            foreach (Hex hex in _hexGrid)
+            var depth = 0.0f;
+
+            for (int r = 0; r < _numberOfRows; ++r)
             {
-                hex.Draw(spriteBatch, _camera, depth, _terrainTypes);
-                depth += 0.0001f;
+                for (int q = 0; q < _numberOfColumns; ++q)
+                {
+                    var hex = _hexGrid[q, r];
+                    hex.Draw(spriteBatch, _camera, depth, _terrainTypes);
+                    depth += 0.0001f;
+                }
             }
+
             spriteBatch.End();
 
             //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
-            //foreach (Hex hex in _hexGrid)
+
+            //for (int r = 0; r < _numberOfRows; ++r)
             //{
-            //    hex.DrawHexBorder(spriteBatch, colQ, rowR, _camera);
+            //    for (int q = 0; q < _numberOfColumns; ++q)
+            //    {
+            //        var hex = _hexGrid[q, r];
+            //        hex.DrawHexBorder(spriteBatch, q, r, _camera);
+            //        depth += 0.0001f;
+            //    }
             //}
+
             //spriteBatch.End();
 
             DeviceManager.Instance.GraphicsDevice.Viewport = original;
