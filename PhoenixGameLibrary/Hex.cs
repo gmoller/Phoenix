@@ -20,7 +20,11 @@ namespace PhoenixGameLibrary
             _texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
 
             _centerPosition = new Vector2();
-            _centerPosition = CalculateWorldPosition(colQ, rowR) - new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
+            _centerPosition = World.CalculateWorldPosition(colQ, rowR, camera);
+        }
+
+        public void Update(GameTime gameTime, InputHandler input)
+        {
         }
 
         public void Draw(SpriteBatch spriteBatch, Camera camera, float layerDepth, TerrainTypes terrainTypes)
@@ -50,10 +54,11 @@ namespace PhoenixGameLibrary
                 camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 2, 
                 camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
 
-            if (rect.Contains(_centerPosition))
+            var centerPosition = World.CalculateWorldPosition(colQ, rowR, camera);
+
+            if (rect.Contains(centerPosition))
             {
                 var color = Color.PeachPuff;
-                var centerPosition = CalculateWorldPosition(colQ, rowR) - new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
                 var point0 = new Vector2(0.0f, 0.0f - Constants.HEX_HALF_HEIGHT);
                 var point1 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f - Constants.HEX_ONE_QUARTER_HEIGHT);
                 var point2 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f + Constants.HEX_ONE_QUARTER_HEIGHT);
@@ -68,25 +73,6 @@ namespace PhoenixGameLibrary
                 spriteBatch.DrawLine(centerPosition + point4, centerPosition + point5, color);
                 spriteBatch.DrawLine(centerPosition + point5, centerPosition + point0, color);
             }
-        }
-
-        private Vector2 CalculateWorldPosition(int colQ, int rowR)
-        {
-            // odd-r horizontal layout
-            float x;
-            if (rowR % 2 == 0)
-            {
-                x = Constants.HEX_WIDTH * colQ;
-            }
-            else
-            {
-                x = Constants.HEX_WIDTH * colQ + Constants.HEX_HALF_WIDTH;
-            }
-            float y = Constants.HEX_THREE_QUARTER_HEIGHT * rowR;
-
-            var position = new Vector2(x, y);
-
-            return position;
         }
 
         private string DebuggerDisplay => $"{{TerrainTypeId={_terrainTypeId},CenterPosition={_centerPosition}}}";

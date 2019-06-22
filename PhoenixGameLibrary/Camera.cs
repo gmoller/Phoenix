@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Input;
-using Microsoft.Xna.Framework.Input;
 
 namespace PhoenixGameLibrary
 {
@@ -43,13 +41,13 @@ namespace PhoenixGameLibrary
         private void AdjustZoom(float zoomAmount)
         {
             _zoom += zoomAmount;
-            if (_zoom < 0.35f)
+            if (_zoom < 0.1f) // 0.35f
             {
-                _zoom = 0.35f;
+                _zoom = 0.1f;
             }
-            if (_zoom > 2.0f)
+            if (_zoom > 5.0f) // 2.0f
             {
-                _zoom = 2.0f;
+                _zoom = 5.0f;
             }
         }
 

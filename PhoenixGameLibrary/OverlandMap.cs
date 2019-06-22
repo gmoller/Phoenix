@@ -12,9 +12,9 @@ namespace PhoenixGameLibrary
         private HexGrid _hexGrid;
         private Label _btnEndTurn;
 
-        public OverlandMap()
+        public OverlandMap(Camera camera)
         {
-            _hexGrid = new HexGrid(Constants.WORLD_MAP_WIDTH_IN_HEXES, Constants.WORLD_MAP_HEIGHT_IN_HEXES);
+            _hexGrid = new HexGrid(Constants.WORLD_MAP_WIDTH_IN_HEXES, Constants.WORLD_MAP_HEIGHT_IN_HEXES, camera);
         }
 
         public void LoadContent(ContentManager content)

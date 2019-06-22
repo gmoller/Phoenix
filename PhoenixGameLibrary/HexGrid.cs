@@ -14,9 +14,9 @@ namespace PhoenixGameLibrary
         private readonly int _numberOfRows;
         private readonly Hex[,] _hexGrid;
 
-        public HexGrid(int numberOfColumns, int numberOfRows)
+        public HexGrid(int numberOfColumns, int numberOfRows, Camera camera)
         {
-            _camera = new Camera(new Viewport(0, 0, 1500, 755)); // 550
+            _camera = camera;
             _terrainTypes = TerrainTypes.Create(TerrainTypesLoader.GetTerrainTypes());
             var map = MapGenerator.Generate(numberOfColumns, numberOfRows, _terrainTypes);
 
@@ -34,7 +34,6 @@ namespace PhoenixGameLibrary
 
         public void Update(GameTime gameTime, InputHandler input)
         {
-            _camera.UpdateCamera(gameTime, input);
         }
 
         public void Draw(SpriteBatch spriteBatch)
