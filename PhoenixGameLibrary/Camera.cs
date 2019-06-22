@@ -22,6 +22,16 @@ namespace PhoenixGameLibrary
             _position = Vector2.Zero;
         }
 
+        public Vector2 WorldToScreen(Vector2 worldPosition)
+        {
+            return Vector2.Transform(worldPosition, Transform);
+        }
+
+        public Vector2 ScreenToWorld(Vector2 screenPosition)
+        {
+            return Vector2.Transform(screenPosition, Matrix.Invert(Transform));
+        }
+
         public void UpdateCamera(GameTime gameTime, InputHandler input)
         {
             MoveCamera(new Vector2(-input.PanCameraDistance.X * 5.0f, -input.PanCameraDistance.Y * 5.0f));

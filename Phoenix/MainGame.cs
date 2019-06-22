@@ -12,8 +12,8 @@ namespace Phoenix
         private GraphicsDeviceManager _graphicsDeviceManager;
 
         private InputHandler _input;
+        private PhoenixGame _phoenixGame;
         private MetricsPanel _metricsPanel;
-        private PhoenixGame _game;
 
         public MainGame()
         {
@@ -28,11 +28,10 @@ namespace Phoenix
             VariableTimeStep();
             SetGraphicsResolution(1600, 800);
             DeviceManager.Instance.GraphicsDevice = GraphicsDevice;
-            DeviceManager.Instance.IsMouseVisible = IsMouseVisible;
 
             _input = new InputHandler();
             _input.Initialize();
-            _game = new PhoenixGame();
+            _phoenixGame = new PhoenixGame();
 
             Logger.Instance.LogComplete();
 
@@ -91,7 +90,7 @@ namespace Phoenix
             AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-72", "Fonts\\CrimsonText-Regular-72");
             _metricsPanel = new MetricsPanel(new Vector2(0.0f, 200.0f));
 
-            _game.LoadContent(Content);
+            _phoenixGame.LoadContent(Content);
 
             Logger.Instance.LogComplete();
         }
@@ -112,8 +111,8 @@ namespace Phoenix
                 _input.Update(gameTime);
                 if (_input.Exit) Exit();
 
-                _game.Update(gameTime, _input);
-                _metricsPanel.Update(gameTime);
+                _phoenixGame.Update(gameTime, _input);
+                _metricsPanel.Update(gameTime, _input);
 
                 base.Update(gameTime);
             }
@@ -130,7 +129,7 @@ namespace Phoenix
             {
                 GraphicsDevice.Clear(Color.Black);
 
-                _game.Draw();
+                _phoenixGame.Draw();
                 _metricsPanel.Draw();
 
                 base.Draw(gameTime);

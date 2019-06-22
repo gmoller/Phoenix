@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -27,6 +28,9 @@ namespace PhoenixGameLibrary
         {
             _camera.UpdateCamera(gameTime, input);
             _overlandMap.Update(gameTime, input);
+
+            var worldPos = _camera.ScreenToWorld(new Vector2(input.MousePostion.X, input.MousePostion.Y));
+            DeviceManager.Instance.WorldPosition = new Point((int)worldPos.X, (int)worldPos.Y);
         }
 
         public void Draw()

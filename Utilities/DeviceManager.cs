@@ -17,8 +17,8 @@ namespace Utilities
         private SpriteBatch _currentSpriteBatch;
         private Stack<Viewport> _viewports;
 
-        public bool IsMouseVisible { get; set; } // TODO: remove this
         public GraphicsDevice GraphicsDevice { get; set; }
+        public Point WorldPosition { get; set; }
 
         public Viewport MapViewport => new Viewport(GraphicsDevice.Viewport.X + Margin.X, GraphicsDevice.Viewport.Y + Margin.Y, GraphicsDevice.Viewport.Width - Margin.X * 2, GraphicsDevice.Viewport.Height - Margin.Y * 2, 0, 1); 
         public Viewport MetricsViewport => new Viewport(GraphicsDevice.Viewport.X + Margin.X, GraphicsDevice.Viewport.Height - 200 - Margin.Y, GraphicsDevice.Viewport.Width - Margin.X * 2, 201, 0, 1);

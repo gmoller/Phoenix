@@ -6,6 +6,7 @@ namespace PhoenixGameLibrary
 {
     public class InputHandler
     {
+        public Point MousePostion => MouseHandler.MousePosition;
         public bool Exit { get; private set; }
         public bool CameraZoomIn { get; private set; }
         public bool CameraZoomOut { get; private set; }
