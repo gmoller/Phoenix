@@ -48,6 +48,8 @@ namespace GuiControls
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin();
+
             if (_backColor != null)
             {
                 spriteBatch.FillRectangle(Area, _backColor.Value);
@@ -74,6 +76,8 @@ namespace GuiControls
             }
 
             spriteBatch.DrawString(_font, Text, position, _textColor, 0.0f, origin, 1.0f, SpriteEffects.None, 0.0f);
+
+            spriteBatch.End();
         }
 
         private Vector2 GetPosition(Vector2 textSize)

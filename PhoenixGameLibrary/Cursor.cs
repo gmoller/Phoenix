@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Input;
@@ -10,9 +11,10 @@ namespace PhoenixGameLibrary
         private Texture2D _texture;
         private Vector2 _cursorPos;
 
-        public void LoadContent()
+        public void LoadContent(ContentManager content)
         {
-            _texture = AssetsManager.Instance.GetTexture("cursor");
+            AssetsManager.Instance.AddTexture("Cursor", "Textures\\cursor");
+            _texture = AssetsManager.Instance.GetTexture("Cursor");
         }
 
         public void Update(GameTime gameTime)

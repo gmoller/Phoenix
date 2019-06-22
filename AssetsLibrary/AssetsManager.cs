@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 
 namespace AssetsLibrary
 {
@@ -59,7 +61,7 @@ namespace AssetsLibrary
         public void AddTexture(string key, string assetName)
         {
             var texture = ContentManager.Load<Texture2D>(assetName);
-            _textures.Add(key, texture);
+            AddTexture(key, texture);
         }
 
         public Texture2D GetTexture(string key)
@@ -109,6 +111,13 @@ namespace AssetsLibrary
             _atlases.Add(key, spec2);
         }
 
+        public void AddAtlas(string key, string assetName)
+        {
+            var json = File.ReadAllText($"Content\\{assetName}.atlasspec");
+            AtlasSpec atlasSpec = JsonConvert.DeserializeObject<AtlasSpec>(json);
+            AddAtlas(key, atlasSpec);
+        }
+
         public AtlasSpec2 GetAtlas(string key)
         {
             try
@@ -153,7 +162,7 @@ namespace AssetsLibrary
         public void AddSound(string key, string assetName)
         {
             var sound = ContentManager.Load<SoundEffect>(assetName);
-            _sounds.Add(key, sound);
+            AddSound(key, sound);
         }
 
         public SoundEffect GetSound(string key)

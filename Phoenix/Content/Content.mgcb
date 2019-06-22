@@ -13,52 +13,148 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin CrimsonText-Regular-12.spritefont
+#begin Fonts/CrimsonText-Regular-12.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:CrimsonText-Regular-12.spritefont
+/build:Fonts/CrimsonText-Regular-12.spritefont
 
-#begin CrimsonText-Regular-18.spritefont
+#begin Fonts/CrimsonText-Regular-18.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:CrimsonText-Regular-18.spritefont
+/build:Fonts/CrimsonText-Regular-18.spritefont
 
-#begin CrimsonText-Regular-24.spritefont
+#begin Fonts/CrimsonText-Regular-24.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:CrimsonText-Regular-24.spritefont
+/build:Fonts/CrimsonText-Regular-24.spritefont
 
-#begin CrimsonText-Regular-36.spritefont
+#begin Fonts/CrimsonText-Regular-36.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:CrimsonText-Regular-36.spritefont
+/build:Fonts/CrimsonText-Regular-36.spritefont
 
-#begin CrimsonText-Regular-48.spritefont
+#begin Fonts/CrimsonText-Regular-48.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:CrimsonText-Regular-48.spritefont
+/build:Fonts/CrimsonText-Regular-48.spritefont
 
-#begin CrimsonText-Regular-60.spritefont
+#begin Fonts/CrimsonText-Regular-60.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:CrimsonText-Regular-60.spritefont
+/build:Fonts/CrimsonText-Regular-60.spritefont
 
-#begin CrimsonText-Regular-72.spritefont
+#begin Fonts/CrimsonText-Regular-72.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:CrimsonText-Regular-72.spritefont
+/build:Fonts/CrimsonText-Regular-72.spritefont
+
+#begin TextureAtlases/terrain_hextiles_basic_1.atlasspec
+/copy:TextureAtlases/terrain_hextiles_basic_1.atlasspec
+
+#begin TextureAtlases/terrain_hextiles_basic_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TextureAtlases/terrain_hextiles_basic_1.png
+
+#begin TextureAtlases/terrain_hextiles_basic_2.atlasspec
+/copy:TextureAtlases/terrain_hextiles_basic_2.atlasspec
+
+#begin TextureAtlases/terrain_hextiles_basic_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TextureAtlases/terrain_hextiles_basic_2.png
+
+#begin TextureAtlases/terrain_hextiles_cold_1.atlasspec
+/copy:TextureAtlases/terrain_hextiles_cold_1.atlasspec
+
+#begin TextureAtlases/terrain_hextiles_cold_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TextureAtlases/terrain_hextiles_cold_1.png
+
+#begin TextureAtlases/terrain_hextiles_cold_2.atlasspec
+/copy:TextureAtlases/terrain_hextiles_cold_2.atlasspec
+
+#begin TextureAtlases/terrain_hextiles_cold_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TextureAtlases/terrain_hextiles_cold_2.png
+
+#begin Textures/cursor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/cursor.png
+
+#begin Textures/reg_button_n.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/reg_button_n.png
+
+#begin Textures/villageSmall00.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/villageSmall00.png
 

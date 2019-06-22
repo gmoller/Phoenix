@@ -18,8 +18,6 @@ namespace Phoenix
         private Label _lblGCCount1;
         private Label _lblGCCount2;
 
-        private Label _lblTest;
-
         public MetricsPanel(Vector2 position)
         {
             _fps = new FramesPerSecondCounter();
@@ -36,8 +34,6 @@ namespace Phoenix
 
             _lblGCCount1 = new Label(font, _lblFps1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "GC COUNT:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblGCCount2 = new Label(font, _lblGCCount1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
-
-            _lblTest = new Label(font, new Vector2(1450.0f, 170.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, new Vector2(245.0f, 56.0f), "Next Turn", HorizontalAlignment.Center, Color.White, Color.Blue, null, null, AssetsManager.Instance.GetTexture("reg_button_n"));
         }
 
         public void Update(GameTime gameTime)
@@ -54,18 +50,12 @@ namespace Phoenix
             var original = DeviceManager.Instance.GraphicsDevice.Viewport;
             DeviceManager.Instance.GraphicsDevice.Viewport = DeviceManager.Instance.MetricsViewport;
 
-            spriteBatch.Begin();
-
             _lblFps1.Draw(spriteBatch);
             _lblFps2.Draw(spriteBatch);
             _lblMemory1.Draw(spriteBatch);
             _lblMemory2.Draw(spriteBatch);
             _lblGCCount1.Draw(spriteBatch);
             _lblGCCount2.Draw(spriteBatch);
-
-            _lblTest.Draw(spriteBatch);
-
-            spriteBatch.End();
 
             DeviceManager.Instance.GraphicsDevice.Viewport = original;
 

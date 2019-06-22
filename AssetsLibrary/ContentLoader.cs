@@ -27,7 +27,6 @@ namespace AssetsLibrary
         private static string[] GetAnyFilesFromContentDirectory(string searchPattern)
         {
             string path = $@"{Directory.GetCurrentDirectory()}\Content\";
-            //string path = $@"{Directory.GetCurrentDirectory()}\..\..\..\..\Content\";
             var directoryInfo = new DirectoryInfo(path);
 
             FileInfo[] ttfFiles = { };
