@@ -13,6 +13,55 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Fonts/Carolingia-Regular-12.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Carolingia-Regular-12.spritefont
+
+#begin Fonts/Carolingia-Regular-18.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Carolingia-Regular-18.spritefont
+
+#begin Fonts/Carolingia-Regular-24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Carolingia-Regular-24.spritefont
+
+#begin Fonts/Carolingia-Regular-36.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Carolingia-Regular-36.spritefont
+
+#begin Fonts/Carolingia-Regular-48.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Carolingia-Regular-48.spritefont
+
+#begin Fonts/Carolingia-Regular-60.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Carolingia-Regular-60.spritefont
+
+#begin Fonts/Carolingia-Regular-72.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Carolingia-Regular-72.spritefont
+
 #begin Fonts/CrimsonText-Regular-12.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -61,6 +110,55 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/CrimsonText-Regular-72.spritefont
+
+#begin Fonts/Maleficio-Regular-12.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Maleficio-Regular-12.spritefont
+
+#begin Fonts/Maleficio-Regular-18.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Maleficio-Regular-18.spritefont
+
+#begin Fonts/Maleficio-Regular-24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Maleficio-Regular-24.spritefont
+
+#begin Fonts/Maleficio-Regular-36.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Maleficio-Regular-36.spritefont
+
+#begin Fonts/Maleficio-Regular-48.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Maleficio-Regular-48.spritefont
+
+#begin Fonts/Maleficio-Regular-60.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Maleficio-Regular-60.spritefont
+
+#begin Fonts/Maleficio-Regular-72.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Maleficio-Regular-72.spritefont
 
 #begin TextureAtlases/terrain_hextiles_basic_1.atlasspec
 /copy:TextureAtlases/terrain_hextiles_basic_1.atlasspec

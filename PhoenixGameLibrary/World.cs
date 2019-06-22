@@ -29,10 +29,10 @@ namespace PhoenixGameLibrary
             _overlandMap.Update(gameTime, input);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
-            _overlandMap.Draw(spriteBatch);
-            _settlements.Draw(spriteBatch);
+            _overlandMap.Draw();
+            _settlements.Draw();
         }
 
         public static Vector2 CalculateWorldPosition(int colQ, int rowR, Camera camera)

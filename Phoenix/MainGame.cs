@@ -10,7 +10,6 @@ namespace Phoenix
     public class MainGame : Game
     {
         private GraphicsDeviceManager _graphicsDeviceManager;
-        private SpriteBatch _spriteBatch;
 
         private InputHandler _input;
         private MetricsPanel _metricsPanel;
@@ -65,10 +64,24 @@ namespace Phoenix
         {
             Logger.Instance.Log("Loading content...");
 
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            DeviceManager.Instance.SetCurrentSpriteBatch(new SpriteBatch(GraphicsDevice));
 
             ContentLoader.LoadContent(GraphicsDevice);
             AssetsManager.Instance.ContentManager = Content;
+            AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-12", "Fonts\\Maleficio-Regular-12");
+            AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-18", "Fonts\\Maleficio-Regular-18");
+            AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-24", "Fonts\\Maleficio-Regular-24");
+            AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-36", "Fonts\\Maleficio-Regular-36");
+            AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-48", "Fonts\\Maleficio-Regular-48");
+            AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-60", "Fonts\\Maleficio-Regular-60");
+            AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-72", "Fonts\\Maleficio-Regular-72");
+            AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-12", "Fonts\\Carolingia-Regular-12");
+            AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-18", "Fonts\\Carolingia-Regular-18");
+            AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-24", "Fonts\\Carolingia-Regular-24");
+            AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-36", "Fonts\\Carolingia-Regular-36");
+            AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-48", "Fonts\\Carolingia-Regular-48");
+            AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-60", "Fonts\\Carolingia-Regular-60");
+            AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-72", "Fonts\\Carolingia-Regular-72");
             AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-12", "Fonts\\CrimsonText-Regular-12");
             AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-18", "Fonts\\CrimsonText-Regular-18");
             AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-24", "Fonts\\CrimsonText-Regular-24");
@@ -87,7 +100,7 @@ namespace Phoenix
         {
             Logger.Instance.Log("Unloading content...");
 
-            _spriteBatch.Dispose();
+            DeviceManager.Instance.DisposeSpriteBatches();
 
             Logger.Instance.LogComplete();
         }
@@ -117,8 +130,8 @@ namespace Phoenix
             {
                 GraphicsDevice.Clear(Color.Black);
 
-                _game.Draw(_spriteBatch);
-                _metricsPanel.Draw(_spriteBatch);
+                _game.Draw();
+                _metricsPanel.Draw();
 
                 base.Draw(gameTime);
             }

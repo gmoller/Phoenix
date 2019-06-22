@@ -36,10 +36,11 @@ namespace PhoenixGameLibrary
         {
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
-            var original = DeviceManager.Instance.GraphicsDevice.Viewport;
-            DeviceManager.Instance.GraphicsDevice.Viewport = DeviceManager.Instance.MapViewport;
+            DeviceManager.Instance.SetViewport(DeviceManager.Instance.MapViewport);
+
+            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
             var depth = 0.0f;
@@ -49,7 +50,7 @@ namespace PhoenixGameLibrary
                 for (int q = 0; q < _numberOfColumns; ++q)
                 {
                     var hex = _hexGrid[q, r];
-                    hex.Draw(spriteBatch, _camera, depth, _terrainTypes);
+                    hex.Draw(_camera, depth, _terrainTypes);
                     depth += 0.0001f;
                 }
             }
@@ -70,7 +71,7 @@ namespace PhoenixGameLibrary
 
             //spriteBatch.End();
 
-            DeviceManager.Instance.GraphicsDevice.Viewport = original;
+            DeviceManager.Instance.ResetViewport();
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Input;
+using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -22,8 +23,10 @@ namespace PhoenixGameLibrary
             _cursorPos = new Vector2(MouseHandler.MousePosition.X, MouseHandler.MousePosition.Y);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
+            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
+
             spriteBatch.Begin();
             spriteBatch.Draw(_texture, _cursorPos, Color.White);
             spriteBatch.End();

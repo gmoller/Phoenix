@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
 using Utilities;
@@ -45,19 +44,18 @@ namespace Phoenix
             _lblGCCount2.Text = $"{GC.CollectionCount(0)},{GC.CollectionCount(1)},{GC.CollectionCount(2)}";
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
-            var original = DeviceManager.Instance.GraphicsDevice.Viewport;
-            DeviceManager.Instance.GraphicsDevice.Viewport = DeviceManager.Instance.MetricsViewport;
+            DeviceManager.Instance.SetViewport(DeviceManager.Instance.MetricsViewport);
 
-            _lblFps1.Draw(spriteBatch);
-            _lblFps2.Draw(spriteBatch);
-            _lblMemory1.Draw(spriteBatch);
-            _lblMemory2.Draw(spriteBatch);
-            _lblGCCount1.Draw(spriteBatch);
-            _lblGCCount2.Draw(spriteBatch);
+            _lblFps1.Draw();
+            _lblFps2.Draw();
+            _lblMemory1.Draw();
+            _lblMemory2.Draw();
+            _lblGCCount1.Draw();
+            _lblGCCount2.Draw();
 
-            DeviceManager.Instance.GraphicsDevice.Viewport = original;
+            DeviceManager.Instance.ResetViewport();
 
             _fps.Draw();
         }

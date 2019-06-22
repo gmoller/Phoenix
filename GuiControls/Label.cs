@@ -46,9 +46,11 @@ namespace GuiControls
         {
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public void Draw(Matrix? transform = null)
         {
-            spriteBatch.Begin();
+            var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, transform);
 
             if (_backColor != null)
             {
@@ -78,6 +80,8 @@ namespace GuiControls
             spriteBatch.DrawString(_font, Text, position, _textColor, 0.0f, origin, 1.0f, SpriteEffects.None, 0.0f);
 
             spriteBatch.End();
+
+            DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
         }
 
         private Vector2 GetPosition(Vector2 textSize)
@@ -105,13 +109,13 @@ namespace GuiControls
             switch (_textAlignment)
             {
                 case HorizontalAlignment.Left:
-                    origin = new Vector2(0.0f, textSize.Y / 4.0f);
+                    origin = new Vector2(0.0f, textSize.Y / 2.0f);
                     break;
                 case HorizontalAlignment.Right:
-                    origin = new Vector2(0.0f, textSize.Y / 4.0f);
+                    origin = new Vector2(0.0f, textSize.Y / 2.0f);
                     break;
                 case HorizontalAlignment.Center:
-                    origin = new Vector2(textSize.X / 2.0f, textSize.Y / 4.0f);
+                    origin = new Vector2(textSize.X / 2.0f, textSize.Y / 2.0f);
                     break;
             }
 

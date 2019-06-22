@@ -27,7 +27,7 @@ namespace PhoenixGameLibrary
         {
         }
 
-        public void Draw(SpriteBatch spriteBatch, Camera camera, float layerDepth, TerrainTypes terrainTypes)
+        public void Draw(Camera camera, float layerDepth, TerrainTypes terrainTypes)
         {
             var rect = new Rectangle(
                 camera.VisibleArea.X - (int)Constants.HEX_WIDTH, 
@@ -37,6 +37,8 @@ namespace PhoenixGameLibrary
 
             if (rect.Contains(_centerPosition))
             {
+                var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
+
                 var terrainType = terrainTypes[_terrainTypeId];
                 var texture = AssetsManager.Instance.GetTexture(_texture.TexturePalette);
                 var spec = AssetsManager.Instance.GetAtlas(_texture.TexturePalette);
@@ -46,7 +48,7 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public void DrawHexBorder(SpriteBatch spriteBatch, int colQ, int rowR, Camera camera)
+        public void DrawHexBorder(int colQ, int rowR, Camera camera)
         {
             var rect = new Rectangle(
                 camera.VisibleArea.X - (int)Constants.HEX_WIDTH, 
@@ -58,6 +60,8 @@ namespace PhoenixGameLibrary
 
             if (rect.Contains(centerPosition))
             {
+                var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
+
                 var color = Color.PeachPuff;
                 var point0 = new Vector2(0.0f, 0.0f - Constants.HEX_HALF_HEIGHT);
                 var point1 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f - Constants.HEX_ONE_QUARTER_HEIGHT);

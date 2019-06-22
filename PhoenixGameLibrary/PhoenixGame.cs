@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace PhoenixGameLibrary
 {
@@ -27,10 +26,10 @@ namespace PhoenixGameLibrary
             _cursor.Update(gameTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
-            _world.Draw(spriteBatch);
-            _cursor.Draw(spriteBatch);
+            _world.Draw();
+            _cursor.Draw();
         }
     }
 }

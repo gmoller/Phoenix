@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
 using Utilities;
@@ -40,10 +39,10 @@ namespace PhoenixGameLibrary
             _hexGrid.Update(gameTime, input);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
-            _hexGrid.Draw(spriteBatch);
-            _btnEndTurn.Draw(spriteBatch);
+            _hexGrid.Draw();
+            _btnEndTurn.Draw();
         }
     }
 }
