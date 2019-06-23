@@ -47,7 +47,7 @@
     <Compile Include="InputHandler.cs" />
     <Compile Include="MapGenerator.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Hex.cs" />
+    <Compile Include="Cell.cs" />
     <Compile Include="HexGrid.cs" />
     <Compile Include="OverlandMap.cs" />
     <Compile Include="PhoenixGame.cs" />
@@ -64,6 +64,10 @@
     <ProjectReference Include="..\GuiControls\GuiControls.csproj">
       <Project>{4dc55750-af93-4079-8328-5394e408dda7}</Project>
       <Name>GuiControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HexLibrary\HexLibrary.csproj">
+      <Project>{8f48f47a-ed5a-4cc6-b54c-996689fc7422}</Project>
+      <Name>HexLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\Input\Input.csproj">
       <Project>{28c5fb3b-8e55-42e0-94ec-8355de9f3077}</Project>

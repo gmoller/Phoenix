@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noise", "Noise\Noise.csproj", "{AEC160E5-C4DB-4B2C-A16C-EDEB6B1BD2C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexLibrary", "HexLibrary\HexLibrary.csproj", "{8F48F47A-ED5A-4CC6-B54C-996689FC7422}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoenixTests", "PhoenixTests\PhoenixTests.csproj", "{583A2AEF-B8A1-4508-8EE2-A935DAC84AC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{AEC160E5-C4DB-4B2C-A16C-EDEB6B1BD2C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEC160E5-C4DB-4B2C-A16C-EDEB6B1BD2C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEC160E5-C4DB-4B2C-A16C-EDEB6B1BD2C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F48F47A-ED5A-4CC6-B54C-996689FC7422}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F48F47A-ED5A-4CC6-B54C-996689FC7422}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F48F47A-ED5A-4CC6-B54C-996689FC7422}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F48F47A-ED5A-4CC6-B54C-996689FC7422}.Release|Any CPU.Build.0 = Release|Any CPU
+		{583A2AEF-B8A1-4508-8EE2-A935DAC84AC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{583A2AEF-B8A1-4508-8EE2-A935DAC84AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{583A2AEF-B8A1-4508-8EE2-A935DAC84AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{583A2AEF-B8A1-4508-8EE2-A935DAC84AC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

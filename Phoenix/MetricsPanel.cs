@@ -17,6 +17,8 @@ namespace Phoenix
         private Label _lblFps2;
         private Label _lblMemory1;
         private Label _lblMemory2;
+        private Label _lblWorldHex1;
+        private Label _lblWorldHex2;
         private Label _lblWorldPosition1;
         private Label _lblWorldPosition2;
         private Label _lblViewportPosition1;
@@ -41,7 +43,10 @@ namespace Phoenix
             _lblWorldPosition1 = new Label(font, _lblViewportPosition1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "WORLD POS:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblWorldPosition2 = new Label(font, _lblWorldPosition1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
-            _lblMemory1 = new Label(font, _lblWorldPosition1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "MEM:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblWorldHex1 = new Label(font, _lblWorldPosition1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "WORLD HEX:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblWorldHex2 = new Label(font, _lblWorldHex1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+
+            _lblMemory1 = new Label(font, _lblWorldHex1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "MEM:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblMemory2 = new Label(font, _lblMemory1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
             _lblFps1 = new Label(font, _lblMemory1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "FPS (U/D):", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
@@ -59,6 +64,7 @@ namespace Phoenix
             _lblGCCount2.Text = $"{GC.CollectionCount(0)},{GC.CollectionCount(1)},{GC.CollectionCount(2)}";
             _lblFps2.Text = $"{_fps.UpdateFramesPerSecond}/{_fps.DrawFramesPerSecond}";
             _lblMemory2.Text = $"{GC.GetTotalMemory(false) / 1024} KB";
+            _lblWorldHex2.Text = $"{device.WorldHex.X},{device.WorldHex.Y}";
             _lblWorldPosition2.Text = $"({device.WorldPosition.X},{device.WorldPosition.Y})";
             _lblViewportPosition2.Text = $"({input.MousePostion.X - device.MapViewport.X},{input.MousePostion.Y - device.MapViewport.Y})";
             _lblScreenPosition2.Text = $"({input.MousePostion.X},{input.MousePostion.Y})";
@@ -74,6 +80,8 @@ namespace Phoenix
             _lblFps2.Draw();
             _lblMemory1.Draw();
             _lblMemory2.Draw();
+            _lblWorldHex1.Draw();
+            _lblWorldHex2.Draw();
             _lblWorldPosition1.Draw();
             _lblWorldPosition2.Draw();
             _lblViewportPosition1.Draw();

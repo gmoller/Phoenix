@@ -12,7 +12,7 @@ namespace PhoenixGameLibrary
 
         private readonly int _numberOfColumns;
         private readonly int _numberOfRows;
-        private readonly Hex[,] _hexGrid;
+        private readonly Cell[,] _hexGrid;
 
         public HexGrid(int numberOfColumns, int numberOfRows, Camera camera)
         {
@@ -22,12 +22,12 @@ namespace PhoenixGameLibrary
 
             _numberOfColumns = numberOfColumns;
             _numberOfRows = numberOfRows;
-            _hexGrid = new Hex[numberOfColumns, numberOfRows];
+            _hexGrid = new Cell[numberOfColumns, numberOfRows];
             for (int r = 0; r < numberOfRows; ++r)
             {
                 for (int q = 0; q < numberOfColumns; ++q)
                 {
-                    _hexGrid[q, r] = new Hex(q, r, map[q, r], _camera);
+                    _hexGrid[q, r] = new Cell(q, r, map[q, r], _camera);
                 }
             }
         }
@@ -57,19 +57,19 @@ namespace PhoenixGameLibrary
 
             spriteBatch.End();
 
-            //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
 
-            //for (int r = 0; r < _numberOfRows; ++r)
-            //{
-            //    for (int q = 0; q < _numberOfColumns; ++q)
-            //    {
-            //        var hex = _hexGrid[q, r];
-            //        hex.DrawHexBorder(spriteBatch, q, r, _camera);
-            //        depth += 0.0001f;
-            //    }
-            //}
+            for (int r = 0; r < _numberOfRows; ++r)
+            {
+                for (int q = 0; q < _numberOfColumns; ++q)
+                {
+                    var hex = _hexGrid[q, r];
+                    hex.DrawHexBorder(_camera);
+                    depth += 0.0001f;
+                }
+            }
 
-            //spriteBatch.End();
+            spriteBatch.End();
 
             DeviceManager.Instance.ResetViewport();
         }

@@ -1,26 +1,28 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using HexLibrary;
 using Utilities;
 using PhoenixGameLibrary.GameData;
 
 namespace PhoenixGameLibrary
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public struct Hex
+    public struct Cell
     {
+        private readonly int _col;
+        private readonly int _row;
         private readonly int _terrainTypeId;
         private readonly GameData.Texture _texture;
-        private readonly Vector2 _centerPosition;
 
-        public Hex(int colQ, int rowR, TerrainType terrainType, Camera camera)
+        public Cell(int col, int row, TerrainType terrainType, Camera camera)
         {
+            _col = col;
+            _row = row;
             _terrainTypeId = terrainType.Id;
             _texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
-
-            _centerPosition = new Vector2();
-            _centerPosition = World.CalculateWorldPosition(colQ, rowR, camera);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
@@ -35,7 +37,10 @@ namespace PhoenixGameLibrary
                 camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 3, 
                 camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
 
-            if (rect.Contains(_centerPosition))
+            var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(_col, _row);
+            //centerPosition -= new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
+
+            if (rect.Contains(centerPosition))
             {
                 var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
 
@@ -44,11 +49,11 @@ namespace PhoenixGameLibrary
                 var spec = AssetsManager.Instance.GetAtlas(_texture.TexturePalette);
                 var frame = spec.Frames[_texture.TextureId];
                 var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
-                spriteBatch.Draw(texture, _centerPosition, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(texture, centerPosition, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, layerDepth);
             }
         }
 
-        public void DrawHexBorder(int colQ, int rowR, Camera camera)
+        public void DrawHexBorder(Camera camera)
         {
             var rect = new Rectangle(
                 camera.VisibleArea.X - (int)Constants.HEX_WIDTH, 
@@ -56,19 +61,20 @@ namespace PhoenixGameLibrary
                 camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 2, 
                 camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
 
-            var centerPosition = World.CalculateWorldPosition(colQ, rowR, camera);
+            var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(_col, _row);
+            //centerPosition -= new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
 
             if (rect.Contains(centerPosition))
             {
                 var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
 
                 var color = Color.PeachPuff;
-                var point0 = new Vector2(0.0f, 0.0f - Constants.HEX_HALF_HEIGHT);
-                var point1 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f - Constants.HEX_ONE_QUARTER_HEIGHT);
-                var point2 = new Vector2(0.0f + Constants.HEX_HALF_WIDTH, 0.0f + Constants.HEX_ONE_QUARTER_HEIGHT);
-                var point3 = new Vector2(0.0f, 0.0f + Constants.HEX_HALF_HEIGHT);
-                var point4 = new Vector2(0.0f - Constants.HEX_HALF_WIDTH, 0.0f + Constants.HEX_ONE_QUARTER_HEIGHT);
-                var point5 = new Vector2(0.0f - Constants.HEX_HALF_WIDTH, 0.0f - Constants.HEX_ONE_QUARTER_HEIGHT);
+                var point0 = GetHexCorner(5);
+                var point1 = GetHexCorner(0);
+                var point2 = GetHexCorner(1);
+                var point3 = GetHexCorner(2);
+                var point4 = GetHexCorner(3);
+                var point5 = GetHexCorner(4);
 
                 spriteBatch.DrawLine(centerPosition + point0, centerPosition + point1, color);
                 spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, color);
@@ -79,6 +85,16 @@ namespace PhoenixGameLibrary
             }
         }
 
-        private string DebuggerDisplay => $"{{TerrainTypeId={_terrainTypeId},CenterPosition={_centerPosition}}}";
+        private Vector2 GetHexCorner(int i)
+        {
+            float degrees = 60 * i - 30;
+            float radians = MathHelper.ToRadians(degrees);
+
+            var v = new Vector2((float)(HexLibrary.Constants.HEX_SIZE_X * Math.Cos(radians)), (float)(HexLibrary.Constants.HEX_SIZE_Y * Math.Sin(radians)));
+
+            return v;
+        }
+
+        private string DebuggerDisplay => $"{{Col={_col},Row={_row},TerrainTypeId={_terrainTypeId}}}";
     }
 }

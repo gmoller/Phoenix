@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
+using HexLibrary;
 using Utilities;
 
 namespace PhoenixGameLibrary
@@ -44,7 +45,8 @@ namespace PhoenixGameLibrary
 
             foreach (var settlement in _settlements)
             {
-                var position = World.CalculateWorldPosition(settlement.Location.X, settlement.Location.Y, _camera);
+                var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(settlement.Location.X, settlement.Location.Y);
+                //position -= new Vector2(_camera.Width * 0.5f, _camera.Height * 0.5f);
                 spriteBatch.Draw(_texture, position, _sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, 0.0f);
 
                 var font = AssetsManager.Instance.GetSpriteFont("Carolingia-Regular-36");
