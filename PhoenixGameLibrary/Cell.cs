@@ -12,15 +12,16 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public struct Cell
     {
-        private readonly int _col;
-        private readonly int _row;
+        private readonly int _index;
         private readonly int _terrainTypeId;
         private readonly GameData.Texture _texture;
 
+        public int Column => _index % Constants.WORLD_MAP_WIDTH_IN_HEXES;
+        public int Row => _index / Constants.WORLD_MAP_WIDTH_IN_HEXES;
+
         public Cell(int col, int row, TerrainType terrainType, Camera camera)
         {
-            _col = col;
-            _row = row;
+            _index = (row * Constants.WORLD_MAP_WIDTH_IN_HEXES) + col;
             _terrainTypeId = terrainType.Id;
             _texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
         }
@@ -37,7 +38,7 @@ namespace PhoenixGameLibrary
                 camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 3, 
                 camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
 
-            var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(_col, _row);
+            var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(Column, Row);
             //centerPosition -= new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
 
             if (rect.Contains(centerPosition))
@@ -49,7 +50,11 @@ namespace PhoenixGameLibrary
                 var spec = AssetsManager.Instance.GetAtlas(_texture.TexturePalette);
                 var frame = spec.Frames[_texture.TextureId];
                 var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
+
                 spriteBatch.Draw(texture, centerPosition, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, layerDepth);
+
+                //var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 128);
+                //spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
             }
         }
 
@@ -61,7 +66,7 @@ namespace PhoenixGameLibrary
                 camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 2, 
                 camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
 
-            var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(_col, _row);
+            var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(Column, Row);
             //centerPosition -= new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
 
             if (rect.Contains(centerPosition))
@@ -95,6 +100,6 @@ namespace PhoenixGameLibrary
             return v;
         }
 
-        private string DebuggerDisplay => $"{{Col={_col},Row={_row},TerrainTypeId={_terrainTypeId}}}";
+        private string DebuggerDisplay => $"{{Col={Column},Row={Row},TerrainTypeId={_terrainTypeId}}}";
     }
 }

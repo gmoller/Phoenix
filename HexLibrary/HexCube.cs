@@ -5,6 +5,28 @@ namespace HexLibrary
 {
     public struct HexCube
     {
+        public static readonly HexCube[] Directions =
+        {
+            new HexCube(+1, -1,  0), // east
+            new HexCube( 0, -1, +1), // southeast
+            new HexCube(-1,  0, +1), // southwest
+            new HexCube(-1, +1,  0), // west
+            new HexCube( 0, +1, -1), // northhwest
+            new HexCube(+1,  0, -1), // northeast,
+            new HexCube(+2, -1, -1), // EastOfNorthEast
+            new HexCube(+2, -2,  0), // EastOfEast
+            new HexCube(+1, -2, +1), // EastOfSouthEast
+            new HexCube( 0, -2, +2), // SouthEastOfSouthEast
+            new HexCube(-1, -1, +2), // SouthEastOfSouthWest,
+            new HexCube(-2,  0, +2), // SouthWestOfSouthWest,
+            new HexCube(-2, +1, +1), // SouthWestOfWest,
+            new HexCube(-2, +2,  0), // WestofWest,
+            new HexCube(-1, +2, -1), // NorthWestofWest,
+            new HexCube( 0, +2, -2), // NorthWestofNorthWest,
+            new HexCube(+1, +1, -2), // NorthEastofNorthWest,
+            new HexCube(+2,  0, -2), // NorthEastOfNorthEast,
+        };
+
         public int X { get; }
         public int Y { get; }
         public int Z { get; }
@@ -16,15 +38,6 @@ namespace HexLibrary
             Z = z;
         }
 
-        public static HexAxial CubeToAxial(int x, int y, int z)
-        {
-            int q = x;
-            int r = z;
-            HexAxial axial = new HexAxial(q, r); ;
-
-            return axial;
-        }
-
         public static HexOffsetCoordinates CubeToOffsetCoordinates(int x, int y, int z)
         {
             int col = x + (z - (z & 1)) / 2;
@@ -34,11 +47,42 @@ namespace HexLibrary
             return offsetCoordinates;
         }
 
+        public static HexAxial CubeToAxial(int x, int y, int z)
+        {
+            int q = x;
+            int r = z;
+            HexAxial axial = new HexAxial(q, r); ;
+
+            return axial;
+        }
+
+        public static HexCube GetNeighbor(int x, int y, int z, Direction direction)
+        {
+            HexCube offset = Directions[(int)direction];
+            HexCube neighbor = new HexCube(x + offset.X, y + offset.Y, z + offset.Z);
+
+            return neighbor;
+        }
+
+        // TODO: figure out how not to keep instantiating a new array
+        public static HexCube[] GetAllNeighbors(int x, int y, int z)
+        {
+            HexCube[] neighbors = new HexCube[Directions.Length];
+            for (int i = 0; i < Directions.Length; ++i)
+            {
+                neighbors[i] = GetNeighbor(x, y, z, (Direction)i);
+            }
+
+            return neighbors;
+        }
+
         public static HexCube RoundCube(float x, float y, float z)
         {
             int rx = (int)Math.Round(x);
             int ry = (int)Math.Round(y);
             int rz = (int)Math.Round(z);
+
+            int zero = rx + ry + rz;
 
             float xDiff = Math.Abs(rx - x);
             float yDiff = Math.Abs(ry - y);

@@ -48,7 +48,7 @@
     <Compile Include="MapGenerator.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Cell.cs" />
-    <Compile Include="HexGrid.cs" />
+    <Compile Include="CellGrid.cs" />
     <Compile Include="OverlandMap.cs" />
     <Compile Include="PhoenixGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

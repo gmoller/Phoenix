@@ -53,5 +53,21 @@ namespace PhoenixTests
             Assert.AreEqual(3, worldHex.Col);
             Assert.AreEqual(6, worldHex.Row);
         }
+
+        [TestMethod]
+        public void TestOffsetCoordinatesFromPixel7()
+        {
+            var worldHex = HexOffsetCoordinates.OffsetCoordinatesFromPixel(1, 385);
+            Assert.AreEqual(0, worldHex.Col);
+            Assert.AreEqual(4, worldHex.Row);
+        }
+
+        [TestMethod]
+        public void TestOffsetCoordinatesFromPixel8()
+        {
+            var worldHex = HexOffsetCoordinates.OffsetCoordinatesFromPixel(31, 385);
+            Assert.AreEqual(0, worldHex.Col);
+            Assert.AreEqual(4, worldHex.Row);
+        }
     }
 }

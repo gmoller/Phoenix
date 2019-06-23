@@ -5,7 +5,7 @@ using Utilities;
 
 namespace PhoenixGameLibrary
 {
-    public class HexGrid
+    public class CellGrid
     {
         private readonly Camera _camera;
         private readonly TerrainTypes _terrainTypes;
@@ -14,7 +14,7 @@ namespace PhoenixGameLibrary
         private readonly int _numberOfRows;
         private readonly Cell[,] _hexGrid;
 
-        public HexGrid(int numberOfColumns, int numberOfRows, Camera camera)
+        public CellGrid(int numberOfColumns, int numberOfRows, Camera camera)
         {
             _camera = camera;
             _terrainTypes = TerrainTypes.Create(TerrainTypesLoader.GetTerrainTypes());

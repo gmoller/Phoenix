@@ -13,6 +13,14 @@ namespace HexLibrary
             R = r;
         }
 
+        public static HexOffsetCoordinates AxialToOffsetCoordinates(int q, int r)
+        {
+            HexCube cube = AxialToCube(q, r);
+            HexOffsetCoordinates offsetCoordinates = HexCube.CubeToOffsetCoordinates(cube.X, cube.Y, cube.Z);
+
+            return offsetCoordinates;
+        }
+
         public static HexCube AxialToCube(int q, int r)
         {
             int x = q;
@@ -21,14 +29,6 @@ namespace HexLibrary
             HexCube cube = new HexCube(x, y, z);
 
             return cube;
-        }
-
-        public static HexOffsetCoordinates AxialToOffsetCoordinates(int q, int r)
-        {
-            HexCube cube = AxialToCube(q, r);
-            HexOffsetCoordinates offsetCoordinates = HexCube.CubeToOffsetCoordinates(cube.X, cube.Y, cube.Z);
-
-            return offsetCoordinates;
         }
 
         public static HexAxial RoundAxial(float q, float r)

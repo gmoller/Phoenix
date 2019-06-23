@@ -15,9 +15,9 @@ namespace PhoenixGameLibrary
         public int Width => _bounds.Width;
         public int Height => _bounds.Height;
 
-        public Camera(Viewport viewport)
+        public Camera(Rectangle viewport)
         {
-            _bounds = viewport.Bounds;
+            _bounds = viewport;
             _zoom = 1.0f;
             _position = Vector2.Zero;
         }
@@ -30,6 +30,11 @@ namespace PhoenixGameLibrary
         public Vector2 ScreenToWorld(Vector2 screenPosition)
         {
             return Vector2.Transform(screenPosition, Matrix.Invert(Transform));
+        }
+
+        public void LookAt(Vector2 newPosition)
+        {
+            _position = newPosition;
         }
 
         public void UpdateCamera(GameTime gameTime, InputHandler input)
@@ -63,12 +68,12 @@ namespace PhoenixGameLibrary
 
         private void MoveCamera(Vector2 movePosition)
         {
-            // TODO: scale not taken into account!
             Vector2 newPosition = _position + movePosition;
+            // TODO: scale not taken into account!
             //if (_zoom == 1.0f)
             {
-                newPosition.X = MathHelper.Clamp(newPosition.X, 0.0f, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Width - Constants.HEX_THREE_QUARTER_WIDTH);
-                newPosition.Y = MathHelper.Clamp(newPosition.Y, 0.0f, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Height - Constants.HEX_ONE_QUARTER_HEIGHT);
+                //newPosition.X = MathHelper.Clamp(newPosition.X, 0.0f, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Width - Constants.HEX_THREE_QUARTER_WIDTH);
+                //newPosition.Y = MathHelper.Clamp(newPosition.Y, 0.0f, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Height - Constants.HEX_ONE_QUARTER_HEIGHT);
             }
             //else if (_zoom > 1.0f)
             //{

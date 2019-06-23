@@ -7,7 +7,7 @@ namespace Utilities
 {
     public sealed class DeviceManager
     {
-        private static readonly Point Margin = new Point(10, 10);
+        private static readonly Point Margin = new Point(0, 0);
 
         private static readonly Lazy<DeviceManager> Lazy = new Lazy<DeviceManager>(() => new DeviceManager());
 
