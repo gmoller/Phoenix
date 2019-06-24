@@ -13,7 +13,8 @@ namespace PhoenixGameLibrary
 
         public World()
         {
-            _camera = new Camera(new Rectangle(0, 0, 1600, 800)); // 1500, 755
+            _camera = new Camera(new Rectangle(0, 0, 1600, 800));
+            _camera.LookAt(new Vector2(800.0f, 400.0f));
             _overlandMap = new OverlandMap(_camera);
             _settlements = new Settlements(_camera);
         }
@@ -29,7 +30,7 @@ namespace PhoenixGameLibrary
             _camera.UpdateCamera(gameTime, input);
             _overlandMap.Update(gameTime, input);
 
-            var worldPos = _camera.ScreenToWorld(new Vector2(input.MousePostion.X - 0, input.MousePostion.Y - 0));
+            var worldPos = _camera.ScreenToWorld(new Vector2(input.MousePostion.X, input.MousePostion.Y));
             DeviceManager.Instance.WorldPosition = new Point((int)worldPos.X, (int)worldPos.Y);
             var worldHex = HexOffsetCoordinates.OffsetCoordinatesFromPixel((int)worldPos.X, (int)worldPos.Y);
             DeviceManager.Instance.WorldHex = new Point(worldHex.Col, worldHex.Row);

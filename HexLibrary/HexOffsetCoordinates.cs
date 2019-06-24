@@ -67,8 +67,8 @@ namespace HexLibrary
 
         public static Vector2 OffsetCoordinatesToPixel(int col, int row)
         {
-            double x = Constants.HEX_SIZE_X * (Constants.SQUARE_ROOT_OF_3 * (col + 0.5f * (row & 1)));
-            float y = Constants.HEX_SIZE_Y * (1.5f * row);
+            double x = Constants.HEX_SIZE * (Constants.SQUARE_ROOT_OF_3 * (col + 0.5f * (row & 1)));
+            float y = Constants.HEX_SIZE * (1.5f * row);
             Vector2 pixel = new Vector2((float)x, y);
 
             return pixel;
@@ -78,8 +78,6 @@ namespace HexLibrary
         {
             HexCube cube = HexCube.CubeFromPixel(x, y);
             HexOffsetCoordinates offsetCoordinates = HexCube.CubeToOffsetCoordinates(cube.X, cube.Y, cube.Z);
-
-            // TODO: fix bugs. Idea: use the returned coordinates to test against neighboring hexes and adjust to whichever is closest.
 
             return offsetCoordinates;
         }

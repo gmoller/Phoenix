@@ -47,11 +47,11 @@ namespace PhoenixGameLibrary
             {
                 var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(settlement.Location.X, settlement.Location.Y);
                 //position -= new Vector2(_camera.Width * 0.5f, _camera.Height * 0.5f);
-                spriteBatch.Draw(_texture, position, _sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, 0.0f);
+                spriteBatch.Draw(_texture, position, _sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, HexLibrary.Constants.HEX_SCALE, SpriteEffects.None, 0.0f);
 
                 var font = AssetsManager.Instance.GetSpriteFont("Carolingia-Regular-36");
                 var size = font.MeasureString(settlement.Name);
-                position -= new Vector2(0.0f, Constants.HEX_THREE_QUARTER_HEIGHT);
+                position -= new Vector2(0.0f, HexLibrary.Constants.HEX_THREE_QUARTER_HEIGHT);
                 var label = new Label(font, position, HorizontalAlignment.Center, VerticalAlignment.Middle, size, settlement.Name, HorizontalAlignment.Center, Color.Cyan, null, Color.Black * 0.5f);
                 label.Draw(_camera.Transform);
             }

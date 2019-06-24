@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace PhoenixGameLibrary
 {
@@ -40,7 +39,14 @@ namespace PhoenixGameLibrary
         public void UpdateCamera(GameTime gameTime, InputHandler input)
         {
             MoveCamera(new Vector2(-input.PanCameraDistance.X * 5.0f, -input.PanCameraDistance.Y * 5.0f));
+            ZoomCamera(input);
+            ClampCamera();
 
+            UpdateMatrix();
+        }
+
+        private void ZoomCamera(InputHandler input)
+        {
             if (input.CameraZoomIn)
             {
                 AdjustZoom(0.05f);
@@ -49,8 +55,6 @@ namespace PhoenixGameLibrary
             {
                 AdjustZoom(-0.05f);
             }
-
-            UpdateMatrix();
         }
 
         private void AdjustZoom(float zoomAmount)
@@ -66,25 +70,16 @@ namespace PhoenixGameLibrary
             }
         }
 
+        private void ClampCamera()
+        {
+            // TODO: scale not taken into account!
+            _position.X = MathHelper.Clamp(_position.X, _bounds.Center.X, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Center.X);
+            _position.Y = MathHelper.Clamp(_position.Y, _bounds.Center.Y, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Center.Y);
+        }
+
         private void MoveCamera(Vector2 movePosition)
         {
             Vector2 newPosition = _position + movePosition;
-            // TODO: scale not taken into account!
-            //if (_zoom == 1.0f)
-            {
-                //newPosition.X = MathHelper.Clamp(newPosition.X, 0.0f, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Width - Constants.HEX_THREE_QUARTER_WIDTH);
-                //newPosition.Y = MathHelper.Clamp(newPosition.Y, 0.0f, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Height - Constants.HEX_ONE_QUARTER_HEIGHT);
-            }
-            //else if (_zoom > 1.0f)
-            //{
-            //    newPosition.X = MathHelper.Clamp(newPosition.X, 0.0f - Constants.HEX_WIDTH / _zoom, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Width);
-            //    newPosition.Y = MathHelper.Clamp(newPosition.Y, 0.0f - Constants.HEX_HEIGHT / _zoom, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Height);
-            //}
-            //else if (_zoom < 1.0f)
-            //{
-            //    newPosition.X = MathHelper.Clamp(newPosition.X, 0.0f + Constants.HEX_WIDTH / _zoom, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Width);
-            //    newPosition.Y = MathHelper.Clamp(newPosition.Y, 0.0f + Constants.HEX_HEIGHT / _zoom, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Height);
-            //}
 
             _position = newPosition;
         }
@@ -113,7 +108,8 @@ namespace PhoenixGameLibrary
             var max = new Vector2(
                 MathHelper.Max(tl.X, MathHelper.Max(tr.X, MathHelper.Max(bl.X, br.X))),
                 MathHelper.Max(tl.Y, MathHelper.Max(tr.Y, MathHelper.Max(bl.Y, br.Y))));
-            VisibleArea = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
+
+            VisibleArea = new Rectangle((int)min.X - (int)HexLibrary.Constants.HEX_WIDTH, (int)min.Y - 96, (int)(max.X - min.X) + (int)HexLibrary.Constants.HEX_WIDTH * 2, (int)(max.Y - min.Y) + 192); // 60, 92
         }
     }
 }

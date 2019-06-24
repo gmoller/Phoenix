@@ -57,19 +57,19 @@ namespace PhoenixGameLibrary
 
             spriteBatch.End();
 
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
+            //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
 
-            for (int r = 0; r < _numberOfRows; ++r)
-            {
-                for (int q = 0; q < _numberOfColumns; ++q)
-                {
-                    var hex = _hexGrid[q, r];
-                    hex.DrawHexBorder(_camera);
-                    depth += 0.0001f;
-                }
-            }
+            //for (int r = 0; r < _numberOfRows; ++r)
+            //{
+            //    for (int q = 0; q < _numberOfColumns; ++q)
+            //    {
+            //        var hex = _hexGrid[q, r];
+            //        hex.DrawHexBorder(_camera);
+            //        depth += 0.0001f;
+            //    }
+            //}
 
-            spriteBatch.End();
+            //spriteBatch.End();
 
             DeviceManager.Instance.ResetViewport();
         }

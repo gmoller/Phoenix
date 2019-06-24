@@ -13,7 +13,7 @@ namespace PhoenixGameLibrary
 
         public OverlandMap(Camera camera)
         {
-            _hexGrid = new CellGrid(Constants.WORLD_MAP_WIDTH_IN_HEXES, Constants.WORLD_MAP_HEIGHT_IN_HEXES, camera);
+            _hexGrid = new CellGrid(Constants.WORLD_MAP_COLUMNS, Constants.WORLD_MAP_ROWS, camera);
         }
 
         public void LoadContent(ContentManager content)

@@ -115,8 +115,8 @@ namespace HexLibrary
 
         public static HexCube CubeFromPixel(int x, int y)
         {
-            double q = (Constants.ONE_THIRD_OF_SQUARE_ROOT_OF_3 * x - Constants.ONE_THIRD * y) / Constants.HEX_SIZE_X;
-            float r = (Constants.TWO_THIRDS * y) / Constants.HEX_SIZE_Y;
+            double q = (Constants.ONE_THIRD_OF_SQUARE_ROOT_OF_3 * x - Constants.ONE_THIRD * y) / Constants.HEX_SIZE;
+            float r = (Constants.TWO_THIRDS * y) / Constants.HEX_SIZE;
             HexAxial axial = HexAxial.RoundAxial((float)q, r);
             HexCube cube = HexAxial.AxialToCube(axial.Q, axial.R);
 

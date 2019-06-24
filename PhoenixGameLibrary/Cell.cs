@@ -4,8 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using HexLibrary;
-using Utilities;
 using PhoenixGameLibrary.GameData;
+using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -16,12 +16,12 @@ namespace PhoenixGameLibrary
         private readonly int _terrainTypeId;
         private readonly GameData.Texture _texture;
 
-        public int Column => _index % Constants.WORLD_MAP_WIDTH_IN_HEXES;
-        public int Row => _index / Constants.WORLD_MAP_WIDTH_IN_HEXES;
+        public int Column => _index % Constants.WORLD_MAP_COLUMNS;
+        public int Row => _index / Constants.WORLD_MAP_COLUMNS;
 
         public Cell(int col, int row, TerrainType terrainType, Camera camera)
         {
-            _index = (row * Constants.WORLD_MAP_WIDTH_IN_HEXES) + col;
+            _index = (row * Constants.WORLD_MAP_COLUMNS) + col;
             _terrainTypeId = terrainType.Id;
             _texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
         }
@@ -32,16 +32,10 @@ namespace PhoenixGameLibrary
 
         public void Draw(Camera camera, float layerDepth, TerrainTypes terrainTypes)
         {
-            var rect = new Rectangle(
-                camera.VisibleArea.X - (int)Constants.HEX_WIDTH, 
-                camera.VisibleArea.Y - (int)Constants.HEX_HEIGHT, 
-                camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 3, 
-                camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
-
             var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(Column, Row);
             //centerPosition -= new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
 
-            if (rect.Contains(centerPosition))
+            if (camera.VisibleArea.Contains(centerPosition))
             {
                 var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
 
@@ -51,25 +45,19 @@ namespace PhoenixGameLibrary
                 var frame = spec.Frames[_texture.TextureId];
                 var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
-                spriteBatch.Draw(texture, centerPosition, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, layerDepth);
+                //spriteBatch.Draw(texture, centerPosition, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, layerDepth);
 
-                //var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 128);
-                //spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
+                var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
+                spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
             }
         }
 
         public void DrawHexBorder(Camera camera)
         {
-            var rect = new Rectangle(
-                camera.VisibleArea.X - (int)Constants.HEX_WIDTH, 
-                camera.VisibleArea.Y - (int)Constants.HEX_HEIGHT, 
-                camera.VisibleArea.Width + (int)Constants.HEX_WIDTH * 2, 
-                camera.VisibleArea.Height + (int)Constants.HEX_HEIGHT * 2);
-
             var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(Column, Row);
             //centerPosition -= new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
 
-            if (rect.Contains(centerPosition))
+            if (camera.VisibleArea.Contains(centerPosition))
             {
                 var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
 
@@ -95,7 +83,7 @@ namespace PhoenixGameLibrary
             float degrees = 60 * i - 30;
             float radians = MathHelper.ToRadians(degrees);
 
-            var v = new Vector2((float)(HexLibrary.Constants.HEX_SIZE_X * Math.Cos(radians)), (float)(HexLibrary.Constants.HEX_SIZE_Y * Math.Sin(radians)));
+            var v = new Vector2((float)(HexLibrary.Constants.HEX_SIZE * Math.Cos(radians)), (float)(HexLibrary.Constants.HEX_SIZE * Math.Sin(radians)));
 
             return v;
         }

@@ -41,8 +41,8 @@ namespace HexLibrary
 
         public static Vector2 AxialToPixel(int q, int r)
         {
-            double x = Constants.HEX_SIZE_X * (Constants.SQUARE_ROOT_OF_3 * q + Constants.HALF_OF_SQUARE_ROOT_OF_3 * r);
-            float y = Constants.HEX_SIZE_Y * (1.5f * r);
+            double x = Constants.HEX_SIZE * (Constants.SQUARE_ROOT_OF_3 * q + Constants.HALF_OF_SQUARE_ROOT_OF_3 * r);
+            float y = Constants.HEX_SIZE * (1.5f * r);
             Vector2 pixel = new Vector2((float)x, y);
 
             return pixel;
@@ -50,8 +50,8 @@ namespace HexLibrary
 
         public static HexAxial AxialFromPixel(int x, int y)
         {
-            double q = (Constants.ONE_THIRD_OF_SQUARE_ROOT_OF_3 * x - Constants.ONE_THIRD * y) / Constants.HEX_SIZE_X;
-            float r = (Constants.TWO_THIRDS * y) / Constants.HEX_SIZE_Y;
+            double q = (Constants.ONE_THIRD_OF_SQUARE_ROOT_OF_3 * x - Constants.ONE_THIRD * y) / Constants.HEX_SIZE;
+            float r = (Constants.TWO_THIRDS * y) / Constants.HEX_SIZE;
             HexAxial axial = RoundAxial((float)q, r);
 
             return axial;
