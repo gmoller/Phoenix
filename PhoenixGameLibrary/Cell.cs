@@ -33,7 +33,6 @@ namespace PhoenixGameLibrary
         public void Draw(Camera camera, float layerDepth, TerrainTypes terrainTypes)
         {
             var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(Column, Row);
-            //centerPosition -= new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
 
             if (camera.VisibleArea.Contains(centerPosition))
             {
@@ -55,7 +54,6 @@ namespace PhoenixGameLibrary
         public void DrawHexBorder(Camera camera)
         {
             var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(Column, Row);
-            //centerPosition -= new Vector2(camera.Width * 0.5f, camera.Height * 0.5f);
 
             if (camera.VisibleArea.Contains(centerPosition))
             {

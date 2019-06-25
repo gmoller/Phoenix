@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Input;
 using Utilities;
 
 namespace GuiControls
@@ -12,11 +14,13 @@ namespace GuiControls
         private readonly Color? _textShadowColor;
         private readonly Color? _backColor;
         private readonly Color? _borderColor;
-        private readonly Texture2D _texture;
+        private readonly Matrix? _transform;
 
         public string Text { get; set; }
 
-        public Label(SpriteFont font, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Texture2D texture = null) :
+        public event EventHandler Click;
+
+        public Label(SpriteFont font, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Matrix? transform = null) :
             base(position, horizontalAlignment, verticalAlignment, size)
         {
             _font = font;
@@ -26,10 +30,10 @@ namespace GuiControls
             _textShadowColor = textShadowColor;
             _backColor = backColor;
             _borderColor = borderColor;
-            _texture = texture;
+            _transform = transform;
         }
 
-        public Label(SpriteFont font, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Texture2D texture = null) :
+        public Label(SpriteFont font, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Matrix? transform = null) :
             base(controlToDockTo, horizontalAlignment, verticalAlignment, size)
         {
             _font = font;
@@ -39,27 +43,37 @@ namespace GuiControls
             _textShadowColor = textShadowColor;
             _backColor = backColor;
             _borderColor = borderColor;
-            _texture = texture;
+            _transform = transform;
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
+            Point mousePosition;
+            if (_transform == null)
+            {
+                mousePosition = MouseHandler.MousePosition;
+            }
+            else
+            {
+                Point worldPosition = DeviceManager.Instance.WorldPosition;
+                mousePosition = new Point(worldPosition.X, worldPosition.Y);
+            }
+
+            if (Area.Contains(mousePosition) && MouseHandler.IsLeftButtonReleased())
+            {
+                OnClick(new EventArgs());
+            }
         }
 
-        public void Draw(Matrix? transform = null)
+        public virtual void Draw()
         {
             var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, _transform);
 
             if (_backColor != null)
             {
                 spriteBatch.FillRectangle(Area, _backColor.Value);
-            }
-
-            if (_texture != null)
-            {
-                spriteBatch.Draw(_texture, Area, Color.White);
             }
 
             var textSize = _font.MeasureString(Text);
@@ -120,6 +134,11 @@ namespace GuiControls
             }
 
             return origin;
+        }
+
+        private void OnClick(EventArgs e)
+        {
+            Click?.Invoke(this, e);
         }
     }
 }

@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="CityView.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="GameData\TerrainType.cs" />
     <Compile Include="GameData\TerrainTypes.cs" />

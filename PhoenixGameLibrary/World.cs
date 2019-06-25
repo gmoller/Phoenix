@@ -23,12 +23,14 @@ namespace PhoenixGameLibrary
         {
             _overlandMap.LoadContent(content);
             _settlements.LoadContent(content);
+            _settlements.AddSettlement(content);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
         {
             _camera.UpdateCamera(gameTime, input);
             _overlandMap.Update(gameTime, input);
+            _settlements.Update(gameTime, input);
 
             var worldPos = _camera.ScreenToWorld(new Vector2(input.MousePostion.X, input.MousePostion.Y));
             DeviceManager.Instance.WorldPosition = new Point((int)worldPos.X, (int)worldPos.Y);

@@ -38,6 +38,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Button.cs" />
     <Compile Include="Control.cs" />
     <Compile Include="HorizontalAlignment.cs" />
     <Compile Include="Label.cs" />
@@ -45,6 +46,10 @@
     <Compile Include="VerticalAlignment.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Input\Input.csproj">
+      <Project>{28c5fb3b-8e55-42e0-94ec-8355de9f3077}</Project>
+      <Name>Input</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{5320ff4a-6c80-4627-9b74-9e7cb1a109fd}</Project>
       <Name>Utilities</Name>
