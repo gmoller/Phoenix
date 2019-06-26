@@ -20,48 +20,53 @@ namespace PhoenixGameLibrary
         private Texture2D _texture;
         private Rectangle _sourceRectangle;
         private Label _lblName;
-        private CityView _cityView;
+        private SettlementView _settlementView;
 
         public string Name { get; }
         public Point Location { get; }
-        public int Population { get; private set; }
+        public int Population { get; private set; } // every 1 citizen is 1000 population
+        public short PopulationGrowth => 40; // TODO: implement growth
+        public byte Size { get; private set; }
+        public SettlementCitizens Citizens { get; }
 
         public SettlementType SettlementType
         {
             get
             {
-                if (Population <= 4) return SettlementType.Hamlet;
-                if (Population >= 5 && Population <= 8) return SettlementType.Village;
-                if (Population >= 9 && Population <= 12) return SettlementType.Town;
-                if (Population >= 13 && Population <= 16) return SettlementType.City;
-                if (Population >= 17)  return SettlementType.Capital;
+                if (Size <= 4) return SettlementType.Hamlet;
+                if (Size >= 5 && Size <= 8) return SettlementType.Village;
+                if (Size >= 9 && Size <= 12) return SettlementType.Town;
+                if (Size >= 13 && Size <= 16) return SettlementType.City;
+                if (Size >= 17) return SettlementType.Capital;
 
                 throw new Exception("Unknown settlement type.");
             }
         }
 
-        public Settlement(string name, Point location, int settlementSize, Camera camera)
+        public Settlement(string name, Point location, byte settlementSize, Camera camera)
         {
             _camera = camera;
             Name = name;
             Location = location;
             Population = settlementSize * 1000;
+            Size = settlementSize;
+            Citizens = new SettlementCitizens(this);
 
             _lblName = new Label(null, Vector2.Zero, HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, Name, HorizontalAlignment.Center, Color.Cyan, null, Color.Black * 0.5f);
-            _cityView = new CityView();
+            _settlementView = new SettlementView(this);
         }
 
         public void LoadContent(ContentManager content)
         {
             _texture = AssetsManager.Instance.GetTexture("VillageSmall00");
             _sourceRectangle = new Rectangle(0, 0, _texture.Width, _texture.Height);
-            _cityView.LoadContent(content);
+            _settlementView.LoadContent(content);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
         {
             _lblName.Update(gameTime);
-            _cityView.Update(gameTime, input);
+            _settlementView.Update(gameTime, input);
         }
 
         public void Draw()
@@ -83,14 +88,14 @@ namespace PhoenixGameLibrary
 
             spriteBatch.End();
 
-            _cityView.Draw();
+            _settlementView.Draw();
         }
 
         private void labelClick(object sender, EventArgs e)
         {
             var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(Location.X, Location.Y);
             _camera.LookAt(position);
-            _cityView.IsEnabled = true;
+            _settlementView.IsEnabled = true;
         }
     }
 

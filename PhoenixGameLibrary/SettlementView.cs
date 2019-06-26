@@ -8,22 +8,28 @@ using System;
 
 namespace PhoenixGameLibrary
 {
-    public class CityView
+    public class SettlementView
     {
         private Texture2D _textureFrameMain;
         private Texture2D _textureFrameBigHeading;
         private Texture2D _textureFrameBottom;
 
-        private Button _closeButton;
+        private Button _btnClose;
+        private Label _lblSettlementName1;
+        private Label _lblSettlementName2;
+        private Label _lblPopulationGrowth;
+        private Label _lblCitizens;
 
+        private readonly Settlement _settlement;
         private readonly Vector2 _topLeftPosition;
 
         public bool IsEnabled { get; set; }
 
-        public CityView()
+        public SettlementView(Settlement settlement)
         {
+            _settlement = settlement;
             IsEnabled = false;
-            _topLeftPosition = new Vector2(1920.0f * 0.65f, 10.0f);
+            _topLeftPosition = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.65f, 200.0f);
         }
 
         public void LoadContent(ContentManager content)
@@ -43,13 +49,24 @@ namespace PhoenixGameLibrary
             var textureCloseButtonActive = AssetsManager.Instance.GetTexture("close_button_a");
             var textureCloseButtonHover = AssetsManager.Instance.GetTexture("close_button_h");
 
-            _closeButton = new Button(new Vector2(_topLeftPosition.X + 508.0f, _topLeftPosition.Y + 8.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(43.0f, 44.0f), textureCloseButtonNormal, textureCloseButtonActive, textureCloseButtonHover);
-            _closeButton.Click += closeButtonClick;
+            _btnClose = new Button(new Vector2(_topLeftPosition.X + 508.0f, _topLeftPosition.Y + 8.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(43.0f, 44.0f), textureCloseButtonNormal, textureCloseButtonActive, textureCloseButtonHover);
+            _btnClose.Click += closeButtonClick;
+
+            var font = AssetsManager.Instance.GetSpriteFont("Carolingia-Regular-24");
+            _lblSettlementName1 = new Label(font, new Vector2(_topLeftPosition.X + 278.0f, _topLeftPosition.Y + 51.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
+            _lblSettlementName2 = new Label(font, new Vector2(_topLeftPosition.X + 278.0f, _topLeftPosition.Y + 76.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
+            font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
+            _lblPopulationGrowth = new Label(font, new Vector2(_topLeftPosition.X + 536.0f, _topLeftPosition.Y + 140.0f), HorizontalAlignment.Right, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblCitizens = new Label(font, new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 140.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
         {
-            _closeButton.Update(gameTime);
+            _lblSettlementName1.Text = $"{_settlement.SettlementType} of";
+            _lblSettlementName2.Text = $"{_settlement.Name}";
+            _lblPopulationGrowth.Text = $"Population: {_settlement.Population} (+{_settlement.PopulationGrowth})";
+            _lblCitizens.Text = $"SF: {_settlement.Citizens.SubsistenceFarmers} F: {_settlement.Citizens.AdditionalFarmers} W: {_settlement.Citizens.Workers}";
+            _btnClose.Update(gameTime);
         }
 
         public void Draw()
@@ -66,7 +83,11 @@ namespace PhoenixGameLibrary
                 spriteBatch.Draw(_textureFrameBottom, new Vector2(_topLeftPosition.X + 0.0f, _topLeftPosition.Y + 680.0f), Color.White);
                 spriteBatch.End();
 
-                _closeButton.Draw();
+                _lblSettlementName1.Draw();
+                _lblSettlementName2.Draw();
+                _lblPopulationGrowth.Draw();
+                _lblCitizens.Draw();
+                _btnClose.Draw();
 
                 //DeviceManager.Instance.ResetViewport();
             }
