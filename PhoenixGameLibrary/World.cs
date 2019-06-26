@@ -13,7 +13,7 @@ namespace PhoenixGameLibrary
 
         public World()
         {
-            _camera = new Camera(new Rectangle(0, 0, 1600, 800));
+            _camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
             _camera.LookAt(new Vector2(800.0f, 400.0f));
             _overlandMap = new OverlandMap(_camera);
             _settlements = new Settlements(_camera);
@@ -23,7 +23,7 @@ namespace PhoenixGameLibrary
         {
             _overlandMap.LoadContent(content);
             _settlements.LoadContent(content);
-            _settlements.AddSettlement(content);
+            _settlements.AddSettlement("Fairhaven", new Point(12, 9), content); // 12,9
         }
 
         public void Update(GameTime gameTime, InputHandler input)

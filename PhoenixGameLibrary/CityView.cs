@@ -16,11 +16,14 @@ namespace PhoenixGameLibrary
 
         private Button _closeButton;
 
+        private readonly Vector2 _topLeftPosition;
+
         public bool IsEnabled { get; set; }
 
         public CityView()
         {
             IsEnabled = false;
+            _topLeftPosition = new Vector2(1920.0f * 0.65f, 10.0f);
         }
 
         public void LoadContent(ContentManager content)
@@ -40,7 +43,7 @@ namespace PhoenixGameLibrary
             var textureCloseButtonActive = AssetsManager.Instance.GetTexture("close_button_a");
             var textureCloseButtonHover = AssetsManager.Instance.GetTexture("close_button_h");
 
-            _closeButton = new Button(new Vector2(508.0f, 18.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(43.0f, 44.0f), textureCloseButtonNormal, textureCloseButtonActive, textureCloseButtonHover);
+            _closeButton = new Button(new Vector2(_topLeftPosition.X + 508.0f, _topLeftPosition.Y + 8.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(43.0f, 44.0f), textureCloseButtonNormal, textureCloseButtonActive, textureCloseButtonHover);
             _closeButton.Click += closeButtonClick;
         }
 
@@ -58,9 +61,9 @@ namespace PhoenixGameLibrary
                 var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
 
                 spriteBatch.Begin();
-                spriteBatch.Draw(_textureFrameMain, new Vector2(0.0f, 10.0f), Color.White);
-                spriteBatch.Draw(_textureFrameBigHeading, new Vector2(0.0f, 10.0f), Color.White);
-                spriteBatch.Draw(_textureFrameBottom, new Vector2(0.0f, 690.0f), Color.White);
+                spriteBatch.Draw(_textureFrameMain, _topLeftPosition, Color.White);
+                spriteBatch.Draw(_textureFrameBigHeading, _topLeftPosition, Color.White);
+                spriteBatch.Draw(_textureFrameBottom, new Vector2(_topLeftPosition.X + 0.0f, _topLeftPosition.Y + 680.0f), Color.White);
                 spriteBatch.End();
 
                 _closeButton.Draw();

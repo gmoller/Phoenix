@@ -88,6 +88,8 @@ namespace PhoenixGameLibrary
 
         private void labelClick(object sender, EventArgs e)
         {
+            var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(Location.X, Location.Y);
+            _camera.LookAt(position);
             _cityView.IsEnabled = true;
         }
     }

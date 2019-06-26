@@ -25,8 +25,9 @@ namespace Phoenix
         {
             Logger.Instance.Log("Initializing...");
 
+            Window.Position = new Point(0, 0);
             VariableTimeStep();
-            SetGraphicsResolution(1600, 800);
+            SetGraphicsResolution(1920, 1080); // 1600, 800
             DeviceManager.Instance.GraphicsDevice = GraphicsDevice;
 
             _input = new InputHandler();

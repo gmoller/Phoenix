@@ -43,9 +43,9 @@ namespace PhoenixGameLibrary
             DeviceManager.Instance.ResetViewport();
         }
 
-        public void AddSettlement(ContentManager content)
+        public void AddSettlement(string name, Point hexLocation, ContentManager content)
         {
-            var settlement = new Settlement("Fairhaven", new Point(6, 6), 4, _camera);
+            var settlement = new Settlement(name, hexLocation, 4, _camera);
             settlement.LoadContent(content);
             _settlements.Add(settlement);
         }
