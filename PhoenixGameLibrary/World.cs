@@ -15,15 +15,14 @@ namespace PhoenixGameLibrary
         {
             _camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
             _camera.LookAt(new Vector2(800.0f, 400.0f));
-            _overlandMap = new OverlandMap(_camera);
+            _overlandMap = new OverlandMap(this, _camera);
             _settlements = new Settlements(_camera);
         }
 
         public void LoadContent(ContentManager content)
         {
             _overlandMap.LoadContent(content);
-            _settlements.LoadContent(content);
-            _settlements.AddSettlement("Fairhaven", new Point(12, 9), content); // 12,9
+            _settlements.AddSettlement("Fairhaven", new Point(12, 9), content);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
@@ -42,6 +41,11 @@ namespace PhoenixGameLibrary
         {
             _overlandMap.Draw();
             _settlements.Draw();
+        }
+
+        public void EndTurn()
+        {
+            _settlements.EndTurn();
         }
     }
 }

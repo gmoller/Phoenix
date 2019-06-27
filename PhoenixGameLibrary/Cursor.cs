@@ -14,7 +14,6 @@ namespace PhoenixGameLibrary
 
         public void LoadContent(ContentManager content)
         {
-            AssetsManager.Instance.AddTexture("Cursor", "Textures\\cursor");
             _texture = AssetsManager.Instance.GetTexture("Cursor");
         }
 

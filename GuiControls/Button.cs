@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using AssetsLibrary;
 using Input;
 using Utilities;
 
@@ -8,10 +9,12 @@ namespace GuiControls
 {
     public class Button : Control
     {
-        private Texture2D _currentTexture;
-        private readonly Texture2D _textureNormal;
-        private readonly Texture2D _textureActive;
-        private readonly Texture2D _textureHover;
+        private Texture2D _texture;
+        private AtlasSpec2 _spec;
+        private string _textureNormal;
+        private string _textureActive;
+        private string _textureHover;
+        private Rectangle _frame;
 
         private Label _label;
 
@@ -19,15 +22,16 @@ namespace GuiControls
 
         public event EventHandler Click;
 
-        public Button(Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, Texture2D textureNormal, Texture2D textureActive, Texture2D textureHover, Label label = null) :
+        public Button(Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string guiTextures, string textureNormal, string textureActive, string textureHover, Label label = null) :
             base(position, horizontalAlignment, verticalAlignment, size)
         {
             _cooldownTime = 0.0f;
 
+            _texture = AssetsManager.Instance.GetTexture(guiTextures);
+            _spec = AssetsManager.Instance.GetAtlas(guiTextures);
             _textureNormal = textureNormal;
             _textureActive = textureActive;
             _textureHover = textureHover;
-            _currentTexture = textureNormal;
 
             _label = label;
         }
@@ -47,7 +51,9 @@ namespace GuiControls
             {
                 if (Area.Contains(MouseHandler.MousePosition))
                 {
-                    _currentTexture = _textureHover;
+
+                    var f = _spec.Frames[_textureHover];
+                    _frame = new Rectangle(f.X, f.Y, f.Width, f.Height);
                     if (MouseHandler.IsLeftButtonReleased())
                     {
                         OnClick(new EventArgs());
@@ -55,7 +61,8 @@ namespace GuiControls
                 }
                 else
                 {
-                    _currentTexture = _textureNormal;
+                    var f = _spec.Frames[_textureNormal];
+                    _frame = new Rectangle(f.X, f.Y, f.Width, f.Height);
                 }
             }
 
@@ -67,7 +74,7 @@ namespace GuiControls
             var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, transform);
-            spriteBatch.Draw(_currentTexture, Area, Color.White);
+            spriteBatch.Draw(_texture, Area, _frame, Color.White);
             spriteBatch.End();
 
             _label?.Draw();
@@ -76,14 +83,16 @@ namespace GuiControls
         private void OnClick(EventArgs e)
         {
             _cooldownTime = 200.0f;
-            _currentTexture = _textureActive;
+            var f = _spec.Frames[_textureActive];
+            _frame = new Rectangle(f.X, f.Y, f.Width, f.Height);
             Click?.Invoke(this, e);
         }
 
         private void OnClickComplete()
         {
             _cooldownTime = 0.0f;
-            _currentTexture = _textureNormal;
+            var f = _spec.Frames[_textureNormal];
+            _frame = new Rectangle(f.X, f.Y, f.Width, f.Height);
         }
     }
 }

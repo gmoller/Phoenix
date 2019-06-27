@@ -11,14 +11,14 @@ namespace PhoenixGameLibrary
         public byte Workers { get; private set; }
         //private byte _rebels; // TODO: support rebels
 
-        private byte TotalPopulation => (byte)(SubsistenceFarmers + AdditionalFarmers + Workers); // _rebels
+        public byte TotalPopulation => (byte)(SubsistenceFarmers + AdditionalFarmers + Workers); // _rebels
 
-        public SettlementCitizens(Settlement settlement)
+        public SettlementCitizens(Settlement settlement, byte settlementSize)
         {
             _settlement = settlement;
 
-            SubsistenceFarmers = CalculateSubsistenceFarmers(settlement.Size);
-            AdditionalFarmers = (byte)(settlement.Size - SubsistenceFarmers);
+            SubsistenceFarmers = CalculateSubsistenceFarmers(settlementSize);
+            AdditionalFarmers = (byte)(settlementSize - SubsistenceFarmers);
             Workers = 0;
         }
 
@@ -39,7 +39,7 @@ namespace PhoenixGameLibrary
         public void ConvertFarmerToWorker()
         {
             if (AdditionalFarmers > 0)
-            {
+            { 
                 AdditionalFarmers--;
                 Workers++;
             }
@@ -52,6 +52,15 @@ namespace PhoenixGameLibrary
                 AdditionalFarmers++;
                 Workers--;
             }
+        }
+
+        public void ReassignCitizens(float farmersRatio)
+        {
+            var sum = AdditionalFarmers + Workers;
+            var farmers = sum / farmersRatio;
+
+            AdditionalFarmers = (byte)Math.Round(farmers);
+            Workers = (byte)(sum - AdditionalFarmers);
         }
 
         private byte CalculateSubsistenceFarmers(int totalPopulation)

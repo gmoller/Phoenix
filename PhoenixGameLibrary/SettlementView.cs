@@ -10,9 +10,8 @@ namespace PhoenixGameLibrary
 {
     public class SettlementView
     {
-        private Texture2D _textureFrameMain;
-        private Texture2D _textureFrameBigHeading;
-        private Texture2D _textureFrameBottom;
+        private Texture2D _guiTextures;
+        private AtlasSpec2 _guiAtlas;
 
         private Button _btnClose;
         private Label _lblSettlementName1;
@@ -34,22 +33,10 @@ namespace PhoenixGameLibrary
 
         public void LoadContent(ContentManager content)
         {
-            AssetsManager.Instance.AddTexture("frame_main", "Textures\\player_bg_outer");
-            AssetsManager.Instance.AddTexture("frame_big_heading", "Textures\\texture_big_heading");
-            AssetsManager.Instance.AddTexture("frame_bottom", "Textures\\bottom_box_ornament");
-            AssetsManager.Instance.AddTexture("close_button_n", "Textures\\close_button_n");
-            AssetsManager.Instance.AddTexture("close_button_a", "Textures\\close_button_a");
-            AssetsManager.Instance.AddTexture("close_button_h", "Textures\\close_button_h");
+            _guiTextures = AssetsManager.Instance.GetTexture("GUI_Textures_1");
+            _guiAtlas = AssetsManager.Instance.GetAtlas("GUI_Textures_1");
 
-            _textureFrameMain = AssetsManager.Instance.GetTexture("frame_main");
-            _textureFrameBigHeading = AssetsManager.Instance.GetTexture("frame_big_heading");
-            _textureFrameBottom = AssetsManager.Instance.GetTexture("frame_bottom");
-
-            var textureCloseButtonNormal = AssetsManager.Instance.GetTexture("close_button_n");
-            var textureCloseButtonActive = AssetsManager.Instance.GetTexture("close_button_a");
-            var textureCloseButtonHover = AssetsManager.Instance.GetTexture("close_button_h");
-
-            _btnClose = new Button(new Vector2(_topLeftPosition.X + 508.0f, _topLeftPosition.Y + 8.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(43.0f, 44.0f), textureCloseButtonNormal, textureCloseButtonActive, textureCloseButtonHover);
+            _btnClose = new Button(new Vector2(_topLeftPosition.X + 508.0f, _topLeftPosition.Y + 8.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(43.0f, 44.0f), "GUI_Textures_1", "close_button_n", "close_button_a", "close_button_h");
             _btnClose.Click += closeButtonClick;
 
             var font = AssetsManager.Instance.GetSpriteFont("Carolingia-Regular-24");
@@ -78,9 +65,37 @@ namespace PhoenixGameLibrary
                 var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
 
                 spriteBatch.Begin();
-                spriteBatch.Draw(_textureFrameMain, _topLeftPosition, Color.White);
-                spriteBatch.Draw(_textureFrameBigHeading, _topLeftPosition, Color.White);
-                spriteBatch.Draw(_textureFrameBottom, new Vector2(_topLeftPosition.X + 0.0f, _topLeftPosition.Y + 680.0f), Color.White);
+
+                var frame = _guiAtlas.Frames["player_bg_outer"];
+                spriteBatch.Draw(_guiTextures, _topLeftPosition, new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                frame = _guiAtlas.Frames["texture_big_heading"];
+                spriteBatch.Draw(_guiTextures, _topLeftPosition, new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                frame = _guiAtlas.Frames["bottom_box_ornament"];
+                spriteBatch.Draw(_guiTextures, new Vector2(_topLeftPosition.X + 0.0f, _topLeftPosition.Y + 680.0f), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+
+                frame = _guiAtlas.Frames["top_h_border_repeat_x"];
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(106, 200), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                frame = _guiAtlas.Frames["left_v_border_repeat_y"];
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(100, 205), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                frame = _guiAtlas.Frames["right_v_border_repeat_y"];
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(298, 205), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                frame = _guiAtlas.Frames["bottom_h_border_repeat_x"];
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(106, 318), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+
+                frame = _guiAtlas.Frames["frame_corner"];
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(100, 200), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(296, 200), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(100, 318), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(296, 318), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+
+                frame = _guiAtlas.Frames["slot"];
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(110, 210), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(162, 210), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(214, 210), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(110, 262), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(162, 262), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+                spriteBatch.Draw(_guiTextures, _topLeftPosition + new Vector2(214, 262), new Rectangle(frame.X, frame.Y, frame.Width, frame.Height), Color.White);
+
                 spriteBatch.End();
 
                 _lblSettlementName1.Draw();

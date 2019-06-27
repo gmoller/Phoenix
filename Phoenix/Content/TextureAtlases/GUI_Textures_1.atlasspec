@@ -1,0 +1,117 @@
+{
+  "SpriteSheetName": "GUI_Textures_1",
+  "Frames": [
+    {
+      "Name": "player_bg_outer",
+      "X": 0,
+      "Y": 0,
+      "Width": 556,
+      "Height": 741
+    },
+    {
+      "Name": "texture_big_heading",
+      "X": 556,
+      "Y": 0,
+      "Width": 560,
+      "Height": 146
+    },
+    {
+      "Name": "bottom_box_ornament",
+      "X": 556,
+      "Y": 146,
+      "Width": 563,
+      "Height": 71
+    },
+	{
+      "Name": "small_heading",
+      "X": 556,
+      "Y": 217,
+      "Width": 383,
+      "Height": 65
+    },
+	{
+      "Name": "close_button_n",
+      "X": 939,
+      "Y": 217,
+      "Width": 43,
+      "Height": 44
+    },
+    {
+      "Name": "close_button_h",
+      "X": 982,
+      "Y": 217,
+      "Width": 43,
+      "Height": 44
+    },
+    {
+      "Name": "close_button_a",
+      "X": 1025,
+      "Y": 217,
+      "Width": 43,
+      "Height": 44
+    },
+    {
+      "Name": "reg_button_n",
+      "X": 556,
+      "Y": 282,
+      "Width": 245,
+      "Height": 56
+    },
+    {
+      "Name": "reg_button_h",
+      "X": 556,
+      "Y": 338,
+      "Width": 245,
+      "Height": 56
+    },
+    {
+      "Name": "reg_button_a",
+      "X": 556,
+      "Y": 394,
+      "Width": 245,
+      "Height": 56
+    },
+	{
+      "Name": "top_h_border_repeat_x",
+      "X": 556,
+      "Y": 450,
+      "Width": 200,
+      "Height": 10
+    },
+	{
+      "Name": "bottom_h_border_repeat_x",
+      "X": 556,
+      "Y": 460,
+      "Width": 200,
+      "Height": 10
+    },
+	{
+      "Name": "left_v_border_repeat_y",
+      "X": 556,
+      "Y": 470,
+      "Width": 10,
+      "Height": 120
+    },
+	{
+      "Name": "right_v_border_repeat_y",
+      "X": 566,
+      "Y": 470,
+      "Width": 10,
+      "Height": 120
+    },
+	{
+      "Name": "frame_corner",
+      "X": 756,
+      "Y": 450,
+      "Width": 13,
+      "Height": 13
+    },
+	{
+      "Name": "slot",
+      "X": 576,
+      "Y": 470,
+      "Width": 52,
+      "Height": 52
+    },
+  ]
+}

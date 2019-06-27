@@ -46,6 +46,10 @@
     <Compile Include="VerticalAlignment.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AssetsLibrary\AssetsLibrary.csproj">
+      <Project>{41ebaa0d-dd81-4822-82fe-bec126042b42}</Project>
+      <Name>AssetsLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Input\Input.csproj">
       <Project>{28c5fb3b-8e55-42e0-94ec-8355de9f3077}</Project>
       <Name>Input</Name>

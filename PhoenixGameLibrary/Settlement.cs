@@ -22,22 +22,23 @@ namespace PhoenixGameLibrary
         private Label _lblName;
         private SettlementView _settlementView;
 
+        private short _populationGrowth;
+
         public string Name { get; }
         public Point Location { get; }
-        public int Population { get; private set; } // every 1 citizen is 1000 population
-        public short PopulationGrowth => 40; // TODO: implement growth
-        public byte Size { get; private set; }
+        public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
+        public short PopulationGrowth => 120;
         public SettlementCitizens Citizens { get; }
 
         public SettlementType SettlementType
         {
             get
             {
-                if (Size <= 4) return SettlementType.Hamlet;
-                if (Size >= 5 && Size <= 8) return SettlementType.Village;
-                if (Size >= 9 && Size <= 12) return SettlementType.Town;
-                if (Size >= 13 && Size <= 16) return SettlementType.City;
-                if (Size >= 17) return SettlementType.Capital;
+                if (Citizens.TotalPopulation <= 4) return SettlementType.Hamlet;
+                if (Citizens.TotalPopulation >= 5 && Citizens.TotalPopulation <= 8) return SettlementType.Village;
+                if (Citizens.TotalPopulation >= 9 && Citizens.TotalPopulation <= 12) return SettlementType.Town;
+                if (Citizens.TotalPopulation >= 13 && Citizens.TotalPopulation <= 16) return SettlementType.City;
+                if (Citizens.TotalPopulation >= 17) return SettlementType.Capital;
 
                 throw new Exception("Unknown settlement type.");
             }
@@ -48,9 +49,8 @@ namespace PhoenixGameLibrary
             _camera = camera;
             Name = name;
             Location = location;
-            Population = settlementSize * 1000;
-            Size = settlementSize;
-            Citizens = new SettlementCitizens(this);
+            Citizens = new SettlementCitizens(this, settlementSize);
+            _populationGrowth = 0;
 
             _lblName = new Label(null, Vector2.Zero, HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, Name, HorizontalAlignment.Center, Color.Cyan, null, Color.Black * 0.5f);
             _settlementView = new SettlementView(this);
@@ -83,7 +83,7 @@ namespace PhoenixGameLibrary
             var size = font.MeasureString(Name);
             position -= new Vector2(0.0f, HexLibrary.Constants.HEX_THREE_QUARTER_HEIGHT);
             _lblName = new Label(font, position, HorizontalAlignment.Center, VerticalAlignment.Middle, size, Name, HorizontalAlignment.Center, Color.Cyan, null, Color.Black * 0.5f, null, _camera.Transform);
-            _lblName.Click += labelClick;
+            _lblName.Click += lblNameClick;
             _lblName.Draw();
 
             spriteBatch.End();
@@ -91,7 +91,17 @@ namespace PhoenixGameLibrary
             _settlementView.Draw();
         }
 
-        private void labelClick(object sender, EventArgs e)
+        public void EndTurn()
+        {
+            _populationGrowth += PopulationGrowth;
+            if (_populationGrowth >= 1000)
+            {
+                Citizens.IncreaseByOne();
+                _populationGrowth = 0;
+            }
+        }
+
+        private void lblNameClick(object sender, EventArgs e)
         {
             var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(Location.X, Location.Y);
             _camera.LookAt(position);

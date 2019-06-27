@@ -18,11 +18,6 @@ namespace PhoenixGameLibrary
             _settlements = new List<Settlement>();
         }
 
-        public void LoadContent(ContentManager content)
-        {
-            AssetsManager.Instance.AddTexture("VillageSmall00", "Textures\\villageSmall00");
-        }
-
         public void Update(GameTime gameTime, InputHandler input)
         {
             foreach (var settlement in _settlements)
@@ -48,6 +43,14 @@ namespace PhoenixGameLibrary
             var settlement = new Settlement(name, hexLocation, 4, _camera);
             settlement.LoadContent(content);
             _settlements.Add(settlement);
+        }
+
+        public void EndTurn()
+        {
+            foreach (var settlement in _settlements)
+            {
+                settlement.EndTurn();
+            }
         }
     }
 }
