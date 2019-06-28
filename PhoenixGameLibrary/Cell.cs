@@ -18,6 +18,7 @@ namespace PhoenixGameLibrary
 
         public int Column => _index % Constants.WORLD_MAP_COLUMNS;
         public int Row => _index / Constants.WORLD_MAP_COLUMNS;
+        public int TerrainTypeId => _terrainTypeId;
 
         public Cell(int col, int row, TerrainType terrainType, Camera camera)
         {

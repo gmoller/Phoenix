@@ -2,21 +2,21 @@
   "SpriteSheetName": "GUI_Textures_1",
   "Frames": [
     {
-      "Name": "player_bg_outer",
+      "Name": "frame_main",
       "X": 0,
       "Y": 0,
       "Width": 556,
       "Height": 741
     },
     {
-      "Name": "texture_big_heading",
+      "Name": "frame_big_heading",
       "X": 556,
       "Y": 0,
       "Width": 560,
       "Height": 146
     },
     {
-      "Name": "bottom_box_ornament",
+      "Name": "frame_bottom",
       "X": 556,
       "Y": 146,
       "Width": 563,

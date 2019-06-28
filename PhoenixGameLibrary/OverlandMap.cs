@@ -9,9 +9,11 @@ namespace PhoenixGameLibrary
 {
     public class OverlandMap
     {
-        private World _world;
-        private CellGrid _cellGrid;
+        private readonly World _world;
+        private readonly CellGrid _cellGrid;
         private Button _btnEndTurn;
+
+        public CellGrid CellGrid => _cellGrid;
 
         public OverlandMap(World world, Camera camera)
         {

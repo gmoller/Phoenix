@@ -14,16 +14,16 @@ namespace PhoenixGameLibrary.GameData
         public int Id { get; }
         public string Name { get; }
         public int MovementCostWalking { get; }
-        public float MaximumPopulation { get; }
+        public float FoodOutput { get; }
         public float ProductionPercentage { get; }
         public List<Texture> PossibleTextures { get; }
 
-        private TerrainType(int id, string name, int movementCostWalking, float maximumPopulation, float productionPercentage, params Texture[] possibleTextures)
+        private TerrainType(int id, string name, int movementCostWalking, float foodOutput, float productionPercentage, params Texture[] possibleTextures)
         {
             Id = id;
             Name = name;
             MovementCostWalking = movementCostWalking;
-            MaximumPopulation = maximumPopulation;
+            FoodOutput = foodOutput;
             ProductionPercentage = productionPercentage;
             PossibleTextures = new List<Texture>();
             foreach (var texture in possibleTextures)

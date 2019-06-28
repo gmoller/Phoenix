@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
 using HexLibrary;
+using PhoenixGameLibrary.Helpers;
 using Utilities;
 
 namespace PhoenixGameLibrary
@@ -16,18 +17,21 @@ namespace PhoenixGameLibrary
     /// </summary>
     public class Settlement
     {
+        private const byte MAXIMUM_POPULATION_SIZE = 25;
+
         private readonly Camera _camera;
+        private readonly CellGrid _cellGrid;
         private Texture2D _texture;
         private Rectangle _sourceRectangle;
         private Label _lblName;
         private SettlementView _settlementView;
 
-        private short _populationGrowth;
+        private int _populationGrowth;
 
         public string Name { get; }
         public Point Location { get; }
         public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
-        public short PopulationGrowth => 120;
+        public int GrowthRate => DetermineGrowthRate();
         public SettlementCitizens Citizens { get; }
 
         public SettlementType SettlementType
@@ -44,9 +48,10 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public Settlement(string name, Point location, byte settlementSize, Camera camera)
+        public Settlement(string name, Point location, byte settlementSize, CellGrid cellGrid, Camera camera)
         {
             _camera = camera;
+            _cellGrid = cellGrid;
             Name = name;
             Location = location;
             Citizens = new SettlementCitizens(this, settlementSize);
@@ -93,12 +98,32 @@ namespace PhoenixGameLibrary
 
         public void EndTurn()
         {
-            _populationGrowth += PopulationGrowth;
-            if (_populationGrowth >= 1000)
+            _populationGrowth += GrowthRate;
+            if (_populationGrowth >= 1000 && Citizens.TotalPopulation < MAXIMUM_POPULATION_SIZE)
             {
                 Citizens.IncreaseByOne();
                 _populationGrowth = 0;
             }
+        }
+
+        private int DetermineGrowthRate()
+        {
+            int maxSettlementSize = DetermineMaximumSettlementSize();
+            if (Citizens.TotalPopulation >= maxSettlementSize) return 0;
+
+            float baseGrowthRate = (maxSettlementSize - Citizens.TotalPopulation + 1) / 2.0f;
+            int baseGrowthRateRoundedUp = (int)Math.Ceiling(baseGrowthRate);
+
+            int adjustedGrowthRate = baseGrowthRateRoundedUp * 10;
+
+            return adjustedGrowthRate;
+        }
+
+        private int DetermineMaximumSettlementSize()
+        {
+            int baseFoodLevel = (int)BaseFoodLevel.DetermineBaseFoodLevel(Location, _cellGrid);
+
+            return baseFoodLevel > MAXIMUM_POPULATION_SIZE ? MAXIMUM_POPULATION_SIZE : baseFoodLevel;
         }
 
         private void lblNameClick(object sender, EventArgs e)

@@ -39,6 +39,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="GameData\Globals.cs" />
+    <Compile Include="Helpers\BaseFoodLevel.cs" />
+    <Compile Include="Helpers\SettlementFoodProduction.cs" />
     <Compile Include="SettlementCitizens.cs" />
     <Compile Include="SettlementView.cs" />
     <Compile Include="Cursor.cs" />

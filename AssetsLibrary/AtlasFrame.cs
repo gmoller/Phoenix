@@ -26,7 +26,9 @@ namespace AssetsLibrary
         {
             get
             {
-                return _frames.Find(o => o.Name == name);
+                var frame = _frames.Find(o => o.Name == name);
+
+                return frame;
             }
         }
 

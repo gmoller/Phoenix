@@ -12,7 +12,7 @@ namespace PhoenixGameLibrary
 
         private readonly int _numberOfColumns;
         private readonly int _numberOfRows;
-        private readonly Cell[,] _hexGrid;
+        private readonly Cell[,] _cellGrid;
 
         public CellGrid(int numberOfColumns, int numberOfRows, Camera camera)
         {
@@ -22,12 +22,12 @@ namespace PhoenixGameLibrary
 
             _numberOfColumns = numberOfColumns;
             _numberOfRows = numberOfRows;
-            _hexGrid = new Cell[numberOfColumns, numberOfRows];
+            _cellGrid = new Cell[numberOfColumns, numberOfRows];
             for (int r = 0; r < numberOfRows; ++r)
             {
                 for (int q = 0; q < numberOfColumns; ++q)
                 {
-                    _hexGrid[q, r] = new Cell(q, r, map[q, r], _camera);
+                    _cellGrid[q, r] = new Cell(q, r, map[q, r], _camera);
                 }
             }
         }
@@ -49,8 +49,8 @@ namespace PhoenixGameLibrary
             {
                 for (int q = 0; q < _numberOfColumns; ++q)
                 {
-                    var hex = _hexGrid[q, r];
-                    hex.Draw(_camera, depth, _terrainTypes);
+                    var cell = _cellGrid[q, r];
+                    cell.Draw(_camera, depth, _terrainTypes);
                     depth += 0.0001f;
                 }
             }
@@ -72,6 +72,11 @@ namespace PhoenixGameLibrary
             //spriteBatch.End();
 
             DeviceManager.Instance.ResetViewport();
+        }
+
+        public Cell GetCell(int col, int row)
+        {
+            return _cellGrid[col, row];
         }
     }
 }
