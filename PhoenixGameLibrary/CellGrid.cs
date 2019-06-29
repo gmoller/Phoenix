@@ -1,24 +1,18 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Utilities;
-
-namespace PhoenixGameLibrary
+﻿namespace PhoenixGameLibrary
 {
     public class CellGrid
     {
-        private readonly Camera _camera;
-
-        private readonly int _numberOfColumns;
-        private readonly int _numberOfRows;
         private readonly Cell[,] _cellGrid;
 
-        public CellGrid(int numberOfColumns, int numberOfRows, Camera camera)
+        public int NumberOfColumns { get; }
+        public int NumberOfRows { get; }
+
+        public CellGrid(int numberOfColumns, int numberOfRows)
         {
-            _camera = camera;
             var map = MapGenerator.Generate(numberOfColumns, numberOfRows);
 
-            _numberOfColumns = numberOfColumns;
-            _numberOfRows = numberOfRows;
+            NumberOfColumns = numberOfColumns;
+            NumberOfRows = numberOfRows;
             _cellGrid = new Cell[numberOfColumns, numberOfRows];
             for (int r = 0; r < numberOfRows; ++r)
             {
@@ -27,48 +21,6 @@ namespace PhoenixGameLibrary
                     _cellGrid[q, r] = new Cell(q, r, map[q, r]);
                 }
             }
-        }
-
-        public void Update(GameTime gameTime, InputHandler input)
-        {
-        }
-
-        public void Draw()
-        {
-            DeviceManager.Instance.SetViewport(DeviceManager.Instance.MapViewport);
-
-            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
-
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
-            var depth = 0.0f;
-
-            for (int r = 0; r < _numberOfRows; ++r)
-            {
-                for (int q = 0; q < _numberOfColumns; ++q)
-                {
-                    var cell = _cellGrid[q, r];
-                    cell.Draw(_camera, depth);
-                    depth += 0.0001f;
-                }
-            }
-
-            spriteBatch.End();
-
-            //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, _camera.Transform);
-
-            //for (int r = 0; r < _numberOfRows; ++r)
-            //{
-            //    for (int q = 0; q < _numberOfColumns; ++q)
-            //    {
-            //        var hex = _hexGrid[q, r];
-            //        hex.DrawHexBorder(_camera);
-            //        depth += 0.0001f;
-            //    }
-            //}
-
-            //spriteBatch.End();
-
-            DeviceManager.Instance.ResetViewport();
         }
 
         public Cell GetCell(int col, int row)

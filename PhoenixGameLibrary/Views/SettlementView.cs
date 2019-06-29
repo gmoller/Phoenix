@@ -7,7 +7,7 @@ using GuiControls;
 using HexLibrary;
 using Utilities;
 
-namespace PhoenixGameLibrary
+namespace PhoenixGameLibrary.Views
 {
     public class SettlementView
     {

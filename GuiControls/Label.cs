@@ -8,48 +8,48 @@ namespace GuiControls
 {
     public class Label : Control
     {
-        private readonly SpriteFont _font;
         private readonly HorizontalAlignment _textAlignment;
         private readonly Color _textColor;
         private readonly Color? _textShadowColor;
         private readonly Color? _backColor;
         private readonly Color? _borderColor;
-        private readonly Matrix? _transform;
 
+        public SpriteFont Font { get; }
         public string Text { get; set; }
+        public Matrix? Transform { get; set; }
 
         public event EventHandler Click;
 
         public Label(SpriteFont font, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Matrix? transform = null) :
             base(position, horizontalAlignment, verticalAlignment, size)
         {
-            _font = font;
+            Font = font;
             Text = text;
             _textAlignment = textAlignment;
             _textColor = textColor;
             _textShadowColor = textShadowColor;
             _backColor = backColor;
             _borderColor = borderColor;
-            _transform = transform;
+            Transform = transform;
         }
 
         public Label(SpriteFont font, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Matrix? transform = null) :
             base(controlToDockTo, horizontalAlignment, verticalAlignment, size)
         {
-            _font = font;
+            Font = font;
             Text = text;
             _textAlignment = textAlignment;
             _textColor = textColor;
             _textShadowColor = textShadowColor;
             _backColor = backColor;
             _borderColor = borderColor;
-            _transform = transform;
+            Transform = transform;
         }
 
         public virtual void Update(GameTime gameTime)
         {
             Point mousePosition;
-            if (_transform == null)
+            if (Transform == null)
             {
                 mousePosition = MouseHandler.MousePosition;
             }
@@ -69,21 +69,21 @@ namespace GuiControls
         {
             var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, _transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Transform);
 
             if (_backColor != null)
             {
                 spriteBatch.FillRectangle(Area, _backColor.Value);
             }
 
-            var textSize = _font.MeasureString(Text);
+            var textSize = Font.MeasureString(Text);
 
             var position = GetPosition(textSize);
             var origin = GetOrigin(textSize);
 
             if (_textShadowColor != null)
             {
-                spriteBatch.DrawString(_font, Text, position + Vector2.One, _textShadowColor.Value, 0.0f, origin, 1.0f, SpriteEffects.None, 0.0f);
+                spriteBatch.DrawString(Font, Text, position + Vector2.One, _textShadowColor.Value, 0.0f, origin, 1.0f, SpriteEffects.None, 0.0f);
             }
 
             if (_borderColor != null)
@@ -91,7 +91,7 @@ namespace GuiControls
                 spriteBatch.DrawRectangle(Area, _borderColor.Value);
             }
 
-            spriteBatch.DrawString(_font, Text, position, _textColor, 0.0f, origin, 1.0f, SpriteEffects.None, 0.0f);
+            spriteBatch.DrawString(Font, Text, position, _textColor, 0.0f, origin, 1.0f, SpriteEffects.None, 0.0f);
 
             spriteBatch.End();
 

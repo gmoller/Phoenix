@@ -7,12 +7,12 @@ namespace GuiControls
     {
         protected readonly VerticalAlignment VerticalAlignment;
         protected readonly HorizontalAlignment HorizontalAlignment;
-        protected readonly Vector2 Position; // Position of the control relative to it's alignment
-        protected readonly Vector2 Size;
 
         protected int Width => (int)Size.X;
         protected int Height => (int)Size.Y;
 
+        public Vector2 Position { get; set; } // Position of the control relative to it's alignment
+        public Vector2 Size { get; }
         public Rectangle Area => DetermineArea(VerticalAlignment, HorizontalAlignment, Position, Width, Height);
         public float Left => Area.Left;
         public float Right => Area.Right;

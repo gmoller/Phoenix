@@ -48,8 +48,10 @@
     <Compile Include="Helpers\SettlementFoodProduction.cs" />
     <Compile Include="Helpers\SettlementProduction.cs" />
     <Compile Include="SettlementCitizens.cs" />
-    <Compile Include="SettlementView.cs" />
-    <Compile Include="Cursor.cs" />
+    <Compile Include="Views\OverlandMapView.cs" />
+    <Compile Include="Views\OverlandSettlementView.cs" />
+    <Compile Include="Views\SettlementView.cs" />
+    <Compile Include="Views\Cursor.cs" />
     <Compile Include="GameData\TerrainType.cs" />
     <Compile Include="GameData\TerrainTypes.cs" />
     <Compile Include="GameData\TerrainTypesLoader.cs" />

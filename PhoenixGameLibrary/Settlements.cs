@@ -8,13 +8,10 @@ namespace PhoenixGameLibrary
 {
     public class Settlements
     {
-        private readonly Camera _camera;
-
         private List<Settlement> _settlements;
 
-        public Settlements(Camera camera)
+        public Settlements()
         {
-            _camera = camera;
             _settlements = new List<Settlement>();
         }
 
@@ -40,7 +37,7 @@ namespace PhoenixGameLibrary
 
         public void AddSettlement(string name, RaceType raceType, Point hexLocation, CellGrid cellGrid, ContentManager content)
         {
-            var settlement = new Settlement(name, raceType, hexLocation, 4, cellGrid, _camera);
+            var settlement = new Settlement(name, raceType, hexLocation, 4, cellGrid);
             settlement.LoadContent(content);
             _settlements.Add(settlement);
         }

@@ -19,8 +19,8 @@ namespace PhoenixGameLibrary
 
             Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
             Camera.LookAt(new Vector2(800.0f, 400.0f));
-            _overlandMap = new OverlandMap(this, Camera);
-            _settlements = new Settlements(Camera);
+            _overlandMap = new OverlandMap(this);
+            _settlements = new Settlements();
         }
 
         public void LoadContent(ContentManager content)

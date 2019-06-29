@@ -82,7 +82,7 @@ namespace GuiControls
 
         private void OnClick(EventArgs e)
         {
-            _cooldownTime = 200.0f;
+            _cooldownTime = 100.0f;
             var f = _spec.Frames[_textureActive];
             _frame = new Rectangle(f.X, f.Y, f.Width, f.Height);
             Click?.Invoke(this, e);
