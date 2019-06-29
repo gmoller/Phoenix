@@ -20,7 +20,7 @@ namespace PhoenixGameLibrary
         public int Row => _index / Constants.WORLD_MAP_COLUMNS;
         public int TerrainTypeId { get; }
 
-        public Cell(int col, int row, TerrainType terrainType, Camera camera)
+        public Cell(int col, int row, TerrainType terrainType)
         {
             _index = (row * Constants.WORLD_MAP_COLUMNS) + col;
             TerrainTypeId = terrainType.Id;

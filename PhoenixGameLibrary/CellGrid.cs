@@ -24,7 +24,7 @@ namespace PhoenixGameLibrary
             {
                 for (int q = 0; q < numberOfColumns; ++q)
                 {
-                    _cellGrid[q, r] = new Cell(q, r, map[q, r], _camera);
+                    _cellGrid[q, r] = new Cell(q, r, map[q, r]);
                 }
             }
         }
