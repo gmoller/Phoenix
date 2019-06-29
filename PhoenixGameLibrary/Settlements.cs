@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary
@@ -37,9 +38,9 @@ namespace PhoenixGameLibrary
             DeviceManager.Instance.ResetViewport();
         }
 
-        public void AddSettlement(string name, Point hexLocation, CellGrid cellGrid, ContentManager content)
+        public void AddSettlement(string name, RaceType raceType, Point hexLocation, CellGrid cellGrid, ContentManager content)
         {
-            var settlement = new Settlement(name, hexLocation, 4, cellGrid, _camera);
+            var settlement = new Settlement(name, raceType, hexLocation, 4, cellGrid, _camera);
             settlement.LoadContent(content);
             _settlements.Add(settlement);
         }

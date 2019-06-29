@@ -10,15 +10,14 @@ namespace PhoenixGameLibrary
     public class OverlandMap
     {
         private readonly World _world;
-        private readonly CellGrid _cellGrid;
         private Button _btnEndTurn;
 
-        public CellGrid CellGrid => _cellGrid;
+        public CellGrid CellGrid { get; }
 
         public OverlandMap(World world, Camera camera)
         {
             _world = world;
-            _cellGrid = new CellGrid(Constants.WORLD_MAP_COLUMNS, Constants.WORLD_MAP_ROWS, camera);
+            CellGrid = new CellGrid(Constants.WORLD_MAP_COLUMNS, Constants.WORLD_MAP_ROWS, camera);
         }
 
         public void LoadContent(ContentManager content)
@@ -32,13 +31,13 @@ namespace PhoenixGameLibrary
 
         public void Update(GameTime gameTime, InputHandler input)
         {
-            _cellGrid.Update(gameTime, input);
+            CellGrid.Update(gameTime, input);
             _btnEndTurn.Update(gameTime);
         }
 
         public void Draw()
         {
-            _cellGrid.Draw();
+            CellGrid.Draw();
             _btnEndTurn.Draw();
         }
         private void btnEndTurnClick(object sender, EventArgs e)

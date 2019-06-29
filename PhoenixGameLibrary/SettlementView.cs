@@ -15,11 +15,10 @@ namespace PhoenixGameLibrary
         private AtlasSpec2 _guiAtlas;
 
         private MainFrame _mainFrame;
-        private SmallFrame _smallFrame;
         private Label _lblSettlementName1;
         private Label _lblSettlementName2;
-        private Label _lblPopulationGrowth;
-        private Label _lblCitizens;
+        private PopulationFrame _populationFrame;
+        private ResourceFrame _resourceFrame;
 
         private readonly Settlement _settlement;
         private readonly Vector2 _topLeftPosition;
@@ -38,15 +37,14 @@ namespace PhoenixGameLibrary
             _guiTextures = AssetsManager.Instance.GetTexture("GUI_Textures_1");
             _guiAtlas = AssetsManager.Instance.GetAtlas("GUI_Textures_1");
 
+            _mainFrame = new MainFrame(this, _topLeftPosition, _guiTextures, _guiAtlas);
+
             var font = AssetsManager.Instance.GetSpriteFont("Carolingia-Regular-24");
             _lblSettlementName1 = new Label(font, new Vector2(_topLeftPosition.X + 278.0f, _topLeftPosition.Y - 49.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
             _lblSettlementName2 = new Label(font, new Vector2(_topLeftPosition.X + 278.0f, _topLeftPosition.Y - 24.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
-            font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
-            _lblPopulationGrowth = new Label(font, new Vector2(_topLeftPosition.X + 536.0f, _topLeftPosition.Y + 40.0f), HorizontalAlignment.Right, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
-            _lblCitizens = new Label(font, new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
 
-            _mainFrame = new MainFrame(this, _topLeftPosition, _guiTextures, _guiAtlas);
-            _smallFrame = new SmallFrame(this, _topLeftPosition + new Vector2(20.0f, 50.0f), new Vector2(500.0f, 60.0f), 9, _guiTextures, _guiAtlas);
+            _populationFrame = new PopulationFrame(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 40.0f), _settlement, _guiTextures, _guiAtlas);
+            _resourceFrame = new ResourceFrame(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 160.0f), _settlement, _guiTextures, _guiAtlas);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
@@ -54,12 +52,12 @@ namespace PhoenixGameLibrary
             if (IsEnabled)
             {
                 _mainFrame.Update(gameTime, input);
-                _smallFrame.Update(gameTime, input);
 
                 _lblSettlementName1.Text = $"{_settlement.SettlementType} of";
                 _lblSettlementName2.Text = $"{_settlement.Name}";
-                _lblPopulationGrowth.Text = $"Population: {_settlement.Population} (+{_settlement.GrowthRate})";
-                _lblCitizens.Text = $"SF: {_settlement.Citizens.SubsistenceFarmers} F: {_settlement.Citizens.AdditionalFarmers} W: {_settlement.Citizens.Workers}";
+
+                _populationFrame.Update(gameTime, input);
+                _resourceFrame.Update(gameTime, input);
             }
         }
 
@@ -70,12 +68,12 @@ namespace PhoenixGameLibrary
                 //DeviceManager.Instance.SetViewport(new Viewport(1035, 0, 556, 800, 0, 1));
 
                 _mainFrame.Draw();
-                _smallFrame.Draw();
 
                 _lblSettlementName1.Draw();
                 _lblSettlementName2.Draw();
-                _lblPopulationGrowth.Draw();
-                _lblCitizens.Draw();
+
+                _populationFrame.Draw();
+                _resourceFrame.Draw();
 
                 var catchment = HexOffsetCoordinates.GetAllNeighbors(_settlement.Location.X, _settlement.Location.Y);
                 foreach (var tile in catchment)
@@ -149,9 +147,128 @@ namespace PhoenixGameLibrary
         }
     }
 
+    public class PopulationFrame
+    {
+        private readonly Settlement _settlement;
+
+        private readonly Label _lblRace;
+        private readonly Label _lblPopulationGrowth;
+        private readonly SmallFrame _smallFrame;
+        private readonly Label _lblFarmers1;
+        private readonly Label _lblFarmers2;
+        private readonly Label _lblWorkers1;
+        private readonly Label _lblWorkers2;
+
+        public PopulationFrame(Vector2 topLeftPosition, Settlement settlement, Texture2D guiTextures, AtlasSpec2 guiAtlas)
+        {
+            _settlement = settlement;
+
+            var font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
+
+            _lblRace = new Label(font, topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblPopulationGrowth = new Label(font, new Vector2(topLeftPosition.X + 516.0f, topLeftPosition.Y), HorizontalAlignment.Right, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+
+            _smallFrame = new SmallFrame(topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(500.0f, 80.0f), 0, guiTextures, guiAtlas);
+            _lblFarmers1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblFarmers2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblWorkers1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 70.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblWorkers2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 70.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+        }
+
+        public void Update(GameTime gameTime, InputHandler input)
+        {
+            _lblRace.Text = $"{_settlement.RaceType.Name}";
+            _lblPopulationGrowth.Text = $"Population: {_settlement.Population} (+{_settlement.GrowthRate})";
+            _smallFrame.Update(gameTime, input);
+            _lblFarmers1.Text = "Farmers:";
+            _lblFarmers2.Text = $"{_settlement.Citizens.SubsistenceFarmers + _settlement.Citizens.AdditionalFarmers}";
+            _lblWorkers1.Text = "Workers:";
+            _lblWorkers2.Text = $"{_settlement.Citizens.Workers}";
+        }
+
+        public void Draw()
+        {
+            _lblRace.Draw();
+            _lblPopulationGrowth.Draw();
+            _smallFrame.Draw();
+            _lblFarmers1.Draw();
+            _lblFarmers2.Draw();
+            _lblWorkers1.Draw();
+            _lblWorkers2.Draw();
+        }
+    }
+
+    public class ResourceFrame
+    {
+        private readonly Settlement _settlement;
+
+        private readonly Label _lblResources;
+        private readonly SmallFrame _smallFrame;
+        private readonly Label _lblFood1;
+        private readonly Label _lblFood2;
+        private readonly Label _lblProduction1;
+        private readonly Label _lblProduction2;
+        private readonly Label _lblGold1;
+        private readonly Label _lblGold2;
+        private readonly Label _lblPower1;
+        private readonly Label _lblPower2;
+        private readonly Label _lblResearch1;
+        private readonly Label _lblResearch2;
+
+        public ResourceFrame(Vector2 topLeftPosition, Settlement settlement, Texture2D guiTextures, AtlasSpec2 guiAtlas)
+        {
+            _settlement = settlement;
+
+            var font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
+
+            _lblResources = new Label(font, topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _smallFrame = new SmallFrame(topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(500.0f, 160.0f), 0, guiTextures, guiAtlas);
+            _lblFood1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblFood2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblProduction1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 70.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblProduction2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 70.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblGold1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 100.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblGold2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 100.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblPower1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 130.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblPower2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 130.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblResearch1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 160.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblResearch2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 160.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+        }
+
+        public void Update(GameTime gameTime, InputHandler input)
+        {
+            _lblResources.Text = "Resources";
+            _lblFood1.Text = "Food";
+            _lblFood2.Text = $"{_settlement.SettlementFoodProduction}";
+            _lblProduction1.Text = "Production";
+            _lblProduction2.Text = $"{_settlement.SettlementProduction}";
+            _lblGold1.Text = "Gold";
+            _lblGold2.Text = $"{0}";
+            _lblPower1.Text = "Power";
+            _lblPower2.Text = $"{0}";
+            _lblResearch1.Text = "Research";
+            _lblResearch2.Text = $"{0}";
+        }
+
+        public void Draw()
+        {
+            _lblResources.Draw();
+            _smallFrame.Draw();
+            _lblFood1.Draw();
+            _lblFood2.Draw();
+            _lblProduction1.Draw();
+            _lblProduction2.Draw();
+            _lblGold1.Draw();
+            _lblGold2.Draw();
+            _lblPower1.Draw();
+            _lblPower2.Draw();
+            _lblResearch1.Draw();
+            _lblResearch2.Draw();
+        }
+    }
+
     public class SmallFrame
     {
-        private readonly SettlementView _parent;
         private readonly Vector2 _topLeftPosition;
         private readonly Vector2 _size;
         private readonly int _numberOfSlots;
@@ -163,9 +280,8 @@ namespace PhoenixGameLibrary
         private readonly Rectangle _corner;
         private readonly Rectangle _slot;
 
-        public SmallFrame(SettlementView parent, Vector2 topLeftPosition, Vector2 size, int numberOfSlots, Texture2D texture, AtlasSpec2 atlas)
+        public SmallFrame(Vector2 topLeftPosition, Vector2 size, int numberOfSlots, Texture2D texture, AtlasSpec2 atlas)
         {
-            _parent = parent;
             _topLeftPosition = topLeftPosition;
             _size = size;
             _numberOfSlots = numberOfSlots;

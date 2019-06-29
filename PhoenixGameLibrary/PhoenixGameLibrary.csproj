@@ -40,8 +40,13 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="GameData\Globals.cs" />
+    <Compile Include="GameData\RaceType.cs" />
+    <Compile Include="GameData\RaceTypes.cs" />
+    <Compile Include="GameData\RaceTypesLoader.cs" />
     <Compile Include="Helpers\BaseFoodLevel.cs" />
+    <Compile Include="Helpers\PopulationGrowthRate.cs" />
     <Compile Include="Helpers\SettlementFoodProduction.cs" />
+    <Compile Include="Helpers\SettlementProduction.cs" />
     <Compile Include="SettlementCitizens.cs" />
     <Compile Include="SettlementView.cs" />
     <Compile Include="Cursor.cs" />

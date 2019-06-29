@@ -6,19 +6,20 @@ namespace PhoenixGameLibrary
     {
         private readonly Settlement _settlement;
 
-        public byte SubsistenceFarmers { get; private set; }
-        public byte AdditionalFarmers { get; private set; }
-        public byte Workers { get; private set; }
-        //private byte _rebels; // TODO: support rebels
+        public int SubsistenceFarmers { get; private set; }
+        public int AdditionalFarmers { get; private set; }
+        public int Farmers => SubsistenceFarmers + AdditionalFarmers;
+        public int Workers { get; private set; }
+        //private int _rebels; // TODO: support rebels
 
-        public byte TotalPopulation => (byte)(SubsistenceFarmers + AdditionalFarmers + Workers); // _rebels
+        public int TotalPopulation => SubsistenceFarmers + AdditionalFarmers + Workers; // _rebels
 
-        public SettlementCitizens(Settlement settlement, byte settlementSize)
+        public SettlementCitizens(Settlement settlement, int settlementSize)
         {
             _settlement = settlement;
 
             SubsistenceFarmers = CalculateSubsistenceFarmers(settlementSize);
-            AdditionalFarmers = (byte)(settlementSize - SubsistenceFarmers);
+            AdditionalFarmers = settlementSize - SubsistenceFarmers;
             Workers = 0;
         }
 
@@ -63,13 +64,13 @@ namespace PhoenixGameLibrary
             Workers = (byte)(sum - AdditionalFarmers);
         }
 
-        private byte CalculateSubsistenceFarmers(int totalPopulation)
+        private int CalculateSubsistenceFarmers(int totalPopulation)
         {
             // TODO: buldings, wild game not being factored in
             var foodUpkeep = totalPopulation;
 
             var farmersSubsistenceFloat = foodUpkeep / 2.0f; // 2 is farming rate: TODO: halfling race has higher farming rate
-            var farmersSubsistence = (byte)Math.Ceiling(farmersSubsistenceFloat);
+            var farmersSubsistence = (int)Math.Ceiling(farmersSubsistenceFloat);
 
             return farmersSubsistence;
         }

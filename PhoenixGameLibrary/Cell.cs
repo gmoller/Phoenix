@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using GameLogic;
 using HexLibrary;
 using PhoenixGameLibrary.GameData;
 using Utilities;
@@ -13,17 +14,16 @@ namespace PhoenixGameLibrary
     public struct Cell
     {
         private readonly int _index;
-        private readonly int _terrainTypeId;
         private readonly GameData.Texture _texture;
 
         public int Column => _index % Constants.WORLD_MAP_COLUMNS;
         public int Row => _index / Constants.WORLD_MAP_COLUMNS;
-        public int TerrainTypeId => _terrainTypeId;
+        public int TerrainTypeId { get; }
 
         public Cell(int col, int row, TerrainType terrainType, Camera camera)
         {
             _index = (row * Constants.WORLD_MAP_COLUMNS) + col;
-            _terrainTypeId = terrainType.Id;
+            TerrainTypeId = terrainType.Id;
             _texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
         }
 
@@ -31,7 +31,7 @@ namespace PhoenixGameLibrary
         {
         }
 
-        public void Draw(Camera camera, float layerDepth, TerrainTypes terrainTypes)
+        public void Draw(Camera camera, float layerDepth)
         {
             var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(Column, Row);
 
@@ -39,7 +39,7 @@ namespace PhoenixGameLibrary
             {
                 var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
 
-                var terrainType = terrainTypes[_terrainTypeId];
+                var terrainType = Globals.Instance.TerrainTypes[TerrainTypeId];
                 var texture = AssetsManager.Instance.GetTexture(_texture.TexturePalette);
                 var spec = AssetsManager.Instance.GetAtlas(_texture.TexturePalette);
                 var frame = spec.Frames[_texture.TextureId];
@@ -87,6 +87,6 @@ namespace PhoenixGameLibrary
             return v;
         }
 
-        private string DebuggerDisplay => $"{{Col={Column},Row={Row},TerrainTypeId={_terrainTypeId}}}";
+        private string DebuggerDisplay => $"{{Col={Column},Row={Row},TerrainTypeId={TerrainTypeId}}}";
     }
 }

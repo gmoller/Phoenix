@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
 using HexLibrary;
+using PhoenixGameLibrary.GameData;
 using PhoenixGameLibrary.Helpers;
 using Utilities;
 
@@ -29,9 +30,13 @@ namespace PhoenixGameLibrary
         private int _populationGrowth;
 
         public string Name { get; }
+        public RaceType RaceType { get; }
         public Point Location { get; }
         public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
+        public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(Location, _cellGrid);
         public int GrowthRate => DetermineGrowthRate();
+        public int SettlementFoodProduction => Helpers.SettlementFoodProduction.DetermineFoodProduction(this);
+        public int SettlementProduction => Helpers.SettlementProduction.DetermineProduction(this, _cellGrid);
         public SettlementCitizens Citizens { get; }
 
         public SettlementType SettlementType
@@ -48,11 +53,12 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public Settlement(string name, Point location, byte settlementSize, CellGrid cellGrid, Camera camera)
+        public Settlement(string name, RaceType raceType, Point location, byte settlementSize, CellGrid cellGrid, Camera camera)
         {
             _camera = camera;
             _cellGrid = cellGrid;
             Name = name;
+            RaceType = raceType;
             Location = location;
             Citizens = new SettlementCitizens(this, settlementSize);
             _populationGrowth = 0;
@@ -109,19 +115,14 @@ namespace PhoenixGameLibrary
         private int DetermineGrowthRate()
         {
             int maxSettlementSize = DetermineMaximumSettlementSize();
-            if (Citizens.TotalPopulation >= maxSettlementSize) return 0;
+            int growthRate = PopulationGrowthRate.DetermineGrowthRate(maxSettlementSize, Citizens.TotalPopulation, RaceType);
 
-            float baseGrowthRate = (maxSettlementSize - Citizens.TotalPopulation + 1) / 2.0f;
-            int baseGrowthRateRoundedUp = (int)Math.Ceiling(baseGrowthRate);
-
-            int adjustedGrowthRate = baseGrowthRateRoundedUp * 10;
-
-            return adjustedGrowthRate;
+            return growthRate;
         }
 
         private int DetermineMaximumSettlementSize()
         {
-            int baseFoodLevel = (int)BaseFoodLevel.DetermineBaseFoodLevel(Location, _cellGrid);
+            int baseFoodLevel = BaseFoodLevel;
 
             return baseFoodLevel > MAXIMUM_POPULATION_SIZE ? MAXIMUM_POPULATION_SIZE : baseFoodLevel;
         }

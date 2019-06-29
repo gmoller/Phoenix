@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary
@@ -8,7 +7,6 @@ namespace PhoenixGameLibrary
     public class CellGrid
     {
         private readonly Camera _camera;
-        private readonly TerrainTypes _terrainTypes;
 
         private readonly int _numberOfColumns;
         private readonly int _numberOfRows;
@@ -17,8 +15,7 @@ namespace PhoenixGameLibrary
         public CellGrid(int numberOfColumns, int numberOfRows, Camera camera)
         {
             _camera = camera;
-            _terrainTypes = TerrainTypes.Create(TerrainTypesLoader.GetTerrainTypes());
-            var map = MapGenerator.Generate(numberOfColumns, numberOfRows, _terrainTypes);
+            var map = MapGenerator.Generate(numberOfColumns, numberOfRows);
 
             _numberOfColumns = numberOfColumns;
             _numberOfRows = numberOfRows;
@@ -50,7 +47,7 @@ namespace PhoenixGameLibrary
                 for (int q = 0; q < _numberOfColumns; ++q)
                 {
                     var cell = _cellGrid[q, r];
-                    cell.Draw(_camera, depth, _terrainTypes);
+                    cell.Draw(_camera, depth);
                     depth += 0.0001f;
                 }
             }

@@ -8,7 +8,9 @@ namespace PhoenixGameLibrary.Helpers
     {
         public static float DetermineBaseFoodLevel(Point location, CellGrid cellGrid) // used by Surveyor
         {
-            // Each city has a base food level of Food it can produce
+            // https://masterofmagic.fandom.com/wiki/Food#Base_Food_Level
+            // TODO: Shared tiles halved, Corruption, Gaia's Blessing
+            
             var catchment = HexOffsetCoordinates.GetAllNeighbors(location.X, location.Y);
 
             float foodOutput = 0.0f;

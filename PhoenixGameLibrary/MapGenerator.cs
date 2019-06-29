@@ -1,17 +1,17 @@
 ﻿using System;
+using GameLogic;
 using PhoenixGameLibrary.GameData;
-using Utilities;
 
 namespace PhoenixGameLibrary
 {
     public static class MapGenerator
     {
-        public static TerrainType[,] Generate(int numberOfColumns, int numberOfRows, TerrainTypes terrainTypes)
+        public static TerrainType[,] Generate(int numberOfColumns, int numberOfRows)
         {
             // make some noise!
             float[,] noise = MakeNoise(numberOfColumns, numberOfRows);
 
-            TerrainType[,] terrain = TurnNoiseIntoTerrain(noise, terrainTypes);
+            TerrainType[,] terrain = TurnNoiseIntoTerrain(noise);
 
             return terrain;
         }
@@ -43,7 +43,7 @@ namespace PhoenixGameLibrary
             return val;
         }
 
-        private static TerrainType[,] TurnNoiseIntoTerrain(float[,] noise, TerrainTypes terrainTypes)
+        private static TerrainType[,] TurnNoiseIntoTerrain(float[,] noise)
         {
             int numberOfColumns = noise.GetLength(0);
             int numberOfRows = noise.GetLength(1);
@@ -54,7 +54,7 @@ namespace PhoenixGameLibrary
                 for (int x = 0; x < numberOfColumns; ++x)
                 {
                     float val = noise[x, y];
-                    TerrainType terrainType = DetermineTerrainTypeId(val, terrainTypes);
+                    TerrainType terrainType = DetermineTerrainTypeId(val);
                     terrain[x, y] = terrainType;
                 }
             }
@@ -62,8 +62,9 @@ namespace PhoenixGameLibrary
             return terrain;
         }
 
-        private static TerrainType DetermineTerrainTypeId(float val, TerrainTypes terrainTypes)
+        private static TerrainType DetermineTerrainTypeId(float val)
         {
+            var terrainTypes = Globals.Instance.TerrainTypes;
             TerrainType terrainType;
 
             if (IsOcean(val))
