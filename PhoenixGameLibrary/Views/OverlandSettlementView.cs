@@ -28,9 +28,7 @@ namespace PhoenixGameLibrary.Views
             _texture = AssetsManager.Instance.GetTexture("VillageSmall00");
             _sourceRectangle = new Rectangle(0, 0, _texture.Width, _texture.Height);
 
-            var font = AssetsManager.Instance.GetSpriteFont("Carolingia-Regular-36");
-            var size = font.MeasureString(_settlement.Name);
-            _lblName = new Label(font, Vector2.Zero, HorizontalAlignment.Center, VerticalAlignment.Middle, size, _settlement.Name, HorizontalAlignment.Center, Color.Cyan, null, Color.Black * 0.5f);
+            _lblName = new Label("lblName", "Carolingia-Regular-36", Vector2.Zero, HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, _settlement.Name, HorizontalAlignment.Center, Color.Cyan, null, Color.Black * 0.5f);
             _lblName.Click += lblNameClick;
         }
 

@@ -6,6 +6,8 @@ using AssetsLibrary;
 using GuiControls;
 using HexLibrary;
 using Utilities;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace PhoenixGameLibrary.Views
 {
@@ -39,12 +41,11 @@ namespace PhoenixGameLibrary.Views
 
             _mainFrame = new MainFrame(this, _topLeftPosition, _guiTextures, _guiAtlas);
 
-            var font = AssetsManager.Instance.GetSpriteFont("Carolingia-Regular-24");
-            _lblSettlementName1 = new Label(font, new Vector2(_topLeftPosition.X + 278.0f, _topLeftPosition.Y - 49.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
-            _lblSettlementName2 = new Label(font, new Vector2(_topLeftPosition.X + 278.0f, _topLeftPosition.Y - 24.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
+            _lblSettlementName1 = new Label("lblSettlementName1", "Carolingia-Regular-24", new Vector2(_topLeftPosition.X + 278.0f, _topLeftPosition.Y - 49.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
+            _lblSettlementName2 = new Label("lblSettlementName2", "Carolingia-Regular-24", new Vector2(_topLeftPosition.X + 278.0f, _topLeftPosition.Y - 24.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
 
-            _populationFrame = new PopulationFrame(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 40.0f), _settlement, _guiTextures, _guiAtlas);
-            _resourceFrame = new ResourceFrame(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 160.0f), _settlement, _guiTextures, _guiAtlas);
+            _populationFrame = new PopulationFrame(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 40.0f), _settlement);
+            _resourceFrame = new ResourceFrame(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 160.0f), _settlement);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
@@ -118,7 +119,7 @@ namespace PhoenixGameLibrary.Views
             frame = atlas.Frames["frame_bottom"];
             _bottom = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
-            _btnClose = new Button(new Vector2(_topLeftPosition.X + 506.0f, _topLeftPosition.Y - 92.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(43.0f, 44.0f), "GUI_Textures_1", "close_button_n", "close_button_a", "close_button_h");
+            _btnClose = new Button("btnClose", new Vector2(_topLeftPosition.X + 506.0f, _topLeftPosition.Y - 92.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(43.0f, 44.0f), "GUI_Textures_1", "close_button_n", "close_button_a", "close_button_h");
             _btnClose.Click += CloseButtonClick;
         }
 
@@ -159,20 +160,20 @@ namespace PhoenixGameLibrary.Views
         private readonly Label _lblWorkers1;
         private readonly Label _lblWorkers2;
 
-        public PopulationFrame(Vector2 topLeftPosition, Settlement settlement, Texture2D guiTextures, AtlasSpec2 guiAtlas)
+        public PopulationFrame(Vector2 topLeftPosition, Settlement settlement)
         {
             _settlement = settlement;
 
-            var font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
+            _lblRace = new Label("lblRace", "CrimsonText-Regular-12", topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblPopulationGrowth = new Label("lblPopulationGrowth", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 516.0f, topLeftPosition.Y), HorizontalAlignment.Right, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
 
-            _lblRace = new Label(font, topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
-            _lblPopulationGrowth = new Label(font, new Vector2(topLeftPosition.X + 516.0f, topLeftPosition.Y), HorizontalAlignment.Right, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _smallFrame = SmallFrame.Create(topLeftPosition + new Vector2(0, 10), new Vector2(500, 80), 0, "GUI_Textures_1");
+            //_smallFrame = SmallFrame.Create($"{{\"TopLeftPosition\":\"{topLeftPosition.X}, {topLeftPosition.Y + 10.0f}\",\"Size\":\"500, 80\",\"NumberOfSlots\":0,\"TextureString\":\"GUI_Textures_1\"}}");
 
-            _smallFrame = new SmallFrame(topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(500.0f, 80.0f), 0, guiTextures, guiAtlas);
-            _lblFarmers1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
-            _lblFarmers2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
-            _lblWorkers1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 70.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
-            _lblWorkers2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 70.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblFarmers1 = new Label("lblFarmers1", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblFarmers2 = new Label("lblFarmers2", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblWorkers1 = new Label("lblWorkers1", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 70.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblWorkers2 = new Label("lblWorkers2", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 70.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
@@ -202,8 +203,8 @@ namespace PhoenixGameLibrary.Views
     {
         private readonly Settlement _settlement;
 
-        private readonly Label _lblResources;
         private readonly SmallFrame _smallFrame;
+        private readonly Label _lblResources;
         private readonly Label _lblFood1;
         private readonly Label _lblFood2;
         private readonly Label _lblProduction1;
@@ -215,24 +216,22 @@ namespace PhoenixGameLibrary.Views
         private readonly Label _lblResearch1;
         private readonly Label _lblResearch2;
 
-        public ResourceFrame(Vector2 topLeftPosition, Settlement settlement, Texture2D guiTextures, AtlasSpec2 guiAtlas)
+        public ResourceFrame(Vector2 topLeftPosition, Settlement settlement)
         {
             _settlement = settlement;
 
-            var font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
-
-            _lblResources = new Label(font, topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
-            _smallFrame = new SmallFrame(topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(500.0f, 160.0f), 0, guiTextures, guiAtlas);
-            _lblFood1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
-            _lblFood2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
-            _lblProduction1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 70.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
-            _lblProduction2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 70.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
-            _lblGold1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 100.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
-            _lblGold2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 100.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
-            _lblPower1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 130.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
-            _lblPower2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 130.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
-            _lblResearch1 = new Label(font, new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 160.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
-            _lblResearch2 = new Label(font, new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 160.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _smallFrame = SmallFrame.Create(topLeftPosition + new Vector2(0, 10), new Vector2(500, 160), 0, "GUI_Textures_1");
+            _lblResources = new Label("lblResources", "CrimsonText-Regular-12", topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
+            _lblFood1 = new Label("lblFood1", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblFood2 = new Label("lblFood2", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblProduction1 = new Label("lblProduction1", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 70.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblProduction2 = new Label("lblProduction2", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 70.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblGold1 = new Label("lblGold1", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 100.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblGold2 = new Label("lblGold2", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 100.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblPower1 = new Label("lblPower1", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 130.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblPower2 = new Label("lblPower2", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 130.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblResearch1 = new Label("lblResearch1", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 160.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblResearch2 = new Label("lblResearch2", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 160.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
@@ -252,8 +251,8 @@ namespace PhoenixGameLibrary.Views
 
         public void Draw()
         {
-            _lblResources.Draw();
             _smallFrame.Draw();
+            _lblResources.Draw();
             _lblFood1.Draw();
             _lblFood2.Draw();
             _lblProduction1.Draw();
@@ -267,12 +266,15 @@ namespace PhoenixGameLibrary.Views
         }
     }
 
+    [JsonObject(MemberSerialization.OptIn)]
     public class SmallFrame
     {
-        private readonly Vector2 _topLeftPosition;
-        private readonly Vector2 _size;
-        private readonly int _numberOfSlots;
         private readonly Texture2D _texture;
+
+        [JsonProperty] private Vector2 TopLeftPosition { get; }
+        [JsonProperty] private Vector2 Size { get; }
+        [JsonProperty] private int NumberOfSlots { get; }
+        [JsonProperty] private string TextureString { get; }
         private readonly Rectangle _top;
         private readonly Rectangle _left;
         private readonly Rectangle _right;
@@ -280,12 +282,15 @@ namespace PhoenixGameLibrary.Views
         private readonly Rectangle _corner;
         private readonly Rectangle _slot;
 
-        public SmallFrame(Vector2 topLeftPosition, Vector2 size, int numberOfSlots, Texture2D texture, AtlasSpec2 atlas)
+        [JsonConstructor]
+        private SmallFrame(Vector2 topLeftPosition, Vector2 size, int numberOfSlots, string textureString)
         {
-            _topLeftPosition = topLeftPosition;
-            _size = size;
-            _numberOfSlots = numberOfSlots;
-            _texture = texture;
+            TopLeftPosition = topLeftPosition;
+            Size = size;
+            NumberOfSlots = numberOfSlots;
+            TextureString = textureString;
+            _texture = AssetsManager.Instance.GetTexture(textureString);
+            var atlas = AssetsManager.Instance.GetAtlas(textureString);
 
             var frame = atlas.Frames["top_h_border_repeat_x"];
             _top = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
@@ -301,6 +306,20 @@ namespace PhoenixGameLibrary.Views
             _slot = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
         }
 
+        public static SmallFrame Create(Vector2 topLeftPosition, Vector2 size, int numberOfSlots, string textureString)
+        {
+            var smallFrame = new SmallFrame(topLeftPosition, size, numberOfSlots, textureString);
+
+            return smallFrame;
+        }
+
+        public static SmallFrame Deserialize(string json)
+        {
+            var smallFrame = JsonConvert.DeserializeObject<SmallFrame>(json);
+
+            return smallFrame;
+        }
+
         public void Update(GameTime gameTime, InputHandler input)
         {
         }
@@ -311,36 +330,43 @@ namespace PhoenixGameLibrary.Views
             spriteBatch.Begin();
 
             // frame
-            var rectLeft = new Rectangle((int)_topLeftPosition.X, (int)_topLeftPosition.Y + 5, _left.Width, (int)_size.Y);
+            var rectLeft = new Rectangle((int)TopLeftPosition.X, (int)TopLeftPosition.Y + 5, _left.Width, (int)Size.Y);
             spriteBatch.Draw(_texture, rectLeft, _left, Color.White);
-            var rectRight = new Rectangle((int)(_topLeftPosition.X + _size.X + 0), (int)_topLeftPosition.Y + 5, _right.Width, (int)_size.Y);
+            var rectRight = new Rectangle((int)(TopLeftPosition.X + Size.X + 0), (int)TopLeftPosition.Y + 5, _right.Width, (int)Size.Y);
             spriteBatch.Draw(_texture, rectRight, _right, Color.White);
 
-            var rectTop = new Rectangle((int)_topLeftPosition.X + 6, (int)_topLeftPosition.Y, (int)_size.X, _top.Height);
+            var rectTop = new Rectangle((int)TopLeftPosition.X + 6, (int)TopLeftPosition.Y, (int)Size.X, _top.Height);
             spriteBatch.Draw(_texture, rectTop, _top, Color.White);
-            var rectBottom = new Rectangle((int)_topLeftPosition.X + 6, (int)(_topLeftPosition.Y + _size.Y), (int)_size.X, _bottom.Height);
+            var rectBottom = new Rectangle((int)TopLeftPosition.X + 6, (int)(TopLeftPosition.Y + Size.Y), (int)Size.X, _bottom.Height);
             spriteBatch.Draw(_texture, rectBottom, _bottom, Color.White);
 
             // corners
-            var rectTopLeft = new Rectangle((int)_topLeftPosition.X + 1, (int)_topLeftPosition.Y + 1, _corner.Width, _corner.Height);
+            var rectTopLeft = new Rectangle((int)TopLeftPosition.X + 1, (int)TopLeftPosition.Y + 1, _corner.Width, _corner.Height);
             spriteBatch.Draw(_texture, rectTopLeft, _corner, Color.White);
-            var rectTopRight = new Rectangle((int)(_topLeftPosition.X + _size.X - 2), (int)_topLeftPosition.Y + 1, _corner.Width, _corner.Height);
+            var rectTopRight = new Rectangle((int)(TopLeftPosition.X + Size.X - 2), (int)TopLeftPosition.Y + 1, _corner.Width, _corner.Height);
             spriteBatch.Draw(_texture, rectTopRight, _corner, Color.White);
-            var rectBottomLeft = new Rectangle((int)(_topLeftPosition.X + _size.X - 2), (int)(_topLeftPosition.Y + _size.Y - 1), _corner.Width, _corner.Height);
+            var rectBottomLeft = new Rectangle((int)(TopLeftPosition.X + Size.X - 2), (int)(TopLeftPosition.Y + Size.Y - 1), _corner.Width, _corner.Height);
             spriteBatch.Draw(_texture, rectBottomLeft, _corner, Color.White);
-            var rectBottomRight = new Rectangle((int)_topLeftPosition.X + 1, (int)(_topLeftPosition.Y + _size.Y - 1), _corner.Width, _corner.Height);
+            var rectBottomRight = new Rectangle((int)TopLeftPosition.X + 1, (int)(TopLeftPosition.Y + Size.Y - 1), _corner.Width, _corner.Height);
             spriteBatch.Draw(_texture, rectBottomRight, _corner, Color.White);
 
             // slots
-            float x = _topLeftPosition.X + 10.0f;
-            float y = _topLeftPosition.Y + 10.0f;
-            for (int i = 0; i < _numberOfSlots; ++i)
+            float x = TopLeftPosition.X + 10.0f;
+            float y = TopLeftPosition.Y + 10.0f;
+            for (int i = 0; i < NumberOfSlots; ++i)
             {
                 spriteBatch.Draw(_texture, new Vector2(x, y), _slot, Color.White);
                 x += _slot.Width + 0.0f;
             }
 
             spriteBatch.End();
+        }
+
+        public string Serialize()
+        {
+            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+
+            return json;
         }
     }
 }

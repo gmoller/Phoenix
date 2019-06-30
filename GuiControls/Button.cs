@@ -22,8 +22,8 @@ namespace GuiControls
 
         public event EventHandler Click;
 
-        public Button(Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string guiTextures, string textureNormal, string textureActive, string textureHover, Label label = null) :
-            base(position, horizontalAlignment, verticalAlignment, size)
+        public Button(string name, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string guiTextures, string textureNormal, string textureActive, string textureHover, Label label = null) :
+            base(name, position, horizontalAlignment, verticalAlignment, size)
         {
             _cooldownTime = 0.0f;
 

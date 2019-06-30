@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using AssetsLibrary;
 using Input;
 using Utilities;
 
@@ -20,9 +21,15 @@ namespace GuiControls
 
         public event EventHandler Click;
 
-        public Label(SpriteFont font, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Matrix? transform = null) :
-            base(position, horizontalAlignment, verticalAlignment, size)
+        public Label(string name, string fontName, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Matrix? transform = null) :
+            base(name, position, horizontalAlignment, verticalAlignment, size)
         {
+            var font = AssetsManager.Instance.GetSpriteFont(fontName);
+            if (size.Equals(Vector2.Zero))
+            {
+                Size = font.MeasureString(text);
+            }
+
             Font = font;
             Text = text;
             _textAlignment = textAlignment;
@@ -33,9 +40,15 @@ namespace GuiControls
             Transform = transform;
         }
 
-        public Label(SpriteFont font, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Matrix? transform = null) :
-            base(controlToDockTo, horizontalAlignment, verticalAlignment, size)
+        public Label(string name, string fontName, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Matrix? transform = null) :
+            base(name, controlToDockTo, horizontalAlignment, verticalAlignment, size)
         {
+            var font = AssetsManager.Instance.GetSpriteFont(fontName);
+            if (size.Equals(Vector2.Zero))
+            {
+                Size = font.MeasureString(text);
+            }
+
             Font = font;
             Text = text;
             _textAlignment = textAlignment;

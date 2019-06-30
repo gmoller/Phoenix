@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using AssetsLibrary;
 using GuiControls;
 using PhoenixGameLibrary;
 using Utilities;
@@ -30,30 +29,29 @@ namespace Phoenix
         {
             _fps = new FramesPerSecondCounter();
 
-            var font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
-            var size1 = font.MeasureString("VIEWPORT POS:") + new Vector2(10.0f, 0.0f);
-            var size2 = size1;
+            var size1 = new Vector2(142.0f, 20.0f);
+            var size2 = new Vector2(142.0f, 20.0f);
 
-            _lblScreenPosition1 = new Label(font, position, HorizontalAlignment.Left, VerticalAlignment.Bottom, size1, "SCREEN POS:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
-            _lblScreenPosition2 = new Label(font, _lblScreenPosition1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblScreenPosition1 = new Label("lblScreenPosition1", "CrimsonText-Regular-12", position, HorizontalAlignment.Left, VerticalAlignment.Bottom, size1, "SCREEN POS:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblScreenPosition2 = new Label("lblScreenPosition2", "CrimsonText-Regular-12", _lblScreenPosition1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
-            _lblViewportPosition1 = new Label(font, _lblScreenPosition1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "VIEWPORT POS:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
-            _lblViewportPosition2 = new Label(font, _lblViewportPosition1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblViewportPosition1 = new Label("lblViewportPosition1", "CrimsonText-Regular-12", _lblScreenPosition1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "VIEWPORT POS:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblViewportPosition2 = new Label("lblViewportPosition2", "CrimsonText-Regular-12", _lblViewportPosition1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
-            _lblWorldPosition1 = new Label(font, _lblViewportPosition1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "WORLD POS:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
-            _lblWorldPosition2 = new Label(font, _lblWorldPosition1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblWorldPosition1 = new Label("lblWorldPosition1", "CrimsonText-Regular-12", _lblViewportPosition1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "WORLD POS:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblWorldPosition2 = new Label("lblWorldPosition2", "CrimsonText-Regular-12", _lblWorldPosition1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
-            _lblWorldHex1 = new Label(font, _lblWorldPosition1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "WORLD HEX:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
-            _lblWorldHex2 = new Label(font, _lblWorldHex1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblWorldHex1 = new Label("lblWorldHex1", "CrimsonText-Regular-12", _lblWorldPosition1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "WORLD HEX:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblWorldHex2 = new Label("lblWorldHex2", "CrimsonText-Regular-12", _lblWorldHex1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
-            _lblMemory1 = new Label(font, _lblWorldHex1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "MEM:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
-            _lblMemory2 = new Label(font, _lblMemory1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblMemory1 = new Label("lblMemory1", "CrimsonText-Regular-12", _lblWorldHex1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "MEM:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblMemory2 = new Label("lblMemory2", "CrimsonText-Regular-12", _lblMemory1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
-            _lblFps1 = new Label(font, _lblMemory1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "FPS (U/D):", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
-            _lblFps2 = new Label(font, _lblFps1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblFps1 = new Label("lblFps1", "CrimsonText-Regular-12", _lblMemory1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "FPS (U/D):", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblFps2 = new Label("lblFps2", "CrimsonText-Regular-12", _lblFps1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
-            _lblGCCount1 = new Label(font, _lblFps1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "GC COUNT:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
-            _lblGCCount2 = new Label(font, _lblGCCount1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblGCCount1 = new Label("lblGCCount1", "CrimsonText-Regular-12", _lblFps1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "GC COUNT:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblGCCount2 = new Label("lblGCCount2", "CrimsonText-Regular-12", _lblGCCount1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
         }
 
         public void Update(GameTime gameTime, InputHandler input)

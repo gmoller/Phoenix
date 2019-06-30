@@ -11,8 +11,10 @@ namespace GuiControls
         protected int Width => (int)Size.X;
         protected int Height => (int)Size.Y;
 
+        public string Name { get; }
         public Vector2 Position { get; set; } // Position of the control relative to it's alignment
-        public Vector2 Size { get; }
+        public Vector2 Size { get; set; }
+
         public Rectangle Area => DetermineArea(VerticalAlignment, HorizontalAlignment, Position, Width, Height);
         public float Left => Area.Left;
         public float Right => Area.Right;
@@ -24,16 +26,18 @@ namespace GuiControls
         public Vector2 BottomRight => new Vector2(Area.Right, Area.Bottom);
         public Vector2 Center => new Vector2(Area.Center.X, Area.Center.Y);
 
-        protected Control(Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size)
+        protected Control(string name, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size)
         {
+            Name = name;
             Position = position;
             HorizontalAlignment = horizontalAlignment;
             VerticalAlignment = verticalAlignment;
             Size = new Vector2(size.X % 2 == 0 ? size.X : size.X + 1, size.Y % 2 == 0 ? size.Y : size.Y + 1);
         }
 
-        protected Control(Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size)
+        protected Control(string name, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size)
         {
+            Name = Name;
             if (verticalAlignment == VerticalAlignment.Top)
             {
                 if (horizontalAlignment == HorizontalAlignment.Left)
