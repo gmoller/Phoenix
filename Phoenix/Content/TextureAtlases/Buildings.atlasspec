@@ -1,0 +1,82 @@
+{
+  "SpriteSheetName": "Buildings",
+  "Frames": [
+    {
+      "Name": "Barracks",
+      "X": 0,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+    {
+      "Name": "BuildersHall",
+      "X": 40,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+    {
+      "Name": "Granary",
+      "X": 80,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "Sawmill",
+      "X": 120,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+    {
+      "Name": "ShipWrightsGuild",
+      "X": 160,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+    {
+      "Name": "Smithy",
+      "X": 200,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Left_To_Down",
+      "X": 0,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Left_To_Right",
+      "X": 40,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+    {
+      "Name": "FlowChart_Up_Split_All",
+      "X": 80,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Up_Split_DownLeft",
+      "X": 120,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_UpRight_Converge_Down",
+      "X": 160,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    }
+  ]
+}

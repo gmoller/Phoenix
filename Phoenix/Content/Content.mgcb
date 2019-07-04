@@ -160,6 +160,21 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Maleficio-Regular-72.spritefont
 
+#begin TextureAtlases/Buildings.atlasspec
+/copy:TextureAtlases/Buildings.atlasspec
+
+#begin TextureAtlases/Buildings.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TextureAtlases/Buildings.png
+
 #begin TextureAtlases/GUI_Textures_1.atlasspec
 /copy:TextureAtlases/GUI_Textures_1.atlasspec
 
@@ -174,6 +189,21 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:TextureAtlases/GUI_Textures_1.png
+
+#begin TextureAtlases/Icons_1.atlasspec
+/copy:TextureAtlases/Icons_1.atlasspec
+
+#begin TextureAtlases/Icons_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TextureAtlases/Icons_1.png
 
 #begin TextureAtlases/terrain_hextiles_basic_1.atlasspec
 /copy:TextureAtlases/terrain_hextiles_basic_1.atlasspec

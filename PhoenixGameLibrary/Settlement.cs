@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using PhoenixGameLibrary.GameData;
 using PhoenixGameLibrary.Helpers;
 using PhoenixGameLibrary.Views;
+using PhoenixGameLibrary.Views.SettlementView;
 
 namespace PhoenixGameLibrary
 {
@@ -26,7 +27,12 @@ namespace PhoenixGameLibrary
         public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(Location, _cellGrid);
         public int GrowthRate => DetermineGrowthRate();
         public int SettlementFoodProduction => Helpers.SettlementFoodProduction.DetermineFoodProduction(this);
+        public int FoodSurplus => SettlementFoodProduction - Citizens.TotalPopulation;
+        //public int GoldUpkeep => DetermineGoldUpkeep();
+        //public int GoldSurplus => DetermineGoldSurplus();
+
         public int SettlementProduction => Helpers.SettlementProduction.DetermineProduction(this, _cellGrid);
+
         public SettlementCitizens Citizens { get; }
         public SettlementView View { get; }
 

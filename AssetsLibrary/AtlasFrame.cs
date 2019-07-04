@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace AssetsLibrary
 {
@@ -9,6 +10,11 @@ namespace AssetsLibrary
         public int Y { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+
+        public Rectangle ToRectangle()
+        {
+            return new Rectangle(X, Y, Width, Height);
+        }
     }
 
     public class AtlasFrames

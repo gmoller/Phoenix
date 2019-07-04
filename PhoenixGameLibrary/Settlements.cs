@@ -10,6 +10,8 @@ namespace PhoenixGameLibrary
     {
         private List<Settlement> _settlements;
 
+        public int FoodProducedThisTurn { get; private set; }
+
         public Settlements()
         {
             _settlements = new List<Settlement>();
@@ -17,10 +19,14 @@ namespace PhoenixGameLibrary
 
         public void Update(GameTime gameTime, InputHandler input)
         {
+            int foodProducedThisTurn = 0;
             foreach (var settlement in _settlements)
             {
                 settlement.Update(gameTime, input);
+                foodProducedThisTurn += settlement.FoodSurplus;
             }
+
+            FoodProducedThisTurn = foodProducedThisTurn;
         }
 
         public void Draw()
