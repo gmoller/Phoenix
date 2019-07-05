@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using GameLogic;
 using GuiControls;
 using Utilities;
 
@@ -43,39 +44,76 @@ namespace PhoenixGameLibrary.Views.SettlementView
             var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
             spriteBatch.Begin();
 
-            int topLeftX = (int)(_topLeftPosition.X + 15.0f);
-            int topLeftY = (int)(_topLeftPosition.Y + 25.0f);
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["ShipWrightsGuild"].ToRectangle(), Color.White);
-            topLeftX += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["Sawmill"].ToRectangle(), Color.White);
-            topLeftX += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["Barracks"].ToRectangle(), Color.White);
-            topLeftX += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["Smithy"].ToRectangle(), Color.White);
+            int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
+            int baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
+            foreach (var building in Globals.Instance.BuildingTypes)
+            {
+                int topLeftX = baseTopLeftX + building.Slot.X * 49;
+                int topLeftY = baseTopLeftY + building.Slot.Y * 49;
+                DrawBuilding(spriteBatch, building.Name, topLeftX, topLeftY);
+            }
 
-            topLeftX = (int)(_topLeftPosition.X + 15.0f);
-            topLeftY += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpRight_Converge_Down"].ToRectangle(), Color.White);
-            topLeftX += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_Split_DownLeft"].ToRectangle(), Color.White);
-            topLeftX += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpRight_Converge_Down"].ToRectangle(), Color.White);
-            topLeftX += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_Split_All"].ToRectangle(), Color.White);
-            topLeftX += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Right"].ToRectangle(), Color.White);
-            topLeftX += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Right"].ToRectangle(), Color.White);
-            topLeftX += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Right"].ToRectangle(), Color.White);
-            topLeftX += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Right"].ToRectangle(), Color.White);
-            topLeftX += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Right"].ToRectangle(), Color.White);
-            topLeftX += 49;
-            spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Down"].ToRectangle(), Color.White);
+            //DrawBuilding(spriteBatch, "Shipwrights Guild", "ShipWrightsGuild", topLeftX, topLeftY);
+            //topLeftX += 49;
+            ////spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["Sawmill"].ToRectangle(), Color.White);
+            //DrawBuilding(spriteBatch, "Sawmill", "Sawmill", topLeftX, topLeftY);
+            //topLeftX += 49;
+            ////spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["Barracks"].ToRectangle(), Color.White);
+            //DrawBuilding(spriteBatch, "Barracks", "Barracks", topLeftX, topLeftY);
+            //topLeftX += 49;
+            ////spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["Smithy"].ToRectangle(), Color.White);
+            //DrawBuilding(spriteBatch, "Smithy", "Smithy", topLeftX, topLeftY);
+            //topLeftX += 49;
+            //DrawBuilding(spriteBatch, "Builders Hall", "BuildersHall", topLeftX, topLeftY);
+
+            //topLeftX = (int)(_topLeftPosition.X + 15.0f);
+            //topLeftY += 49;
+            //spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpRight_Converge_Down"].ToRectangle(), Color.White);
+            //topLeftX += 49;
+            //spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_Split_DownLeft"].ToRectangle(), Color.White);
+            //topLeftX += 49;
+            //spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpRight_Converge_Down"].ToRectangle(), Color.White);
+            //topLeftX += 49;
+            //spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_Split_All"].ToRectangle(), Color.White);
+            //topLeftX += 49;
+            //spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Right"].ToRectangle(), Color.White);
+            //topLeftX += 49;
+            //spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Right"].ToRectangle(), Color.White);
+            //topLeftX += 49;
+            //spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Right"].ToRectangle(), Color.White);
+            //topLeftX += 49;
+            //spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Right"].ToRectangle(), Color.White);
+            //topLeftX += 49;
+            //spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Right"].ToRectangle(), Color.White);
+            //topLeftX += 49;
+            //spriteBatch.Draw(_texture2, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Down"].ToRectangle(), Color.White);
 
             spriteBatch.End();
+        }
+
+        private void DrawBuilding(SpriteBatch spriteBatch, string buildingName, int topLeftX, int topLeftY)
+        {
+            var rect = new Rectangle(topLeftX, topLeftY, 40, 40);
+            Color color = Color.Transparent;
+            if (!_settlement.BuildingCanBeBuilt(buildingName))
+            {
+                color = Color.Red;
+            }
+            else if (_settlement.BuildingHasBeenBuilt(buildingName))
+            {
+                color = Color.ForestGreen;
+            }
+            else if (_settlement.BuildingCanBeBuilt(buildingName))
+            {
+                color = Color.Black;
+            }
+            else if (_settlement.BuildingReadyToBeBeBuilt(buildingName))
+            {
+                color = Color.White;
+            }
+
+            spriteBatch.FillRectangle(rect, color);
+            spriteBatch.Draw(_texture2, rect, _atlas.Frames[buildingName].ToRectangle(), Color.White);
         }
     }
 }

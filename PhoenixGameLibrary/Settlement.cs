@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using GameLogic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using PhoenixGameLibrary.GameData;
@@ -17,6 +19,7 @@ namespace PhoenixGameLibrary
     {
         private readonly CellGrid _cellGrid;
         private OverlandSettlementView _overlandSettlementView;
+        private List<int> _buildings;
 
         private int _populationGrowth;
 
@@ -50,7 +53,7 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public Settlement(string name, RaceType raceType, Point location, byte settlementSize, CellGrid cellGrid)
+        public Settlement(string name, RaceType raceType, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
         {
             _cellGrid = cellGrid;
             Name = name;
@@ -58,6 +61,11 @@ namespace PhoenixGameLibrary
             Location = location;
             Citizens = new SettlementCitizens(this, settlementSize);
             _populationGrowth = 0;
+            _buildings = new List<int>();
+            foreach (var building in buildings)
+            {
+                _buildings.Add(Globals.Instance.BuildingTypes[building].Id);
+            }
 
             View = new SettlementView(this);
             _overlandSettlementView = new OverlandSettlementView(this);
@@ -79,6 +87,28 @@ namespace PhoenixGameLibrary
         {
             _overlandSettlementView.Draw();
             View.Draw();
+        }
+
+        public bool BuildingHasBeenBuilt(string buildingName)
+        {
+            var building = Globals.Instance.BuildingTypes[buildingName];
+
+            return _buildings.Contains(building.Id);
+        }
+
+        public bool BuildingCanBeBuilt(string buildingName)
+        {
+            var building = Globals.Instance.BuildingTypes[buildingName];
+            var raceId = RaceType.Id;
+
+            return building.CanBeBuiltBy(RaceType.Id);
+        }
+
+        public bool BuildingReadyToBeBeBuilt(string buildingName)
+        {
+            var building = Globals.Instance.BuildingTypes[buildingName];
+
+            return false;
         }
 
         public void EndTurn()
