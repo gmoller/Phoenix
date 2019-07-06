@@ -44,6 +44,41 @@
       "Height": 40
     },
 	{
+      "Name": "Shipyard",
+      "X": 240,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "ForestersGuild",
+      "X": 280,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "Armory",
+      "X": 320,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "Stables",
+      "X": 360,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "Marketplace",
+      "X": 400,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
       "Name": "FlowChart_Left_To_Down",
       "X": 0,
       "Y": 40,
@@ -74,6 +109,48 @@
 	{
       "Name": "FlowChart_UpRight_Converge_Down",
       "X": 160,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Up_Split_DownRight",
+      "X": 200,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_LeftRight_Converge_Down",
+      "X": 240,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Up_To_Down",
+      "X": 280,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Right_To_Down",
+      "X": 320,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Right_Split_DownLeft",
+      "X": 360,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Left_Split_DownRight",
+      "X": 400,
       "Y": 40,
       "Width": 40,
       "Height": 40

@@ -29,7 +29,7 @@ namespace PhoenixGameLibrary
         public void LoadContent(ContentManager content)
         {
             _overlandMap.LoadContent(content);
-            _settlements.AddSettlement("Fairhaven", Globals.Instance.RaceTypes[0], new Point(12, 9), _overlandMap.CellGrid, content);
+            _settlements.AddSettlement("Fairhaven", "Nomads", new Point(12, 9), _overlandMap.CellGrid, content);
         }
 
         public void Update(GameTime gameTime, InputHandler input)

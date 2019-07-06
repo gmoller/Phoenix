@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
+using GameLogic;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -19,10 +20,10 @@ namespace PhoenixGameLibrary.GameData
         public float FoodProduced { get; }
         public float GrowthRateIncrease { get; }
 
-        private List<int> _whichRacesCanBuild;
+        private List<string> _whichRacesCanNotBuild;
         private List<string> _dependsOnBuildings;
 
-        private BuildingType(int id, string name, float constructionCost, float upkeepGold, float upkeepMana, float foodProduced, float growthRateIncrease, List<string> whichRacesCanNotBuild, List<string> dependsOnBuildings, Point slot, RaceTypes raceTypes)
+        private BuildingType(int id, string name, float constructionCost, float upkeepGold, float upkeepMana, float foodProduced, float growthRateIncrease, List<string> whichRacesCanNotBuild, List<string> dependsOnBuildings, Point slot)
         {
             Id = id;
             Name = name;
@@ -33,26 +34,38 @@ namespace PhoenixGameLibrary.GameData
             FoodProduced = foodProduced;
             GrowthRateIncrease = growthRateIncrease;
 
-            _whichRacesCanBuild = new List<int>();
-            foreach (var raceType in raceTypes)
-            {
-                if (!whichRacesCanNotBuild.Contains(raceType.Name))
-                {
-                    _whichRacesCanBuild.Add(raceType.Id);
-                }
-            }
-
+            _whichRacesCanNotBuild = whichRacesCanNotBuild;
             _dependsOnBuildings = dependsOnBuildings;
         }
 
-        public static BuildingType Create(int id, string name, float constructionCost, float upkeepGold, float upkeepMana, float foodProduced, float growthRateIncrease, List<string> whichRacesCanNotBuild, List<string> dependsOnBuildings, Point slot, RaceTypes raceTypes)
+        public static BuildingType Create(int id, string name, float constructionCost, float upkeepGold, float upkeepMana, float foodProduced, float growthRateIncrease, List<string> whichRacesCanNotBuild, List<string> dependsOnBuildings, Point slot)
         {
-            return new BuildingType(id, name, constructionCost, upkeepGold, upkeepMana, foodProduced, growthRateIncrease, whichRacesCanNotBuild, dependsOnBuildings, slot, raceTypes);
+            return new BuildingType(id, name, constructionCost, upkeepGold, upkeepMana, foodProduced, growthRateIncrease, whichRacesCanNotBuild, dependsOnBuildings, slot);
         }
 
-        public bool CanBeBuiltBy(int raceTypeId)
+        public bool CanBeBuiltBy(string raceTypeName)
         {
-            return _whichRacesCanBuild.Contains(raceTypeId);
+            return !_whichRacesCanNotBuild.Contains(raceTypeName);
+        }
+
+        public bool CanNotBeBuiltBy(string raceTypeName)
+        {
+            return _whichRacesCanNotBuild.Contains(raceTypeName);
+        }
+
+        public bool IsReadyToBeBuilt(List<int> buildingsAlreadyBuilt)
+        {
+            var isReadyToBeBuilt = true;
+            foreach (var building in _dependsOnBuildings)
+            {
+                var buildingId = Globals.Instance.BuildingTypes[building].Id;
+                if (!buildingsAlreadyBuilt.Contains(buildingId))
+                {
+                    return false;
+                }
+            }
+
+            return isReadyToBeBuilt;
         }
 
         private string DebuggerDisplay => $"{{Id={Id},Name={Name}}}";

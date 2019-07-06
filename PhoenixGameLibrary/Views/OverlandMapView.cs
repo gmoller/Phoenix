@@ -33,7 +33,6 @@ namespace PhoenixGameLibrary.Views
 
         public void Update(GameTime gameTime, InputHandler input)
         {
-            //UpdateCellGrid(gameTime, input);
             _btnEndTurn.Update(gameTime);
         }
 

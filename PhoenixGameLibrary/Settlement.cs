@@ -53,11 +53,11 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public Settlement(string name, RaceType raceType, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
+        public Settlement(string name, string raceTypeName, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
         {
             _cellGrid = cellGrid;
             Name = name;
-            RaceType = raceType;
+            RaceType = Globals.Instance.RaceTypes[raceTypeName];
             Location = location;
             Citizens = new SettlementCitizens(this, settlementSize);
             _populationGrowth = 0;
@@ -99,16 +99,23 @@ namespace PhoenixGameLibrary
         public bool BuildingCanBeBuilt(string buildingName)
         {
             var building = Globals.Instance.BuildingTypes[buildingName];
-            var raceId = RaceType.Id;
 
-            return building.CanBeBuiltBy(RaceType.Id);
+            return building.CanBeBuiltBy(RaceType.Name);
+        }
+
+        public bool BuildingCanNotBeBuilt(string buildingName)
+        {
+            var building = Globals.Instance.BuildingTypes[buildingName];
+
+            return building.CanNotBeBuiltBy(RaceType.Name);
         }
 
         public bool BuildingReadyToBeBeBuilt(string buildingName)
         {
             var building = Globals.Instance.BuildingTypes[buildingName];
+            var isReadyTobeBuilt = building.IsReadyToBeBuilt(_buildings);
 
-            return false;
+            return isReadyTobeBuilt;
         }
 
         public void EndTurn()
