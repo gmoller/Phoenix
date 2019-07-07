@@ -7,24 +7,29 @@ using Utilities;
 namespace PhoenixGameLibrary.Views.SettlementView
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class SmallFrame
+    public class SmallFrameWithSlots
     {
         private readonly Texture2D _texture;
 
         [JsonProperty] private Vector2 TopLeftPosition { get; }
         [JsonProperty] private Vector2 Size { get; }
+        [JsonProperty] private int NumberOfSlotsX { get; }
+        [JsonProperty] private int NumberOfSlotsY { get; }
         [JsonProperty] private string TextureString { get; }
         private readonly Rectangle _top;
         private readonly Rectangle _left;
         private readonly Rectangle _right;
         private readonly Rectangle _bottom;
         private readonly Rectangle _corner;
+        private readonly Rectangle _slot;
 
         [JsonConstructor]
-        private SmallFrame(Vector2 topLeftPosition, Vector2 size, string textureString)
+        private SmallFrameWithSlots(Vector2 topLeftPosition, Vector2 size, int numberOfSlotsX, int numberOfSlotsY, string textureString)
         {
             TopLeftPosition = topLeftPosition;
             Size = size;
+            NumberOfSlotsX = numberOfSlotsX;
+            NumberOfSlotsY = numberOfSlotsY;
             TextureString = textureString;
             _texture = AssetsManager.Instance.GetTexture(textureString);
             var atlas = AssetsManager.Instance.GetAtlas(textureString);
@@ -40,18 +45,19 @@ namespace PhoenixGameLibrary.Views.SettlementView
             frame = atlas.Frames["frame_corner"];
             _corner = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
             frame = atlas.Frames["slot"];
+            _slot = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
         }
 
-        public static SmallFrame Create(Vector2 topLeftPosition, Vector2 size, string textureString)
+        public static SmallFrameWithSlots Create(Vector2 topLeftPosition, Vector2 size, int numberOfSlotsX, int numberOfSlotsY, string textureString)
         {
-            var smallFrame = new SmallFrame(topLeftPosition, size, textureString);
+            var smallFrame = new SmallFrameWithSlots(topLeftPosition, size, numberOfSlotsX, numberOfSlotsY, textureString);
 
             return smallFrame;
         }
 
-        public static SmallFrame Deserialize(string json)
+        public static SmallFrameWithSlots Deserialize(string json)
         {
-            var smallFrame = JsonConvert.DeserializeObject<SmallFrame>(json);
+            var smallFrame = JsonConvert.DeserializeObject<SmallFrameWithSlots>(json);
 
             return smallFrame;
         }
@@ -85,6 +91,23 @@ namespace PhoenixGameLibrary.Views.SettlementView
             spriteBatch.Draw(_texture, rectBottomLeft, _corner, Color.White);
             var rectBottomRight = new Rectangle((int)TopLeftPosition.X + 1, (int)(TopLeftPosition.Y + Size.Y - 1), _corner.Width, _corner.Height);
             spriteBatch.Draw(_texture, rectBottomRight, _corner, Color.White);
+
+            // slots
+            float x = TopLeftPosition.X + 10.0f;
+            float y = TopLeftPosition.Y + 10.0f;
+
+            for (int j = 0; j < NumberOfSlotsY; ++j)
+            {
+                for (int i = 0; i < NumberOfSlotsX; ++i)
+                {
+                    var rect = new Rectangle((int)x, (int)y, 49, 49);
+                    spriteBatch.Draw(_texture, rect, _slot, Color.White); // new Vector2(x, y)
+                    x += 49.0f; // _slot.Width + 0.0f;
+                }
+
+                x = TopLeftPosition.X + 10.0f; ;
+                y += 49.0f;
+            }
 
             spriteBatch.End();
         }

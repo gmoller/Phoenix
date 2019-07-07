@@ -16,7 +16,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
         private readonly Texture2D _texture;
         private readonly AtlasSpec2 _atlas;
 
-        private readonly SmallFrame _smallFrame;
+        private readonly SmallFrameWithSlots _smallFrame;
         private readonly Label _lblBuildings;
 
         public BuildingsFrame(Vector2 topLeftPosition, Settlement settlement)
@@ -24,7 +24,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _settlement = settlement;
             _topLeftPosition = topLeftPosition;
 
-            _smallFrame = SmallFrame.Create(topLeftPosition + new Vector2(0, 10), new Vector2(500, 650), 10, 13, "GUI_Textures_1");
+            _smallFrame = SmallFrameWithSlots.Create(topLeftPosition + new Vector2(0, 10), new Vector2(500, 650), 10, 13, "GUI_Textures_1");
             _lblBuildings = new Label("lblBuildings", "CrimsonText-Regular-12", topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
 
             _texture = AssetsManager.Instance.GetTexture("Buildings");

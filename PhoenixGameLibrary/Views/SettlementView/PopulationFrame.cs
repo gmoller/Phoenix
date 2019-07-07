@@ -22,7 +22,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _lblRace = new Label("lblRace", "CrimsonText-Regular-12", topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
             _lblPopulationGrowth = new Label("lblPopulationGrowth", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 516.0f, topLeftPosition.Y), HorizontalAlignment.Right, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
 
-            _smallFrame = SmallFrame.Create(topLeftPosition + new Vector2(0, 10), new Vector2(500, 80), 0, 0, "GUI_Textures_1");
+            _smallFrame = SmallFrame.Create(topLeftPosition + new Vector2(0, 10), new Vector2(500, 80), "GUI_Textures_1");
             //_smallFrame = SmallFrame.Create($"{{\"TopLeftPosition\":\"{topLeftPosition.X}, {topLeftPosition.Y + 10.0f}\",\"Size\":\"500, 80\",\"NumberOfSlots\":0,\"TextureString\":\"GUI_Textures_1\"}}");
 
             _lblFarmers1 = new Label("lblFarmers1", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);

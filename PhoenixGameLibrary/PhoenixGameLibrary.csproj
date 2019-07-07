@@ -81,6 +81,7 @@
     <Compile Include="Settlement.cs" />
     <Compile Include="Settlements.cs" />
     <Compile Include="Views\SettlementView\SmallFrame.cs" />
+    <Compile Include="Views\SettlementView\SmallFrameWithSlots.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
