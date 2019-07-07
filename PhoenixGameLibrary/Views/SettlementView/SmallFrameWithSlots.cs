@@ -100,13 +100,13 @@ namespace PhoenixGameLibrary.Views.SettlementView
             {
                 for (int i = 0; i < NumberOfSlotsX; ++i)
                 {
-                    var rect = new Rectangle((int)x, (int)y, 49, 49);
-                    spriteBatch.Draw(_texture, rect, _slot, Color.White); // new Vector2(x, y)
+                    var rect = new Rectangle((int)x, (int)y, 49, 25);
+                    spriteBatch.Draw(_texture, rect, _slot, Color.White);
                     x += 49.0f; // _slot.Width + 0.0f;
                 }
 
                 x = TopLeftPosition.X + 10.0f; ;
-                y += 49.0f;
+                y += 25.0f;
             }
 
             spriteBatch.End();

@@ -233,6 +233,13 @@
       "Height": 40
     },
 	{
+      "Name": "SummoningCircle",
+      "X": 640,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
       "Name": "FlowChart_Left_To_Down",
       "X": 0,
       "Y": 80,
