@@ -189,6 +189,136 @@ namespace PhoenixGameLibrary.Views.SettlementView
             spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
             topLeftX += 147;
             spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+
+            topLeftX = baseTopLeftX;
+            topLeftY += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 98;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpRight_Converge_Down"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_Split_DownLeft"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_Split_DownRight"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+
+            topLeftX = baseTopLeftX;
+            topLeftY += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 98;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 196;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 147;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+
+            topLeftX = baseTopLeftX;
+            topLeftY += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 98;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_Split_DownRight"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpLeft_Converge_Down"].ToRectangle(), Color.White);
+            topLeftX += 98;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpRight_Converge_Down"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_Split_All"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpLeft_Converge_Down"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+
+            topLeftX = baseTopLeftX;
+            topLeftY += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 98;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 147;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 98;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 98;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+
+            topLeftX = baseTopLeftX;
+            topLeftY += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 98;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 147;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_Split_DownRight"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_LeftRight_Converge_Down"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_Split_DownLeft"].ToRectangle(), Color.White);
+            topLeftX += 98;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+
+            topLeftX = baseTopLeftX;
+            topLeftY += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 98;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 245;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 98;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+
+            topLeftX = baseTopLeftX;
+            topLeftY += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 98;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpRight_Converge_Down"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_Split_LeftRight"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Left_To_Right"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpLeft_Converge_Down"].ToRectangle(), Color.White);
+
+            topLeftX = baseTopLeftX;
+            topLeftY += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+
+            topLeftX = baseTopLeftX;
+            topLeftY += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpRight_Converge_Down"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
+            topLeftX += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Left"].ToRectangle(), Color.White);
         }
     }
 }

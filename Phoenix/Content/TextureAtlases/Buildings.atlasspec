@@ -100,135 +100,240 @@
       "Height": 40
     },
 	{
-      "Name": "Shrine",
+      "Name": "WarCollege",
       "X": 560,
       "Y": 0,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "MinersGuild",
+      "Name": "Bank",
       "X": 600,
       "Y": 0,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "Library",
+      "Name": "MerchantsGuild",
       "X": 640,
       "Y": 0,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "ArmorersGuild",
-      "X": 680,
-      "Y": 0,
-      "Width": 40,
-      "Height": 40
-    },
-	{
-      "Name": "Temple",
-      "X": 720,
-      "Y": 0,
-      "Width": 40,
-      "Height": 40
-    },
-	{
-      "Name": "SagesGuild",
-      "X": 760,
-      "Y": 0,
-      "Width": 40,
-      "Height": 40
-    },
-	{
-      "Name": "FarmersMarket",
-      "X": 800,
-      "Y": 0,
-      "Width": 40,
-      "Height": 40
-    },
-	{
-      "Name": "FlowChart_Left_To_Down",
+      "Name": "Shrine",
       "X": 0,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FlowChart_Left_To_Right",
+      "Name": "MinersGuild",
       "X": 40,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
-    {
-      "Name": "FlowChart_Up_Split_All",
+	{
+      "Name": "Library",
       "X": 80,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FlowChart_Up_Split_DownLeft",
+      "Name": "ArmorersGuild",
       "X": 120,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FlowChart_UpRight_Converge_Down",
+      "Name": "Temple",
       "X": 160,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FlowChart_Up_Split_DownRight",
+      "Name": "SagesGuild",
       "X": 200,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FlowChart_LeftRight_Converge_Down",
+      "Name": "FarmersMarket",
       "X": 240,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FlowChart_Up_To_Down",
+      "Name": "AnimistsGuild",
       "X": 280,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FlowChart_Right_To_Down",
+      "Name": "Parthenon",
       "X": 320,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FlowChart_Right_Split_DownLeft",
+      "Name": "University",
       "X": 360,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FlowChart_Left_Split_DownRight",
+      "Name": "AlchemistsGuild",
       "X": 400,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FlowChart_Right_To_Left",
+      "Name": "FantasticStable",
       "X": 440,
       "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "MechaniciansGuild",
+      "X": 480,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "WizardsGuild",
+      "X": 520,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "Cathedral",
+      "X": 560,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "Oracle",
+      "X": 600,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Left_To_Down",
+      "X": 0,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Left_To_Right",
+      "X": 40,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+    {
+      "Name": "FlowChart_Up_Split_All",
+      "X": 80,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Up_Split_DownLeft",
+      "X": 120,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_UpRight_Converge_Down",
+      "X": 160,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Up_Split_DownRight",
+      "X": 200,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_LeftRight_Converge_Down",
+      "X": 240,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Up_To_Down",
+      "X": 280,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Right_To_Down",
+      "X": 320,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Right_Split_DownLeft",
+      "X": 360,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Left_Split_DownRight",
+      "X": 400,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Right_To_Left",
+      "X": 440,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_UpLeft_Converge_Down",
+      "X": 480,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Up_To_Left",
+      "X": 520,
+      "Y": 80,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Up_Split_LeftRight",
+      "X": 560,
+      "Y": 80,
       "Width": 40,
       "Height": 40
     }

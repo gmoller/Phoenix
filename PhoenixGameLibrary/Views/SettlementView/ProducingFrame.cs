@@ -26,7 +26,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _lblProducing.Text = "Producing";
             if (_settlement.CurrentlyBuilding.BuildingId == -1)
             {
-                _lblCurrent.Text = "Current: <nothing> (0/0)";
+                _lblCurrent.Text = "Current: <nothing>";
             }
             else
             {
