@@ -1,2 +1,2 @@
 # Phoenix
-Fantasy 4X Strategy Game
+Fantasy 4X Strategy Game.
