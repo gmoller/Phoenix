@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using GameLogic;
 using PhoenixGameLibrary.GameData;
 
 namespace PhoenixGameLibrary.Helpers
 {
     public static class PopulationGrowthRate
     {
-        public static int DetermineGrowthRate(int maxSettlementSize, int numberOfCitizens, RaceType raceType)
+        public static int DetermineGrowthRate(int maxSettlementSize, int numberOfCitizens, RaceType raceType, List<int> buildingsBuilt)
         {
-            // TODO: Granary, Farmer's Market, Housing Bonus, Dark Rituals, Stream of Life
+            // TODO: Housing Bonus, Dark Rituals, Stream of Life
 
             if (numberOfCitizens >= maxSettlementSize) return 0;
 
@@ -15,6 +17,16 @@ namespace PhoenixGameLibrary.Helpers
             int baseGrowthRateRoundedUp = (int)Math.Ceiling(baseGrowthRate);
 
             int adjustedGrowthRate = baseGrowthRateRoundedUp * 10;
+
+            // buildings
+            foreach (var item in Globals.Instance.BuildingPopulationGrowthTypes)
+            {
+                if (buildingsBuilt.Contains(item.BuildingId))
+                {
+                    adjustedGrowthRate += item.PopulationGrowthRateIncrease;
+                }
+            }
+
             adjustedGrowthRate += raceType.GrowthRateModifier;
 
             return adjustedGrowthRate;

@@ -147,7 +147,7 @@ namespace PhoenixGameLibrary
         private int DetermineGrowthRate()
         {
             int maxSettlementSize = DetermineMaximumSettlementSize();
-            int growthRate = PopulationGrowthRate.DetermineGrowthRate(maxSettlementSize, Citizens.TotalPopulation, RaceType);
+            int growthRate = PopulationGrowthRate.DetermineGrowthRate(maxSettlementSize, Citizens.TotalPopulation, RaceType, _buildingsBuilt);
 
             return growthRate;
         }
@@ -155,6 +155,15 @@ namespace PhoenixGameLibrary
         private int DetermineMaximumSettlementSize()
         {
             int baseFoodLevel = BaseFoodLevel;
+
+            // buildings
+            foreach (var item in Globals.Instance.BuildingMaximumPopulationIncreaseTypes)
+            {
+                if (_buildingsBuilt.Contains(item.BuildingId))
+                {
+                    baseFoodLevel += item.MaximumPopulationIncrease;
+                }
+            }
 
             return baseFoodLevel > Constants.MAXIMUM_POPULATION_SIZE ? Constants.MAXIMUM_POPULATION_SIZE : baseFoodLevel;
         }
