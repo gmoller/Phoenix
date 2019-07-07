@@ -36,38 +36,23 @@ namespace PhoenixGameLibrary
             _position = newPosition;
         }
 
-        public void UpdateCamera(GameTime gameTime, InputHandler input)
+        public void MoveCamera(Vector2 movePosition)
         {
-            MoveCamera(new Vector2(-input.PanCameraDistance.X * 5.0f, -input.PanCameraDistance.Y * 5.0f));
-            ZoomCamera(input);
-            ClampCamera();
+            Vector2 newPosition = _position + movePosition;
 
-            UpdateMatrix();
+            _position = newPosition;
         }
 
-        private void ZoomCamera(InputHandler input)
-        {
-            if (input.CameraZoomIn)
-            {
-                AdjustZoom(0.05f);
-            }
-            if (input.CameraZoomOut)
-            {
-                AdjustZoom(-0.05f);
-            }
-        }
-
-        private void AdjustZoom(float zoomAmount)
+        public void AdjustZoom(float zoomAmount)
         {
             _zoom += zoomAmount;
-            if (_zoom < 0.1f) // 0.35f
-            {
-                _zoom = 0.1f;
-            }
-            if (_zoom > 5.0f) // 2.0f
-            {
-                _zoom = 5.0f;
-            }
+            _zoom = MathHelper.Clamp(_zoom, 0.35f, 2.0f); // 0.1 - 5.0f
+        }
+
+        public void Update(GameTime gameTime, InputHandler input)
+        {
+            ClampCamera();
+            UpdateMatrix();
         }
 
         private void ClampCamera()
@@ -75,13 +60,6 @@ namespace PhoenixGameLibrary
             // TODO: scale not taken into account!
             _position.X = MathHelper.Clamp(_position.X, _bounds.Center.X, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Center.X);
             _position.Y = MathHelper.Clamp(_position.Y, _bounds.Center.Y, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Center.Y);
-        }
-
-        private void MoveCamera(Vector2 movePosition)
-        {
-            Vector2 newPosition = _position + movePosition;
-
-            _position = newPosition;
         }
 
         private void UpdateMatrix()

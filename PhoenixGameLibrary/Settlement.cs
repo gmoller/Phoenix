@@ -19,8 +19,7 @@ namespace PhoenixGameLibrary
     {
         private readonly CellGrid _cellGrid;
         private OverlandSettlementView _overlandSettlementView;
-        private List<int> _buildings;
-
+        private List<int> _buildingsBuilt;
         private int _populationGrowth;
 
         public string Name { get; }
@@ -33,6 +32,7 @@ namespace PhoenixGameLibrary
         public int FoodSurplus => SettlementFoodProduction - Citizens.TotalPopulation;
         //public int GoldUpkeep => DetermineGoldUpkeep();
         //public int GoldSurplus => DetermineGoldSurplus();
+        public CurrentlyBuilding CurrentlyBuilding { get; private set; }
 
         public int SettlementProduction => Helpers.SettlementProduction.DetermineProduction(this, _cellGrid);
 
@@ -61,10 +61,11 @@ namespace PhoenixGameLibrary
             Location = location;
             Citizens = new SettlementCitizens(this, settlementSize);
             _populationGrowth = 0;
-            _buildings = new List<int>();
+            CurrentlyBuilding = new CurrentlyBuilding(-1, 0);
+            _buildingsBuilt = new List<int>();
             foreach (var building in buildings)
             {
-                _buildings.Add(Globals.Instance.BuildingTypes[building].Id);
+                _buildingsBuilt.Add(Globals.Instance.BuildingTypes[building].Id);
             }
 
             View = new SettlementView(this);
@@ -93,7 +94,7 @@ namespace PhoenixGameLibrary
         {
             var building = Globals.Instance.BuildingTypes[buildingName];
 
-            return _buildings.Contains(building.Id);
+            return _buildingsBuilt.Contains(building.Id);
         }
 
         public bool BuildingCanBeBuilt(string buildingName)
@@ -113,9 +114,14 @@ namespace PhoenixGameLibrary
         public bool BuildingReadyToBeBeBuilt(string buildingName)
         {
             var building = Globals.Instance.BuildingTypes[buildingName];
-            var isReadyTobeBuilt = building.IsReadyToBeBuilt(_buildings);
+            var isReadyTobeBuilt = building.IsReadyToBeBuilt(_buildingsBuilt);
 
             return isReadyTobeBuilt;
+        }
+
+        public void AddToProductionQueue(BuildingType building)
+        {
+            CurrentlyBuilding = new CurrentlyBuilding(building.Id, CurrentlyBuilding.ProductionAccrued);
         }
 
         public void EndTurn()
@@ -125,6 +131,16 @@ namespace PhoenixGameLibrary
             {
                 Citizens.IncreaseByOne();
                 _populationGrowth = 0;
+            }
+
+            if (CurrentlyBuilding.BuildingId != -1)
+            {
+                CurrentlyBuilding = new CurrentlyBuilding(CurrentlyBuilding.BuildingId, CurrentlyBuilding.ProductionAccrued + SettlementProduction);
+                if (CurrentlyBuilding.ProductionAccrued >= Globals.Instance.BuildingTypes[CurrentlyBuilding.BuildingId].ConstructionCost)
+                {
+                    _buildingsBuilt.Add(CurrentlyBuilding.BuildingId);
+                    CurrentlyBuilding = new CurrentlyBuilding(-1, 0);
+                }
             }
         }
 
@@ -141,6 +157,18 @@ namespace PhoenixGameLibrary
             int baseFoodLevel = BaseFoodLevel;
 
             return baseFoodLevel > Constants.MAXIMUM_POPULATION_SIZE ? Constants.MAXIMUM_POPULATION_SIZE : baseFoodLevel;
+        }
+    }
+
+    public struct CurrentlyBuilding
+    {
+        public int BuildingId { get; }
+        public int ProductionAccrued { get; }
+
+        public CurrentlyBuilding(int buildingId, int productionAccrued)
+        {
+            BuildingId = buildingId;
+            ProductionAccrued = productionAccrued;
         }
     }
 

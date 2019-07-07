@@ -36,7 +36,7 @@ namespace PhoenixGameLibrary.GameData
         {
             get
             {
-                if (index < 0 || index > _items.Count - 1)
+                if (!_items.ContainsKey(index))
                 {
                     throw new IndexOutOfRangeException($"Index out of range. BuildingType with index [{index}] not found.");
                 }

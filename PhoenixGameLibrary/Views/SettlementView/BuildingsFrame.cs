@@ -34,6 +34,27 @@ namespace PhoenixGameLibrary.Views.SettlementView
         public void Update(GameTime gameTime, InputHandler input)
         {
             _lblBuildings.Text = "Buildings";
+
+            if (input.IsLeftMouseButtonReleased)
+            {
+                // determine where mouse pointer is (is it over a slot? which slot?)
+                int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
+                int baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
+                foreach (var building in Globals.Instance.BuildingTypes)
+                {
+                    int topLeftX = baseTopLeftX + building.Slot.X * 49;
+                    int topLeftY = baseTopLeftY + building.Slot.Y * 49;
+                    var slotRectangle = new Rectangle(topLeftX, topLeftY, 40, 40);
+                    if (slotRectangle.Contains(input.MousePostion))
+                    {
+                        // can building be built? requirements met? not already built?
+                        if (_settlement.BuildingReadyToBeBeBuilt(building.Name))
+                        {
+                            _settlement.AddToProductionQueue(building);
+                        }
+                    }
+                }
+            }
         }
 
         public void Draw()
@@ -74,7 +95,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
             {
                 color = Color.LightGreen;
             }
-            else // can be built, but not ready
+            else // can be built, but requirements not met
             {
                 color = Color.Black;
             }
@@ -85,11 +106,11 @@ namespace PhoenixGameLibrary.Views.SettlementView
 
         private void DrawArrows(SpriteBatch spriteBatch)
         {
-            int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
-            int baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
+            var baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
+            var baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
 
-            int topLeftX = baseTopLeftX;
-            int topLeftY = baseTopLeftY;
+            var topLeftX = baseTopLeftX;
+            var topLeftY = baseTopLeftY;
             topLeftY += 49;
             spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpRight_Converge_Down"].ToRectangle(), Color.White);
             topLeftX += 49;
@@ -158,6 +179,16 @@ namespace PhoenixGameLibrary.Views.SettlementView
             spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_UpRight_Converge_Down"].ToRectangle(), Color.White);
             topLeftX += 49;
             spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_Split_DownLeft"].ToRectangle(), Color.White);
+
+            topLeftX = baseTopLeftX;
+            topLeftY += 49;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 147;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 147;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
+            topLeftX += 147;
+            spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 40), _atlas.Frames["FlowChart_Up_To_Down"].ToRectangle(), Color.White);
         }
     }
 }

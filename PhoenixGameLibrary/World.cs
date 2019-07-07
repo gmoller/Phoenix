@@ -11,9 +11,12 @@ namespace PhoenixGameLibrary
         private readonly OverlandMap _overlandMap;
         private readonly Settlements _settlements;
 
+        public OverlandMap OverlandMap => _overlandMap;
         public Faction PlayerFaction { get; }
 
         public Camera Camera { get; }
+
+        public bool CanScrollMap { get; set; }
 
         public World()
         {
@@ -34,7 +37,25 @@ namespace PhoenixGameLibrary
 
         public void Update(GameTime gameTime, InputHandler input)
         {
-            Camera.UpdateCamera(gameTime, input);
+            if (CanScrollMap)
+            {
+                var zoom = input.MouseWheelUp ? 0.05f : 0.0f;
+                zoom = input.MouseWheelDown ? -0.05f : zoom;
+                Camera.AdjustZoom(zoom);
+                var panCameraDistance = input.IsLeftMouseButtonDown && input.HasMouseMoved ? input.MouseMovement.ToVector2() : Vector2.Zero;
+                Camera.MoveCamera(panCameraDistance);
+
+                panCameraDistance = input.MouseIsAtTopOfScreen ? new Vector2(0.0f, -2.0f) * (float)gameTime.ElapsedGameTime.TotalMilliseconds : Vector2.Zero;
+                Camera.MoveCamera(panCameraDistance);
+                panCameraDistance = input.MouseIsAtBottomOfScreen ? new Vector2(0.0f, 2.0f) * (float)gameTime.ElapsedGameTime.TotalMilliseconds : Vector2.Zero;
+                Camera.MoveCamera(panCameraDistance);
+                panCameraDistance = input.MouseIsAtLeftOfScreen ? new Vector2(-2.0f, 0.0f) * (float)gameTime.ElapsedGameTime.TotalMilliseconds : Vector2.Zero;
+                Camera.MoveCamera(panCameraDistance);
+                panCameraDistance = input.MouseIsAtRightOfScreen ? new Vector2(2.0f, 0.0f) * (float)gameTime.ElapsedGameTime.TotalMilliseconds : Vector2.Zero;
+                Camera.MoveCamera(panCameraDistance);
+            }
+            Camera.Update(gameTime, input);
+
             _overlandMap.Update(gameTime, input);
             _settlements.Update(gameTime, input);
 

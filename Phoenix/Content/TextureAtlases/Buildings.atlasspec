@@ -79,6 +79,76 @@
       "Height": 40
     },
 	{
+      "Name": "MaritimeGuild",
+      "X": 440,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FightersGuild",
+      "X": 480,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "CityWalls",
+      "X": 520,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "Shrine",
+      "X": 560,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "MinersGuild",
+      "X": 600,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "Library",
+      "X": 640,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "ArmorersGuild",
+      "X": 680,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "Temple",
+      "X": 720,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "SagesGuild",
+      "X": 760,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FarmersMarket",
+      "X": 800,
+      "Y": 0,
+      "Width": 40,
+      "Height": 40
+    },
+	{
       "Name": "FlowChart_Left_To_Down",
       "X": 0,
       "Y": 40,
@@ -151,6 +221,13 @@
 	{
       "Name": "FlowChart_Left_Split_DownRight",
       "X": 400,
+      "Y": 40,
+      "Width": 40,
+      "Height": 40
+    },
+	{
+      "Name": "FlowChart_Right_To_Left",
+      "X": 440,
       "Y": 40,
       "Width": 40,
       "Height": 40

@@ -34,6 +34,7 @@ namespace PhoenixGameLibrary.Views
         public void Update(GameTime gameTime, InputHandler input)
         {
             _btnEndTurn.Update(gameTime);
+            Globals.Instance.World.CanScrollMap = !_btnEndTurn.MouseOver;
         }
 
         public void Draw()
@@ -71,11 +72,11 @@ namespace PhoenixGameLibrary.Views
 
             //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, camera.Transform);
 
-            //for (int r = 0; r < _numberOfRows; ++r)
+            //for (int r = 0; r < cellGrid.NumberOfRows; ++r)
             //{
-            //    for (int q = 0; q < _numberOfColumns; ++q)
+            //    for (int q = 0; q < cellGrid.NumberOfColumns; ++q)
             //    {
-            //        var cell = _cellGrid[q, r];
+            //        var cell = cellGrid.GetCell(q, r);
             //        DrawHexBorder(cell);
             //    }
             //}
@@ -103,7 +104,7 @@ namespace PhoenixGameLibrary.Views
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
         }
 
-        private void DrawHexHorder(Cell cell)
+        private void DrawHexBorder(Cell cell)
         {
             var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
 

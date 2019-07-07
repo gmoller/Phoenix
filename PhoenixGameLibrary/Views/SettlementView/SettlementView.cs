@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using GameLogic;
 using GuiControls;
 using HexLibrary;
 using Utilities;
@@ -21,6 +22,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
         private PopulationFrame _populationFrame;
         private ResourceFrame _resourceFrame;
         private BuildingsFrame _buildingsFrame;
+        private ProducingFrame _producingFrame;
 
         private readonly Settlement _settlement;
         private readonly Vector2 _topLeftPositionMain;
@@ -49,12 +51,15 @@ namespace PhoenixGameLibrary.Views.SettlementView
 
             _populationFrame = new PopulationFrame(new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 40.0f), _settlement);
             _resourceFrame = new ResourceFrame(new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 160.0f), _settlement);
+            _producingFrame = new ProducingFrame(new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 360.0f), _settlement);
 
             _buildingsFrame = new BuildingsFrame(new Vector2(_topLeftPositionSecondary.X + 20.0f, _topLeftPositionSecondary.Y + 40.0f), _settlement);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
         {
+            Globals.Instance.World.CanScrollMap &= !IsEnabled;
+
             if (IsEnabled)
             {
                 _mainFrame.Update(gameTime, input);
@@ -65,6 +70,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
 
                 _populationFrame.Update(gameTime, input);
                 _resourceFrame.Update(gameTime, input);
+                _producingFrame.Update(gameTime, input);
                 _buildingsFrame.Update(gameTime, input);
             }
         }
@@ -83,17 +89,38 @@ namespace PhoenixGameLibrary.Views.SettlementView
 
                 _populationFrame.Draw();
                 _resourceFrame.Draw();
+                _producingFrame.Draw();
                 _buildingsFrame.Draw();
 
                 var catchment = HexOffsetCoordinates.GetAllNeighbors(_settlement.Location.X, _settlement.Location.Y);
                 foreach (var tile in catchment)
                 {
-                    //var cell = Globals.Instance.CellGrid[tile.Col, tile.Row];
-                    //cell.Draw(_camera, depth, _terrainTypes);
+                    var cell = Globals.Instance.World.OverlandMap.CellGrid.GetCell(tile.Col, tile.Row);
+                    DrawCell(cell, 1.0f);
                 }
 
                 //DeviceManager.Instance.ResetViewport();
             }
+        }
+
+        // TODO: get rid of this duplication, cater for depth, zoom in, draw settlement
+        private void DrawCell(Cell cell, float layerDepth)
+        {
+            var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
+
+            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
+
+            var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
+            var texture = AssetsManager.Instance.GetTexture(cell.Texture.TexturePalette);
+            var spec = AssetsManager.Instance.GetAtlas(cell.Texture.TexturePalette);
+            var frame = spec.Frames[cell.Texture.TextureId];
+            var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
+
+            var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
+            var camera = Globals.Instance.World.Camera;
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, camera.Transform);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.LightSlateGray, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
+            spriteBatch.End();
         }
 
         public void CloseButtonClick(object sender, EventArgs e)

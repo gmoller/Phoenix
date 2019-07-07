@@ -62,6 +62,7 @@
     <Compile Include="Views\SettlementView\BuildingsFrame.cs" />
     <Compile Include="Views\SettlementView\MainFrame.cs" />
     <Compile Include="Views\SettlementView\PopulationFrame.cs" />
+    <Compile Include="Views\SettlementView\ProducingFrame.cs" />
     <Compile Include="Views\SettlementView\ResourceFrame.cs" />
     <Compile Include="Views\SettlementView\SettlementView.cs" />
     <Compile Include="Views\Cursor.cs" />

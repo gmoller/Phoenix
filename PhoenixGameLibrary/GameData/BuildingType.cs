@@ -55,6 +55,8 @@ namespace PhoenixGameLibrary.GameData
 
         public bool IsReadyToBeBuilt(List<int> buildingsAlreadyBuilt)
         {
+            if (buildingsAlreadyBuilt.Contains(Id)) return false;
+
             var isReadyToBeBuilt = true;
             foreach (var building in _dependsOnBuildings)
             {
