@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Faction.cs" />
+    <Compile Include="GameData\BuildingFoodOutputIncreaseType.cs" />
     <Compile Include="GameData\BuildingMaximumPopulationIncreaseType.cs" />
     <Compile Include="GameData\BuildingPopulationGrowthType.cs" />
     <Compile Include="GameData\BuildingType.cs" />

@@ -28,7 +28,7 @@ namespace PhoenixGameLibrary
         public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
         public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(Location, _cellGrid);
         public int GrowthRate => DetermineGrowthRate();
-        public int SettlementFoodProduction => Helpers.SettlementFoodProduction.DetermineFoodProduction(this);
+        public int SettlementFoodProduction => Helpers.SettlementFoodProduction.DetermineFoodProduction(this, _buildingsBuilt);
         public int FoodSurplus => SettlementFoodProduction - Citizens.TotalPopulation;
         //public int GoldUpkeep => DetermineGoldUpkeep();
         //public int GoldSurplus => DetermineGoldSurplus();
@@ -59,7 +59,6 @@ namespace PhoenixGameLibrary
             Name = name;
             RaceType = Globals.Instance.RaceTypes[raceTypeName];
             Location = location;
-            Citizens = new SettlementCitizens(this, settlementSize);
             _populationGrowth = 0;
             CurrentlyBuilding = new CurrentlyBuilding(-1, 0);
             _buildingsBuilt = new List<int>();
@@ -67,6 +66,7 @@ namespace PhoenixGameLibrary
             {
                 _buildingsBuilt.Add(Globals.Instance.BuildingTypes[building].Id);
             }
+            Citizens = new SettlementCitizens(this, settlementSize, _buildingsBuilt);
 
             View = new SettlementView(this);
             _overlandSettlementView = new OverlandSettlementView(this);
@@ -129,7 +129,7 @@ namespace PhoenixGameLibrary
             _populationGrowth += GrowthRate;
             if (_populationGrowth >= 1000 && Citizens.TotalPopulation < Constants.MAXIMUM_POPULATION_SIZE)
             {
-                Citizens.IncreaseByOne();
+                Citizens.IncreaseByOne(_buildingsBuilt);
                 _populationGrowth = 0;
             }
 

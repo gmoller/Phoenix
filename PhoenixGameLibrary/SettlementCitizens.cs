@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using GameLogic;
 
 namespace PhoenixGameLibrary
 {
@@ -14,18 +16,18 @@ namespace PhoenixGameLibrary
 
         public int TotalPopulation => SubsistenceFarmers + AdditionalFarmers + Workers; // _rebels
 
-        public SettlementCitizens(Settlement settlement, int settlementSize)
+        public SettlementCitizens(Settlement settlement, int settlementSize, List<int> buildingsBuilt)
         {
             _settlement = settlement;
 
-            SubsistenceFarmers = CalculateSubsistenceFarmers(settlementSize);
+            SubsistenceFarmers = CalculateSubsistenceFarmers(settlementSize, buildingsBuilt);
             AdditionalFarmers = settlementSize - SubsistenceFarmers;
             Workers = 0;
         }
 
-        public void IncreaseByOne()
+        public void IncreaseByOne(List<int> buildingsBuilt)
         {
-            var subsistenceFarmers = CalculateSubsistenceFarmers(TotalPopulation + 1);
+            var subsistenceFarmers = CalculateSubsistenceFarmers(TotalPopulation + 1, buildingsBuilt);
 
             if (subsistenceFarmers > SubsistenceFarmers)
             {
@@ -64,12 +66,23 @@ namespace PhoenixGameLibrary
             Workers = (byte)(sum - AdditionalFarmers);
         }
 
-        private int CalculateSubsistenceFarmers(int totalPopulation)
+        private int CalculateSubsistenceFarmers(int totalPopulation, List<int> buildingsBuilt)
         {
-            // TODO: buldings, wild game not being factored in
-            var foodUpkeep = totalPopulation;
+            // TODO: wild game not being factored in
 
-            var farmersSubsistenceFloat = foodUpkeep / 2.0f; // 2 is farming rate: TODO: halfling race has higher farming rate
+            // buildings
+            int freeFood = 0;
+            foreach (var item in Globals.Instance.BuildingFoodOutputIncreaseTypes)
+            {
+                if (buildingsBuilt.Contains(item.BuildingId))
+                {
+                    freeFood += item.FoodOutputIncrease;
+                }
+            }
+
+            var foodUpkeep = totalPopulation - freeFood;
+
+            var farmersSubsistenceFloat = foodUpkeep / _settlement.RaceType.FarmingRate;
             var farmersSubsistence = (int)Math.Ceiling(farmersSubsistenceFloat);
 
             return farmersSubsistence;

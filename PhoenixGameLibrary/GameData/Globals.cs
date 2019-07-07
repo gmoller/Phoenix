@@ -15,6 +15,7 @@ namespace GameLogic
         public BuildingTypes BuildingTypes { get; }
         public BuildingPopulationGrowthTypes BuildingPopulationGrowthTypes { get; }
         public BuildingMaximumPopulationIncreaseTypes BuildingMaximumPopulationIncreaseTypes { get; }
+        public BuildingFoodOutputIncreaseTypes BuildingFoodOutputIncreaseTypes { get; }
 
         //public MovementTypes MovementTypes { get; }
         //public MineralTypes MineralTypes { get; }
@@ -30,6 +31,7 @@ namespace GameLogic
             BuildingTypes = BuildingTypes.Create(BuildingTypesLoader.Load());
             BuildingPopulationGrowthTypes = BuildingPopulationGrowthTypes.Create(BuildingPopulationGrowthTypesLoader.Load());
             BuildingMaximumPopulationIncreaseTypes = BuildingMaximumPopulationIncreaseTypes.Create(BuildingMaximumPopulationIncreaseTypesLoader.Load());
+            BuildingFoodOutputIncreaseTypes = BuildingFoodOutputIncreaseTypes.Create(BuildingFoodOutputIncreaseTypesLoader.Load());
 
             //MovementTypes = MovementTypes.Create(new List<MovementType> { MovementType.Create(1, "Ground") });
             //MineralTypes = MineralTypes.Create(MineralTypesLoader.GetMineralTypes());
