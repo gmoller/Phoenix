@@ -79,8 +79,6 @@ namespace PhoenixGameLibrary.Views.SettlementView
         {
             if (IsEnabled)
             {
-                //DeviceManager.Instance.SetViewport(new Viewport(1035, 0, 556, 800, 0, 1));
-
                 _mainFrame.Draw();
                 _secondaryFrame.Draw();
 
@@ -98,8 +96,6 @@ namespace PhoenixGameLibrary.Views.SettlementView
                     var cell = Globals.Instance.World.OverlandMap.CellGrid.GetCell(tile.Col, tile.Row);
                     DrawCell(cell, 1.0f);
                 }
-
-                //DeviceManager.Instance.ResetViewport();
             }
         }
 
@@ -118,7 +114,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
 
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
             var camera = Globals.Instance.World.Camera;
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, camera.Transform);
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.LightSlateGray, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
             spriteBatch.End();
         }

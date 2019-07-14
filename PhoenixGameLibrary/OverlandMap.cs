@@ -8,7 +8,6 @@ namespace PhoenixGameLibrary
     {
         private readonly World _world;
         private readonly OverlandMapView _overlandMapView;
-        private HudView _hud;
 
         public CellGrid CellGrid { get; }
 
@@ -22,21 +21,16 @@ namespace PhoenixGameLibrary
         public void LoadContent(ContentManager content)
         {
             _overlandMapView.LoadContent(content);
-
-            _hud = new HudView();
-            _hud.LoadContent(content);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
         {
             _overlandMapView.Update(gameTime, input);
-            _hud.Update(gameTime);
         }
 
         public void Draw()
         {
             _overlandMapView.Draw();
-            _hud.Draw();
         }
 
         public void EndTurn()

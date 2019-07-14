@@ -148,20 +148,20 @@ namespace Phoenix
 
         protected override void Draw(GameTime gameTime)
         {
-            try
-            {
+            //try
+            //{
                 GraphicsDevice.Clear(Color.Black);
 
                 _phoenixGame.Draw();
                 _metricsPanel.Draw();
 
                 base.Draw(gameTime);
-            }
-            catch (Exception ex)
-            {
-                Logger.Instance.LogError(ex);
-                throw ex;
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger.Instance.LogError(ex);
+            //    throw ex;
+            //}
         }
     }
 }

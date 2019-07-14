@@ -2,11 +2,15 @@
 using Microsoft.Xna.Framework.Content;
 using GameLogic;
 using GuiControls;
+using PhoenixGameLibrary.Views.SettlementView;
+using Utilities;
 
 namespace PhoenixGameLibrary.Views
 {
     public class HudView
     {
+        private Frame _frame;
+
         private Button _btnGold;
         private Label _lblGold;
         private Button _btnMana;
@@ -16,6 +20,8 @@ namespace PhoenixGameLibrary.Views
 
         public void LoadContent(ContentManager content)
         {
+            _frame = Frame.Create(new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width - 202.0f, 0.0f), new Vector2(202.0f, DeviceManager.Instance.GraphicsDevice.Viewport.Height - 60), "GUI_Textures_1");
+
             _btnGold = new Button("btnGold", new Vector2(0.0f, 0.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(50.0f, 50.0f), "Icons_1", "Coin_T", "Coin_R", "Coin_R");
             _lblGold = new Label("lblGold", "CrimsonText-Regular-12", new Vector2(_btnGold.Right, _btnGold.Center.Y), HorizontalAlignment.Left, VerticalAlignment.Middle, new Vector2(100.0f, 25.0f), string.Empty, HorizontalAlignment.Left, Color.Yellow, Color.Black, Color.TransparentBlack);
 
@@ -43,6 +49,8 @@ namespace PhoenixGameLibrary.Views
 
         public void Draw()
         {
+            _frame.Draw();
+
             _btnGold.Draw();
             _lblGold.Draw();
 

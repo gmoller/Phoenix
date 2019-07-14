@@ -84,9 +84,13 @@ namespace PhoenixGameLibrary
             View.Update(gameTime, input);
         }
 
-        public void Draw()
+        public void DrawOverland()
         {
             _overlandSettlementView.Draw();
+        }
+
+        public void DrawSettlement()
+        {
             View.Draw();
         }
 

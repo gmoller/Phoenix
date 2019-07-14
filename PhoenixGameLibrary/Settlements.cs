@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary
@@ -29,13 +28,25 @@ namespace PhoenixGameLibrary
             FoodProducedThisTurn = foodProducedThisTurn;
         }
 
-        public void Draw()
+        public void DrawOverland()
         {
             DeviceManager.Instance.SetViewport(DeviceManager.Instance.MapViewport);
 
             foreach (var settlement in _settlements)
             {
-                settlement.Draw();
+                settlement.DrawOverland();
+            }
+
+            DeviceManager.Instance.ResetViewport();
+        }
+
+        public void DrawSettlement()
+        {
+            DeviceManager.Instance.SetViewport(DeviceManager.Instance.MapViewport);
+
+            foreach (var settlement in _settlements)
+            {
+                settlement.DrawSettlement();
             }
 
             DeviceManager.Instance.ResetViewport();

@@ -125,7 +125,7 @@ namespace Utilities
         /// <param name="spriteBatch">The destination drawing surface</param>
         /// <param name="rect">The rectangle to draw</param>
         /// <param name="color">The color to draw the rectangle in</param>
-        public static void FillRectangle(this SpriteBatch spriteBatch, Rectangle rect, Color color)
+        public static void FillRectangle(this SpriteBatch spriteBatch, Rectangle rect, Color color, float layerDepth)
         {
             if (pixel == null)
             {
@@ -133,7 +133,7 @@ namespace Utilities
             }
 
             // Simply use the function already there
-            spriteBatch.Draw(pixel, rect, color);
+            spriteBatch.Draw(pixel, rect, null, color, 0.0f, Vector2.Zero, SpriteEffects.None, layerDepth);
         }
 
         /// <summary>
@@ -143,14 +143,14 @@ namespace Utilities
         /// <param name="rect">The rectangle to draw</param>
         /// <param name="color">The color to draw the rectangle in</param>
         /// <param name="angle">The angle in radians to draw the rectangle at</param>
-        public static void FillRectangle(this SpriteBatch spriteBatch, Rectangle rect, Color color, float angle)
+        public static void FillRectangle(this SpriteBatch spriteBatch, Rectangle rect, Color color, float angle, float layerDepth)
         {
             if (pixel == null)
             {
                 CreateThePixel(spriteBatch);
             }
 
-            spriteBatch.Draw(pixel, rect, null, color, angle, Vector2.Zero, SpriteEffects.None, 0);
+            spriteBatch.Draw(pixel, rect, null, color, angle, Vector2.Zero, SpriteEffects.None, layerDepth);
         }
 
         /// <summary>
@@ -160,9 +160,9 @@ namespace Utilities
         /// <param name="location">Where to draw</param>
         /// <param name="size">The size of the rectangle</param>
         /// <param name="color">The color to draw the rectangle in</param>
-        public static void FillRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Color color)
+        public static void FillRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Color color, float layerDepth)
         {
-            FillRectangle(spriteBatch, location, size, color, 0.0f);
+            FillRectangle(spriteBatch, location, size, color, 0.0f, layerDepth);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace Utilities
         /// <param name="size">The size of the rectangle</param>
         /// <param name="angle">The angle in radians to draw the rectangle at</param>
         /// <param name="color">The color to draw the rectangle in</param>
-        public static void FillRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Color color, float angle)
+        public static void FillRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Color color, float angle, float layerDepth)
         {
             if (pixel == null)
             {
@@ -189,7 +189,7 @@ namespace Utilities
                              Vector2.Zero,
                              size,
                              SpriteEffects.None,
-                             0);
+                             layerDepth);
         }
 
         /// <summary>
@@ -201,9 +201,9 @@ namespace Utilities
         /// <param name="w">Width</param>
         /// <param name="h">Height</param>
         /// <param name="color">The color to draw the rectangle in</param>
-        public static void FillRectangle(this SpriteBatch spriteBatch, float x, float y, float w, float h, Color color)
+        public static void FillRectangle(this SpriteBatch spriteBatch, float x, float y, float w, float h, Color color, float layerDepth)
         {
-            FillRectangle(spriteBatch, new Vector2(x, y), new Vector2(w, h), color, 0.0f);
+            FillRectangle(spriteBatch, new Vector2(x, y), new Vector2(w, h), color, 0.0f, layerDepth);
         }
 
         /// <summary>
@@ -216,9 +216,9 @@ namespace Utilities
         /// <param name="h">Height</param>
         /// <param name="color">The color to draw the rectangle in</param>
         /// <param name="angle">The angle of the rectangle in radians</param>
-        public static void FillRectangle(this SpriteBatch spriteBatch, float x, float y, float w, float h, Color color, float angle)
+        public static void FillRectangle(this SpriteBatch spriteBatch, float x, float y, float w, float h, Color color, float angle, float layerDepth)
         {
-            FillRectangle(spriteBatch, new Vector2(x, y), new Vector2(w, h), color, angle);
+            FillRectangle(spriteBatch, new Vector2(x, y), new Vector2(w, h), color, angle, layerDepth);
         }
 
         #endregion
@@ -231,9 +231,9 @@ namespace Utilities
         /// <param name="spriteBatch">The destination drawing surface</param>
         /// <param name="rect">The rectangle to draw</param>
         /// <param name="color">The color to draw the rectangle in</param>
-        public static void DrawRectangle(this SpriteBatch spriteBatch, Rectangle rect, Color color)
+        public static void DrawRectangle(this SpriteBatch spriteBatch, Rectangle rect, Color color, float layerDepth)
         {
-            DrawRectangle(spriteBatch, rect, color, 1.0f);
+            DrawRectangle(spriteBatch, rect, color, 1.0f, layerDepth);
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace Utilities
         /// <param name="rect">The rectangle to draw</param>
         /// <param name="color">The color to draw the rectangle in</param>
         /// <param name="thickness">The thickness of the lines</param>
-        public static void DrawRectangle(this SpriteBatch spriteBatch, Rectangle rect, Color color, float thickness)
+        public static void DrawRectangle(this SpriteBatch spriteBatch, Rectangle rect, Color color, float thickness, float layerDepth)
         {
 
             // TODO: Handle rotations
@@ -262,9 +262,9 @@ namespace Utilities
         /// <param name="location">Where to draw</param>
         /// <param name="size">The size of the rectangle</param>
         /// <param name="color">The color to draw the rectangle in</param>
-        public static void DrawRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Color color)
+        public static void DrawRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Color color, float layerDepth)
         {
-            DrawRectangle(spriteBatch, new Rectangle((int)location.X, (int)location.Y, (int)size.X, (int)size.Y), color, 1.0f);
+            DrawRectangle(spriteBatch, new Rectangle((int)location.X, (int)location.Y, (int)size.X, (int)size.Y), color, 1.0f, layerDepth);
         }
 
         /// <summary>
@@ -275,9 +275,9 @@ namespace Utilities
         /// <param name="size">The size of the rectangle</param>
         /// <param name="color">The color to draw the rectangle in</param>
         /// <param name="thickness">The thickness of the line</param>
-        public static void DrawRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Color color, float thickness)
+        public static void DrawRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Color color, float thickness, float layerDepth)
         {
-            DrawRectangle(spriteBatch, new Rectangle((int)location.X, (int)location.Y, (int)size.X, (int)size.Y), color, thickness);
+            DrawRectangle(spriteBatch, new Rectangle((int)location.X, (int)location.Y, (int)size.X, (int)size.Y), color, thickness, layerDepth);
         }
 
         #endregion
@@ -293,9 +293,9 @@ namespace Utilities
         /// <param name="x2">The X coord of the second point</param>
         /// <param name="y2">The Y coord of the second point</param>
         /// <param name="color">The color to use</param>
-        public static void DrawLine(this SpriteBatch spriteBatch, float x1, float y1, float x2, float y2, Color color)
+        public static void DrawLine(this SpriteBatch spriteBatch, float x1, float y1, float x2, float y2, Color color, float layerDepth)
         {
-            DrawLine(spriteBatch, new Vector2(x1, y1), new Vector2(x2, y2), color, 1.0f);
+            DrawLine(spriteBatch, new Vector2(x1, y1), new Vector2(x2, y2), color, 1.0f, layerDepth);
         }
 
         /// <summary>
@@ -308,9 +308,9 @@ namespace Utilities
         /// <param name="y2">The Y coord of the second point</param>
         /// <param name="color">The color to use</param>
         /// <param name="thickness">The thickness of the line</param>
-        public static void DrawLine(this SpriteBatch spriteBatch, float x1, float y1, float x2, float y2, Color color, float thickness)
+        public static void DrawLine(this SpriteBatch spriteBatch, float x1, float y1, float x2, float y2, Color color, float thickness, float layerDepth)
         {
-            DrawLine(spriteBatch, new Vector2(x1, y1), new Vector2(x2, y2), color, thickness);
+            DrawLine(spriteBatch, new Vector2(x1, y1), new Vector2(x2, y2), color, thickness, layerDepth);
         }
 
         /// <summary>
@@ -320,9 +320,9 @@ namespace Utilities
         /// <param name="point1">The first point</param>
         /// <param name="point2">The second point</param>
         /// <param name="color">The color to use</param>
-        public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point1, Vector2 point2, Color color)
+        public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point1, Vector2 point2, Color color, float layerDepth)
         {
-            DrawLine(spriteBatch, point1, point2, color, 1.0f);
+            DrawLine(spriteBatch, point1, point2, color, 1.0f, layerDepth);
         }
 
         /// <summary>
@@ -333,7 +333,7 @@ namespace Utilities
         /// <param name="point2">The second point</param>
         /// <param name="color">The color to use</param>
         /// <param name="thickness">The thickness of the line</param>
-        public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point1, Vector2 point2, Color color, float thickness)
+        public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point1, Vector2 point2, Color color, float thickness, float layerDepth)
         {
             // calculate the distance between the two vectors
             float distance = Vector2.Distance(point1, point2);
@@ -341,7 +341,7 @@ namespace Utilities
             // calculate the angle between the two vectors
             float angle = (float)Math.Atan2(point2.Y - point1.Y, point2.X - point1.X);
 
-            DrawLine(spriteBatch, point1, distance, angle, color, thickness);
+            DrawLine(spriteBatch, point1, distance, angle, color, thickness, layerDepth);
         }
 
         /// <summary>
@@ -352,9 +352,9 @@ namespace Utilities
         /// <param name="length">The length of the line</param>
         /// <param name="angle">The angle of this line from the starting point in radians</param>
         /// <param name="color">The color to use</param>
-        public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point, float length, float angle, Color color)
+        public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point, float length, float angle, Color color, float layerDepth)
         {
-            DrawLine(spriteBatch, point, length, angle, color, 1.0f);
+            DrawLine(spriteBatch, point, length, angle, color, 1.0f, layerDepth);
         }
 
         /// <summary>
@@ -366,7 +366,7 @@ namespace Utilities
         /// <param name="angle">The angle of this line from the starting point</param>
         /// <param name="color">The color to use</param>
         /// <param name="thickness">The thickness of the line</param>
-        public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point, float length, float angle, Color color, float thickness)
+        public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point, float length, float angle, Color color, float thickness, float layerDepth)
         {
             if (pixel == null)
             {
@@ -382,7 +382,7 @@ namespace Utilities
                              Vector2.Zero,
                              new Vector2(length, thickness),
                              SpriteEffects.None,
-                             0);
+                             layerDepth);
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
@@ -6,7 +7,6 @@ using GameLogic;
 using GuiControls;
 using HexLibrary;
 using Utilities;
-using System;
 
 namespace PhoenixGameLibrary.Views
 {
@@ -41,18 +41,21 @@ namespace PhoenixGameLibrary.Views
         {
             var camera = Globals.Instance.World.Camera;
             var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, camera.Transform);
+            //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
 
             var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(_settlement.Location.X, _settlement.Location.Y);
             var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(HexLibrary.Constants.HEX_ACTUAL_WIDTH * 0.5f), (int)(HexLibrary.Constants.HEX_ACTUAL_HEIGHT * 0.75f));
-            spriteBatch.Draw(_texture, destinationRectangle, _sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, 0.0f);
+
+            var index = (_settlement.Location.Y * Constants.WORLD_MAP_COLUMNS) + _settlement.Location.X;
+            float layerDepth = index / 10000.0f + 0.0001f;
+            spriteBatch.Draw(_texture, destinationRectangle, _sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
 
             position -= new Vector2(0.0f, HexLibrary.Constants.HEX_THREE_QUARTER_HEIGHT);
             _lblName.Position = position;
             _lblName.Transform = Globals.Instance.World.Camera.Transform;
-            _lblName.Draw();
+            _lblName.Draw(spriteBatch);
 
-            spriteBatch.End();
+            //spriteBatch.End();
         }
 
         private void lblNameClick(object sender, EventArgs e)

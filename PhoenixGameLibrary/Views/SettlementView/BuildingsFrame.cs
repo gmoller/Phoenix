@@ -114,7 +114,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
                 color = Color.Black;
             }
 
-            spriteBatch.FillRectangle(rect, color);
+            spriteBatch.FillRectangle(rect, color, 0.0f);
             spriteBatch.Draw(_texture, rect, _atlas.Frames[buildingName].ToRectangle(), Color.White);
         }
 

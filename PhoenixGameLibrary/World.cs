@@ -1,17 +1,22 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using GameLogic;
+using GuiControls;
 using HexLibrary;
 using Utilities;
+using PhoenixGameLibrary.Views;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace PhoenixGameLibrary
 {
     public class World
     {
-        private readonly OverlandMap _overlandMap;
         private readonly Settlements _settlements;
+        private HudView _hud;
+        private Button _btnEndTurn;
 
-        public OverlandMap OverlandMap => _overlandMap;
+        public OverlandMap OverlandMap { get; }
         public Faction PlayerFaction { get; }
 
         public Camera Camera { get; }
@@ -25,14 +30,22 @@ namespace PhoenixGameLibrary
             Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
             Camera.LookAt(new Vector2(800.0f, 400.0f));
             PlayerFaction = new Faction();
-            _overlandMap = new OverlandMap(this);
+            OverlandMap = new OverlandMap(this);
             _settlements = new Settlements();
         }
 
         public void LoadContent(ContentManager content)
         {
-            _overlandMap.LoadContent(content);
-            _settlements.AddSettlement("Fairhaven", "Nomads", new Point(12, 9), _overlandMap.CellGrid, content);
+            OverlandMap.LoadContent(content);
+            _settlements.AddSettlement("Fairhaven", "Nomads", new Point(12, 9), OverlandMap.CellGrid, content);
+
+            _hud = new HudView();
+            _hud.LoadContent(content);
+
+            var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
+            var label = new Label("lblNextTurn", "CrimsonText-Regular-12", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "Next Turn", HorizontalAlignment.Center, Color.White, Color.Blue);
+            _btnEndTurn = new Button("btnEndTurn", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_h", label);
+            _btnEndTurn.Click += btnEndTurnClick;
         }
 
         public void Update(GameTime gameTime, InputHandler input)
@@ -56,8 +69,12 @@ namespace PhoenixGameLibrary
             }
             Camera.Update(gameTime, input);
 
-            _overlandMap.Update(gameTime, input);
+            OverlandMap.Update(gameTime, input);
             _settlements.Update(gameTime, input);
+            _hud.Update(gameTime);
+
+            _btnEndTurn.Update(gameTime);
+            Globals.Instance.World.CanScrollMap = !_btnEndTurn.MouseOver;
 
             PlayerFaction.FoodPerTurn = _settlements.FoodProducedThisTurn;
 
@@ -69,13 +86,28 @@ namespace PhoenixGameLibrary
 
         public void Draw()
         {
-            _overlandMap.Draw();
-            _settlements.Draw();
+            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
+
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, Camera.Transform);
+
+            OverlandMap.Draw();
+            _settlements.DrawOverland();
+
+            spriteBatch.End();
+
+            _hud.Draw();
+            _settlements.DrawSettlement();
+            _btnEndTurn.Draw();
         }
 
         public void EndTurn()
         {
             _settlements.EndTurn();
+        }
+
+        private void btnEndTurnClick(object sender, EventArgs e)
+        {
+            OverlandMap.EndTurn();
         }
     }
 }

@@ -57,6 +57,7 @@
     <Compile Include="Helpers\SettlementFoodProduction.cs" />
     <Compile Include="Helpers\SettlementProduction.cs" />
     <Compile Include="SettlementCitizens.cs" />
+    <Compile Include="Views\Frame.cs" />
     <Compile Include="Views\HudView.cs" />
     <Compile Include="Views\OverlandMapView.cs" />
     <Compile Include="Views\OverlandSettlementView.cs" />

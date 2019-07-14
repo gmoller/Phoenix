@@ -72,35 +72,35 @@
       "Height": 56
     },
 	{
-      "Name": "top_h_border_repeat_x",
+      "Name": "frame1_top",
       "X": 556,
       "Y": 450,
       "Width": 200,
       "Height": 10
     },
 	{
-      "Name": "bottom_h_border_repeat_x",
+      "Name": "frame1_bottom",
       "X": 556,
       "Y": 460,
       "Width": 200,
       "Height": 10
     },
 	{
-      "Name": "left_v_border_repeat_y",
+      "Name": "frame1_left",
       "X": 556,
       "Y": 470,
       "Width": 10,
       "Height": 120
     },
 	{
-      "Name": "right_v_border_repeat_y",
+      "Name": "frame1_right",
       "X": 566,
       "Y": 470,
       "Width": 10,
       "Height": 120
     },
 	{
-      "Name": "frame_corner",
+      "Name": "frame1_corner",
       "X": 756,
       "Y": 450,
       "Width": 13,
@@ -112,6 +112,90 @@
       "Y": 470,
       "Width": 52,
       "Height": 52
+    },
+	{
+      "Name": "frame2_left_middle",
+      "X": 556,
+      "Y": 590,
+      "Width": 47,
+      "Height": 108
+    },
+	{
+      "Name": "frame2_right_middle",
+      "X": 603,
+      "Y": 590,
+      "Width": 47,
+      "Height": 108
+    },
+	{
+      "Name": "frame2_top_middle",
+      "X": 650,
+      "Y": 590,
+      "Width": 108,
+      "Height": 47
+    },
+	{
+      "Name": "frame2_bottom_middle",
+      "X": 650,
+      "Y": 637,
+      "Width": 108,
+      "Height": 47
+    },
+	{
+      "Name": "frame2_top_left",
+      "X": 556,
+      "Y": 698,
+      "Width": 47,
+      "Height": 47
+    },
+	{
+      "Name": "frame2_top_right",
+      "X": 603,
+      "Y": 698,
+      "Width": 47,
+      "Height": 47
+    },
+	{
+      "Name": "frame2_bottom_left",
+      "X": 650,
+      "Y": 698,
+      "Width": 47,
+      "Height": 47
+    },
+	{
+      "Name": "frame2_bottom_right",
+      "X": 697,
+      "Y": 698,
+      "Width": 47,
+      "Height": 47
+    },
+	{
+      "Name": "frame2_top_left_angle",
+      "X": 744,
+      "Y": 698,
+      "Width": 15,
+      "Height": 15
+    },
+	{
+      "Name": "frame2_top_right_angle",
+      "X": 759,
+      "Y": 698,
+      "Width": 15,
+      "Height": 15
+    },
+	{
+      "Name": "frame2_bottom_left_angle",
+      "X": 744,
+      "Y": 713,
+      "Width": 15,
+      "Height": 15
+    },
+	{
+      "Name": "frame2_bottom_right_angle",
+      "X": 759,
+      "Y": 713,
+      "Width": 15,
+      "Height": 15
     },
   ]
 }

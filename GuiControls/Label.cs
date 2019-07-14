@@ -78,15 +78,18 @@ namespace GuiControls
             }
         }
 
-        public virtual void Draw()
+        public virtual void Draw(SpriteBatch spriteBatch = null)
         {
-            var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
-
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Transform);
+            bool newSpritebatch = spriteBatch == null;
+            if (newSpritebatch)
+            {
+                spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Transform);
+            }
 
             if (_backColor != null)
             {
-                spriteBatch.FillRectangle(Area, _backColor.Value);
+                spriteBatch.FillRectangle(Area, _backColor.Value, 0.5f);
             }
 
             var textSize = Font.MeasureString(Text);
@@ -96,19 +99,21 @@ namespace GuiControls
 
             if (_textShadowColor != null)
             {
-                spriteBatch.DrawString(Font, Text, position + Vector2.One, _textShadowColor.Value, 0.0f, origin, 1.0f, SpriteEffects.None, 0.0f);
+                spriteBatch.DrawString(Font, Text, position + Vector2.One, _textShadowColor.Value, 0.0f, origin, 1.0f, SpriteEffects.None, 0.5f);
             }
 
             if (_borderColor != null)
             {
-                spriteBatch.DrawRectangle(Area, _borderColor.Value);
+                spriteBatch.DrawRectangle(Area, _borderColor.Value, 0.5f);
             }
 
-            spriteBatch.DrawString(Font, Text, position, _textColor, 0.0f, origin, 1.0f, SpriteEffects.None, 0.0f);
+            spriteBatch.DrawString(Font, Text, position, _textColor, 0.0f, origin, 1.0f, SpriteEffects.None, 0.5f);
 
-            spriteBatch.End();
-
-            DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
+            if (newSpritebatch)
+            {
+                spriteBatch.End();
+                DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
+            }
         }
 
         private Vector2 GetPosition(Vector2 textSize)
