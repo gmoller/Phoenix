@@ -39,32 +39,33 @@ namespace PhoenixGameLibrary.Views
 
             var camera = Globals.Instance.World.Camera;
 
-            for (int r = 0; r < cellGrid.NumberOfRows; ++r)
+            var center = camera.ScreenToWorld(new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width / 2, DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2));
+            var centerHex = HexOffsetCoordinates.OffsetCoordinatesFromPixel((int)center.X, (int)center.Y);
+
+            var columnsToLeft = 10; // TODO: remove hardcoding, use size of hex and cater for zoom (how many hexes fit on the screen)
+            var columnsToRight = 10;
+            var rowsUp = 10;
+            var rowsDown = 10;
+
+            var fromColumn = centerHex.Col - columnsToLeft;
+            if (fromColumn < 0) fromColumn = 0;
+            var toColumn = centerHex.Col + columnsToRight;
+            if (toColumn > Constants.WORLD_MAP_COLUMNS) toColumn = Constants.WORLD_MAP_COLUMNS;
+
+            var fromRow = centerHex.Row - rowsUp;
+            if (fromRow < 0) fromRow = 0;
+            var toRow = centerHex.Row + rowsDown;
+            if (toRow > Constants.WORLD_MAP_ROWS) toRow = Constants.WORLD_MAP_ROWS;
+
+            for (int r = fromRow; r < toRow; ++r)
             {
-                for (int q = 0; q < cellGrid.NumberOfColumns; ++q)
+                for (int q = fromColumn; q < toColumn; ++q)
                 {
                     var cell = cellGrid.GetCell(q, r);
-
-                    var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
-                    if (camera.VisibleArea.Contains(centerPosition))
-                    {
-                        DrawCell(cell);
-                    }
+                    DrawCell(cell);
+                    //DrawHexBorder(cell);
                 }
             }
-
-            //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, camera.Transform);
-
-            //for (int r = 0; r < cellGrid.NumberOfRows; ++r)
-            //{
-            //    for (int q = 0; q < cellGrid.NumberOfColumns; ++q)
-            //    {
-            //        var cell = cellGrid.GetCell(q, r);
-            //        DrawHexBorder(cell);
-            //    }
-            //}
-
-            //spriteBatch.End();
         }
 
         private void DrawCell(Cell cell)
@@ -78,8 +79,6 @@ namespace PhoenixGameLibrary.Views
             var spec = AssetsManager.Instance.GetAtlas(cell.Texture.TexturePalette);
             var frame = spec.Frames[cell.Texture.TextureId];
             var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
-
-            //spriteBatch.Draw(texture, centerPosition, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, Constants.HEX_SCALE, SpriteEffects.None, layerDepth);
 
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
             float layerDepth = cell.Index / 10000.0f;
@@ -100,12 +99,12 @@ namespace PhoenixGameLibrary.Views
             var point4 = GetHexCorner(3);
             var point5 = GetHexCorner(4);
 
-            spriteBatch.DrawLine(centerPosition + point0, centerPosition + point1, color, 0.0f);
-            spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, color, 0.0f);
-            spriteBatch.DrawLine(centerPosition + point2, centerPosition + point3, color, 0.0f);
-            spriteBatch.DrawLine(centerPosition + point3, centerPosition + point4, color, 0.0f);
-            spriteBatch.DrawLine(centerPosition + point4, centerPosition + point5, color, 0.0f);
-            spriteBatch.DrawLine(centerPosition + point5, centerPosition + point0, color, 0.0f);
+            spriteBatch.DrawLine(centerPosition + point0, centerPosition + point1, color, 1.0f);
+            spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, color, 1.0f);
+            spriteBatch.DrawLine(centerPosition + point2, centerPosition + point3, color, 1.0f);
+            spriteBatch.DrawLine(centerPosition + point3, centerPosition + point4, color, 1.0f);
+            spriteBatch.DrawLine(centerPosition + point4, centerPosition + point5, color, 1.0f);
+            spriteBatch.DrawLine(centerPosition + point5, centerPosition + point0, color, 1.0f);
         }
 
         private Vector2 GetHexCorner(int i)
