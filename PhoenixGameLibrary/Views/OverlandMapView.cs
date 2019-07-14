@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GameLogic;
-//using GuiControls;
 using HexLibrary;
 using Utilities;
 
@@ -13,8 +12,6 @@ namespace PhoenixGameLibrary.Views
     public class OverlandMapView
     {
         private OverlandMap _overlandMap;
-
-        //private Button _btnEndTurn;
 
         public bool IsEnabled { get; set; }
 
@@ -25,32 +22,22 @@ namespace PhoenixGameLibrary.Views
 
         public void LoadContent(ContentManager content)
         {
-            //var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
-            //var label = new Label("lblNextTurn", "CrimsonText-Regular-12", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "Next Turn", HorizontalAlignment.Center, Color.White, Color.Blue);
-            //_btnEndTurn = new Button("btnEndTurn", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_h", label);
-            //_btnEndTurn.Click += btnEndTurnClick;
         }
 
         public void Update(GameTime gameTime, InputHandler input)
         {
-            //_btnEndTurn.Update(gameTime);
-            //Globals.Instance.World.CanScrollMap = !_btnEndTurn.MouseOver;
         }
 
         public void Draw()
         {
             DrawCellGrid(_overlandMap.CellGrid);
-            //_btnEndTurn.Draw();
         }
 
         private void DrawCellGrid(CellGrid cellGrid)
         {
-            DeviceManager.Instance.SetViewport(DeviceManager.Instance.MapViewport);
-
             var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
 
             var camera = Globals.Instance.World.Camera;
-            //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
 
             for (int r = 0; r < cellGrid.NumberOfRows; ++r)
             {
@@ -66,8 +53,6 @@ namespace PhoenixGameLibrary.Views
                 }
             }
 
-            //spriteBatch.End();
-
             //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, null, null, null, null, camera.Transform);
 
             //for (int r = 0; r < cellGrid.NumberOfRows; ++r)
@@ -80,8 +65,6 @@ namespace PhoenixGameLibrary.Views
             //}
 
             //spriteBatch.End();
-
-            DeviceManager.Instance.ResetViewport();
         }
 
         private void DrawCell(Cell cell)
@@ -134,10 +117,5 @@ namespace PhoenixGameLibrary.Views
 
             return v;
         }
-
-        //private void btnEndTurnClick(object sender, EventArgs e)
-        //{
-        //    _overlandMap.EndTurn();
-        //}
     }
 }
