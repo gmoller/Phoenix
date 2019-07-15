@@ -62,13 +62,20 @@ namespace PhoenixGameLibrary.Views
                 for (int q = fromColumn; q < toColumn; ++q)
                 {
                     var cell = cellGrid.GetCell(q, r);
-                    DrawCell(cell);
+                    if (cell.BelongsToSettlement >= 0) // TODO: only display if IsCityView
+                    {
+                        DrawCell(cell, Color.LightSlateGray);
+                    }
+                    else
+                    {
+                        DrawCell(cell, Color.White);
+                    }
                     //DrawHexBorder(cell);
                 }
             }
         }
 
-        private void DrawCell(Cell cell)
+        private void DrawCell(Cell cell, Color color)
         {
             var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
 
@@ -82,7 +89,7 @@ namespace PhoenixGameLibrary.Views
 
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
             float layerDepth = cell.Index / 10000.0f;
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
         }
 
         private void DrawHexBorder(Cell cell)

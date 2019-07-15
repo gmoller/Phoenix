@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameLogic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using GameLogic;
+using HexLibrary;
 using PhoenixGameLibrary.GameData;
 using PhoenixGameLibrary.Helpers;
 using PhoenixGameLibrary.Views;
@@ -67,6 +68,14 @@ namespace PhoenixGameLibrary
                 _buildingsBuilt.Add(Globals.Instance.BuildingTypes[building].Id);
             }
             Citizens = new SettlementCitizens(this, settlementSize, _buildingsBuilt);
+
+            var catchment = HexOffsetCoordinates.GetAllNeighbors(location.X, location.Y);
+            foreach (var tile in catchment)
+            {
+                var cell = cellGrid.GetCell(tile.Col, tile.Row);
+                cell.BelongsToSettlement = 1; // TODO: create amd assign settlement id
+                cellGrid.SetCell(tile.Col, tile.Row, cell);
+            }
 
             View = new SettlementView(this);
             _overlandSettlementView = new OverlandSettlementView(this);

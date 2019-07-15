@@ -27,5 +27,10 @@
         {
             return _cellGrid[col, row];
         }
+
+        public void SetCell(int col, int row, Cell cell)
+        {
+            _cellGrid[col, row] = cell;
+        }
     }
 }

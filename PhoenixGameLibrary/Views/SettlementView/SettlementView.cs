@@ -89,34 +89,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
                 _resourceFrame.Draw();
                 _producingFrame.Draw();
                 _buildingsFrame.Draw();
-
-                var catchment = HexOffsetCoordinates.GetAllNeighbors(_settlement.Location.X, _settlement.Location.Y);
-                foreach (var tile in catchment)
-                {
-                    var cell = Globals.Instance.World.OverlandMap.CellGrid.GetCell(tile.Col, tile.Row);
-                    DrawCell(cell, 1.0f);
-                }
             }
-        }
-
-        // TODO: get rid of this duplication, cater for depth, zoom in, draw settlement
-        private void DrawCell(Cell cell, float layerDepth)
-        {
-            var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
-
-            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
-
-            var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
-            var texture = AssetsManager.Instance.GetTexture(cell.Texture.TexturePalette);
-            var spec = AssetsManager.Instance.GetAtlas(cell.Texture.TexturePalette);
-            var frame = spec.Frames[cell.Texture.TextureId];
-            var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
-
-            var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
-            var camera = Globals.Instance.World.Camera;
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.LightSlateGray, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
-            spriteBatch.End();
         }
 
         public void CloseButtonClick(object sender, EventArgs e)

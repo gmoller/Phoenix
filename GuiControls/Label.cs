@@ -89,7 +89,7 @@ namespace GuiControls
 
             if (_backColor != null)
             {
-                spriteBatch.FillRectangle(Area, _backColor.Value, 0.5f);
+                spriteBatch.FillRectangle(Area, _backColor.Value, 0.49f);
             }
 
             var textSize = Font.MeasureString(Text);

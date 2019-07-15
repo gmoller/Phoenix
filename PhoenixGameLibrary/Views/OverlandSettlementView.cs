@@ -41,7 +41,6 @@ namespace PhoenixGameLibrary.Views
         {
             var camera = Globals.Instance.World.Camera;
             var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
-            //spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
 
             var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(_settlement.Location.X, _settlement.Location.Y);
             var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(HexLibrary.Constants.HEX_ACTUAL_WIDTH * 0.5f), (int)(HexLibrary.Constants.HEX_ACTUAL_HEIGHT * 0.75f));
@@ -54,8 +53,6 @@ namespace PhoenixGameLibrary.Views
             _lblName.Position = position;
             _lblName.Transform = Globals.Instance.World.Camera.Transform;
             _lblName.Draw(spriteBatch);
-
-            //spriteBatch.End();
         }
 
         private void lblNameClick(object sender, EventArgs e)
