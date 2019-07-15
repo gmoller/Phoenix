@@ -18,7 +18,9 @@ namespace PhoenixGameLibrary
     /// </summary>
     public class Settlement
     {
-        private readonly CellGrid _cellGrid;
+        private readonly int _id;
+
+        private readonly List<Cell> _catchmentCells;
         private OverlandSettlementView _overlandSettlementView;
         private List<int> _buildingsBuilt;
         private int _populationGrowth;
@@ -27,7 +29,7 @@ namespace PhoenixGameLibrary
         public RaceType RaceType { get; }
         public Point Location { get; }
         public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
-        public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(Location, _cellGrid);
+        public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(Location, _catchmentCells);
         public int GrowthRate => DetermineGrowthRate();
         public int SettlementFoodProduction => Helpers.SettlementFoodProduction.DetermineFoodProduction(this, _buildingsBuilt);
         public int FoodSurplus => SettlementFoodProduction - Citizens.TotalPopulation;
@@ -35,7 +37,7 @@ namespace PhoenixGameLibrary
         //public int GoldSurplus => DetermineGoldSurplus();
         public CurrentlyBuilding CurrentlyBuilding { get; private set; }
 
-        public int SettlementProduction => Helpers.SettlementProduction.DetermineProduction(this, _cellGrid);
+        public int SettlementProduction => Helpers.SettlementProduction.DetermineProduction(this, _catchmentCells);
 
         public SettlementCitizens Citizens { get; }
         public SettlementView View { get; }
@@ -56,7 +58,8 @@ namespace PhoenixGameLibrary
 
         public Settlement(string name, string raceTypeName, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
         {
-            _cellGrid = cellGrid;
+            _id = (location.Y * Constants.WORLD_MAP_COLUMNS) + location.X;
+
             Name = name;
             RaceType = Globals.Instance.RaceTypes[raceTypeName];
             Location = location;
@@ -69,12 +72,14 @@ namespace PhoenixGameLibrary
             }
             Citizens = new SettlementCitizens(this, settlementSize, _buildingsBuilt);
 
+            _catchmentCells = new List<Cell>();
             var catchment = HexOffsetCoordinates.GetAllNeighbors(location.X, location.Y);
             foreach (var tile in catchment)
             {
                 var cell = cellGrid.GetCell(tile.Col, tile.Row);
-                cell.BelongsToSettlement = 1; // TODO: create amd assign settlement id
+                cell.BelongsToSettlement = _id;
                 cellGrid.SetCell(tile.Col, tile.Row, cell);
+                _catchmentCells.Add(cell);
             }
 
             View = new SettlementView(this);
