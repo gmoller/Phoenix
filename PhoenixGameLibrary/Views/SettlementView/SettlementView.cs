@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GameLogic;
 using GuiControls;
-using HexLibrary;
 using Utilities;
 
 namespace PhoenixGameLibrary.Views.SettlementView

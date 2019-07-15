@@ -50,6 +50,13 @@
       "Width": 43,
       "Height": 44
     },
+	{
+      "Name": "slot",
+      "X": 1068,
+      "Y": 217,
+      "Width": 52,
+      "Height": 52
+    },
     {
       "Name": "reg_button_n",
       "X": 556,
@@ -72,130 +79,53 @@
       "Height": 56
     },
 	{
-      "Name": "frame1_top",
+      "Name": "frame1_whole",
       "X": 556,
       "Y": 450,
-      "Width": 200,
-      "Height": 10
+      "Width": 208,
+      "Height": 130
     },
 	{
-      "Name": "frame1_bottom",
+      "Name": "frame2_whole",
       "X": 556,
-      "Y": 460,
-      "Width": 200,
-      "Height": 10
-    },
-	{
-      "Name": "frame1_left",
-      "X": 556,
-      "Y": 470,
-      "Width": 10,
-      "Height": 120
-    },
-	{
-      "Name": "frame1_right",
-      "X": 566,
-      "Y": 470,
-      "Width": 10,
-      "Height": 120
-    },
-	{
-      "Name": "frame1_corner",
-      "X": 756,
-      "Y": 450,
-      "Width": 13,
-      "Height": 13
-    },
-	{
-      "Name": "slot",
-      "X": 576,
-      "Y": 470,
-      "Width": 52,
-      "Height": 52
-    },
-	{
-      "Name": "frame2_left_middle",
-      "X": 556,
-      "Y": 590,
-      "Width": 47,
-      "Height": 108
-    },
-	{
-      "Name": "frame2_right_middle",
-      "X": 603,
-      "Y": 590,
-      "Width": 47,
-      "Height": 108
-    },
-	{
-      "Name": "frame2_top_middle",
-      "X": 650,
-      "Y": 590,
-      "Width": 108,
-      "Height": 47
-    },
-	{
-      "Name": "frame2_bottom_middle",
-      "X": 650,
-      "Y": 637,
-      "Width": 108,
-      "Height": 47
-    },
-	{
-      "Name": "frame2_top_left",
-      "X": 556,
-      "Y": 698,
-      "Width": 47,
-      "Height": 47
-    },
-	{
-      "Name": "frame2_top_right",
-      "X": 603,
-      "Y": 698,
-      "Width": 47,
-      "Height": 47
-    },
-	{
-      "Name": "frame2_bottom_left",
-      "X": 650,
-      "Y": 698,
-      "Width": 47,
-      "Height": 47
-    },
-	{
-      "Name": "frame2_bottom_right",
-      "X": 697,
-      "Y": 698,
-      "Width": 47,
-      "Height": 47
+      "Y": 580,
+      "Width": 208,
+      "Height": 130
     },
 	{
       "Name": "frame2_top_left_angle",
-      "X": 744,
-      "Y": 698,
+      "X": 556,
+      "Y": 710,
       "Width": 15,
       "Height": 15
     },
 	{
       "Name": "frame2_top_right_angle",
-      "X": 759,
-      "Y": 698,
+      "X": 571,
+      "Y": 710,
       "Width": 15,
       "Height": 15
     },
 	{
       "Name": "frame2_bottom_left_angle",
-      "X": 744,
-      "Y": 713,
+      "X": 586,
+      "Y": 710,
       "Width": 15,
       "Height": 15
     },
 	{
       "Name": "frame2_bottom_right_angle",
-      "X": 759,
-      "Y": 713,
+      "X": 601,
+      "Y": 710,
       "Width": 15,
       "Height": 15
+    },
+	{
+      "Name": "frame3_whole",
+      "X": 801,
+      "Y": 282,
+      "Width": 317,
+      "Height": 406
     },
   ]
 }

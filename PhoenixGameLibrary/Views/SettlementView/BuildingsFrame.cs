@@ -16,9 +16,9 @@ namespace PhoenixGameLibrary.Views.SettlementView
         private readonly Texture2D _texture;
         private readonly AtlasSpec2 _atlas;
 
-        private readonly SmallFrameWithSlots _smallFrameBuildings;
-        private readonly SmallFrameWithSlots _smallFrameUnits;
-        private readonly SmallFrameWithSlots _smallFrameOther;
+        private readonly FrameDynamicSizing _smallFrameBuildings;
+        private readonly FrameDynamicSizing _smallFrameUnits;
+        private readonly FrameDynamicSizing _smallFrameOther;
         private readonly Label _lblBuildings;
         private readonly Label _lblUnits;
         private readonly Label _lblOther;
@@ -28,11 +28,11 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _settlement = settlement;
             _topLeftPosition = topLeftPosition;
 
-            _smallFrameBuildings = SmallFrameWithSlots.Create(topLeftPosition + new Vector2(0, 10), new Vector2(500, 435), 10, 13, "GUI_Textures_1");
+            _smallFrameBuildings = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 10, 13);
             _lblBuildings = new Label("lblBuildings", "CrimsonText-Regular-12", topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
-            _smallFrameUnits = SmallFrameWithSlots.Create(topLeftPosition + new Vector2(0, 495), new Vector2(500, 65), 10, 2, "GUI_Textures_1");
+            _smallFrameUnits = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 495.0f), new Vector2(515, 75), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 10, 2);
             _lblUnits = new Label("lblUnits", "CrimsonText-Regular-12", topLeftPosition + new Vector2(0, 485), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
-            _smallFrameOther = SmallFrameWithSlots.Create(topLeftPosition + new Vector2(0, 610), new Vector2(500, 40), 2, 1, "GUI_Textures_1");
+            _smallFrameOther = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 610.0f), new Vector2(515, 65), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 2, 1);
             _lblOther = new Label("lblOther", "CrimsonText-Regular-12", topLeftPosition + new Vector2(0, 600), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
 
             _texture = AssetsManager.Instance.GetTexture("Buildings");

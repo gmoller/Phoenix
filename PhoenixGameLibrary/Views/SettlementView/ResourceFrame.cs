@@ -7,7 +7,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
     {
         private readonly Settlement _settlement;
 
-        private readonly SmallFrame _smallFrame;
+        private readonly FrameDynamicSizing _smallFrame;
         private readonly Label _lblResources;
         private readonly Label _lblFood1;
         private readonly Label _lblFood2;
@@ -24,7 +24,8 @@ namespace PhoenixGameLibrary.Views.SettlementView
         {
             _settlement = settlement;
 
-            _smallFrame = SmallFrame.Create(topLeftPosition + new Vector2(0, 10), new Vector2(500, 160), "GUI_Textures_1");
+            _smallFrame = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 160), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
+
             _lblResources = new Label("lblResources", "CrimsonText-Regular-12", topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
             _lblFood1 = new Label("lblFood1", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
             _lblFood2 = new Label("lblFood2", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);

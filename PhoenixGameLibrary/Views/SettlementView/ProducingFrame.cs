@@ -8,7 +8,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
     {
         private Settlement _settlement;
 
-        private readonly SmallFrame _smallFrame;
+        private readonly FrameDynamicSizing _smallFrame;
         private readonly Label _lblProducing;
         private readonly Label _lblCurrent;
 
@@ -16,7 +16,8 @@ namespace PhoenixGameLibrary.Views.SettlementView
         {
             _settlement = settlement;
 
-            _smallFrame = SmallFrame.Create(topLeftPosition + new Vector2(0, 10), new Vector2(500, 160), "GUI_Textures_1");
+            _smallFrame = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 160), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
+
             _lblProducing = new Label("lblProducing", "CrimsonText-Regular-12", topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
             _lblCurrent = new Label("lblCurrent", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
         }
