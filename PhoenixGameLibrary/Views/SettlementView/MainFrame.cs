@@ -30,7 +30,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
             frame = atlas.Frames["frame_bottom"];
             _bottom = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
-            _btnClose = new Button("btnClose", new Vector2(_topLeftPosition.X + 506.0f, _topLeftPosition.Y - 92.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(43.0f, 44.0f), "GUI_Textures_1", "close_button_n", "close_button_a", "close_button_h");
+            _btnClose = new Button("btnClose", new Vector2(_topLeftPosition.X + 506.0f, _topLeftPosition.Y - 92.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(43.0f, 44.0f), "GUI_Textures_1", "close_button_n", "close_button_a", "close_button_a", "close_button_h");
             _btnClose.Click += CloseButtonClick;
         }
 

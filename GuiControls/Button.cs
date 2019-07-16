@@ -14,6 +14,7 @@ namespace GuiControls
         private string _textureNormal;
         private string _textureActive;
         private string _textureHover;
+        private string _textureDisabled;
         private Rectangle _frame;
 
         private Label _label;
@@ -25,7 +26,7 @@ namespace GuiControls
         public bool MouseOver { get; private set; }
         public bool Enabled { get; set; }
 
-        public Button(string name, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string guiTextures, string textureNormal, string textureActive, string textureHover, Label label = null) :
+        public Button(string name, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string guiTextures, string textureNormal, string textureActive, string textureDisabled, string textureHover, Label label = null) :
             base(name, position, horizontalAlignment, verticalAlignment, size)
         {
             _cooldownTime = 0.0f;
@@ -35,6 +36,7 @@ namespace GuiControls
             _textureNormal = textureNormal;
             _textureActive = textureActive;
             _textureHover = textureHover;
+            _textureDisabled = textureDisabled;
 
             _label = label;
             Enabled = true;
@@ -44,7 +46,7 @@ namespace GuiControls
         {
             if (!Enabled)
             {
-                var f = _spec.Frames[_textureActive]; // bizarre, I know... I use the active texture for disabled. TODO: add a disabled texture
+                var f = _spec.Frames[_textureDisabled];
                 _frame = new Rectangle(f.X, f.Y, f.Width, f.Height);
                 return;
             }
