@@ -132,8 +132,8 @@ namespace Phoenix
 
         protected override void Update(GameTime gameTime)
         {
-            try
-            {
+            //try
+            //{
                 _input.Update(gameTime);
                 if (_input.Exit) Exit();
 
@@ -141,12 +141,12 @@ namespace Phoenix
                 _metricsPanel.Update(gameTime, _input);
 
                 base.Update(gameTime);
-            }
-            catch (Exception ex)
-            {
-                Logger.Instance.LogError(ex);
-                throw ex;
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger.Instance.LogError(ex);
+            //    throw ex;
+            //}
         }
 
         protected override void Draw(GameTime gameTime)

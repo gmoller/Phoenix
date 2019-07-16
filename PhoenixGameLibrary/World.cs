@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Globalization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using GameLogic;
 using GuiControls;
 using HexLibrary;
 using Utilities;
 using PhoenixGameLibrary.Views;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace PhoenixGameLibrary
 {
@@ -15,9 +16,21 @@ namespace PhoenixGameLibrary
         private readonly Settlements _settlements;
         private HudView _hud;
         private Button _btnEndTurn;
+        private int _turnNumber;
 
         public OverlandMap OverlandMap { get; }
         public Faction PlayerFaction { get; }
+        public string CurrentDate
+        {
+            get
+            {
+                var year = 1400 + _turnNumber / 12;
+                var month = _turnNumber % 12 + 1;
+                var monthString = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
+
+                return $"{monthString} {year}";
+            }
+        }
 
         public Camera Camera { get; }
 
@@ -32,6 +45,7 @@ namespace PhoenixGameLibrary
             PlayerFaction = new Faction();
             OverlandMap = new OverlandMap(this);
             _settlements = new Settlements();
+            _turnNumber = 0;
         }
 
         public void LoadContent(ContentManager content)
@@ -100,14 +114,10 @@ namespace PhoenixGameLibrary
             _btnEndTurn.Draw();
         }
 
-        public void EndTurn()
-        {
-            _settlements.EndTurn();
-        }
-
         private void btnEndTurnClick(object sender, EventArgs e)
         {
-            OverlandMap.EndTurn();
+            _settlements.EndTurn();
+            _turnNumber++;
         }
     }
 }

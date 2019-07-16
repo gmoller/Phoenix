@@ -32,10 +32,5 @@ namespace PhoenixGameLibrary
         {
             _overlandMapView.Draw();
         }
-
-        public void EndTurn()
-        {
-            _world.EndTurn();
-        }
     }
 }
