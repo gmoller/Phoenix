@@ -23,6 +23,7 @@ namespace GuiControls
         public event EventHandler Click;
 
         public bool MouseOver { get; private set; }
+        public bool Enabled { get; set; }
 
         public Button(string name, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string guiTextures, string textureNormal, string textureActive, string textureHover, Label label = null) :
             base(name, position, horizontalAlignment, verticalAlignment, size)
@@ -36,10 +37,18 @@ namespace GuiControls
             _textureHover = textureHover;
 
             _label = label;
+            Enabled = true;
         }
 
         public void Update(GameTime gameTime)
         {
+            if (!Enabled)
+            {
+                var f = _spec.Frames[_textureActive]; // bizarre, I know... I use the active texture for disabled. TODO: add a disabled texture
+                _frame = new Rectangle(f.X, f.Y, f.Width, f.Height);
+                return;
+            }
+
             MouseOver = Area.Contains(MouseHandler.MousePosition);
 
             if (_cooldownTime > 0.0f)
@@ -85,7 +94,7 @@ namespace GuiControls
 
         private void OnClick(EventArgs e)
         {
-            _cooldownTime = 100.0f;
+            _cooldownTime = 50.0f;
             var f = _spec.Frames[_textureActive];
             _frame = new Rectangle(f.X, f.Y, f.Width, f.Height);
             Click?.Invoke(this, e);

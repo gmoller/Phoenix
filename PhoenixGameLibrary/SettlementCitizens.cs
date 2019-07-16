@@ -57,14 +57,14 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public void ReassignCitizens(float farmersRatio)
-        {
-            var sum = AdditionalFarmers + Workers;
-            var farmers = sum / farmersRatio;
+        //public void ReassignCitizens(float farmersRatio)
+        //{
+        //    var sum = AdditionalFarmers + Workers;
+        //    var farmers = sum / farmersRatio;
 
-            AdditionalFarmers = (byte)Math.Round(farmers);
-            Workers = (byte)(sum - AdditionalFarmers);
-        }
+        //    AdditionalFarmers = (byte)Math.Round(farmers);
+        //    Workers = (byte)(sum - AdditionalFarmers);
+        //}
 
         private int CalculateSubsistenceFarmers(int totalPopulation, List<int> buildingsBuilt)
         {

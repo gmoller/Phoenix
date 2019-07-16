@@ -111,6 +111,9 @@ namespace Phoenix
             AssetsManager.Instance.AddTexture("Buildings", "TextureAtlases\\Buildings");
             AssetsManager.Instance.AddAtlas("Buildings", "TextureAtlases\\Buildings");
 
+            AssetsManager.Instance.AddTexture("Citizens", "TextureAtlases\\Citizens");
+            AssetsManager.Instance.AddAtlas("Citizens", "TextureAtlases\\Citizens");
+
             _metricsPanel = new MetricsPanel(new Vector2(0.0f, 200.0f));
 
             _phoenixGame.LoadContent(Content);

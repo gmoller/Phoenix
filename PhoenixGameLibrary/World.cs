@@ -37,7 +37,7 @@ namespace PhoenixGameLibrary
         public void LoadContent(ContentManager content)
         {
             OverlandMap.LoadContent(content);
-            _settlements.AddSettlement("Fairhaven", "Nomads", new Point(12, 9), OverlandMap.CellGrid, content);
+            _settlements.AddSettlement("Fairhaven", "Barbarians", new Point(12, 9), OverlandMap.CellGrid, content);
 
             _hud = new HudView();
             _hud.LoadContent(content);
@@ -96,7 +96,7 @@ namespace PhoenixGameLibrary
             spriteBatch.End();
 
             _hud.Draw();
-            _settlements.DrawSettlement();
+            _settlements.DrawSettlement(spriteBatch);
             _btnEndTurn.Draw();
         }
 

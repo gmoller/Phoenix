@@ -1,0 +1,68 @@
+{
+  "SpriteSheetName": "Citizens",
+  "Frames": [
+    {
+      "Name": "Citizen_Barbarians_Farmer",
+      "X": 0,
+      "Y": 0,
+      "Width": 20,
+      "Height": 28
+    },
+	{
+      "Name": "Citizen_Barbarians_Worker",
+      "X": 20,
+      "Y": 0,
+      "Width": 16,
+      "Height": 28
+    },
+	{
+      "Name": "Citizen_Barbarians_Rebel",
+      "X": 40,
+      "Y": 0,
+      "Width": 16,
+      "Height": 30
+    },
+	{
+      "Name": "Citizen_Beastmen_Farmer",
+      "X": 0,
+      "Y": 30,
+      "Width": 20,
+      "Height": 26
+    },
+	{
+      "Name": "Citizen_Beastmen_Worker",
+      "X": 20,
+      "Y": 30,
+      "Width": 16,
+      "Height": 26
+    },
+	{
+      "Name": "Citizen_Beastmen_Rebel",
+      "X": 40,
+      "Y": 30,
+      "Width": 16,
+      "Height": 30
+    },
+	{
+      "Name": "Citizen_DarkElves_Farmer",
+      "X": 0,
+      "Y": 60,
+      "Width": 18,
+      "Height": 26
+    },
+	{
+      "Name": "Citizen_DarkElves_Worker",
+      "X": 20,
+      "Y": 60,
+      "Width": 14,
+      "Height": 26
+    },
+	{
+      "Name": "Citizen_DarkElves_Rebel",
+      "X": 40,
+      "Y": 60,
+      "Width": 16,
+      "Height": 28
+    }
+  ]
+}

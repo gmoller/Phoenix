@@ -49,8 +49,8 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _lblSettlementName2 = new Label("lblSettlementName2", "Carolingia-Regular-24", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 24.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
 
             _populationFrame = new PopulationFrame(new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 40.0f), _settlement);
-            _resourceFrame = new ResourceFrame(new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 160.0f), _settlement);
-            _producingFrame = new ProducingFrame(new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 360.0f), _settlement);
+            _resourceFrame = new ResourceFrame(new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 190.0f), _settlement);
+            _producingFrame = new ProducingFrame(new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 390.0f), _settlement);
 
             _buildingsFrame = new BuildingsFrame(new Vector2(_topLeftPositionSecondary.X + 20.0f, _topLeftPositionSecondary.Y + 40.0f), _settlement);
         }
@@ -74,7 +74,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
             }
         }
 
-        public void Draw()
+        public void Draw(SpriteBatch spriteBatch)
         {
             if (IsEnabled)
             {
@@ -84,7 +84,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
                 _lblSettlementName1.Draw();
                 _lblSettlementName2.Draw();
 
-                _populationFrame.Draw();
+                _populationFrame.Draw(spriteBatch);
                 _resourceFrame.Draw();
                 _producingFrame.Draw();
                 _buildingsFrame.Draw();

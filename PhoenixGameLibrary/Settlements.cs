@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Utilities;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace PhoenixGameLibrary
 {
@@ -30,26 +30,18 @@ namespace PhoenixGameLibrary
 
         public void DrawOverland()
         {
-            DeviceManager.Instance.SetViewport(DeviceManager.Instance.MapViewport);
-
             foreach (var settlement in _settlements)
             {
                 settlement.DrawOverland();
             }
-
-            DeviceManager.Instance.ResetViewport();
         }
 
-        public void DrawSettlement()
+        public void DrawSettlement(SpriteBatch spriteBatch)
         {
-            DeviceManager.Instance.SetViewport(DeviceManager.Instance.MapViewport);
-
             foreach (var settlement in _settlements)
             {
-                settlement.DrawSettlement();
+                settlement.DrawSettlement(spriteBatch);
             }
-
-            DeviceManager.Instance.ResetViewport();
         }
 
         public void AddSettlement(string name, string raceTypeName, Point hexLocation, CellGrid cellGrid, ContentManager content)

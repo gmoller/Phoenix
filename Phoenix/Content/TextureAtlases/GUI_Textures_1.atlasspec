@@ -127,5 +127,48 @@
       "Width": 317,
       "Height": 406
     },
+	
+	{
+      "Name": "minus_n",
+      "X": 616,
+      "Y": 710,
+      "Width": 19,
+      "Height": 19
+    },
+	{
+      "Name": "minus_h",
+      "X": 635,
+      "Y": 710,
+      "Width": 19,
+      "Height": 19
+    },
+	{
+      "Name": "minus_a",
+      "X": 654,
+      "Y": 710,
+      "Width": 19,
+      "Height": 19
+    },
+	{
+      "Name": "plus_n",
+      "X": 673,
+      "Y": 710,
+      "Width": 19,
+      "Height": 19
+    },
+	{
+      "Name": "plus_h",
+      "X": 692,
+      "Y": 710,
+      "Width": 19,
+      "Height": 19
+    },
+	{
+      "Name": "plus_a",
+      "X": 711,
+      "Y": 710,
+      "Width": 19,
+      "Height": 19
+    },
   ]
 }

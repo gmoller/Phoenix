@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using GameLogic;
 using HexLibrary;
 using PhoenixGameLibrary.GameData;
@@ -103,9 +104,9 @@ namespace PhoenixGameLibrary
             _overlandSettlementView.Draw();
         }
 
-        public void DrawSettlement()
+        public void DrawSettlement(SpriteBatch spriteBatch)
         {
-            View.Draw();
+            View.Draw(spriteBatch);
         }
 
         public bool BuildingHasBeenBuilt(string buildingName)
