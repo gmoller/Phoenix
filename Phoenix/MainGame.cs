@@ -140,6 +140,7 @@ namespace Phoenix
             if (_input.Exit) Exit();
 
             _phoenixGame.Update(gameTime, _input);
+            _phoenixGameView.Update(gameTime);
             _metricsPanel.Update(gameTime, _input);
 
             base.Update(gameTime);
@@ -149,7 +150,7 @@ namespace Phoenix
         {
             GraphicsDevice.Clear(Color.Black);
 
-            _phoenixGame.Draw(); // TODO: remove
+            _phoenixGame.Draw(DeviceManager.Instance.GetCurrentSpriteBatch()); // TODO: remove
             _phoenixGameView.Draw(DeviceManager.Instance.GetCurrentSpriteBatch());
             _metricsPanel.Draw();
 

@@ -5,11 +5,12 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GameLogic;
 using GuiControls;
+using PhoenixGameLibrary.Views;
 using Utilities;
 
-namespace PhoenixGameLibrary.Views
+namespace PhoenixGamePresentationLibrary
 {
-    public class HudView
+    internal class HudView
     {
         private SpriteFont _font;
         private FrameDynamicSizing _frame;
@@ -24,7 +25,7 @@ namespace PhoenixGameLibrary.Views
 
         private Button _btnEndTurn;
 
-        public void LoadContent(ContentManager content)
+        internal void LoadContent(ContentManager content)
         {
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
 
@@ -71,7 +72,7 @@ namespace PhoenixGameLibrary.Views
             _btnEndTurn.Update(gameTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        internal void Draw(SpriteBatch spriteBatch)
         {
             _frame.Draw();
 
@@ -117,7 +118,7 @@ namespace PhoenixGameLibrary.Views
             // get tile mouse is over
             var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
             var hex = DeviceManager.Instance.WorldHex;
-            if (hex.X >= 0 && hex.Y >= 0 && hex.X < Constants.WORLD_MAP_COLUMNS && hex.Y < Constants.WORLD_MAP_ROWS)
+            if (hex.X >= 0 && hex.Y >= 0 && hex.X < PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS && hex.Y < PhoenixGameLibrary.Constants.WORLD_MAP_ROWS)
             {
                 var cell = cellGrid.GetCell(hex.X, hex.Y);
                 var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
@@ -126,7 +127,7 @@ namespace PhoenixGameLibrary.Views
             }
 
             var catchment = cellGrid.GetCatchment(hex.X, hex.Y);
-            var maxPop = Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Point(hex.X, hex.Y), catchment);
+            var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Point(hex.X, hex.Y), catchment);
             var text2 = $"Maximum Pop - {maxPop}";
             spriteBatch.DrawString(_font, text2, new Vector2(x, y + 15.0f), Color.White);
         }

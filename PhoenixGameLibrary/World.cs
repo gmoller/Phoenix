@@ -5,14 +5,12 @@ using Microsoft.Xna.Framework.Graphics;
 using GameLogic;
 using HexLibrary;
 using Utilities;
-using PhoenixGameLibrary.Views;
 
 namespace PhoenixGameLibrary
 {
     public class World
     {
         private readonly Settlements _settlements;
-        private HudView _hud;
         private int _turnNumber;
 
         public OverlandMap OverlandMap { get; }
@@ -50,11 +48,7 @@ namespace PhoenixGameLibrary
 
         public void LoadContent(ContentManager content)
         {
-            OverlandMap.LoadContent(content);
             _settlements.AddSettlement("Fairhaven", "Barbarians", new Point(12, 9), OverlandMap.CellGrid, content);
-
-            _hud = new HudView();
-            _hud.LoadContent(content);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
@@ -78,9 +72,7 @@ namespace PhoenixGameLibrary
             }
             Camera.Update(gameTime, input);
 
-            OverlandMap.Update(gameTime, input);
             _settlements.Update(gameTime, input);
-            _hud.Update(gameTime);
 
             PlayerFaction.FoodPerTurn = _settlements.FoodProducedThisTurn;
 
@@ -90,10 +82,8 @@ namespace PhoenixGameLibrary
             DeviceManager.Instance.WorldHex = new Point(worldHex.Col, worldHex.Row);
         }
 
-        public void Draw()
+        public void Draw(SpriteBatch spriteBatch)
         {
-            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
-
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, Camera.Transform);
 
             OverlandMap.Draw();
@@ -102,7 +92,6 @@ namespace PhoenixGameLibrary
             spriteBatch.End();
 
             _settlements.DrawSettlement(spriteBatch);
-            _hud.Draw(spriteBatch);
         }
 
         public void EndTurn()

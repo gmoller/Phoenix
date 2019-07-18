@@ -59,7 +59,6 @@
     <Compile Include="NotificationList.cs" />
     <Compile Include="SettlementCitizens.cs" />
     <Compile Include="Views\FrameDynamicSizing.cs" />
-    <Compile Include="Views\HudView.cs" />
     <Compile Include="Views\OverlandMapView.cs" />
     <Compile Include="Views\OverlandSettlementView.cs" />
     <Compile Include="Views\SettlementView\BuildingsFrame.cs" />

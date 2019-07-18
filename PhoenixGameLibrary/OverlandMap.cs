@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using PhoenixGameLibrary.Views;
+﻿using PhoenixGameLibrary.Views;
 
 namespace PhoenixGameLibrary
 {
@@ -16,16 +14,6 @@ namespace PhoenixGameLibrary
             _world = world;
             CellGrid = new CellGrid(Constants.WORLD_MAP_COLUMNS, Constants.WORLD_MAP_ROWS);
             _overlandMapView = new OverlandMapView(this);
-        }
-
-        public void LoadContent(ContentManager content)
-        {
-            _overlandMapView.LoadContent(content);
-        }
-
-        public void Update(GameTime gameTime, InputHandler input)
-        {
-            _overlandMapView.Update(gameTime, input);
         }
 
         public void Draw()

@@ -1,34 +1,35 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace PhoenixGameLibrary
 {
     public class PhoenixGame
     {
-        private readonly World _world;
+        public World World { get; }
 
         public Cursor Cursor { get; }
 
         public PhoenixGame()
         {
-            _world = new World();
+            World = new World();
             Cursor = new Cursor();
         }
 
         public void LoadContent(ContentManager content)
         {
-            _world.LoadContent(content);
+            World.LoadContent(content);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
         {
-            _world.Update(gameTime, input);
+            World.Update(gameTime, input);
             Cursor.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
         }
 
-        public void Draw()
+        public void Draw(SpriteBatch spriteBatch)
         {
-            _world.Draw();
+            World.Draw(spriteBatch);
         }
     }
 }
