@@ -57,7 +57,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
 
         public void Update(GameTime gameTime, InputHandler input)
         {
-            Globals.Instance.World.CanScrollMap &= !IsEnabled;
+            Globals.Instance.World.IsInSettlementView = IsEnabled;
 
             if (IsEnabled)
             {

@@ -1,13 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using AssetsLibrary;
 using GameLogic;
 using GuiControls;
 using Utilities;
+using System.Collections.Generic;
+using HexLibrary;
 
 namespace PhoenixGameLibrary.Views
 {
     public class HudView
     {
+        private SpriteFont _font;
         private FrameDynamicSizing _frame;
 
         private Label _lblCurrentDate;
@@ -20,6 +25,8 @@ namespace PhoenixGameLibrary.Views
 
         public void LoadContent(ContentManager content)
         {
+            _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
+
             var topLeftPosition = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f, 0.0f);
             var size = new Vector2(250.0f, DeviceManager.Instance.GraphicsDevice.Viewport.Height - 60);
             _frame = new FrameDynamicSizing(topLeftPosition, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
@@ -56,7 +63,7 @@ namespace PhoenixGameLibrary.Views
             _lblFood.Text = $"{Globals.Instance.World.PlayerFaction.FoodPerTurn} Food";
         }
 
-        public void Draw()
+        public void Draw(SpriteBatch spriteBatch)
         {
             _frame.Draw();
 
@@ -70,6 +77,48 @@ namespace PhoenixGameLibrary.Views
 
             _btnFood.Draw();
             _lblFood.Draw();
+
+            spriteBatch.Begin();
+            DrawNotifications(spriteBatch);
+            DrawTileInfo(spriteBatch);
+            spriteBatch.End();
+        }
+
+        private void DrawNotifications(SpriteBatch spriteBatch)
+        {
+            var x = DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f + 10.0f;
+            var y = DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2.0f;
+            foreach (var item in Globals.Instance.World.NotificationList)
+            {
+                var lines = TextWrapper.WrapText(item, 150, _font);
+                foreach (var line in lines)
+                {
+                    spriteBatch.DrawString(_font, line, new Vector2(x, y), Color.Pink);
+                    y += 20.0f;
+                }
+            }
+        }
+
+        private void DrawTileInfo(SpriteBatch spriteBatch)
+        {
+            var x = DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f + 10.0f;
+            var y = DeviceManager.Instance.GraphicsDevice.Viewport.Height * 0.90f;
+
+            // get tile mouse is over
+            var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
+            var hex = DeviceManager.Instance.WorldHex;
+            if (hex.X >= 0 && hex.Y >= 0 && hex.X < Constants.WORLD_MAP_COLUMNS && hex.Y < Constants.WORLD_MAP_ROWS)
+            {
+                var cell = cellGrid.GetCell(hex.X, hex.Y);
+                var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
+                var text1 = $"{terrainType.Name} - {terrainType.FoodOutput} food";
+                spriteBatch.DrawString(_font, text1, new Vector2(x, y), Color.White);
+            }
+
+            var catchment = cellGrid.GetCatchment(hex.X, hex.Y);
+            var maxPop = Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Point(hex.X, hex.Y), catchment);
+            var text2 = $"Maximum Pop - {maxPop}";
+            spriteBatch.DrawString(_font, text2, new Vector2(x, y + 15.0f), Color.White);
         }
     }
 }

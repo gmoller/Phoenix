@@ -33,8 +33,10 @@ namespace PhoenixGameLibrary
         }
 
         public Camera Camera { get; }
+        public NotificationList NotificationList { get; }
 
-        public bool CanScrollMap { get; set; }
+        public bool IsInSettlementView { get; set; }
+        public bool FixedCamera => IsInSettlementView || _btnEndTurn.MouseOver;
 
         public World()
         {
@@ -46,6 +48,7 @@ namespace PhoenixGameLibrary
             OverlandMap = new OverlandMap(this);
             _settlements = new Settlements();
             _turnNumber = 0;
+            NotificationList = new NotificationList();
         }
 
         public void LoadContent(ContentManager content)
@@ -64,7 +67,7 @@ namespace PhoenixGameLibrary
 
         public void Update(GameTime gameTime, InputHandler input)
         {
-            if (CanScrollMap)
+            if (!FixedCamera)
             {
                 var zoom = input.MouseWheelUp ? 0.05f : 0.0f;
                 zoom = input.MouseWheelDown ? -0.05f : zoom;
@@ -88,7 +91,6 @@ namespace PhoenixGameLibrary
             _hud.Update(gameTime);
 
             _btnEndTurn.Update(gameTime);
-            Globals.Instance.World.CanScrollMap = !_btnEndTurn.MouseOver;
 
             PlayerFaction.FoodPerTurn = _settlements.FoodProducedThisTurn;
 
@@ -109,13 +111,14 @@ namespace PhoenixGameLibrary
 
             spriteBatch.End();
 
-            _hud.Draw();
+            _hud.Draw(spriteBatch);
             _settlements.DrawSettlement(spriteBatch);
             _btnEndTurn.Draw();
         }
 
         private void btnEndTurnClick(object sender, EventArgs e)
         {
+            NotificationList.Clear();
             _settlements.EndTurn();
             _turnNumber++;
         }

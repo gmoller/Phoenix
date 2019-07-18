@@ -1,4 +1,7 @@
-﻿namespace PhoenixGameLibrary
+﻿using System.Collections.Generic;
+using HexLibrary;
+
+namespace PhoenixGameLibrary
 {
     public class CellGrid
     {
@@ -23,14 +26,30 @@
             }
         }
 
-        public Cell GetCell(int col, int row)
+        public Cell GetCell(int column, int row)
         {
-            return _cellGrid[col, row];
+            return _cellGrid[column, row];
         }
 
-        public void SetCell(int col, int row, Cell cell)
+        public void SetCell(int column, int row, Cell cell)
         {
-            _cellGrid[col, row] = cell;
+            _cellGrid[column, row] = cell;
+        }
+
+        public List<Cell> GetCatchment(int column, int row)
+        {
+            var catchmentCells = new List<Cell>();
+            var catchment = HexOffsetCoordinates.GetAllNeighbors(column, row);
+            foreach (var tile in catchment)
+            {
+                if (tile.Col >= 0 && tile.Row >= 0 && tile.Col < Constants.WORLD_MAP_COLUMNS && tile.Row < Constants.WORLD_MAP_ROWS)
+                {
+                    var cell = GetCell(tile.Col, tile.Row);
+                    catchmentCells.Add(cell);
+                }
+            }
+
+            return catchmentCells;
         }
     }
 }

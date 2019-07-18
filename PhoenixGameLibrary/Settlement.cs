@@ -30,15 +30,14 @@ namespace PhoenixGameLibrary
         public RaceType RaceType { get; }
         public Point Location { get; }
         public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
-        public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(Location, _catchmentCells);
         public int GrowthRate => DetermineGrowthRate();
+        public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(Location, _catchmentCells);
         public int SettlementFoodProduction => Helpers.SettlementFoodProduction.DetermineFoodProduction(this, _buildingsBuilt);
+        public int SettlementProduction => Helpers.SettlementProduction.DetermineProduction(this, _catchmentCells);
         public int FoodSurplus => SettlementFoodProduction - Citizens.TotalPopulation;
         //public int GoldUpkeep => DetermineGoldUpkeep();
         //public int GoldSurplus => DetermineGoldSurplus();
         public CurrentlyBuilding CurrentlyBuilding { get; private set; }
-
-        public int SettlementProduction => Helpers.SettlementProduction.DetermineProduction(this, _catchmentCells);
 
         public SettlementCitizens Citizens { get; }
         public SettlementView View { get; }
@@ -73,14 +72,12 @@ namespace PhoenixGameLibrary
             }
             Citizens = new SettlementCitizens(this, settlementSize, _buildingsBuilt);
 
-            _catchmentCells = new List<Cell>();
-            var catchment = HexOffsetCoordinates.GetAllNeighbors(location.X, location.Y);
-            foreach (var tile in catchment)
+            _catchmentCells = cellGrid.GetCatchment(location.X, location.Y);
+            foreach (var item in _catchmentCells)
             {
-                var cell = cellGrid.GetCell(tile.Col, tile.Row);
+                var cell = cellGrid.GetCell(item.Column, item.Row);
                 cell.BelongsToSettlement = _id;
-                cellGrid.SetCell(tile.Col, tile.Row, cell);
-                _catchmentCells.Add(cell);
+                cellGrid.SetCell(item.Column, item.Row, cell);
             }
 
             View = new SettlementView(this);
@@ -150,6 +147,7 @@ namespace PhoenixGameLibrary
             {
                 Citizens.IncreaseByOne(_buildingsBuilt);
                 _populationGrowth = 0;
+                Globals.Instance.World.NotificationList.Add($"- {Name} has grown to a population of {Citizens.TotalPopulation}");
             }
 
             if (CurrentlyBuilding.BuildingId != -1)
@@ -158,7 +156,9 @@ namespace PhoenixGameLibrary
                 if (CurrentlyBuilding.ProductionAccrued >= Globals.Instance.BuildingTypes[CurrentlyBuilding.BuildingId].ConstructionCost)
                 {
                     _buildingsBuilt.Add(CurrentlyBuilding.BuildingId);
+                    Globals.Instance.World.NotificationList.Add($"- {Name} has produced a {Globals.Instance.BuildingTypes[CurrentlyBuilding.BuildingId].Name}");
                     CurrentlyBuilding = new CurrentlyBuilding(-1, 0);
+                    // TODO: open settlement view
                 }
             }
         }
