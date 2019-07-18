@@ -68,7 +68,7 @@
     <Compile Include="Views\SettlementView\ProducingFrame.cs" />
     <Compile Include="Views\SettlementView\ResourceFrame.cs" />
     <Compile Include="Views\SettlementView\SettlementView.cs" />
-    <Compile Include="Views\Cursor.cs" />
+    <Compile Include="Cursor.cs" />
     <Compile Include="GameData\TerrainType.cs" />
     <Compile Include="GameData\TerrainTypes.cs" />
     <Compile Include="GameData\TerrainTypesLoader.cs" />
