@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using PhoenixGameLibrary;
+using PhoenixGamePresentationLibrary;
 using Utilities;
 
 namespace Phoenix
@@ -13,6 +14,7 @@ namespace Phoenix
 
         private InputHandler _input;
         private PhoenixGame _phoenixGame;
+        private PhoenixGameView _phoenixGameView;
         private MetricsPanel _metricsPanel;
 
         public MainGame()
@@ -33,6 +35,7 @@ namespace Phoenix
             _input = new InputHandler();
             _input.Initialize();
             _phoenixGame = new PhoenixGame();
+            _phoenixGameView = new PhoenixGameView(_phoenixGame);
 
             Logger.Instance.LogComplete();
 
@@ -117,6 +120,7 @@ namespace Phoenix
             _metricsPanel = new MetricsPanel(new Vector2(0.0f, 200.0f));
 
             _phoenixGame.LoadContent(Content);
+            _phoenixGameView.LoadContent(Content);
 
             Logger.Instance.LogComplete();
         }
@@ -132,39 +136,24 @@ namespace Phoenix
 
         protected override void Update(GameTime gameTime)
         {
-            //try
-            //{
-                _input.Update(gameTime);
-                if (_input.Exit) Exit();
+            _input.Update(gameTime);
+            if (_input.Exit) Exit();
 
-                _phoenixGame.Update(gameTime, _input);
-                _metricsPanel.Update(gameTime, _input);
+            _phoenixGame.Update(gameTime, _input);
+            _metricsPanel.Update(gameTime, _input);
 
-                base.Update(gameTime);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Logger.Instance.LogError(ex);
-            //    throw ex;
-            //}
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            //try
-            //{
-                GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.Black);
 
-                _phoenixGame.Draw();
-                _metricsPanel.Draw();
+            _phoenixGame.Draw(); // TODO: remove
+            _phoenixGameView.Draw(DeviceManager.Instance.GetCurrentSpriteBatch());
+            _metricsPanel.Draw();
 
-                base.Draw(gameTime);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Logger.Instance.LogError(ex);
-            //    throw ex;
-            //}
+            base.Draw(gameTime);
         }
     }
 }

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GameLogic;
-using GuiControls;
 using HexLibrary;
 using Utilities;
 using PhoenixGameLibrary.Views;
@@ -15,7 +13,6 @@ namespace PhoenixGameLibrary
     {
         private readonly Settlements _settlements;
         private HudView _hud;
-        private Button _btnEndTurn;
         private int _turnNumber;
 
         public OverlandMap OverlandMap { get; }
@@ -36,7 +33,7 @@ namespace PhoenixGameLibrary
         public NotificationList NotificationList { get; }
 
         public bool IsInSettlementView { get; set; }
-        public bool FixedCamera => IsInSettlementView || _btnEndTurn.MouseOver;
+        public bool FixedCamera => IsInSettlementView; // || _btnEndTurn.MouseOver;
 
         public World()
         {
@@ -58,11 +55,6 @@ namespace PhoenixGameLibrary
 
             _hud = new HudView();
             _hud.LoadContent(content);
-
-            var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
-            var label = new Label("lblNextTurn", "CrimsonText-Regular-12", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "Next Turn", HorizontalAlignment.Center, Color.White, Color.Blue);
-            _btnEndTurn = new Button("btnEndTurn", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h", label);
-            _btnEndTurn.Click += btnEndTurnClick;
         }
 
         public void Update(GameTime gameTime, InputHandler input)
@@ -90,8 +82,6 @@ namespace PhoenixGameLibrary
             _settlements.Update(gameTime, input);
             _hud.Update(gameTime);
 
-            _btnEndTurn.Update(gameTime);
-
             PlayerFaction.FoodPerTurn = _settlements.FoodProducedThisTurn;
 
             var worldPos = Camera.ScreenToWorld(new Vector2(input.MousePostion.X, input.MousePostion.Y));
@@ -111,12 +101,11 @@ namespace PhoenixGameLibrary
 
             spriteBatch.End();
 
-            _hud.Draw(spriteBatch);
             _settlements.DrawSettlement(spriteBatch);
-            _btnEndTurn.Draw();
+            _hud.Draw(spriteBatch);
         }
 
-        private void btnEndTurnClick(object sender, EventArgs e)
+        public void EndTurn()
         {
             NotificationList.Clear();
             _settlements.EndTurn();

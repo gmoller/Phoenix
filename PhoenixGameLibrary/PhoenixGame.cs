@@ -7,30 +7,31 @@ namespace PhoenixGameLibrary
     public class PhoenixGame
     {
         private readonly World _world;
-        private readonly Cursor _cursor;
+
+        public Cursor Cursor { get; }
 
         public PhoenixGame()
         {
             _world = new World();
-            _cursor = new Cursor();
+            Cursor = new Cursor();
         }
 
         public void LoadContent(ContentManager content)
         {
             _world.LoadContent(content);
-            _cursor.LoadContent(content);
+            Cursor.LoadContent(content);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
         {
             _world.Update(gameTime, input);
-            _cursor.Update(gameTime);
+            Cursor.Update(gameTime);
         }
 
         public void Draw()
         {
             _world.Draw();
-            _cursor.Draw();
+            Cursor.Draw();
         }
     }
 }

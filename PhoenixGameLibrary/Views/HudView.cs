@@ -1,12 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GameLogic;
 using GuiControls;
 using Utilities;
-using System.Collections.Generic;
-using HexLibrary;
 
 namespace PhoenixGameLibrary.Views
 {
@@ -22,6 +21,8 @@ namespace PhoenixGameLibrary.Views
         private Label _lblMana;
         private Button _btnFood;
         private Label _lblFood;
+
+        private Button _btnEndTurn;
 
         public void LoadContent(ContentManager content)
         {
@@ -43,6 +44,11 @@ namespace PhoenixGameLibrary.Views
 
             _btnFood = new Button("btnFood", _btnMana.BottomLeft + new Vector2(0.0f, 10.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(50.0f, 50.0f), "Icons_1", "Bread_T", "Bread_R", "Bread_R", "Bread_R");
             _lblFood = new Label("lblFood", "CrimsonText-Regular-12", new Vector2(_btnFood.Right + 20.0f, _btnFood.Center.Y), HorizontalAlignment.Left, VerticalAlignment.Middle, new Vector2(100.0f, 25.0f), string.Empty, HorizontalAlignment.Left, Color.Yellow, Color.Black, Color.TransparentBlack);
+
+            var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
+            var label = new Label("lblNextTurn", "CrimsonText-Regular-12", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "Next Turn", HorizontalAlignment.Center, Color.White, Color.Blue);
+            _btnEndTurn = new Button("btnEndTurn", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h", label);
+            _btnEndTurn.Click += btnEndTurnClick;
         }
 
         public void Update(GameTime gameTime)
@@ -61,6 +67,8 @@ namespace PhoenixGameLibrary.Views
             _btnFood.Update(gameTime);
             _lblFood.Update(gameTime);
             _lblFood.Text = $"{Globals.Instance.World.PlayerFaction.FoodPerTurn} Food";
+
+            _btnEndTurn.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -82,6 +90,8 @@ namespace PhoenixGameLibrary.Views
             DrawNotifications(spriteBatch);
             DrawTileInfo(spriteBatch);
             spriteBatch.End();
+
+            _btnEndTurn.Draw();
         }
 
         private void DrawNotifications(SpriteBatch spriteBatch)
@@ -119,6 +129,11 @@ namespace PhoenixGameLibrary.Views
             var maxPop = Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Point(hex.X, hex.Y), catchment);
             var text2 = $"Maximum Pop - {maxPop}";
             spriteBatch.DrawString(_font, text2, new Vector2(x, y + 15.0f), Color.White);
+        }
+
+        private void btnEndTurnClick(object sender, EventArgs e)
+        {
+            Globals.Instance.World.EndTurn();
         }
     }
 }

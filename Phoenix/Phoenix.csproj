@@ -127,6 +127,10 @@
       <Project>{21921023-2b2b-4b3d-82a3-7f335f24c644}</Project>
       <Name>PhoenixGameLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PhoenixGamePresentationLibrary\PhoenixGamePresentationLibrary.csproj">
+      <Project>{46ad3ad4-2dd6-4462-8bc9-e28a6b8ff13e}</Project>
+      <Name>PhoenixGamePresentationLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{5320FF4A-6C80-4627-9B74-9E7CB1A109FD}</Project>
       <Name>Utilities</Name>
