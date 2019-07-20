@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using GuiControls;
+using PhoenixGameLibrary;
 
-namespace PhoenixGameLibrary.Views.SettlementView
+namespace PhoenixGamePresentationLibrary.SettlementView
 {
-    public class ResourceFrame
+    internal class ResourceFrame
     {
-        private readonly Settlement _settlement;
+        private readonly SettlementView _parent;
 
         private readonly FrameDynamicSizing _smallFrame;
         private readonly Label _lblResources;
@@ -20,9 +21,9 @@ namespace PhoenixGameLibrary.Views.SettlementView
         private readonly Label _lblResearch1;
         private readonly Label _lblResearch2;
 
-        public ResourceFrame(Vector2 topLeftPosition, Settlement settlement)
+        internal ResourceFrame(SettlementView parent, Vector2 topLeftPosition)
         {
-            _settlement = settlement;
+            _parent = parent;
 
             _smallFrame = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 160), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
 
@@ -39,13 +40,13 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _lblResearch2 = new Label("lblResearch2", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 160.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
         }
 
-        public void Update(GameTime gameTime, InputHandler input)
+        internal void Update(GameTime gameTime, InputHandler input)
         {
             _lblResources.Text = "Resources";
             _lblFood1.Text = "Food";
-            _lblFood2.Text = $"{_settlement.SettlementFoodProduction}";
+            _lblFood2.Text = $"{_parent.Settlement.SettlementFoodProduction}";
             _lblProduction1.Text = "Production";
-            _lblProduction2.Text = $"{_settlement.SettlementProduction}";
+            _lblProduction2.Text = $"{_parent.Settlement.SettlementProduction}";
             _lblGold1.Text = "Gold";
             _lblGold2.Text = $"{0}";
             _lblPower1.Text = "Power";
@@ -54,7 +55,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _lblResearch2.Text = $"{0}";
         }
 
-        public void Draw()
+        internal void Draw()
         {
             _smallFrame.Draw();
             _lblResources.Draw();

@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace PhoenixGameLibrary
 {
@@ -10,6 +8,14 @@ namespace PhoenixGameLibrary
         private List<Settlement> _settlements;
 
         public int FoodProducedThisTurn { get; private set; }
+
+        public Settlement this[int index]
+        {
+            get
+            {
+                return _settlements[index];
+            }
+        }
 
         public Settlements()
         {
@@ -28,26 +34,22 @@ namespace PhoenixGameLibrary
             FoodProducedThisTurn = foodProducedThisTurn;
         }
 
-        public void DrawOverland()
+        internal bool HasSettlementOnCell(int column, int row)
         {
-            foreach (var settlement in _settlements)
+            foreach (var item in _settlements)
             {
-                settlement.DrawOverland();
+                if (item.Location.X == column && item.Location.Y == row)
+                {
+                    return true;
+                }
             }
+
+            return false;
         }
 
-        public void DrawSettlement(SpriteBatch spriteBatch)
-        {
-            foreach (var settlement in _settlements)
-            {
-                settlement.DrawSettlement(spriteBatch);
-            }
-        }
-
-        public void AddSettlement(string name, string raceTypeName, Point hexLocation, CellGrid cellGrid, ContentManager content)
+        public void AddSettlement(string name, string raceTypeName, Point hexLocation, CellGrid cellGrid)
         {
             var settlement = new Settlement(name, raceTypeName, hexLocation, 4, cellGrid, "BuildersHall", "Barracks", "Smithy");
-            settlement.LoadContent(content);
             _settlements.Add(settlement);
         }
 

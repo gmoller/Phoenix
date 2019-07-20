@@ -119,7 +119,6 @@ namespace Phoenix
 
             _metricsPanel = new MetricsPanel(new Vector2(0.0f, 200.0f));
 
-            _phoenixGame.LoadContent(Content);
             _phoenixGameView.LoadContent(Content);
 
             Logger.Instance.LogComplete();
@@ -140,7 +139,7 @@ namespace Phoenix
             if (_input.Exit) Exit();
 
             _phoenixGame.Update(gameTime, _input);
-            _phoenixGameView.Update(gameTime);
+            _phoenixGameView.Update(gameTime, _input); // here for controls updates
             _metricsPanel.Update(gameTime, _input);
 
             base.Update(gameTime);
@@ -150,7 +149,6 @@ namespace Phoenix
         {
             GraphicsDevice.Clear(Color.Black);
 
-            _phoenixGame.Draw(DeviceManager.Instance.GetCurrentSpriteBatch()); // TODO: remove
             _phoenixGameView.Draw(DeviceManager.Instance.GetCurrentSpriteBatch());
             _metricsPanel.Draw();
 

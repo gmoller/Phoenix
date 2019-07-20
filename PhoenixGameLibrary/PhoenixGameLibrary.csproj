@@ -56,17 +56,9 @@
     <Compile Include="Helpers\PopulationGrowthRate.cs" />
     <Compile Include="Helpers\SettlementFoodProduction.cs" />
     <Compile Include="Helpers\SettlementProduction.cs" />
+    <Compile Include="MessageQueue.cs" />
     <Compile Include="NotificationList.cs" />
     <Compile Include="SettlementCitizens.cs" />
-    <Compile Include="Views\FrameDynamicSizing.cs" />
-    <Compile Include="Views\OverlandMapView.cs" />
-    <Compile Include="Views\OverlandSettlementView.cs" />
-    <Compile Include="Views\SettlementView\BuildingsFrame.cs" />
-    <Compile Include="Views\SettlementView\MainFrame.cs" />
-    <Compile Include="Views\SettlementView\PopulationFrame.cs" />
-    <Compile Include="Views\SettlementView\ProducingFrame.cs" />
-    <Compile Include="Views\SettlementView\ResourceFrame.cs" />
-    <Compile Include="Views\SettlementView\SettlementView.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="GameData\TerrainType.cs" />
     <Compile Include="GameData\TerrainTypes.cs" />
@@ -110,5 +102,6 @@
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

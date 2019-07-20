@@ -1,20 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using GameLogic;
 using GuiControls;
+using PhoenixGameLibrary;
 
-namespace PhoenixGameLibrary.Views.SettlementView
+namespace PhoenixGamePresentationLibrary.SettlementView
 {
     internal class ProducingFrame
     {
-        private Settlement _settlement;
+        private readonly SettlementView _parent;
 
         private readonly FrameDynamicSizing _smallFrame;
         private readonly Label _lblProducing;
         private readonly Label _lblCurrent;
 
-        public ProducingFrame(Vector2 topLeftPosition, Settlement settlement)
+        internal ProducingFrame(SettlementView parent, Vector2 topLeftPosition)
         {
-            _settlement = settlement;
+            _parent = parent;
 
             _smallFrame = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 160), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
 
@@ -22,21 +23,21 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _lblCurrent = new Label("lblCurrent", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
         }
 
-        public void Update(GameTime gameTime, InputHandler input)
+        internal void Update(GameTime gameTime, InputHandler input)
         {
             _lblProducing.Text = "Producing";
-            if (_settlement.CurrentlyBuilding.BuildingId == -1)
+            if (_parent.Settlement.CurrentlyBuilding.BuildingId == -1)
             {
                 _lblCurrent.Text = "Current: <nothing>";
             }
             else
             {
-                var building = Globals.Instance.BuildingTypes[_settlement.CurrentlyBuilding.BuildingId];
-                _lblCurrent.Text = $"Current: {building.Name} ({_settlement.CurrentlyBuilding.ProductionAccrued}/{building.ConstructionCost})";
+                var building = Globals.Instance.BuildingTypes[_parent.Settlement.CurrentlyBuilding.BuildingId];
+                _lblCurrent.Text = $"Current: {building.Name} ({_parent.Settlement.CurrentlyBuilding.ProductionAccrued}/{building.ConstructionCost})";
             }
         }
 
-        public void Draw()
+        internal void Draw()
         {
             _smallFrame.Draw();
             _lblProducing.Draw();

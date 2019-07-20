@@ -8,6 +8,7 @@ namespace GameLogic
     {
         private static readonly Lazy<Globals> Lazy = new Lazy<Globals>(() => new Globals());
 
+        public MessageQueue MessageQueue { get; }
         public World World { get; set; }
         public TerrainTypes TerrainTypes { get; }
         public RaceTypes RaceTypes { get; }
@@ -25,6 +26,8 @@ namespace GameLogic
 
         private Globals()
         {
+            MessageQueue = new MessageQueue();
+
             TerrainTypes = TerrainTypes.Create(TerrainTypesLoader.GetTerrainTypes());
             RaceTypes = RaceTypes.Create(RaceTypesLoader.GetRaceTypes());
 

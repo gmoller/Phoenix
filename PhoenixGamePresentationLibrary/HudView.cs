@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GameLogic;
 using GuiControls;
-using PhoenixGameLibrary.Views;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
@@ -134,7 +133,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void btnEndTurnClick(object sender, EventArgs e)
         {
-            Globals.Instance.World.EndTurn();
+            Globals.Instance.MessageQueue.Enqueue("EndTurn");
         }
     }
 }

@@ -3,13 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GameLogic;
 using GuiControls;
+using PhoenixGameLibrary;
 using Utilities;
 
-namespace PhoenixGameLibrary.Views.SettlementView
+namespace PhoenixGamePresentationLibrary.SettlementView
 {
-    public class BuildingsFrame
+    internal class BuildingsFrame
     {
-        private readonly Settlement _settlement;
+        private readonly SettlementView _parent;
 
         private readonly Vector2 _topLeftPosition;
 
@@ -23,9 +24,9 @@ namespace PhoenixGameLibrary.Views.SettlementView
         private readonly Label _lblUnits;
         private readonly Label _lblOther;
 
-        public BuildingsFrame(Vector2 topLeftPosition, Settlement settlement)
+        internal BuildingsFrame(SettlementView parent, Vector2 topLeftPosition)
         {
-            _settlement = settlement;
+            _parent = parent;
             _topLeftPosition = topLeftPosition;
 
             _smallFrameBuildings = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 10, 13);
@@ -39,7 +40,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _atlas = AssetsManager.Instance.GetAtlas("Buildings");
         }
 
-        public void Update(GameTime gameTime, InputHandler input)
+        internal void Update(GameTime gameTime, InputHandler input)
         {
             _lblBuildings.Text = "Buildings";
             _lblUnits.Text = "Units";
@@ -58,16 +59,16 @@ namespace PhoenixGameLibrary.Views.SettlementView
                     if (slotRectangle.Contains(input.MousePostion))
                     {
                         // can building be built? requirements met? not already built?
-                        if (_settlement.BuildingReadyToBeBeBuilt(building.Name))
+                        if (_parent.Settlement.BuildingReadyToBeBeBuilt(building.Name))
                         {
-                            _settlement.AddToProductionQueue(building);
+                            _parent.Settlement.AddToProductionQueue(building);
                         }
                     }
                 }
             }
         }
 
-        public void Draw()
+        internal void Draw()
         {
             _smallFrameBuildings.Draw();
             _lblBuildings.Draw();
@@ -97,15 +98,15 @@ namespace PhoenixGameLibrary.Views.SettlementView
         {
             var rect = new Rectangle(topLeftX, topLeftY, 40, 20);
             var color = Color.Transparent;
-            if (_settlement.BuildingCanNotBeBuilt(buildingName))
+            if (_parent.Settlement.BuildingCanNotBeBuilt(buildingName))
             {
                 color = Color.Red;
             }
-            else if (_settlement.BuildingHasBeenBuilt(buildingName))
+            else if (_parent.Settlement.BuildingHasBeenBuilt(buildingName))
             {
                 color = Color.ForestGreen;
             }
-            else if (_settlement.BuildingReadyToBeBeBuilt(buildingName))
+            else if (_parent.Settlement.BuildingReadyToBeBeBuilt(buildingName))
             {
                 color = Color.LightGreen;
             }

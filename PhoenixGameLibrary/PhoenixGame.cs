@@ -1,35 +1,50 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+using GameLogic;
 
 namespace PhoenixGameLibrary
 {
     public class PhoenixGame
     {
         public World World { get; }
-
         public Cursor Cursor { get; }
 
         public PhoenixGame()
         {
             World = new World();
             Cursor = new Cursor();
-        }
 
-        public void LoadContent(ContentManager content)
-        {
-            World.LoadContent(content);
+            World.AddStartingSettlement();
         }
 
         public void Update(GameTime gameTime, InputHandler input)
         {
             World.Update(gameTime, input);
             Cursor.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
+
+            ProcessMessages();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        private void ProcessMessages()
         {
-            World.Draw(spriteBatch);
+            var queue = Globals.Instance.MessageQueue;
+            while (queue.Count > 0)
+            {
+                var message = queue.Dequeue();
+
+                if (message == "EndTurn")
+                {
+                    World.EndTurn();
+                }
+                else if (message == "OpenSettlement")
+                {
+                    World.IsInSettlementView = true;
+                    World.Settlement = World.Settlements[0]; // TODO: get by settlementId
+                }
+                else if (message == "CloseSettlement")
+                {
+                    World.IsInSettlementView = false;
+                }
+            }
         }
     }
 }

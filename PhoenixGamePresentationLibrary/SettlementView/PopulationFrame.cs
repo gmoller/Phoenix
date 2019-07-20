@@ -3,12 +3,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
+using PhoenixGameLibrary;
 
-namespace PhoenixGameLibrary.Views.SettlementView
+namespace PhoenixGamePresentationLibrary.SettlementView
 {
-    public class PopulationFrame
+    internal class PopulationFrame
     {
-        private readonly Settlement _settlement;
+        private readonly SettlementView _parent;
         private readonly Vector2 _topLeftPosition;
 
         private readonly Label _lblRace;
@@ -23,12 +24,12 @@ namespace PhoenixGameLibrary.Views.SettlementView
         private Button _btnSubtractWorker;
         private Button _btnAddWorker;
 
-        public PopulationFrame(Vector2 topLeftPosition, Settlement settlement)
+        internal PopulationFrame(SettlementView parent, Vector2 topLeftPosition)
         {
-            _settlement = settlement;
+            _parent = parent;
             _topLeftPosition = topLeftPosition;
 
-            _lblRace = new Label("lblRace", "CrimsonText-Regular-12", topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Middle, Vector2.Zero, $"{_settlement.RaceType.Name}", HorizontalAlignment.Left, Color.Orange);
+            _lblRace = new Label("lblRace", "CrimsonText-Regular-12", topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
             _lblPopulationGrowth = new Label("lblPopulationGrowth", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 516.0f, topLeftPosition.Y), HorizontalAlignment.Right, VerticalAlignment.Middle, Vector2.Zero, "Population: 0", HorizontalAlignment.Right, Color.Orange);
 
             _smallFrame = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 120), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
@@ -49,9 +50,10 @@ namespace PhoenixGameLibrary.Views.SettlementView
             EnableOrDisableButtons();
         }
 
-        public void Update(GameTime gameTime, InputHandler input)
+        internal void Update(GameTime gameTime, InputHandler input)
         {
-            _lblPopulationGrowth.Text = $"Population: {_settlement.Population} (+{_settlement.GrowthRate})";
+            _lblRace.Text = $"{_parent.Settlement.RaceType.Name}";
+            _lblPopulationGrowth.Text = $"Population: {_parent.Settlement.Population} (+{_parent.Settlement.GrowthRate})";
 
             _btnSubtractFarmer.Update(gameTime);
             _btnAddFarmer.Update(gameTime);
@@ -61,7 +63,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
             EnableOrDisableButtons();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        internal void Draw(SpriteBatch spriteBatch)
         {
             _lblRace.Draw();
             _lblPopulationGrowth.Draw();
@@ -71,10 +73,10 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _lblRebels1.Draw();
 
             spriteBatch.Begin();
-            DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200, _topLeftPosition.Y + 20), _settlement.RaceType.Name, "Farmer", _settlement.Citizens.SubsistenceFarmers);
-            DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200 + (_settlement.Citizens.SubsistenceFarmers * 20) + 20, _topLeftPosition.Y + 20), _settlement.RaceType.Name, "Farmer", _settlement.Citizens.AdditionalFarmers);
-            DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200, _topLeftPosition.Y + 50), _settlement.RaceType.Name, "Worker", _settlement.Citizens.Workers);
-            DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200, _topLeftPosition.Y + 80), _settlement.RaceType.Name, "Rebel", 0); //_settlement.Citizens.Rebels
+            DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200, _topLeftPosition.Y + 20), _parent.Settlement.RaceType.Name, "Farmer", _parent.Settlement.Citizens.SubsistenceFarmers);
+            DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200 + (_parent.Settlement.Citizens.SubsistenceFarmers * 20) + 20, _topLeftPosition.Y + 20), _parent.Settlement.RaceType.Name, "Farmer", _parent.Settlement.Citizens.AdditionalFarmers);
+            DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200, _topLeftPosition.Y + 50), _parent.Settlement.RaceType.Name, "Worker", _parent.Settlement.Citizens.Workers);
+            DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200, _topLeftPosition.Y + 80), _parent.Settlement.RaceType.Name, "Rebel", 0); //_settlement.Citizens.Rebels
             spriteBatch.End();
 
             _btnSubtractFarmer.Draw();
@@ -83,7 +85,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _btnAddWorker.Draw();
         }
 
-        public void DrawCitizens(SpriteBatch spriteBatch, Vector2 position, string raceTypeName, string citizenType, int citizenCount)
+        internal void DrawCitizens(SpriteBatch spriteBatch, Vector2 position, string raceTypeName, string citizenType, int citizenCount)
         {
             var texture = AssetsManager.Instance.GetTexture("Citizens");
             var atlas = AssetsManager.Instance.GetAtlas("Citizens");
@@ -101,30 +103,33 @@ namespace PhoenixGameLibrary.Views.SettlementView
 
         private void btnSubtractFarmerClick(object sender, EventArgs e)
         {
-            _settlement.Citizens.ConvertFarmerToWorker();
+            _parent.Settlement.Citizens.ConvertFarmerToWorker();
         }
 
         private void btnAddFarmerClick(object sender, EventArgs e)
         {
-            _settlement.Citizens.ConvertWorkerToFarmer();
+            _parent.Settlement.Citizens.ConvertWorkerToFarmer();
         }
 
         private void btnSubtractWorkerClick(object sender, EventArgs e)
         {
-            _settlement.Citizens.ConvertWorkerToFarmer();
+            _parent.Settlement.Citizens.ConvertWorkerToFarmer();
         }
 
         private void btnAddWorkerClick(object sender, EventArgs e)
         {
-            _settlement.Citizens.ConvertFarmerToWorker();
+            _parent.Settlement.Citizens.ConvertFarmerToWorker();
         }
 
         private void EnableOrDisableButtons()
         {
-            _btnSubtractFarmer.Enabled = _settlement.Citizens.AdditionalFarmers > 0;
-            _btnAddFarmer.Enabled = _settlement.Citizens.Workers > 0;
-            _btnSubtractWorker.Enabled = _settlement.Citizens.Workers > 0;
-            _btnAddWorker.Enabled = _settlement.Citizens.AdditionalFarmers > 0;
+            if (_parent.Settlement != null)
+            {
+                _btnSubtractFarmer.Enabled = _parent.Settlement.Citizens.AdditionalFarmers > 0;
+                _btnAddFarmer.Enabled = _parent.Settlement.Citizens.Workers > 0;
+                _btnSubtractWorker.Enabled = _parent.Settlement.Citizens.Workers > 0;
+                _btnAddWorker.Enabled = _parent.Settlement.Citizens.AdditionalFarmers > 0;
+            }
         }
     }
 }

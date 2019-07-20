@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using GameLogic;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -13,6 +14,7 @@ namespace PhoenixGameLibrary
         public int TerrainTypeId { get; }
         public Texture Texture { get; }
         public int BelongsToSettlement { get; set; }
+        public bool HasSettlement => CellHasSettlement();
 
         public Cell(int col, int row, TerrainType terrainType)
         {
@@ -20,6 +22,11 @@ namespace PhoenixGameLibrary
             TerrainTypeId = terrainType.Id;
             Texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
             BelongsToSettlement = -1;
+        }
+
+        private bool CellHasSettlement()
+        {
+            return Globals.Instance.World.Settlements.HasSettlementOnCell(Column, Row);
         }
 
         private string DebuggerDisplay => $"{{Col={Column},Row={Row},TerrainTypeId={TerrainTypeId}}}";

@@ -3,11 +3,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
+using PhoenixGameLibrary;
 using Utilities;
 
-namespace PhoenixGameLibrary.Views.SettlementView
+namespace PhoenixGamePresentationLibrary.SettlementView
 {
-    public class MainFrame
+    internal class MainFrame
     {
         private readonly SettlementView _parent;
         private readonly Vector2 _topLeftPosition;
@@ -17,7 +18,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
         private readonly Rectangle _bottom;
         private readonly Button _btnClose;
 
-        public MainFrame(SettlementView parent, Vector2 topLeftPosition, Texture2D texture, AtlasSpec2 atlas)
+        internal MainFrame(SettlementView parent, Vector2 topLeftPosition, Texture2D texture, AtlasSpec2 atlas)
         {
             _parent = parent;
             _topLeftPosition = topLeftPosition;
@@ -34,12 +35,12 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _btnClose.Click += CloseButtonClick;
         }
 
-        public void Update(GameTime gameTime, InputHandler input)
+        internal void Update(GameTime gameTime, InputHandler input)
         {
             _btnClose.Update(gameTime);
         }
 
-        public void Draw()
+        internal void Draw()
         {
             var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
             spriteBatch.Begin();
@@ -59,7 +60,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
         }
     }
 
-    public class SecondaryFrame
+    internal class SecondaryFrame
     {
         private readonly SettlementView _parent;
         private readonly Vector2 _topLeftPosition;
@@ -67,7 +68,7 @@ namespace PhoenixGameLibrary.Views.SettlementView
         private readonly Rectangle _main;
         private readonly Rectangle _bottom;
 
-        public SecondaryFrame(SettlementView parent, Vector2 topLeftPosition, Texture2D texture, AtlasSpec2 atlas)
+        internal SecondaryFrame(SettlementView parent, Vector2 topLeftPosition, Texture2D texture, AtlasSpec2 atlas)
         {
             _parent = parent;
             _topLeftPosition = topLeftPosition;
@@ -79,11 +80,11 @@ namespace PhoenixGameLibrary.Views.SettlementView
             _bottom = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
         }
 
-        public void Update(GameTime gameTime, InputHandler input)
+        internal void Update(GameTime gameTime, InputHandler input)
         {
         }
 
-        public void Draw()
+        internal void Draw()
         {
             var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
             spriteBatch.Begin();

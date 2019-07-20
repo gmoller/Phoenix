@@ -1,7 +1,5 @@
 ﻿using System.Globalization;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using GameLogic;
 using HexLibrary;
 using Utilities;
@@ -10,10 +8,11 @@ namespace PhoenixGameLibrary
 {
     public class World
     {
-        private readonly Settlements _settlements;
         private int _turnNumber;
 
         public OverlandMap OverlandMap { get; }
+        public Settlements Settlements { get; }
+        public Settlement Settlement { get; set; }
         public Faction PlayerFaction { get; }
         public string CurrentDate
         {
@@ -41,14 +40,14 @@ namespace PhoenixGameLibrary
             Camera.LookAt(new Vector2(800.0f, 400.0f));
             PlayerFaction = new Faction();
             OverlandMap = new OverlandMap(this);
-            _settlements = new Settlements();
+            Settlements = new Settlements();
             _turnNumber = 0;
             NotificationList = new NotificationList();
         }
 
-        public void LoadContent(ContentManager content)
+        public void AddStartingSettlement()
         {
-            _settlements.AddSettlement("Fairhaven", "Barbarians", new Point(12, 9), OverlandMap.CellGrid, content);
+            Settlements.AddSettlement("Fairhaven", "Barbarians", new Point(12, 9), OverlandMap.CellGrid);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
@@ -72,9 +71,9 @@ namespace PhoenixGameLibrary
             }
             Camera.Update(gameTime, input);
 
-            _settlements.Update(gameTime, input);
+            Settlements.Update(gameTime, input);
 
-            PlayerFaction.FoodPerTurn = _settlements.FoodProducedThisTurn;
+            PlayerFaction.FoodPerTurn = Settlements.FoodProducedThisTurn;
 
             var worldPos = Camera.ScreenToWorld(new Vector2(input.MousePostion.X, input.MousePostion.Y));
             DeviceManager.Instance.WorldPosition = new Point((int)worldPos.X, (int)worldPos.Y);
@@ -82,22 +81,10 @@ namespace PhoenixGameLibrary
             DeviceManager.Instance.WorldHex = new Point(worldHex.Col, worldHex.Row);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, Camera.Transform);
-
-            OverlandMap.Draw();
-            _settlements.DrawOverland();
-
-            spriteBatch.End();
-
-            _settlements.DrawSettlement(spriteBatch);
-        }
-
         public void EndTurn()
         {
             NotificationList.Clear();
-            _settlements.EndTurn();
+            Settlements.EndTurn();
             _turnNumber++;
         }
     }

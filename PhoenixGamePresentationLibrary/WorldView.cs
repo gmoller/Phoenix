@@ -7,37 +7,50 @@ namespace PhoenixGamePresentationLibrary
 {
     internal class WorldView
     {
-        private World _world;
+        private readonly World _world;
 
-        private OverlandMapView _overlandMap;
-        private HudView _hud;
+        private readonly OverlandMapView _overlandMapView;
+        private readonly SettlementView.SettlementView _settlementView;
+        private readonly HudView _hudView;
 
         internal WorldView(World world)
         {
             _world = world;
-            _overlandMap = new OverlandMapView(world.OverlandMap);
-            _hud = new HudView();
+            _overlandMapView = new OverlandMapView(world.OverlandMap);
+            _settlementView = new SettlementView.SettlementView();
+            _hudView = new HudView();
         }
 
         internal void LoadContent(ContentManager content)
         {
-            _hud.LoadContent(content);
+            _settlementView.LoadContent(content);
+            _hudView.LoadContent(content);
         }
 
-        internal void Update(GameTime gameTime)
+        internal void Update(GameTime gameTime, InputHandler input)
         {
-            _hud.Update(gameTime);
+            _overlandMapView.Update(input);
+            _hudView.Update(gameTime);
+
+            if (_world.IsInSettlementView)
+            {
+                _settlementView.Settlement = _world.Settlement;
+                _settlementView.Update(gameTime, input);
+            }
         }
 
         internal void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, _world.Camera.Transform);
-
-            //_overlandMap.Draw(spriteBatch);
-
+            _overlandMapView.Draw(spriteBatch);
             spriteBatch.End();
 
-            _hud.Draw(spriteBatch);
+            _hudView.Draw(spriteBatch);
+
+            if (_world.IsInSettlementView)
+            {
+                _settlementView.Draw(spriteBatch);
+            }
         }
     }
 }

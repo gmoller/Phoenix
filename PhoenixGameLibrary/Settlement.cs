@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using GameLogic;
-using HexLibrary;
 using PhoenixGameLibrary.GameData;
 using PhoenixGameLibrary.Helpers;
-using PhoenixGameLibrary.Views;
-using PhoenixGameLibrary.Views.SettlementView;
 
 namespace PhoenixGameLibrary
 {
@@ -22,7 +18,6 @@ namespace PhoenixGameLibrary
         private readonly int _id;
 
         private readonly List<Cell> _catchmentCells;
-        private OverlandSettlementView _overlandSettlementView;
         private List<int> _buildingsBuilt;
         private int _populationGrowth;
 
@@ -40,7 +35,6 @@ namespace PhoenixGameLibrary
         public CurrentlyBuilding CurrentlyBuilding { get; private set; }
 
         public SettlementCitizens Citizens { get; }
-        public SettlementView View { get; }
 
         public SettlementType SettlementType
         {
@@ -79,31 +73,10 @@ namespace PhoenixGameLibrary
                 cell.BelongsToSettlement = _id;
                 cellGrid.SetCell(item.Column, item.Row, cell);
             }
-
-            View = new SettlementView(this);
-            _overlandSettlementView = new OverlandSettlementView(this);
-        }
-
-        public void LoadContent(ContentManager content)
-        {
-            _overlandSettlementView.LoadContent(content);
-            View.LoadContent(content);
         }
 
         public void Update(GameTime gameTime, InputHandler input)
         {
-            _overlandSettlementView.Update(gameTime, input);
-            View.Update(gameTime, input);
-        }
-
-        public void DrawOverland()
-        {
-            _overlandSettlementView.Draw();
-        }
-
-        public void DrawSettlement(SpriteBatch spriteBatch)
-        {
-            View.Draw(spriteBatch);
         }
 
         public bool BuildingHasBeenBuilt(string buildingName)

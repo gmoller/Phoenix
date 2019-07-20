@@ -7,6 +7,8 @@ namespace PhoenixGamePresentationLibrary
 {
     public class PhoenixGameView
     {
+        private readonly PhoenixGame _phoenixGame;
+
         private readonly WorldView _world;
         private readonly CursorView _cursor;
 
@@ -22,9 +24,9 @@ namespace PhoenixGamePresentationLibrary
             _cursor.LoadContent(content);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, InputHandler input)
         {
-            _world.Update(gameTime);
+            _world.Update(gameTime, input);
         }
 
         public void Draw(SpriteBatch spriteBatch)

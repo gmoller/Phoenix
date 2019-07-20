@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Utilities;
 
-namespace PhoenixGameLibrary.Views
+namespace PhoenixGamePresentationLibrary
 {
     public class FrameDynamicSizing
     {
