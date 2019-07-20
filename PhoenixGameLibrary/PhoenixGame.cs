@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using GameLogic;
+using Utilities;
+using HexLibrary;
 
 namespace PhoenixGameLibrary
 {
@@ -38,7 +40,11 @@ namespace PhoenixGameLibrary
                 else if (message == "OpenSettlement")
                 {
                     World.IsInSettlementView = true;
-                    World.Settlement = World.Settlements[0]; // TODO: get by settlementId
+
+                    var settlement = World.Settlements[0];
+                    World.Settlement = settlement; // TODO: get by settlementId
+                    var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(settlement.Location.X, settlement.Location.Y);
+                    World.Camera.LookAt(worldPixelLocation);
                 }
                 else if (message == "CloseSettlement")
                 {

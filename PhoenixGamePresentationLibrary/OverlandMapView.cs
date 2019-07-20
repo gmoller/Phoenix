@@ -26,7 +26,7 @@ namespace PhoenixGamePresentationLibrary
                 var cell = _overlandMap.CellGrid.GetCell(hex.X, hex.Y);
                 if (cell.HasSettlement)
                 {
-                    Globals.Instance.MessageQueue.Enqueue("OpenSettlement");
+                    Globals.Instance.MessageQueue.Enqueue("OpenSettlement"); // TODO: send through settlementId
                 }
             }
         }

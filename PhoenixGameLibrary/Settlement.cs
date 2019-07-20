@@ -131,7 +131,7 @@ namespace PhoenixGameLibrary
                     _buildingsBuilt.Add(CurrentlyBuilding.BuildingId);
                     Globals.Instance.World.NotificationList.Add($"- {Name} has produced a {Globals.Instance.BuildingTypes[CurrentlyBuilding.BuildingId].Name}");
                     CurrentlyBuilding = new CurrentlyBuilding(-1, 0);
-                    // TODO: open settlement view
+                    Globals.Instance.MessageQueue.Enqueue("OpenSettlement");
                 }
             }
         }
