@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using GameLogic;
-using Utilities;
 using HexLibrary;
 
 namespace PhoenixGameLibrary
@@ -31,25 +30,8 @@ namespace PhoenixGameLibrary
             var queue = Globals.Instance.MessageQueue;
             while (queue.Count > 0)
             {
-                var message = queue.Dequeue();
-
-                if (message == "EndTurn")
-                {
-                    World.EndTurn();
-                }
-                else if (message == "OpenSettlement")
-                {
-                    World.IsInSettlementView = true;
-
-                    var settlement = World.Settlements[0];
-                    World.Settlement = settlement; // TODO: get by settlementId
-                    var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(settlement.Location.X, settlement.Location.Y);
-                    World.Camera.LookAt(worldPixelLocation);
-                }
-                else if (message == "CloseSettlement")
-                {
-                    World.IsInSettlementView = false;
-                }
+                var command = queue.Dequeue();
+                command.Execute();
             }
         }
     }

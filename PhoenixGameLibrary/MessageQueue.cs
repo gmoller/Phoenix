@@ -1,24 +1,25 @@
 ﻿using System.Collections.Generic;
+using PhoenixGameLibrary.Commands;
 
 namespace PhoenixGameLibrary
 {
     public class MessageQueue
     {
-        private Queue<string> _queue;
+        private Queue<Command> _queue;
 
         internal MessageQueue()
         {
-            _queue = new Queue<string>();
+            _queue = new Queue<Command>();
         }
 
         internal int Count => _queue.Count;
 
-        public void Enqueue(string message)
+        public void Enqueue(Command command)
         {
-            _queue.Enqueue(message);
+            _queue.Enqueue(command);
         }
 
-        internal string Dequeue()
+        internal Command Dequeue()
         {
             return _queue.Dequeue();
         }

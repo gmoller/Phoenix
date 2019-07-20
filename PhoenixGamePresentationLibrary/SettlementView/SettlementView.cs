@@ -6,6 +6,7 @@ using AssetsLibrary;
 using GameLogic;
 using GuiControls;
 using PhoenixGameLibrary;
+using PhoenixGameLibrary.Commands;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary.SettlementView
@@ -83,7 +84,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void CloseButtonClick(object sender, EventArgs e)
         {
-            Globals.Instance.MessageQueue.Enqueue("CloseSettlement");
+            Globals.Instance.MessageQueue.Enqueue(new CloseSettlementCommand());
         }
     }
 }

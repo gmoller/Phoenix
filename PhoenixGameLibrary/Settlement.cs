@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using GameLogic;
+using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using PhoenixGameLibrary.Helpers;
 
@@ -131,7 +131,7 @@ namespace PhoenixGameLibrary
                     _buildingsBuilt.Add(CurrentlyBuilding.BuildingId);
                     Globals.Instance.World.NotificationList.Add($"- {Name} has produced a {Globals.Instance.BuildingTypes[CurrentlyBuilding.BuildingId].Name}");
                     CurrentlyBuilding = new CurrentlyBuilding(-1, 0);
-                    Globals.Instance.MessageQueue.Enqueue("OpenSettlement");
+                    Globals.Instance.MessageQueue.Enqueue(new OpenSettlementCommand());
                 }
             }
         }

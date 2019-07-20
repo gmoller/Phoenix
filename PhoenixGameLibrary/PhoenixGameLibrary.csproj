@@ -43,6 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Commands\CloseSettlementCommand.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\EndTurnCommand.cs" />
+    <Compile Include="Commands\OpenSettlementCommand.cs" />
     <Compile Include="Faction.cs" />
     <Compile Include="GameData\BuildingFoodOutputIncreaseType.cs" />
     <Compile Include="GameData\BuildingMaximumPopulationIncreaseType.cs" />

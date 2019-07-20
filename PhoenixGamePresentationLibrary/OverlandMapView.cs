@@ -5,6 +5,7 @@ using AssetsLibrary;
 using GameLogic;
 using HexLibrary;
 using PhoenixGameLibrary;
+using PhoenixGameLibrary.Commands;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
@@ -26,7 +27,7 @@ namespace PhoenixGamePresentationLibrary
                 var cell = _overlandMap.CellGrid.GetCell(hex.X, hex.Y);
                 if (cell.HasSettlement)
                 {
-                    Globals.Instance.MessageQueue.Enqueue("OpenSettlement"); // TODO: send through settlementId
+                    Globals.Instance.MessageQueue.Enqueue(new OpenSettlementCommand()); // TODO: send through settlementId
                 }
             }
         }
