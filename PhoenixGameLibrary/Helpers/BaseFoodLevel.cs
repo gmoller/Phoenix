@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using GameLogic;
-using HexLibrary;
 
 namespace PhoenixGameLibrary.Helpers
 {

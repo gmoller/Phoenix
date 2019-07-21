@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using GameLogic;
 
@@ -12,7 +9,7 @@ namespace PhoenixGameLibrary.GameData
     /// This struct is immutable.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public struct BuildingType
+    public struct BuildingType : IIdentifiedByIdAndName
     {
         public int Id { get; }
         public string Name { get; }
@@ -72,80 +69,9 @@ namespace PhoenixGameLibrary.GameData
         private string DebuggerDisplay => $"{{Id={Id},Name={Name}}}";
     }
 
-    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class BuildingTypes : IEnumerable<BuildingType>
-    {
-        private readonly Dictionary<int, BuildingType> _items;
-
-        private BuildingTypes(List<BuildingType> items)
-        {
-            _items = new Dictionary<int, BuildingType>();
-            foreach (var item in items)
-            {
-                _items.Add(item.Id, item);
-            }
-        }
-
-        public static BuildingTypes Create(List<BuildingType> items)
-        {
-            return new BuildingTypes(items);
-        }
-
-        public static BuildingTypes Create(IEnumerable<BuildingType> items)
-        {
-            return new BuildingTypes(items.ToList());
-        }
-
-        public int Count => _items.Count;
-
-        public BuildingType this[int index]
-        {
-            get
-            {
-                if (!_items.ContainsKey(index))
-                {
-                    throw new IndexOutOfRangeException($"Index out of range. BuildingType with index [{index}] not found.");
-                }
-
-                return _items[index];
-            }
-        }
-
-        public BuildingType this[string name]
-        {
-            get
-            {
-                foreach (var item in this)
-                {
-                    if (item.Name == name)
-                    {
-                        return item;
-                    }
-                }
-
-                throw new IndexOutOfRangeException($"Index out of range. BuildingType with name [{name}] not found.");
-            }
-        }
-
-        public IEnumerator<BuildingType> GetEnumerator()
-        {
-            foreach (KeyValuePair<int, BuildingType> item in _items)
-            {
-                yield return item.Value;
-            }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        private string DebuggerDisplay => $"{{Count={_items.Count}}}";
-    }
-
     public static class BuildingTypesLoader
     {
-        public static BuildingTypes Load()
+        public static NamedDataList<BuildingType> Load()
         {
             var buildingTypes = new List<BuildingType>
             {
@@ -184,7 +110,7 @@ namespace PhoenixGameLibrary.GameData
                 BuildingType.Create(32, "CityWalls", 150.0f, 2.0f, 0.0f, new List<string>(), new List<string> { "BuildersHall" }, new Point(4, 4)), // sight range 3
             };
 
-            return BuildingTypes.Create(buildingTypes);
+            return NamedDataList<BuildingType>.Create(buildingTypes);
         }
     }
 }

@@ -151,7 +151,7 @@ namespace PhoenixGameLibrary
             // buildings
             foreach (var item in Globals.Instance.BuildingMaximumPopulationIncreaseTypes)
             {
-                if (_buildingsBuilt.Contains(item.BuildingId))
+                if (_buildingsBuilt.Contains(item.Id))
                 {
                     baseFoodLevel += item.MaximumPopulationIncrease;
                 }

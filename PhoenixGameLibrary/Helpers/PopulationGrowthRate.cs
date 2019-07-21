@@ -21,7 +21,7 @@ namespace PhoenixGameLibrary.Helpers
             // buildings
             foreach (var item in Globals.Instance.BuildingPopulationGrowthTypes)
             {
-                if (buildingsBuilt.Contains(item.BuildingId))
+                if (buildingsBuilt.Contains(item.Id))
                 {
                     adjustedGrowthRate += item.PopulationGrowthRateIncrease;
                 }

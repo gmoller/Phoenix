@@ -10,13 +10,18 @@ namespace GameLogic
 
         public MessageQueue MessageQueue { get; }
         public World World { get; set; }
-        public TerrainTypes TerrainTypes { get; }
-        public RaceTypes RaceTypes { get; }
 
-        public BuildingTypes BuildingTypes { get; }
-        public BuildingPopulationGrowthTypes BuildingPopulationGrowthTypes { get; }
-        public BuildingMaximumPopulationIncreaseTypes BuildingMaximumPopulationIncreaseTypes { get; }
-        public BuildingFoodOutputIncreaseTypes BuildingFoodOutputIncreaseTypes { get; }
+        public NamedDataList<TerrainType> TerrainTypes { get; }
+        public DataList<TerrainFoodOutputType> TerrainFoodOutputTypes { get; }
+        public DataList<TerrainProductionPercentageType> TerrainProductionPercentageTypes { get; }
+        public DataList<TerrainCanSettleOnType> TerrainCanSettleOnTypes { get; }
+
+        public NamedDataList<RaceType> RaceTypes { get; }
+
+        public NamedDataList<BuildingType> BuildingTypes { get; }
+        public DataList<BuildingPopulationGrowthType> BuildingPopulationGrowthTypes { get; }
+        public DataList<BuildingMaximumPopulationIncreaseType> BuildingMaximumPopulationIncreaseTypes { get; }
+        public DataList<BuildingFoodOutputIncreaseType> BuildingFoodOutputIncreaseTypes { get; }
 
         //public MovementTypes MovementTypes { get; }
         //public MineralTypes MineralTypes { get; }
@@ -28,13 +33,17 @@ namespace GameLogic
         {
             MessageQueue = new MessageQueue();
 
-            TerrainTypes = TerrainTypes.Create(TerrainTypesLoader.GetTerrainTypes());
-            RaceTypes = RaceTypes.Create(RaceTypesLoader.GetRaceTypes());
+            TerrainTypes = NamedDataList<TerrainType>.Create(TerrainTypesLoader.GetTerrainTypes());
+            TerrainFoodOutputTypes = DataList<TerrainFoodOutputType>.Create(TerrainFoodOutputTypesLoader.Load());
+            TerrainProductionPercentageTypes = DataList<TerrainProductionPercentageType>.Create(TerrainProductionPercentageTypesLoader.Load());
+            TerrainCanSettleOnTypes = DataList<TerrainCanSettleOnType>.Create(TerrainCanSettleOnTypesLoader.Load());
 
-            BuildingTypes = BuildingTypes.Create(BuildingTypesLoader.Load());
-            BuildingPopulationGrowthTypes = BuildingPopulationGrowthTypes.Create(BuildingPopulationGrowthTypesLoader.Load());
-            BuildingMaximumPopulationIncreaseTypes = BuildingMaximumPopulationIncreaseTypes.Create(BuildingMaximumPopulationIncreaseTypesLoader.Load());
-            BuildingFoodOutputIncreaseTypes = BuildingFoodOutputIncreaseTypes.Create(BuildingFoodOutputIncreaseTypesLoader.Load());
+            RaceTypes = NamedDataList<RaceType>.Create(RaceTypesLoader.GetRaceTypes());
+
+            BuildingTypes = NamedDataList<BuildingType>.Create(BuildingTypesLoader.Load());
+            BuildingPopulationGrowthTypes = DataList<BuildingPopulationGrowthType>.Create(BuildingPopulationGrowthTypesLoader.Load());
+            BuildingMaximumPopulationIncreaseTypes = DataList<BuildingMaximumPopulationIncreaseType>.Create(BuildingMaximumPopulationIncreaseTypesLoader.Load());
+            BuildingFoodOutputIncreaseTypes = DataList<BuildingFoodOutputIncreaseType>.Create(BuildingFoodOutputIncreaseTypesLoader.Load());
 
             //MovementTypes = MovementTypes.Create(new List<MovementType> { MovementType.Create(1, "Ground") });
             //MineralTypes = MineralTypes.Create(MineralTypesLoader.GetMineralTypes());

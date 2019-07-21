@@ -124,12 +124,15 @@ namespace PhoenixGamePresentationLibrary
                 var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
                 var text1 = $"{terrainType.Name} - {terrainType.FoodOutput} food";
                 spriteBatch.DrawString(_font, text1, new Vector2(x, y), Color.White);
-            }
 
-            var catchment = cellGrid.GetCatchment(hex.X, hex.Y);
-            var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Point(hex.X, hex.Y), catchment);
-            var text2 = $"Maximum Pop - {maxPop}";
-            spriteBatch.DrawString(_font, text2, new Vector2(x, y + 15.0f), Color.White);
+                if (terrainType.CanSettleOn)
+                {
+                    var catchment = cellGrid.GetCatchment(hex.X, hex.Y);
+                    var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Point(hex.X, hex.Y), catchment);
+                    var text2 = $"Maximum Pop - {maxPop}";
+                    spriteBatch.DrawString(_font, text2, new Vector2(x, y + 15.0f), Color.White);
+                }
+            }
         }
 
         private void btnEndTurnClick(object sender, EventArgs e)

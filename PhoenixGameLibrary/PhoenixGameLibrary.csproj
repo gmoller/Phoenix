@@ -52,10 +52,13 @@
     <Compile Include="GameData\BuildingMaximumPopulationIncreaseType.cs" />
     <Compile Include="GameData\BuildingPopulationGrowthType.cs" />
     <Compile Include="GameData\BuildingType.cs" />
+    <Compile Include="GameData\DataList.cs" />
     <Compile Include="GameData\Globals.cs" />
+    <Compile Include="GameData\IIdentifiedById.cs" />
     <Compile Include="GameData\RaceType.cs" />
-    <Compile Include="GameData\RaceTypes.cs" />
-    <Compile Include="GameData\RaceTypesLoader.cs" />
+    <Compile Include="GameData\TerrainCanSettleOnType.cs" />
+    <Compile Include="GameData\TerrainFoodOutputType.cs" />
+    <Compile Include="GameData\TerrainProductionPercentageType.cs" />
     <Compile Include="Helpers\BaseFoodLevel.cs" />
     <Compile Include="Helpers\PopulationGrowthRate.cs" />
     <Compile Include="Helpers\SettlementFoodProduction.cs" />
@@ -65,8 +68,6 @@
     <Compile Include="SettlementCitizens.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="GameData\TerrainType.cs" />
-    <Compile Include="GameData\TerrainTypes.cs" />
-    <Compile Include="GameData\TerrainTypesLoader.cs" />
     <Compile Include="GameData\Texture.cs" />
     <Compile Include="InputHandler.cs" />
     <Compile Include="MapGenerator.cs" />

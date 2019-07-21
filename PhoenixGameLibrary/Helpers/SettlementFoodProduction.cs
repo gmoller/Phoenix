@@ -20,7 +20,7 @@ namespace PhoenixGameLibrary.Helpers
             // buildings
             foreach (var item in Globals.Instance.BuildingFoodOutputIncreaseTypes)
             {
-                if (buildingsBuilt.Contains(item.BuildingId))
+                if (buildingsBuilt.Contains(item.Id))
                 {
                     foodProduction += item.FoodOutputIncrease;
                 }

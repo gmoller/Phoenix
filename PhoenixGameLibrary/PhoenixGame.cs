@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using GameLogic;
-using HexLibrary;
 
 namespace PhoenixGameLibrary
 {
