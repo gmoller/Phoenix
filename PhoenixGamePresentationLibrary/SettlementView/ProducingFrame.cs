@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using GameLogic;
 using GuiControls;
 using PhoenixGameLibrary;
@@ -37,11 +38,13 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             }
         }
 
-        internal void Draw()
+        internal void Draw(SpriteBatch spriteBatch)
         {
-            _smallFrame.Draw();
-            _lblProducing.Draw();
-            _lblCurrent.Draw();
+            spriteBatch.Begin();
+            _smallFrame.Draw(spriteBatch);
+            _lblProducing.Draw(spriteBatch);
+            _lblCurrent.Draw(spriteBatch);
+            spriteBatch.End();
         }
     }
 }

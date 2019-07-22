@@ -71,7 +71,7 @@ namespace PhoenixGameLibrary
             // TODO: wild game not being factored in
 
             // buildings
-            int freeFood = 0;
+            var freeFood = 0.0;
             foreach (var item in Globals.Instance.BuildingFoodOutputIncreaseTypes)
             {
                 if (buildingsBuilt.Contains(item.Id))
@@ -80,7 +80,7 @@ namespace PhoenixGameLibrary
                 }
             }
 
-            var foodUpkeep = totalPopulation - freeFood;
+            var foodUpkeep = totalPopulation - (int)freeFood;
 
             var farmersSubsistenceFloat = foodUpkeep / _settlement.RaceType.FarmingRate;
             var farmersSubsistence = (int)Math.Ceiling(farmersSubsistenceFloat);

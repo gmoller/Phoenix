@@ -45,6 +45,7 @@
     <Compile Include="Button.cs" />
     <Compile Include="Control.cs" />
     <Compile Include="HorizontalAlignment.cs" />
+    <Compile Include="Image.cs" />
     <Compile Include="Label.cs" />
     <Compile Include="LabelUIElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

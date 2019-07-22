@@ -10,15 +10,15 @@ namespace PhoenixGameLibrary.GameData
     public struct BuildingFoodOutputIncreaseType : IIdentifiedById
     {
         public int Id { get; }
-        public int FoodOutputIncrease { get; }
+        public float FoodOutputIncrease { get; }
 
-        private BuildingFoodOutputIncreaseType(int buildingId, int foodOutputIncrease)
+        private BuildingFoodOutputIncreaseType(int buildingId, float foodOutputIncrease)
         {
             Id = buildingId;
             FoodOutputIncrease = foodOutputIncrease;
         }
 
-        public static BuildingFoodOutputIncreaseType Create(int buildingId, int foodOutputIncrease)
+        public static BuildingFoodOutputIncreaseType Create(int buildingId, float foodOutputIncrease)
         {
             return new BuildingFoodOutputIncreaseType(buildingId, foodOutputIncrease);
         }
@@ -32,9 +32,9 @@ namespace PhoenixGameLibrary.GameData
         {
             var buildingFoodOutputIncreaseTypes = new List<BuildingFoodOutputIncreaseType>
             {
-                BuildingFoodOutputIncreaseType.Create(26, 2),
-                BuildingFoodOutputIncreaseType.Create(27, 3),
-                BuildingFoodOutputIncreaseType.Create(28, 2)
+                BuildingFoodOutputIncreaseType.Create(26, 2.0f),
+                BuildingFoodOutputIncreaseType.Create(27, 3.0f),
+                BuildingFoodOutputIncreaseType.Create(28, 2.0f)
             };
 
             return DataList<BuildingFoodOutputIncreaseType>.Create(buildingFoodOutputIncreaseTypes);

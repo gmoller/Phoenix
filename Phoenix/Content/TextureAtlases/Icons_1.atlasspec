@@ -23,6 +23,27 @@
       "Height": 300
     },
 	{
+      "Name": "Pickaxe",
+      "X": 900,
+      "Y": 0,
+      "Width": 300,
+      "Height": 300
+    },
+	{
+      "Name": "Pickaxe_R",
+      "X": 1200,
+      "Y": 0,
+      "Width": 300,
+      "Height": 300
+    },
+	{
+      "Name": "Pickaxe_T",
+      "X": 1500,
+      "Y": 0,
+      "Width": 300,
+      "Height": 300
+    },
+	{
       "Name": "Bread",
       "X": 0,
       "Y": 300,
@@ -39,6 +60,27 @@
     {
       "Name": "Bread_T",
       "X": 600,
+      "Y": 300,
+      "Width": 300,
+      "Height": 300
+    },
+	{
+      "Name": "Corn",
+      "X": 900,
+      "Y": 300,
+      "Width": 300,
+      "Height": 300
+    },
+	{
+      "Name": "Corn_R",
+      "X": 1200,
+      "Y": 300,
+      "Width": 300,
+      "Height": 300
+    },
+	{
+      "Name": "Corn_T",
+      "X": 1500,
       "Y": 300,
       "Width": 300,
       "Height": 300
@@ -65,6 +107,27 @@
       "Height": 300
     },
 	{
+      "Name": "Plough",
+      "X": 900,
+      "Y": 600,
+      "Width": 300,
+      "Height": 300
+    },
+	{
+      "Name": "Plough_R",
+      "X": 1200,
+      "Y": 600,
+      "Width": 300,
+      "Height": 300
+    },
+	{
+      "Name": "Plough_T",
+      "X": 1500,
+      "Y": 600,
+      "Width": 300,
+      "Height": 300
+    },
+	{
       "Name": "Potion",
       "X": 0,
       "Y": 900,
@@ -84,6 +147,27 @@
       "Y": 900,
       "Width": 300,
       "Height": 300
-    }
+    },
+	{
+      "Name": "Spices",
+      "X": 900,
+      "Y": 900,
+      "Width": 300,
+      "Height": 300
+    },
+	{
+      "Name": "Spices_R",
+      "X": 1200,
+      "Y": 900,
+      "Width": 300,
+      "Height": 300
+    },
+	{
+      "Name": "Spices_T",
+      "X": 1500,
+      "Y": 900,
+      "Width": 300,
+      "Height": 300
+    },
   ]
 }

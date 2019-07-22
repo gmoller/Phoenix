@@ -77,9 +77,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _lblSettlementName2.Draw();
 
             _populationFrame.Draw(spriteBatch);
-            _resourceFrame.Draw();
-            _producingFrame.Draw();
-            _buildingsFrame.Draw();
+            _resourceFrame.Draw(spriteBatch);
+            _producingFrame.Draw(spriteBatch);
+            _buildingsFrame.Draw(spriteBatch);
         }
 
         internal void CloseButtonClick(object sender, EventArgs e)

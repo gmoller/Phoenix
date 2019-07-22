@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
-using Utilities;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -30,19 +29,14 @@ namespace PhoenixGamePresentationLibrary
             _slot = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
         }
 
-        public void Draw()
+        public void Draw(SpriteBatch spriteBatch)
         {
-            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
-            spriteBatch.Begin();
-
             for (var i = 0; i < _sourcePatches.Length; ++i)
             {
                 spriteBatch.Draw(_texture, _destinationPatches[i], _sourcePatches[i], Color.White);
             }
 
             DrawSlots(spriteBatch);
-
-            spriteBatch.End();
         }
 
         private void DrawSlots(SpriteBatch spriteBatch)

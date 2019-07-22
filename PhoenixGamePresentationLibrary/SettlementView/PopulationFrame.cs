@@ -65,14 +65,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            _lblRace.Draw();
-            _lblPopulationGrowth.Draw();
-            _smallFrame.Draw();
-            _lblFarmers1.Draw();
-            _lblWorkers1.Draw();
-            _lblRebels1.Draw();
-
             spriteBatch.Begin();
+            _lblRace.Draw(spriteBatch);
+            _lblPopulationGrowth.Draw(spriteBatch);
+            _smallFrame.Draw(spriteBatch);
+            _lblFarmers1.Draw(spriteBatch);
+            _lblWorkers1.Draw(spriteBatch);
+            _lblRebels1.Draw(spriteBatch);
+
             DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200, _topLeftPosition.Y + 20), _parent.Settlement.RaceType.Name, "Farmer", _parent.Settlement.Citizens.SubsistenceFarmers);
             DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200 + (_parent.Settlement.Citizens.SubsistenceFarmers * 20) + 20, _topLeftPosition.Y + 20), _parent.Settlement.RaceType.Name, "Farmer", _parent.Settlement.Citizens.AdditionalFarmers);
             DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200, _topLeftPosition.Y + 50), _parent.Settlement.RaceType.Name, "Worker", _parent.Settlement.Citizens.Workers);

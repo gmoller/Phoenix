@@ -27,9 +27,10 @@ namespace PhoenixGameLibrary
         public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
         public int GrowthRate => DetermineGrowthRate();
         public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(Location, _catchmentCells);
-        public int SettlementFoodProduction => Helpers.SettlementFoodProduction.DetermineFoodProduction(this, _buildingsBuilt);
+        public FoodBreakdown SettlementFoodProduction => Helpers.SettlementFoodProduction.DetermineFoodProduction(this, _buildingsBuilt);
         public int SettlementProduction => Helpers.SettlementProduction.DetermineProduction(this, _catchmentCells);
-        public int FoodSurplus => SettlementFoodProduction - Citizens.TotalPopulation;
+        public int FoodSubsistence => Citizens.TotalPopulation;
+        public int FoodSurplus => SettlementFoodProduction.TotalFood - Citizens.TotalPopulation;
         //public int GoldUpkeep => DetermineGoldUpkeep();
         //public int GoldSurplus => DetermineGoldSurplus();
         public CurrentlyBuilding CurrentlyBuilding { get; private set; }

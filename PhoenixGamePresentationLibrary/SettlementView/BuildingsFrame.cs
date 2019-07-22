@@ -68,17 +68,15 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             }
         }
 
-        internal void Draw()
+        internal void Draw(SpriteBatch spriteBatch)
         {
-            _smallFrameBuildings.Draw();
-            _lblBuildings.Draw();
-            _smallFrameUnits.Draw();
-            _lblUnits.Draw();
-            _smallFrameOther.Draw();
-            _lblOther.Draw();
-
-            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
             spriteBatch.Begin();
+            _smallFrameBuildings.Draw(spriteBatch);
+            _lblBuildings.Draw(spriteBatch);
+            _smallFrameUnits.Draw(spriteBatch);
+            _lblUnits.Draw(spriteBatch);
+            _smallFrameOther.Draw(spriteBatch);
+            _lblOther.Draw(spriteBatch);
 
             int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
             int baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
