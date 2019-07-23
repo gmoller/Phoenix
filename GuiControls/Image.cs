@@ -5,7 +5,7 @@ using Utilities;
 
 namespace GuiControls
 {
-    public class Image : Control
+    public class Image
     {
         private readonly Texture2D _texture;
         private readonly Rectangle _destinationRectangle;
@@ -13,8 +13,7 @@ namespace GuiControls
         private readonly Color _color;
         private readonly float _layerDepth;
 
-        public Image(string name, Vector2 topLeftPosition, Texture2D texture, float layerDepth = 0.0f) :
-            base(name, topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(texture.Width, texture.Height))
+        public Image(string name, Vector2 topLeftPosition, Texture2D texture, float layerDepth = 0.0f)
         {
             _texture = texture;
             _sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
@@ -23,8 +22,7 @@ namespace GuiControls
             _layerDepth = layerDepth;
         }
 
-        public Image(string name, Vector2 topLeftPosition, string textureAtlas, string textureName, float layerDepth = 0.0f) :
-            base(name, topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero)
+        public Image(string name, Vector2 topLeftPosition, string textureAtlas, string textureName, float layerDepth = 0.0f)
         {
             _texture = AssetsManager.Instance.GetTexture(textureAtlas);
             var spec = AssetsManager.Instance.GetAtlas(textureAtlas);
@@ -32,12 +30,9 @@ namespace GuiControls
             _destinationRectangle = new Rectangle((int)topLeftPosition.X, (int)topLeftPosition.Y, _sourceRectangle.Width, _sourceRectangle.Height);
             _color = Color.White;
             _layerDepth = layerDepth;
-
-            Size = new Vector2(_sourceRectangle.Width, _sourceRectangle.Height);
         }
 
-        public Image(string name, Vector2 topLeftPosition, Vector2 size, Texture2D texture, float layerDepth = 0.0f) :
-            base(name, topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, size)
+        public Image(string name, Vector2 topLeftPosition, Vector2 size, Texture2D texture, float layerDepth = 0.0f)
         {
             _texture = texture;
             _sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
@@ -46,8 +41,7 @@ namespace GuiControls
             _layerDepth = layerDepth;
         }
 
-        public Image(string name, Vector2 topLeftPosition, Vector2 size, string textureAtlas, string textureName, float layerDepth = 0.0f) :
-            base(name, topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, size)
+        public Image(string name, Vector2 topLeftPosition, Vector2 size, string textureAtlas, string textureName, float layerDepth = 0.0f)
         {
             _texture = AssetsManager.Instance.GetTexture(textureAtlas);
             var spec = AssetsManager.Instance.GetAtlas(textureAtlas);

@@ -115,14 +115,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
             for (int i = 0; i < numberOfBread; ++i)
             {
-                var image = new Image("1", new Vector2(x, y), new Vector2(30, 30), "Icons_1", "Bread");
+                var image = new Image("Image", new Vector2(x, y), new Vector2(30, 30), "Icons_1", "Bread");
                 image.Draw(spriteBatch);
                 x += 30;
             }
 
             for (int i = 0; i < numberofCorn; ++i)
             {
-                var image = new Image("1", new Vector2(x, y + 2), new Vector2(20, 20), "Icons_1", "Corn");
+                var image = new Image("iamge", new Vector2(x, y + 2), new Vector2(20, 20), "Icons_1", "Corn");
                 image.Draw(spriteBatch);
                 x += 20;
             }
