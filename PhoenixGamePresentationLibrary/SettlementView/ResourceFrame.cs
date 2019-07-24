@@ -67,9 +67,10 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
     internal class FoodView
     {
-        private readonly Texture2D _texture;
         private readonly Vector2 _topLeftPosition;
         private readonly SettlementView _parent;
+        private readonly Image _image1;
+        private readonly Image _image2;
 
         private FrameDynamicSizing _toolTip;
 
@@ -77,11 +78,13 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal FoodView(Vector2 topLeftPosition, SettlementView parent)
         {
-            _texture = AssetsManager.Instance.GetTexture("Icons_1");
             _topLeftPosition = topLeftPosition;
             _parent = parent;
 
             _area = new Rectangle();
+
+            _image1 = new Image("Image1", Vector2.Zero, new Vector2(30.0f, 30.0f), "Icons_1", "Bread");
+            _image2 = new Image("Image2", Vector2.Zero, new Vector2(20.0f, 20.0f), "Icons_1", "Corn");
         }
 
         internal void Update(GameTime gameTime, InputHandler input)
@@ -115,15 +118,15 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
             for (int i = 0; i < numberOfBread; ++i)
             {
-                var image = new Image("Image", new Vector2(x, y), new Vector2(30, 30), "Icons_1", "Bread");
-                image.Draw(spriteBatch);
+                _image1.Position = new Vector2(x, y);
+                _image1.Draw(spriteBatch);
                 x += 30;
             }
 
             for (int i = 0; i < numberofCorn; ++i)
             {
-                var image = new Image("iamge", new Vector2(x, y + 2), new Vector2(20, 20), "Icons_1", "Corn");
-                image.Draw(spriteBatch);
+                _image2.Position = new Vector2(x, y);
+                _image2.Draw(spriteBatch);
                 x += 20;
             }
 
@@ -133,19 +136,22 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
     internal class ProductionView
     {
-        private readonly Texture2D _texture;
         private readonly Vector2 _topLeftPosition;
         private readonly SettlementView _parent;
+        private readonly Image _image1;
+        private readonly Image _image2;
 
         private Rectangle _area;
 
         internal ProductionView(Vector2 topLeftPosition, SettlementView parent)
         {
-            _texture = AssetsManager.Instance.GetTexture("Icons_1");
             _topLeftPosition = topLeftPosition;
             _parent = parent;
 
             _area = new Rectangle();
+
+            _image1 = new Image("Image1", Vector2.Zero, new Vector2(30.0f, 30.0f), "Icons_1", "Anvil");
+            _image2 = new Image("Image2", Vector2.Zero, new Vector2(20.0f, 20.0f), "Icons_1", "Pickaxe");
         }
 
         internal void Update(GameTime gameTime, InputHandler input)
@@ -171,15 +177,15 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
             for (int i = 0; i < numberOfAnvils; ++i)
             {
-                var image = new Image("1", new Vector2(x, y), new Vector2(30, 30), "Icons_1", "Anvil");
-                image.Draw(spriteBatch);
+                _image1.Position = new Vector2(x, y);
+                _image1.Draw(spriteBatch);
                 x += 30;
             }
 
             for (int i = 0; i < numberofPickaxes; ++i)
             {
-                var image = new Image("1", new Vector2(x, y + 2), new Vector2(20, 20), "Icons_1", "Pickaxe");
-                image.Draw(spriteBatch);
+                _image2.Position = new Vector2(x, y);
+                _image2.Draw(spriteBatch);
                 x += 20;
             }
 

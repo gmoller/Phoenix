@@ -87,16 +87,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void DrawCitizens(SpriteBatch spriteBatch, Vector2 position, string raceTypeName, string citizenType, int citizenCount)
         {
-            var texture = AssetsManager.Instance.GetTexture("Citizens");
-            var atlas = AssetsManager.Instance.GetAtlas("Citizens");
-
             int x = (int)position.X;
             int y = (int)position.Y;
-            var sourceRectangle = atlas.Frames[$"Citizen_{raceTypeName}_{citizenType}"].ToRectangle();
+            var image = new Image("Image", Vector2.Zero, new Vector2(20, 30), "Citizens", $"Citizen_{raceTypeName}_{citizenType}");
             for (int i = 0; i < citizenCount; ++i)
             {
-                var destinationRectangle = new Rectangle(x, y, sourceRectangle.Width, sourceRectangle.Height);
-                spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
+                image.Position = new Vector2(x, y);
+                image.Draw(spriteBatch);
+
                 x += 20;
             }
         }

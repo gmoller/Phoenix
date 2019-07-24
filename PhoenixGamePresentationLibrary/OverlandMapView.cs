@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GameLogic;
+using GuiControls;
 using HexLibrary;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
@@ -76,7 +77,7 @@ namespace PhoenixGamePresentationLibrary
                     {
                         DrawSettlement(spriteBatch, cell);
                     }
-                    DrawHexBorder(cell);
+                    //DrawHexBorder(cell);
                 }
             }
         }
@@ -85,7 +86,7 @@ namespace PhoenixGamePresentationLibrary
         {
             var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
 
-            var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
+            //var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
             var texture = AssetsManager.Instance.GetTexture(cell.Texture.TexturePalette);
             var spec = AssetsManager.Instance.GetAtlas(cell.Texture.TexturePalette);
             var frame = spec.Frames[cell.Texture.TextureId];
@@ -94,16 +95,19 @@ namespace PhoenixGamePresentationLibrary
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
             var layerDepth = cell.Index / 10000.0f;
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, PhoenixGameLibrary.Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
+
+            //var size = new Vector2(111, 192);
+            //var imgTile = new Image("imgTile", centerPosition - PhoenixGameLibrary.Constants.HEX_ORIGIN / 2 + new Vector2(10.0f, 0.0f), ContentAlignment.MiddleCenter, size, cell.Texture.TexturePalette, cell.Texture.TextureId, layerDepth);
+            //imgTile.Draw(spriteBatch);
         }
 
         private void DrawSettlement(SpriteBatch spriteBatch, Cell cell)
         {
-            var texture = AssetsManager.Instance.GetTexture("VillageSmall00");
             var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
-            var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(HexLibrary.Constants.HEX_ACTUAL_WIDTH * 0.5f), (int)(HexLibrary.Constants.HEX_ACTUAL_HEIGHT * 0.75f));
-            var sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
             var layerDepth = cell.Index / 10000.0f + 0.00001f;
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, PhoenixGameLibrary.Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
+            var size = new Vector2((float)(HexLibrary.Constants.HEX_ACTUAL_WIDTH * 0.5f), HexLibrary.Constants.HEX_ACTUAL_HEIGHT * 0.75f);
+            var imgSettlement = new Image("imgSettlement", position - PhoenixGameLibrary.Constants.HEX_ORIGIN / 2 + new Vector2(10.0f, 0.0f), size, "VillageSmall00", layerDepth);
+            imgSettlement.Draw(spriteBatch);
         }
 
         private void DrawHexBorder(Cell cell)
