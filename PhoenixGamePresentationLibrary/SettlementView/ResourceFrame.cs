@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using AssetsLibrary;
 using GuiControls;
 using PhoenixGameLibrary;
 
@@ -51,7 +50,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         internal void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            _smallFrame.Draw(spriteBatch);
+            _smallFrame.Draw();
             _lblResources.Draw(spriteBatch);
             _lblFood.Draw(spriteBatch);
             _lblProduction.Draw(spriteBatch);
@@ -72,7 +71,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly Image _image1;
         private readonly Image _image2;
 
-        private FrameDynamicSizing _toolTip;
+        private ToolTip _toolTip;
 
         private Rectangle _area;
 
@@ -91,9 +90,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         {
             if (_area.Contains(input.MousePostion))
             {
-                _toolTip = new FrameDynamicSizing(input.MousePostion.ToVector2(), new Vector2(100.0f, 100.0f), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
-                //_toolTip.AddControl(new Label("lblFood"));
-                //_toolTip.AddControl(new Image());
+                _toolTip = new ToolTip(input.MousePostion.ToVector2() + new Vector2(0.0f, 30.0f));
+                _toolTip.AddControl(new Image("Test1", new Vector2(0.0f, 0.0f), new Vector2(25.0f, 25.0f), "Icons_1", "Bread"));
+                _toolTip.AddControl(new Image("Test2", new Vector2(0.0f, 25.0f), new Vector2(25.0f, 25.0f), "Icons_1", "Pickaxe"));
+                _toolTip.AddControl(new Label2("Test3", new Vector2(0.0f, 50.0f), ContentAlignment.TopLeft, new Vector2(89.0f, 12.0f), "Here is some text!", "CrimsonText-Regular-12", Color.Blue, Color.Red));
+            }
+            else
+            {
+                _toolTip = null;
             }
         }
 
@@ -108,6 +112,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             x += 20;
             x = Draw(spriteBatch, x, y, _parent.Settlement.FoodSurplus);
 
+            _toolTip?.Draw();
+
             _area = new Rectangle(originalX, originalY, x, 30);
         }
 
@@ -119,14 +125,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             for (int i = 0; i < numberOfBread; ++i)
             {
                 _image1.Position = new Vector2(x, y);
-                _image1.Draw(spriteBatch);
+                _image1.Draw();
                 x += 30;
             }
 
             for (int i = 0; i < numberofCorn; ++i)
             {
                 _image2.Position = new Vector2(x, y);
-                _image2.Draw(spriteBatch);
+                _image2.Draw();
                 x += 20;
             }
 
@@ -178,14 +184,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             for (int i = 0; i < numberOfAnvils; ++i)
             {
                 _image1.Position = new Vector2(x, y);
-                _image1.Draw(spriteBatch);
+                _image1.Draw();
                 x += 30;
             }
 
             for (int i = 0; i < numberofPickaxes; ++i)
             {
                 _image2.Position = new Vector2(x, y);
-                _image2.Draw(spriteBatch);
+                _image2.Draw();
                 x += 20;
             }
 

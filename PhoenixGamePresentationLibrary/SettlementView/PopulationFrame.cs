@@ -68,7 +68,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             spriteBatch.Begin();
             _lblRace.Draw(spriteBatch);
             _lblPopulationGrowth.Draw(spriteBatch);
-            _smallFrame.Draw(spriteBatch);
+            _smallFrame.Draw();
             _lblFarmers1.Draw(spriteBatch);
             _lblWorkers1.Draw(spriteBatch);
             _lblRebels1.Draw(spriteBatch);
@@ -93,7 +93,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             for (int i = 0; i < citizenCount; ++i)
             {
                 image.Position = new Vector2(x, y);
-                image.Draw(spriteBatch);
+                image.Draw();
 
                 x += 20;
             }

@@ -79,7 +79,7 @@ namespace PhoenixGamePresentationLibrary
         internal void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            _frame.Draw(spriteBatch);
+            _frame.Draw();
             spriteBatch.End();
 
             _lblCurrentDate.Draw();

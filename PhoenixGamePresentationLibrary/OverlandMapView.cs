@@ -103,11 +103,18 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawSettlement(SpriteBatch spriteBatch, Cell cell)
         {
+            var texture = AssetsManager.Instance.GetTexture("VillageSmall00");
             var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
+            var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(HexLibrary.Constants.HEX_ACTUAL_WIDTH * 0.5f), (int)(HexLibrary.Constants.HEX_ACTUAL_HEIGHT * 0.75f));
+            var sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
             var layerDepth = cell.Index / 10000.0f + 0.00001f;
-            var size = new Vector2((float)(HexLibrary.Constants.HEX_ACTUAL_WIDTH * 0.5f), HexLibrary.Constants.HEX_ACTUAL_HEIGHT * 0.75f);
-            var imgSettlement = new Image("imgSettlement", position - PhoenixGameLibrary.Constants.HEX_ORIGIN / 2 + new Vector2(10.0f, 0.0f), size, "VillageSmall00", layerDepth);
-            imgSettlement.Draw(spriteBatch);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, PhoenixGameLibrary.Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
+
+            //var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
+            //var layerDepth = cell.Index / 10000.0f + 0.00001f;
+            //var size = new Vector2((float)(HexLibrary.Constants.HEX_ACTUAL_WIDTH * 0.5f), HexLibrary.Constants.HEX_ACTUAL_HEIGHT * 0.75f);
+            //var imgSettlement = new Image("imgSettlement", position - PhoenixGameLibrary.Constants.HEX_ORIGIN / 2 + new Vector2(10.0f, 0.0f), size, "VillageSmall00", layerDepth);
+            //imgSettlement.Draw();
         }
 
         private void DrawHexBorder(Cell cell)

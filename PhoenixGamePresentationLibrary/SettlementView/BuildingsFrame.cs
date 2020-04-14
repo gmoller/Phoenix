@@ -71,11 +71,11 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         internal void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            _smallFrameBuildings.Draw(spriteBatch);
+            _smallFrameBuildings.Draw();
             _lblBuildings.Draw(spriteBatch);
-            _smallFrameUnits.Draw(spriteBatch);
+            _smallFrameUnits.Draw();
             _lblUnits.Draw(spriteBatch);
-            _smallFrameOther.Draw(spriteBatch);
+            _smallFrameOther.Draw();
             _lblOther.Draw(spriteBatch);
 
             int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);

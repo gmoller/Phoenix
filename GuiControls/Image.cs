@@ -8,6 +8,7 @@ namespace GuiControls
 {
     public class Image : IControl
     {
+        private readonly string _name;
         private readonly string _textureAtlas;
         private readonly string _textureName;
         private readonly byte? _textureId;
@@ -22,11 +23,11 @@ namespace GuiControls
 
         private bool _contentLoaded;
 
-        public int Top => _destinationRectangle.Top;
-        public int Bottom => _destinationRectangle.Bottom;
-        public int Left => _destinationRectangle.Left;
-        public int Right => _destinationRectangle.Right;
-        public Point Center => _destinationRectangle.Center;
+        public int Top => _destinationRectangle.Top - (int)_origin.Y;
+        public int Bottom => _destinationRectangle.Bottom - (int)_origin.Y;
+        public int Left => _destinationRectangle.Left - (int)_origin.X;
+        public int Right => _destinationRectangle.Right - (int)_origin.X;
+        public Point Center => _destinationRectangle.Center - _origin.ToPoint();
         public Point TopLeft => new Point(Left, Top);
         public Point TopRight => new Point(Right, Top);
         public Point BottomLeft => new Point(Left, Bottom);
@@ -43,20 +44,24 @@ namespace GuiControls
             }
         }
 
-        public Image(string name, Vector2 position, Vector2 size, string textureName, float layerDepth = 0.0f) : this(name, position, ContentAlignment.TopLeft, size, string.Empty, textureName, layerDepth)
+        public Image(string name, Vector2 position, Vector2 size, string textureName, float layerDepth = 0.0f) : 
+            this(name, position, ContentAlignment.TopLeft, size, string.Empty, textureName, layerDepth)
         {
         }
 
-        public Image(string name, Vector2 position, Vector2 size, string textureAtlas, string textureName, float layerDepth = 0.0f) : this(name, position, ContentAlignment.TopLeft, size, textureAtlas, textureName, layerDepth)
+        public Image(string name, Vector2 position, Vector2 size, string textureAtlas, string textureName, float layerDepth = 0.0f) : 
+            this(name, position, ContentAlignment.TopLeft, size, textureAtlas, textureName, layerDepth)
         {
         }
 
-        public Image(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureName, float layerDepth = 0.0f) : this(name, position, alignment, size, string.Empty, textureName, layerDepth)
+        public Image(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureName, float layerDepth = 0.0f) : 
+            this(name, position, alignment, size, string.Empty, textureName, layerDepth)
         {
         }
 
         public Image(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, byte textureId, float layerDepth = 0.0f)
         {
+            _name = name;
             _textureAtlas = textureAtlas;
             _textureName = string.Empty;
             _textureId = textureId;
@@ -83,37 +88,15 @@ namespace GuiControls
         {
         }
 
-        public void Draw(SpriteBatch spriteBatch = null, Matrix? transform = null)
+        public void Draw(Matrix? transform = null)
         {
             LoadContent();
 
-            bool newSpriteBatch = spriteBatch == null;
-            spriteBatch = BeginSpriteBatch(spriteBatch, newSpriteBatch, transform);
+            var spriteBatch = BeginSpriteBatch(transform);
 
             spriteBatch.Draw(_texture, _destinationRectangle, _sourceRectangle, _color, 0.0f, _origin, SpriteEffects.None, _layerDepth);
 
-            EndSpriteBatch(spriteBatch, newSpriteBatch);
-        }
-
-        private SpriteBatch BeginSpriteBatch(SpriteBatch spriteBatch, bool newSpriteBatch, Matrix? transform)
-        {
-            if (newSpriteBatch)
-            {
-                var shinyNewSpriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
-                shinyNewSpriteBatch.Begin(transformMatrix: transform);
-                return shinyNewSpriteBatch;
-            }
-
-            return spriteBatch;
-        }
-
-        private void EndSpriteBatch(SpriteBatch spriteBatch, bool newSpriteBatch)
-        {
-            if (newSpriteBatch)
-            {
-                spriteBatch.End();
-                DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
-            }
+            EndSpriteBatch(spriteBatch);
         }
 
         private void LoadContent()
@@ -171,6 +154,20 @@ namespace GuiControls
                 default:
                     throw new Exception("Not implemented.");
             }
+        }
+
+        private SpriteBatch BeginSpriteBatch(Matrix? transform)
+        {
+            var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
+            spriteBatch.Begin(transformMatrix: transform);
+
+            return spriteBatch;
+        }
+
+        private void EndSpriteBatch(SpriteBatch spriteBatch)
+        {
+            spriteBatch.End();
+            DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
         }
     }
 }

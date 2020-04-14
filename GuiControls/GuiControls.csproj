@@ -49,10 +49,8 @@
     <Compile Include="IControl.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="Label.cs" />
-    <Compile Include="LabelUIElement.cs" />
+    <Compile Include="Label2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UIElement.cs" />
-    <Compile Include="UIElements.cs" />
     <Compile Include="VerticalAlignment.cs" />
   </ItemGroup>
   <ItemGroup>

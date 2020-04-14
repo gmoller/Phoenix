@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using Utilities;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -14,29 +15,39 @@ namespace PhoenixGamePresentationLibrary
         private readonly int _numberOfSlotsY;
         private readonly Rectangle _slot;
 
+        public Vector2 TopLeftPosition { get; }
+
         public FrameDynamicSizing(Vector2 topLeftPosition, Vector2 size, string textureAtlasString, string textureString, int topPadding, int bottomPadding, int leftPadding, int rightPadding, int numberOfSlotsX = 0, int numberOfSlotsY = 0)
         {
             _texture = AssetsManager.Instance.GetTexture(textureAtlasString);
             var atlas = AssetsManager.Instance.GetAtlas(textureAtlasString);
 
             var frame = atlas.Frames[textureString];
-            _sourcePatches = CreatePatches(frame.ToRectangle(), 47, 47, 47, 47);
+            _sourcePatches = CreatePatches(frame.ToRectangle(), topPadding, bottomPadding, leftPadding, rightPadding);
             _destinationPatches = CreatePatches(new Rectangle((int)topLeftPosition.X, (int)topLeftPosition.Y, (int)size.X, (int)size.Y), topPadding, bottomPadding, leftPadding, rightPadding);
 
             _numberOfSlotsX = numberOfSlotsX;
             _numberOfSlotsY = numberOfSlotsY;
             frame = atlas.Frames["slot"];
             _slot = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
+
+            TopLeftPosition = topLeftPosition + new Vector2(6.0f, 6.0f); // TODO: de-hardcode
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
+            var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
+            spriteBatch.Begin();
+
             for (var i = 0; i < _sourcePatches.Length; ++i)
             {
                 spriteBatch.Draw(_texture, _destinationPatches[i], _sourcePatches[i], Color.White);
             }
 
             DrawSlots(spriteBatch);
+
+            spriteBatch.End();
+            DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
         }
 
         private void DrawSlots(SpriteBatch spriteBatch)
