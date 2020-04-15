@@ -4,7 +4,7 @@ using GuiControls;
 using Utilities;
 using Microsoft.Xna.Framework.Input;
 
-namespace Phoenix
+namespace PhoenixGamePresentationLibrary
 {
     public class MetricsPanel
     {

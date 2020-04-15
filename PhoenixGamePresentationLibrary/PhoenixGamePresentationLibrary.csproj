@@ -43,8 +43,10 @@
     <Compile Include="Cursor.cs" />
     <Compile Include="CursorView.cs" />
     <Compile Include="FrameDynamicSizing.cs" />
+    <Compile Include="FramesPerSecondCounter.cs" />
     <Compile Include="HudView.cs" />
     <Compile Include="InputHandler.cs" />
+    <Compile Include="MetricsPanel.cs" />
     <Compile Include="OverlandMapView.cs" />
     <Compile Include="PhoenixGameView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
