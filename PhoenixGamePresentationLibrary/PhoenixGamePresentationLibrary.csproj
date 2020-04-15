@@ -38,9 +38,13 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Camera.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Cursor.cs" />
     <Compile Include="CursorView.cs" />
     <Compile Include="FrameDynamicSizing.cs" />
     <Compile Include="HudView.cs" />
+    <Compile Include="InputHandler.cs" />
     <Compile Include="OverlandMapView.cs" />
     <Compile Include="PhoenixGameView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,6 +70,10 @@
     <ProjectReference Include="..\HexLibrary\HexLibrary.csproj">
       <Project>{8f48f47a-ed5a-4cc6-b54c-996689fc7422}</Project>
       <Name>HexLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Input\Input.csproj">
+      <Project>{28c5fb3b-8e55-42e0-94ec-8355de9f3077}</Project>
+      <Name>Input</Name>
     </ProjectReference>
     <ProjectReference Include="..\PhoenixGameLibrary\PhoenixGameLibrary.csproj">
       <Project>{21921023-2b2b-4b3d-82a3-7f335f24c644}</Project>

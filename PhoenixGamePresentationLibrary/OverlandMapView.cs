@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GameLogic;
-using GuiControls;
 using HexLibrary;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
@@ -13,10 +12,12 @@ namespace PhoenixGamePresentationLibrary
 {
     internal class OverlandMapView
     {
+        private readonly WorldView _worldView;
         private readonly OverlandMap _overlandMap;
 
-        internal OverlandMapView(OverlandMap overlandMap)
+        internal OverlandMapView(WorldView worldView, OverlandMap overlandMap)
         {
+            _worldView = worldView;
             _overlandMap = overlandMap;
         }
 
@@ -29,19 +30,20 @@ namespace PhoenixGamePresentationLibrary
                 if (cell.HasSettlement)
                 {
                     Globals.Instance.MessageQueue.Enqueue(new OpenSettlementCommand()); // TODO: send through settlementId
+
+                    var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
+                    _worldView.Camera.LookAt(worldPixelLocation);
                 }
             }
         }
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            DrawCellGrid(spriteBatch, _overlandMap.CellGrid);
+            DrawCellGrid(spriteBatch, _overlandMap.CellGrid, _worldView.Camera);
         }
 
-        private void DrawCellGrid(SpriteBatch spriteBatch, CellGrid cellGrid)
+        private void DrawCellGrid(SpriteBatch spriteBatch, CellGrid cellGrid, Camera camera)
         {
-            var camera = Globals.Instance.World.Camera;
-
             var center = camera.ScreenToWorld(new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width / 2, DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2));
             var centerHex = HexOffsetCoordinates.OffsetCoordinatesFromPixel((int)center.X, (int)center.Y);
 
@@ -94,7 +96,7 @@ namespace PhoenixGamePresentationLibrary
 
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
             var layerDepth = cell.Index / 10000.0f;
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, PhoenixGameLibrary.Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
 
             //var size = new Vector2(111, 192);
             //var imgTile = new Image("imgTile", centerPosition - PhoenixGameLibrary.Constants.HEX_ORIGIN / 2 + new Vector2(10.0f, 0.0f), ContentAlignment.MiddleCenter, size, cell.Texture.TexturePalette, cell.Texture.TextureId, layerDepth);
@@ -108,7 +110,7 @@ namespace PhoenixGamePresentationLibrary
             var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(HexLibrary.Constants.HEX_ACTUAL_WIDTH * 0.5f), (int)(HexLibrary.Constants.HEX_ACTUAL_HEIGHT * 0.75f));
             var sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
             var layerDepth = cell.Index / 10000.0f + 0.00001f;
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, PhoenixGameLibrary.Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
 
             //var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
             //var layerDepth = cell.Index / 10000.0f + 0.00001f;

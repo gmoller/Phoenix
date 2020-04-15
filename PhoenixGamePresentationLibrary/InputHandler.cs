@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using Input;
 using Utilities;
 
-namespace PhoenixGameLibrary
+namespace PhoenixGamePresentationLibrary
 {
     public class InputHandler
     {
@@ -19,7 +19,6 @@ namespace PhoenixGameLibrary
         public bool MouseIsAtBottomOfScreen => MouseHandler.MousePosition.Y > DeviceManager.Instance.MapViewport.Height - 5.0f;
         public bool MouseIsAtLeftOfScreen => MouseHandler.MousePosition.X < DeviceManager.Instance.MapViewport.X + 5.0f;
         public bool MouseIsAtRightOfScreen => MouseHandler.MousePosition.X > DeviceManager.Instance.MapViewport.Width - 5.0f;
-        public bool Exit { get; private set; }
 
         public void Initialize()
         {
@@ -31,11 +30,6 @@ namespace PhoenixGameLibrary
         {
             KeyboardHandler.Update();
             MouseHandler.Update();
-
-            if (KeyboardHandler.IsKeyDown(Keys.Escape))
-            {
-                Exit = true;
-            }
         }
     }
 }

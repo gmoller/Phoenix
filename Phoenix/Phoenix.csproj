@@ -119,10 +119,6 @@
       <Project>{4dc55750-af93-4079-8328-5394e408dda7}</Project>
       <Name>GuiControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Input\Input.csproj">
-      <Project>{28c5fb3b-8e55-42e0-94ec-8355de9f3077}</Project>
-      <Name>Input</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PhoenixGameLibrary\PhoenixGameLibrary.csproj">
       <Project>{21921023-2b2b-4b3d-82a3-7f335f24c644}</Project>
       <Name>PhoenixGameLibrary</Name>

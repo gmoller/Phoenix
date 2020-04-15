@@ -5,6 +5,7 @@ using AssetsLibrary;
 using PhoenixGameLibrary;
 using PhoenixGamePresentationLibrary;
 using Utilities;
+using Microsoft.Xna.Framework.Input;
 
 namespace Phoenix
 {
@@ -12,7 +13,6 @@ namespace Phoenix
     {
         private GraphicsDeviceManager _graphicsDeviceManager;
 
-        private InputHandler _input;
         private PhoenixGame _phoenixGame;
         private PhoenixGameView _phoenixGameView;
         private MetricsPanel _metricsPanel;
@@ -27,13 +27,11 @@ namespace Phoenix
         {
             Logger.Instance.Log("Initializing...");
 
-            Window.Position = new Point(0, 0);
+            Window.Position = new Microsoft.Xna.Framework.Point(0, 0);
             VariableTimeStep();
             SetGraphicsResolution(1920, 1080); // 1600, 800
             DeviceManager.Instance.GraphicsDevice = GraphicsDevice;
 
-            _input = new InputHandler();
-            _input.Initialize();
             _phoenixGame = new PhoenixGame();
             _phoenixGameView = new PhoenixGameView(_phoenixGame);
 
@@ -135,12 +133,14 @@ namespace Phoenix
 
         protected override void Update(GameTime gameTime)
         {
-            _input.Update(gameTime);
-            if (_input.Exit) Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                Exit();
+            }
 
-            _phoenixGame.Update(gameTime, _input);
-            _phoenixGameView.Update(gameTime, _input); // here for controls updates
-            _metricsPanel.Update(gameTime, _input);
+            _phoenixGame.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
+            _phoenixGameView.Update(gameTime); // here for controls updates
+            _metricsPanel.Update(gameTime);
 
             base.Update(gameTime);
         }

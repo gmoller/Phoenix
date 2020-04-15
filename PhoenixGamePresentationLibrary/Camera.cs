@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace PhoenixGameLibrary
+namespace PhoenixGamePresentationLibrary
 {
     public class Camera
     {

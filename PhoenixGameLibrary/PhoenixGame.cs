@@ -1,25 +1,21 @@
-﻿using Microsoft.Xna.Framework;
-using GameLogic;
+﻿using GameLogic;
 
 namespace PhoenixGameLibrary
 {
     public class PhoenixGame
     {
         public World World { get; }
-        public Cursor Cursor { get; }
 
         public PhoenixGame()
         {
             World = new World();
-            Cursor = new Cursor();
 
             World.AddStartingSettlement();
         }
 
-        public void Update(GameTime gameTime, InputHandler input)
+        public void Update(float deltaTime)
         {
-            World.Update(gameTime, input);
-            Cursor.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
+            World.Update(deltaTime);
 
             ProcessMessages();
         }

@@ -7,32 +7,38 @@ namespace PhoenixGamePresentationLibrary
 {
     public class PhoenixGameView
     {
-        private readonly PhoenixGame _phoenixGame;
-
-        private readonly WorldView _world;
-        private readonly CursorView _cursor;
+        private readonly WorldView _worldView;
+        private readonly CursorView _cursorView;
+        private readonly Cursor _cursor;
+        private readonly InputHandler _input;
 
         public PhoenixGameView(PhoenixGame phoenixGame)
         {
-            _world = new WorldView(phoenixGame.World);
-            _cursor = new CursorView(phoenixGame.Cursor);
+            _worldView = new WorldView(phoenixGame.World);
+            _cursor = new Cursor();
+            _cursorView = new CursorView(_cursor);
+
+            _input = new InputHandler();
+            _input.Initialize();
         }
 
         public void LoadContent(ContentManager content)
         {
-            _world.LoadContent(content);
-            _cursor.LoadContent(content);
+            _worldView.LoadContent(content);
+            _cursorView.LoadContent(content);
         }
 
-        public void Update(GameTime gameTime, InputHandler input)
+        public void Update(GameTime gameTime)
         {
-            _world.Update(gameTime, input);
+            _input.Update(gameTime);
+            _worldView.Update(gameTime, _input);
+            _cursor.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            _world.Draw(spriteBatch);
-            _cursor.Draw(spriteBatch);
+            _worldView.Draw(spriteBatch);
+            _cursorView.Draw(spriteBatch);
         }
     }
 }

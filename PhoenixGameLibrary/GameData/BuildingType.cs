@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.Xna.Framework;
 using GameLogic;
 
 namespace PhoenixGameLibrary.GameData

@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using GuiControls;
-using PhoenixGameLibrary;
 using Utilities;
+using Microsoft.Xna.Framework.Input;
 
 namespace Phoenix
 {
@@ -54,9 +54,11 @@ namespace Phoenix
             _lblGCCount2 = new Label("lblGCCount2", "CrimsonText-Regular-12", _lblGCCount1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
         }
 
-        public void Update(GameTime gameTime, InputHandler input)
+        public void Update(GameTime gameTime)
         {
             _fps.Update(gameTime);
+
+            MouseState mouseState = Mouse.GetState();
 
             var device = DeviceManager.Instance;
             _lblGCCount2.Text = $"{GC.CollectionCount(0)},{GC.CollectionCount(1)},{GC.CollectionCount(2)}";
@@ -64,8 +66,8 @@ namespace Phoenix
             _lblMemory2.Text = $"{GC.GetTotalMemory(false) / 1024} KB";
             _lblWorldHex2.Text = $"{device.WorldHex.X},{device.WorldHex.Y}";
             _lblWorldPosition2.Text = $"({device.WorldPosition.X},{device.WorldPosition.Y})";
-            _lblViewportPosition2.Text = $"({input.MousePostion.X - device.MapViewport.X},{input.MousePostion.Y - device.MapViewport.Y})";
-            _lblScreenPosition2.Text = $"({input.MousePostion.X},{input.MousePostion.Y})";
+            _lblViewportPosition2.Text = $"({mouseState.Position.X - device.MapViewport.X},{mouseState.Position.Y - device.MapViewport.Y})";
+            _lblScreenPosition2.Text = $"({mouseState.Position.X},{mouseState.Position.Y})";
         }
 
         public void Draw()

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 
 namespace PhoenixGameLibrary
 {
@@ -22,12 +21,12 @@ namespace PhoenixGameLibrary
             _settlements = new List<Settlement>();
         }
 
-        public void Update(GameTime gameTime, InputHandler input)
+        public void Update(float deltaTime)
         {
             int foodProducedThisTurn = 0;
             foreach (var settlement in _settlements)
             {
-                settlement.Update(gameTime, input);
+                settlement.Update(deltaTime);
                 foodProducedThisTurn += settlement.FoodSurplus;
             }
 

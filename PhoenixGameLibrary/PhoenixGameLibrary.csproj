@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdPartyBinaries\MonoGame.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdPartyBinaries\Newtonsoft.Json.dll</HintPath>
@@ -42,7 +38,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Camera.cs" />
     <Compile Include="Commands\CloseSettlementCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\EndTurnCommand.cs" />
@@ -65,11 +60,10 @@
     <Compile Include="Helpers\SettlementProduction.cs" />
     <Compile Include="MessageQueue.cs" />
     <Compile Include="NotificationList.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="SettlementCitizens.cs" />
-    <Compile Include="Cursor.cs" />
     <Compile Include="GameData\TerrainType.cs" />
     <Compile Include="GameData\Texture.cs" />
-    <Compile Include="InputHandler.cs" />
     <Compile Include="MapGenerator.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Cell.cs" />
@@ -82,21 +76,9 @@
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AssetsLibrary\AssetsLibrary.csproj">
-      <Project>{41ebaa0d-dd81-4822-82fe-bec126042b42}</Project>
-      <Name>AssetsLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GuiControls\GuiControls.csproj">
-      <Project>{4dc55750-af93-4079-8328-5394e408dda7}</Project>
-      <Name>GuiControls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HexLibrary\HexLibrary.csproj">
       <Project>{8f48f47a-ed5a-4cc6-b54c-996689fc7422}</Project>
       <Name>HexLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Input\Input.csproj">
-      <Project>{28c5fb3b-8e55-42e0-94ec-8355de9f3077}</Project>
-      <Name>Input</Name>
     </ProjectReference>
     <ProjectReference Include="..\Noise\Noise.csproj">
       <Project>{aec160e5-c4db-4b2c-a16c-edeb6b1bd2c4}</Project>

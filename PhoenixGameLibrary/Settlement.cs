@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using GameLogic;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
@@ -76,7 +75,7 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public void Update(GameTime gameTime, InputHandler input)
+        public void Update(float deltaTime)
         {
         }
 
@@ -133,6 +132,7 @@ namespace PhoenixGameLibrary
                     Globals.Instance.World.NotificationList.Add($"- {Name} has produced a {Globals.Instance.BuildingTypes[CurrentlyBuilding.BuildingId].Name}");
                     CurrentlyBuilding = new CurrentlyBuilding(-1, 0);
                     Globals.Instance.MessageQueue.Enqueue(new OpenSettlementCommand());
+                    // TODO: look at settlement
                 }
             }
         }

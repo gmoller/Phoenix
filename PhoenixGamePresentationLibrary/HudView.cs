@@ -134,7 +134,7 @@ namespace PhoenixGamePresentationLibrary
                 if (terrainType.CanSettleOn)
                 {
                     var catchment = cellGrid.GetCatchment(hex.X, hex.Y);
-                    var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Point(hex.X, hex.Y), catchment);
+                    var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new PhoenixGameLibrary.Point(hex.X, hex.Y), catchment);
                     var text2 = $"Maximum Pop - {maxPop}";
                     spriteBatch.DrawString(_font, text2, new Vector2(x, y + 15.0f), Color.White);
                 }

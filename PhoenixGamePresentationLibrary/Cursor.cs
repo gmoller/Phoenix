@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Input;
 
-namespace PhoenixGameLibrary
+namespace PhoenixGamePresentationLibrary
 {
     public class Cursor
     {
