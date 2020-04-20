@@ -60,7 +60,6 @@
     <Compile Include="Helpers\SettlementProduction.cs" />
     <Compile Include="MessageQueue.cs" />
     <Compile Include="NotificationList.cs" />
-    <Compile Include="Point.cs" />
     <Compile Include="SettlementCitizens.cs" />
     <Compile Include="GameData\TerrainType.cs" />
     <Compile Include="GameData\Texture.cs" />

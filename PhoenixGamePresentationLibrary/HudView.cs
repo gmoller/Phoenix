@@ -56,24 +56,24 @@ namespace PhoenixGamePresentationLibrary
             _btnEndTurn.Click += btnEndTurnClick;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(float deltaTime)
         {
-            _lblCurrentDate.Update(gameTime);
+            _lblCurrentDate.Update(deltaTime);
             _lblCurrentDate.Text = Globals.Instance.World.CurrentDate;
 
-            _imgGold.Update(gameTime);
-            _lblGold.Update(gameTime);
+            _imgGold.Update(deltaTime);
+            _lblGold.Update(deltaTime);
             _lblGold.Text = $"{Globals.Instance.World.PlayerFaction.GoldInTreasury} GP (+{Globals.Instance.World.PlayerFaction.GoldPerTurn})";
 
-            _imgMana.Update(gameTime);
-            _lblMana.Update(gameTime);
+            _imgMana.Update(deltaTime);
+            _lblMana.Update(deltaTime);
             _lblMana.Text = "5 MP (+1)";
 
-            _imgFood.Update(gameTime);
-            _lblFood.Update(gameTime);
+            _imgFood.Update(deltaTime);
+            _lblFood.Update(deltaTime);
             _lblFood.Text = $"{Globals.Instance.World.PlayerFaction.FoodPerTurn} Food";
 
-            _btnEndTurn.Update(gameTime);
+            _btnEndTurn.Update(deltaTime);
         }
 
         internal void Draw(SpriteBatch spriteBatch)
@@ -134,7 +134,7 @@ namespace PhoenixGamePresentationLibrary
                 if (terrainType.CanSettleOn)
                 {
                     var catchment = cellGrid.GetCatchment(hex.X, hex.Y);
-                    var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new PhoenixGameLibrary.Point(hex.X, hex.Y), catchment);
+                    var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Utilities.Point(hex.X, hex.Y), catchment);
                     var text2 = $"Maximum Pop - {maxPop}";
                     spriteBatch.DrawString(_font, text2, new Vector2(x, y + 15.0f), Color.White);
                 }

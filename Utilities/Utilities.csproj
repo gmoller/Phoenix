@@ -41,6 +41,7 @@
     <Compile Include="DeviceManager.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ObjectPool.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="Primitives2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

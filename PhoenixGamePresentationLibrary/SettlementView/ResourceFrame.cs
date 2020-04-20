@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
-using PhoenixGameLibrary;
 
 namespace PhoenixGamePresentationLibrary.SettlementView
 {
@@ -41,10 +40,10 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _productionView = new ProductionView(new Vector2(topLeftPosition.X + 150.0f, topLeftPosition.Y + 50.0f), parent);
         }
 
-        internal void Update(GameTime gameTime, InputHandler input)
+        internal void Update(float deltaTime, InputHandler input)
         {
-            _foodView.Update(gameTime, input);
-            _productionView.Update(gameTime, input);
+            _foodView.Update(deltaTime, input);
+            _productionView.Update(deltaTime, input);
         }
 
         internal void Draw(SpriteBatch spriteBatch)
@@ -86,7 +85,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _image2 = new Image("Image2", Vector2.Zero, new Vector2(20.0f, 20.0f), "Icons_1", "Corn");
         }
 
-        internal void Update(GameTime gameTime, InputHandler input)
+        internal void Update(float deltaTime, InputHandler input)
         {
             if (_area.Contains(input.MousePostion))
             {
@@ -160,7 +159,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _image2 = new Image("Image2", Vector2.Zero, new Vector2(20.0f, 20.0f), "Icons_1", "Pickaxe");
         }
 
-        internal void Update(GameTime gameTime, InputHandler input)
+        internal void Update(float deltaTime, InputHandler input)
         {
         }
 

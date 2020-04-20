@@ -3,20 +3,40 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using HexLibrary;
 using PhoenixGameLibrary;
+using Utilities;
 
 namespace PhoenixGamePresentationLibrary
 {
     public class UnitView
     {
+        private readonly WorldView _worldView;
+
         internal Unit Unit { get; set; }
 
-        internal UnitView(Unit unit)
+        internal UnitView(WorldView worldView, Unit unit)
         {
+            _worldView = worldView;
             Unit = unit;
         }
 
         internal void LoadContent(ContentManager content)
         {
+        }
+
+        internal void Update(InputHandler input, float deltaTime)
+        {
+            if (input.IsRightMouseButtonReleased)
+            {
+                var hex = DeviceManager.Instance.WorldHex;
+                var hexPoint = new Utilities.Point(hex.X, hex.Y);
+                if (Unit.Location == hexPoint)
+                {
+                    // TODO: make unit flash, set as selected unit, show in hudview
+
+                    var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(hex.X, hex.Y);
+                    _worldView.Camera.LookAt(worldPixelLocation);
+                }
+            }
         }
 
         internal void Draw(SpriteBatch spriteBatch, Texture2D texture)

@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using PhoenixGameLibrary;
@@ -78,11 +77,11 @@ namespace PhoenixGamePresentationLibrary
             _cursorView.LoadContent(content);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(float deltaTime)
         {
-            _input.Update(gameTime);
-            _worldView.Update(gameTime, _input);
-            _cursor.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
+            _input.Update(deltaTime);
+            _worldView.Update(_input, deltaTime);
+            _cursor.Update(deltaTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)

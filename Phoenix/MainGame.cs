@@ -90,7 +90,7 @@ namespace Phoenix
             }
 
             _phoenixGame.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
-            _phoenixGameView.Update(gameTime); // here for controls updates
+            _phoenixGameView.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds); // here for controls updates
             _metricsPanel.Update(gameTime);
 
             base.Update(gameTime);

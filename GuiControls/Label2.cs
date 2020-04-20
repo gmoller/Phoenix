@@ -59,9 +59,9 @@ namespace GuiControls
             _contentLoaded = false;
         }
 
-        public void Update(GameTime gameTime, Matrix? transform = null)
+        public void Update(float deltaTime, Matrix? transform = null)
         {
-            Point mousePosition = DetermineMousePosition(transform);
+            var mousePosition = DetermineMousePosition(transform);
         }
 
         public void Draw(Matrix? transform = null)
@@ -127,7 +127,7 @@ namespace GuiControls
             }
         }
 
-        private Point DetermineMousePosition(Matrix? transform)
+        private Microsoft.Xna.Framework.Point DetermineMousePosition(Matrix? transform)
         {
             if (transform == null)
             {
@@ -135,8 +135,8 @@ namespace GuiControls
             }
             else
             {
-                Point worldPosition = DeviceManager.Instance.WorldPosition;
-                return new Point(worldPosition.X, worldPosition.Y);
+                var worldPosition = DeviceManager.Instance.WorldPosition;
+                return new Microsoft.Xna.Framework.Point(worldPosition.X, worldPosition.Y);
             }
         }
 

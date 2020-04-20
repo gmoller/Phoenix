@@ -1,9 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using AssetsLibrary;
 using GuiControls;
-using PhoenixGameLibrary;
 
 namespace PhoenixGamePresentationLibrary.SettlementView
 {
@@ -50,15 +48,15 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             EnableOrDisableButtons();
         }
 
-        internal void Update(GameTime gameTime, InputHandler input)
+        internal void Update(float deltaTime, InputHandler input)
         {
             _lblRace.Text = $"{_parent.Settlement.RaceType.Name}";
             _lblPopulationGrowth.Text = $"Population: {_parent.Settlement.Population} (+{_parent.Settlement.GrowthRate})";
 
-            _btnSubtractFarmer.Update(gameTime);
-            _btnAddFarmer.Update(gameTime);
-            _btnSubtractWorker.Update(gameTime);
-            _btnAddWorker.Update(gameTime);
+            _btnSubtractFarmer.Update(deltaTime);
+            _btnAddFarmer.Update(deltaTime);
+            _btnSubtractWorker.Update(deltaTime);
+            _btnAddWorker.Update(deltaTime);
 
             EnableOrDisableButtons();
         }

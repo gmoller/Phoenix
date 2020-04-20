@@ -49,7 +49,7 @@ namespace PhoenixGamePresentationLibrary
             _zoom = MathHelper.Clamp(_zoom, 0.35f, 2.0f); // 0.1 - 5.0f
         }
 
-        public void Update(GameTime gameTime, InputHandler input)
+        public void Update(InputHandler input, float deltaTime)
         {
             ClampCamera();
             UpdateMatrix();

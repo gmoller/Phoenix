@@ -1,4 +1,6 @@
-﻿namespace PhoenixGameLibrary
+﻿using Utilities;
+
+namespace PhoenixGameLibrary
 {
     /// <summary>
     /// 

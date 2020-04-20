@@ -16,6 +16,10 @@ namespace PhoenixGamePresentationLibrary
             _settlementViews = new List<SettlementView.SettlementView>();
         }
 
+        internal void Update(float deltaTime)
+        {
+        }
+
         internal void Draw(SpriteBatch spriteBatch)
         {
             foreach (var item in _settlementViews)

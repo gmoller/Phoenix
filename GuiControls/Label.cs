@@ -59,17 +59,17 @@ namespace GuiControls
             Transform = transform;
         }
 
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(float deltaTime)
         {
-            Point mousePosition;
+            Microsoft.Xna.Framework.Point mousePosition;
             if (Transform == null)
             {
                 mousePosition = MouseHandler.MousePosition;
             }
             else
             {
-                Point worldPosition = DeviceManager.Instance.WorldPosition;
-                mousePosition = new Point(worldPosition.X, worldPosition.Y);
+                var worldPosition = DeviceManager.Instance.WorldPosition;
+                mousePosition = new Microsoft.Xna.Framework.Point(worldPosition.X, worldPosition.Y);
             }
 
             if (Area.Contains(mousePosition) && MouseHandler.IsLeftButtonReleased())

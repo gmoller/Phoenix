@@ -7,7 +7,7 @@ using Utilities;
 
 namespace PhoenixGamePresentationLibrary
 {
-    internal class WorldView
+    public class WorldView
     {
         private readonly World _world;
 
@@ -24,7 +24,7 @@ namespace PhoenixGamePresentationLibrary
             _world = world;
             _overlandMapView = new OverlandMapView(this, world.OverlandMap);
             _settlementView = new SettlementView.SettlementView();
-            _unitsView = new UnitsView(world.Units);
+            _unitsView = new UnitsView(this, world.Units);
             //_unitView = new UnitView(world.Unit);
             _hudView = new HudView();
 
@@ -39,7 +39,7 @@ namespace PhoenixGamePresentationLibrary
             _hudView.LoadContent(content);
         }
 
-        internal void Update(GameTime gameTime, InputHandler input)
+        internal void Update(InputHandler input, float deltaTime)
         {
             if (!_world.IsInSettlementView)
             {
@@ -49,30 +49,31 @@ namespace PhoenixGamePresentationLibrary
                 var panCameraDistance = input.IsLeftMouseButtonDown && input.HasMouseMoved ? input.MouseMovement.ToVector2() : Vector2.Zero;
                 Camera.MoveCamera(panCameraDistance);
 
-                panCameraDistance = input.MouseIsAtTopOfScreen ? new Vector2(0.0f, -2.0f) * (float)gameTime.ElapsedGameTime.TotalMilliseconds : Vector2.Zero;
+                panCameraDistance = input.MouseIsAtTopOfScreen ? new Vector2(0.0f, -2.0f) * deltaTime : Vector2.Zero;
                 Camera.MoveCamera(panCameraDistance);
-                panCameraDistance = input.MouseIsAtBottomOfScreen ? new Vector2(0.0f, 2.0f) * (float)gameTime.ElapsedGameTime.TotalMilliseconds : Vector2.Zero;
+                panCameraDistance = input.MouseIsAtBottomOfScreen ? new Vector2(0.0f, 2.0f) * deltaTime : Vector2.Zero;
                 Camera.MoveCamera(panCameraDistance);
-                panCameraDistance = input.MouseIsAtLeftOfScreen ? new Vector2(-2.0f, 0.0f) * (float)gameTime.ElapsedGameTime.TotalMilliseconds : Vector2.Zero;
+                panCameraDistance = input.MouseIsAtLeftOfScreen ? new Vector2(-2.0f, 0.0f) * deltaTime : Vector2.Zero;
                 Camera.MoveCamera(panCameraDistance);
-                panCameraDistance = input.MouseIsAtRightOfScreen ? new Vector2(2.0f, 0.0f) * (float)gameTime.ElapsedGameTime.TotalMilliseconds : Vector2.Zero;
+                panCameraDistance = input.MouseIsAtRightOfScreen ? new Vector2(2.0f, 0.0f) * deltaTime : Vector2.Zero;
                 Camera.MoveCamera(panCameraDistance);
             }
-            Camera.Update(gameTime, input);
+            Camera.Update(input, deltaTime);
 
             _overlandMapView.Update(input);
-            _hudView.Update(gameTime);
+            _unitsView.Update(input, deltaTime);
+            _hudView.Update(deltaTime);
 
             if (_world.IsInSettlementView)
             {
                 _settlementView.Settlement = _world.Settlement;
-                _settlementView.Update(gameTime, input);
+                _settlementView.Update(deltaTime, input);
             }
 
             var worldPos = Camera.ScreenToWorld(new Vector2(input.MousePostion.X, input.MousePostion.Y));
-            DeviceManager.Instance.WorldPosition = new Microsoft.Xna.Framework.Point((int)worldPos.X, (int)worldPos.Y);
+            DeviceManager.Instance.WorldPosition = new Utilities.Point((int)worldPos.X, (int)worldPos.Y);
             var worldHex = HexOffsetCoordinates.OffsetCoordinatesFromPixel((int)worldPos.X, (int)worldPos.Y);
-            DeviceManager.Instance.WorldHex = new Microsoft.Xna.Framework.Point(worldHex.Col, worldHex.Row);
+            DeviceManager.Instance.WorldHex = new Utilities.Point(worldHex.Col, worldHex.Row);
         }
 
         internal void Draw(SpriteBatch spriteBatch)

@@ -42,12 +42,13 @@ namespace GuiControls
             Enabled = true;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(float deltaTime)
         {
             if (!Enabled)
             {
                 var f = _spec.Frames[_textureDisabled];
                 _frame = new Rectangle(f.X, f.Y, f.Width, f.Height);
+
                 return;
             }
 
@@ -55,7 +56,7 @@ namespace GuiControls
 
             if (_cooldownTime > 0.0f)
             {
-                _cooldownTime -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                _cooldownTime -= deltaTime;
                 if (_cooldownTime <= 0.0f)
                 {
                     OnClickComplete();
@@ -80,7 +81,7 @@ namespace GuiControls
                 }
             }
 
-            _label?.Update(gameTime);
+            _label?.Update(deltaTime);
         }
 
         public void Draw(Matrix? transform = null)

@@ -27,11 +27,11 @@ namespace GuiControls
         public int Bottom => _destinationRectangle.Bottom - (int)_origin.Y;
         public int Left => _destinationRectangle.Left - (int)_origin.X;
         public int Right => _destinationRectangle.Right - (int)_origin.X;
-        public Point Center => _destinationRectangle.Center - _origin.ToPoint();
-        public Point TopLeft => new Point(Left, Top);
-        public Point TopRight => new Point(Right, Top);
-        public Point BottomLeft => new Point(Left, Bottom);
-        public Point BottomRight => new Point(Right, Bottom);
+        public Microsoft.Xna.Framework.Point Center => _destinationRectangle.Center - _origin.ToPoint();
+        public Microsoft.Xna.Framework.Point TopLeft => new Microsoft.Xna.Framework.Point(Left, Top);
+        public Microsoft.Xna.Framework.Point TopRight => new Microsoft.Xna.Framework.Point(Right, Top);
+        public Microsoft.Xna.Framework.Point BottomLeft => new Microsoft.Xna.Framework.Point(Left, Bottom);
+        public Microsoft.Xna.Framework.Point BottomRight => new Microsoft.Xna.Framework.Point(Right, Bottom);
 
         public Vector2 Position
         {
@@ -84,7 +84,7 @@ namespace GuiControls
             _contentLoaded = false;
         }
 
-        public void Update(GameTime gameTime, Matrix? transform = null)
+        public void Update(float deltaTime, Matrix? transform = null)
         {
         }
 

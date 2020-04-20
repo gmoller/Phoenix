@@ -1,14 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Input;
+﻿using Input;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
 {
     public class InputHandler
     {
-        public Point MousePostion => MouseHandler.MousePosition;
-        public Point MouseMovement => MouseHandler.MouseMovement;
+        public Microsoft.Xna.Framework.Point MousePostion => MouseHandler.MousePosition;
+        public Microsoft.Xna.Framework.Point MouseMovement => MouseHandler.MouseMovement;
         public bool MouseWheelUp => MouseHandler.MouseWheelUp();
         public bool MouseWheelDown => MouseHandler.MouseWheelDown();
         public bool IsLeftMouseButtonDown => MouseHandler.IsLeftButtonDown();
@@ -26,7 +24,7 @@ namespace PhoenixGamePresentationLibrary
             MouseHandler.Initialize();
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(float deltaTime)
         {
             KeyboardHandler.Update();
             MouseHandler.Update();

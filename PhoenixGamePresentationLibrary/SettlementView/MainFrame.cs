@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
-using PhoenixGameLibrary;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary.SettlementView
@@ -35,9 +34,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _btnClose.Click += CloseButtonClick;
         }
 
-        internal void Update(GameTime gameTime, InputHandler input)
+        internal void Update(float deltaTime, InputHandler input)
         {
-            _btnClose.Update(gameTime);
+            _btnClose.Update(deltaTime);
         }
 
         internal void Draw()
@@ -80,7 +79,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _bottom = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
         }
 
-        internal void Update(GameTime gameTime, InputHandler input)
+        internal void Update(float deltaTime, InputHandler input)
         {
         }
 

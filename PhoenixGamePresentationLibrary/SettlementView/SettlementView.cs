@@ -54,18 +54,18 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _buildingsFrame = new BuildingsFrame(this, new Vector2(_topLeftPositionSecondary.X + 20.0f, _topLeftPositionSecondary.Y + 40.0f));
         }
 
-        internal void Update(GameTime gameTime, InputHandler input)
+        internal void Update(float deltaTime, InputHandler input)
         {
-            _mainFrame.Update(gameTime, input);
-            _secondaryFrame.Update(gameTime, input);
+            _mainFrame.Update(deltaTime, input);
+            _secondaryFrame.Update(deltaTime, input);
 
             _lblSettlementName1.Text = $"{Settlement.SettlementType} of";
             _lblSettlementName2.Text = $"{Settlement.Name}";
 
-            _populationFrame.Update(gameTime, input);
-            _resourceFrame.Update(gameTime, input);
-            _producingFrame.Update(gameTime, input);
-            _buildingsFrame.Update(gameTime, input);
+            _populationFrame.Update(deltaTime, input);
+            _resourceFrame.Update(deltaTime, input);
+            _producingFrame.Update(deltaTime, input);
+            _buildingsFrame.Update(deltaTime, input);
         }
 
         internal void Draw(SpriteBatch spriteBatch)
