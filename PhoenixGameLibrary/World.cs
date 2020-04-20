@@ -10,6 +10,8 @@ namespace PhoenixGameLibrary
         public OverlandMap OverlandMap { get; }
         public Settlements Settlements { get; }
         public Settlement Settlement { get; set; }
+        public Units Units { get; set; }
+        public Unit Unit { get; set; }
         public Faction PlayerFaction { get; }
         public string CurrentDate
         {
@@ -34,6 +36,7 @@ namespace PhoenixGameLibrary
             PlayerFaction = new Faction();
             OverlandMap = new OverlandMap(this);
             Settlements = new Settlements();
+            Units = new Units();
             _turnNumber = 0;
             NotificationList = new NotificationList();
         }
@@ -43,9 +46,15 @@ namespace PhoenixGameLibrary
             Settlements.AddSettlement("Fairhaven", "Barbarians", new Point(12, 9), OverlandMap.CellGrid);
         }
 
+        public void AddStartingUnit()
+        {
+            Units.AddUnit(new Point(12, 9));
+        }
+
         public void Update(float deltaTime)
         {
             Settlements.Update(deltaTime);
+            Units.Update(deltaTime);
 
             PlayerFaction.FoodPerTurn = Settlements.FoodProducedThisTurn;
         }
@@ -54,6 +63,7 @@ namespace PhoenixGameLibrary
         {
             NotificationList.Clear();
             Settlements.EndTurn();
+            Units.EndTurn();
             _turnNumber++;
         }
     }

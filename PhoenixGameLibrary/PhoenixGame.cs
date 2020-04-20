@@ -11,6 +11,7 @@ namespace PhoenixGameLibrary
             World = new World();
 
             World.AddStartingSettlement();
+            World.AddStartingUnit();
         }
 
         public void Update(float deltaTime)

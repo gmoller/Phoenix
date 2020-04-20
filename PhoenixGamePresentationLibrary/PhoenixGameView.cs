@@ -51,6 +51,7 @@ namespace PhoenixGamePresentationLibrary
 
             AssetsManager.Instance.AddTexture("Cursor", "Textures\\cursor");
             AssetsManager.Instance.AddTexture("VillageSmall00", "Textures\\villageSmall00");
+            AssetsManager.Instance.AddTexture("brutal-helm", "Textures\\brutal-helm");
 
             AssetsManager.Instance.AddTexture("terrain_hextiles_basic_1", "TextureAtlases\\terrain_hextiles_basic_1");
             AssetsManager.Instance.AddAtlas("terrain_hextiles_basic_1", "TextureAtlases\\terrain_hextiles_basic_1");

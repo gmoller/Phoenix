@@ -4,7 +4,7 @@ namespace PhoenixGameLibrary
 {
     public class Settlements
     {
-        private List<Settlement> _settlements;
+        private readonly List<Settlement> _settlements;
 
         public int FoodProducedThisTurn { get; private set; }
 

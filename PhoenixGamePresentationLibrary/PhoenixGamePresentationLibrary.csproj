@@ -58,6 +58,8 @@
     <Compile Include="SettlementView\ResourceFrame.cs" />
     <Compile Include="SettlementView\SettlementView.cs" />
     <Compile Include="ToolTip.cs" />
+    <Compile Include="UnitsView.cs" />
+    <Compile Include="UnitView.cs" />
     <Compile Include="WorldView.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,8 @@ namespace PhoenixGamePresentationLibrary
 
         private readonly OverlandMapView _overlandMapView;
         private readonly SettlementView.SettlementView _settlementView;
+        private readonly UnitsView _unitsView;
+        //private readonly UnitView _unitView;
         private readonly HudView _hudView;
 
         public Camera Camera { get; }
@@ -22,6 +24,8 @@ namespace PhoenixGamePresentationLibrary
             _world = world;
             _overlandMapView = new OverlandMapView(this, world.OverlandMap);
             _settlementView = new SettlementView.SettlementView();
+            _unitsView = new UnitsView(world.Units);
+            //_unitView = new UnitView(world.Unit);
             _hudView = new HudView();
 
             Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
@@ -31,6 +35,7 @@ namespace PhoenixGamePresentationLibrary
         internal void LoadContent(ContentManager content)
         {
             _settlementView.LoadContent(content);
+            _unitsView.LoadContent(content);
             _hudView.LoadContent(content);
         }
 
@@ -74,6 +79,10 @@ namespace PhoenixGamePresentationLibrary
         {
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, Camera.Transform);
             _overlandMapView.Draw(spriteBatch);
+            spriteBatch.End();
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform);
+            _unitsView.Draw(spriteBatch);
             spriteBatch.End();
 
             _hudView.Draw(spriteBatch);
