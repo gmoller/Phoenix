@@ -14,7 +14,6 @@ namespace PhoenixGamePresentationLibrary
         private readonly OverlandMapView _overlandMapView;
         private readonly SettlementView.SettlementView _settlementView;
         private readonly UnitsView _unitsView;
-        //private readonly UnitView _unitView;
         private readonly HudView _hudView;
 
         public Camera Camera { get; }
@@ -25,7 +24,6 @@ namespace PhoenixGamePresentationLibrary
             _overlandMapView = new OverlandMapView(this, world.OverlandMap);
             _settlementView = new SettlementView.SettlementView();
             _unitsView = new UnitsView(this, world.Units);
-            //_unitView = new UnitView(world.Unit);
             _hudView = new HudView();
 
             Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));

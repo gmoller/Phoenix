@@ -23,6 +23,10 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Update(InputHandler input)
         {
+            if (input.IsLeftMouseButtonDown)
+            {
+            }
+
             if (input.IsRightMouseButtonReleased)
             {
                 var hex = DeviceManager.Instance.WorldHex;
