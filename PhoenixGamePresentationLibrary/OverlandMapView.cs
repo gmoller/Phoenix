@@ -21,24 +21,26 @@ namespace PhoenixGamePresentationLibrary
             _overlandMap = overlandMap;
         }
 
-        internal void Update(InputHandler input)
+        internal void Update(InputHandler input, float deltaTime)
         {
-            if (input.IsLeftMouseButtonDown)
-            {
-            }
+            //if (input.IsLeftMouseButtonDown)
+            //{
+            //}
 
-            if (input.IsRightMouseButtonReleased)
-            {
-                var hex = DeviceManager.Instance.WorldHex;
-                var cell = _overlandMap.CellGrid.GetCell(hex.X, hex.Y);
-                if (cell.HasSettlement)
-                {
-                    Globals.Instance.MessageQueue.Enqueue(new OpenSettlementCommand()); // TODO: send through settlementId
+            //if (input.IsRightMouseButtonReleased)
+            //{
+            //    var hex = DeviceManager.Instance.WorldHex;
+            //    var cell = _overlandMap.CellGrid.GetCell(hex.X, hex.Y);
+            //    if (cell.HasSettlement)
+            //    {
+            //        Command openSettlementCommand = new OpenSettlementCommand();
+            //        openSettlementCommand.Payload = settlement;
+            //        Globals.Instance.MessageQueue.Enqueue(openSettlementCommand);
 
-                    var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
-                    _worldView.Camera.LookAt(worldPixelLocation);
-                }
-            }
+            //        var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
+            //        _worldView.Camera.LookAt(worldPixelLocation);
+            //    }
+            //}
         }
 
         internal void Draw(SpriteBatch spriteBatch)

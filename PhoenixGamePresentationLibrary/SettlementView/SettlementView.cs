@@ -8,11 +8,14 @@ using GuiControls;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using Utilities;
+using HexLibrary;
 
 namespace PhoenixGamePresentationLibrary.SettlementView
 {
     internal class SettlementView
     {
+        private readonly WorldView _worldView;
+
         private Texture2D _guiTextures;
         private AtlasSpec2 _guiAtlas;
 
@@ -30,8 +33,11 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal Settlement Settlement { get; set; }
 
-        internal SettlementView()
+        internal SettlementView(WorldView worldView, Settlement settlement)
         {
+            _worldView = worldView;
+            Settlement = settlement;
+
             _topLeftPositionMain = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.05f, 200.0f);
             _topLeftPositionSecondary = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.65f, 200.0f);
         }
@@ -54,8 +60,18 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _buildingsFrame = new BuildingsFrame(this, new Vector2(_topLeftPositionSecondary.X + 20.0f, _topLeftPositionSecondary.Y + 40.0f));
         }
 
-        internal void Update(float deltaTime, InputHandler input)
+        internal void Update(InputHandler input, float deltaTime)
         {
+            if (input.IsRightMouseButtonReleased && CursorIsOnThisSettlement())
+            {
+                Command openSettlementCommand = new OpenSettlementCommand();
+                openSettlementCommand.Payload = Settlement;
+                Globals.Instance.MessageQueue.Enqueue(openSettlementCommand);
+
+                var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(Settlement.Location.X, Settlement.Location.Y);
+                _worldView.Camera.LookAt(worldPixelLocation);
+            }
+
             _mainFrame.Update(deltaTime, input);
             _secondaryFrame.Update(deltaTime, input);
 
@@ -84,7 +100,24 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void CloseButtonClick(object sender, EventArgs e)
         {
-            Globals.Instance.MessageQueue.Enqueue(new CloseSettlementCommand());
+            Command command = new CloseSettlementCommand();
+            command.Payload = Settlement;
+            Globals.Instance.MessageQueue.Enqueue(command);
+        }
+
+        private bool CursorIsOnThisSettlement()
+        {
+            var hexPoint = GetHexPoint();
+
+            return Settlement.Location == hexPoint;
+        }
+
+        private Utilities.Point GetHexPoint()
+        {
+            var hex = DeviceManager.Instance.WorldHex;
+            var hexPoint = new Utilities.Point(hex.X, hex.Y);
+
+            return hexPoint;
         }
     }
 }

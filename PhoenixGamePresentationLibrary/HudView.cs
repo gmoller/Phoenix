@@ -56,7 +56,7 @@ namespace PhoenixGamePresentationLibrary
             _btnEndTurn.Click += btnEndTurnClick;
         }
 
-        public void Update(float deltaTime)
+        public void Update(InputHandler input,  float deltaTime)
         {
             _lblCurrentDate.Update(deltaTime);
             _lblCurrentDate.Text = Globals.Instance.World.CurrentDate;

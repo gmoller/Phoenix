@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Utilities;
 
 namespace PhoenixGameLibrary
 {
-    public class Settlements
+    public class Settlements : IEnumerable<Settlement>
     {
         private readonly List<Settlement> _settlements;
 
@@ -59,6 +60,19 @@ namespace PhoenixGameLibrary
             {
                 settlement.EndTurn();
             }
+        }
+
+        public IEnumerator<Settlement> GetEnumerator()
+        {
+            foreach (var item in _settlements)
+            {
+                yield return item;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

@@ -51,6 +51,22 @@ namespace PhoenixGamePresentationLibrary
 
         public void Update(InputHandler input, float deltaTime)
         {
+            var zoom = input.MouseWheelUp ? 0.05f : 0.0f;
+            zoom = input.MouseWheelDown ? -0.05f : zoom;
+            AdjustZoom(zoom);
+
+            var panCameraDistance = input.IsLeftMouseButtonDown && input.HasMouseMoved ? input.MouseMovement.ToVector2() : Vector2.Zero;
+            MoveCamera(panCameraDistance);
+
+            panCameraDistance = input.MouseIsAtTopOfScreen ? new Vector2(0.0f, -2.0f) * deltaTime : Vector2.Zero;
+            MoveCamera(panCameraDistance);
+            panCameraDistance = input.MouseIsAtBottomOfScreen ? new Vector2(0.0f, 2.0f) * deltaTime : Vector2.Zero;
+            MoveCamera(panCameraDistance);
+            panCameraDistance = input.MouseIsAtLeftOfScreen ? new Vector2(-2.0f, 0.0f) * deltaTime : Vector2.Zero;
+            MoveCamera(panCameraDistance);
+            panCameraDistance = input.MouseIsAtRightOfScreen ? new Vector2(2.0f, 0.0f) * deltaTime : Vector2.Zero;
+            MoveCamera(panCameraDistance);
+
             ClampCamera();
             UpdateMatrix();
         }

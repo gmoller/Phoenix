@@ -10,9 +10,8 @@ namespace PhoenixGameLibrary
 
         public OverlandMap OverlandMap { get; }
         public Settlements Settlements { get; }
-        public Settlement Settlement { get; set; }
         public Units Units { get; set; }
-        public Unit Unit { get; set; }
+        //public Unit Unit { get; set; }
         public Faction PlayerFaction { get; }
         public string CurrentDate
         {
@@ -27,8 +26,6 @@ namespace PhoenixGameLibrary
         }
 
         public NotificationList NotificationList { get; }
-
-        public bool IsInSettlementView { get; set; }
 
         public World()
         {

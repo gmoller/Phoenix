@@ -46,17 +46,16 @@ namespace PhoenixGamePresentationLibrary
                 } 
             }
 
-            if (input.IsRightMouseButtonReleased)
+            if (input.IsRightMouseButtonReleased && CursorIsOnThisUnit())
             {
-                if (CursorIsOnThisUnit())
-                {
-                    // TODO: show in hudview
-                    Globals.Instance.MessageQueue.Enqueue(new SelectUnitCommand());
+                // TODO: show in hudview
+                Command command = new SelectUnitCommand();
+                command.Payload = Unit;
+                Globals.Instance.MessageQueue.Enqueue(command);
 
-                    var hexPoint = GetHexPoint();
-                    var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(hexPoint.X, hexPoint.Y);
-                    _worldView.Camera.LookAt(worldPixelLocation);
-                }
+                var hexPoint = GetHexPoint();
+                var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(hexPoint.X, hexPoint.Y);
+                _worldView.Camera.LookAt(worldPixelLocation);
             }
         }
 

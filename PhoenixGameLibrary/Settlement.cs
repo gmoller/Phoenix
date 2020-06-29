@@ -51,6 +51,8 @@ namespace PhoenixGameLibrary
             }
         }
 
+        public bool IsSelected { get; set; }
+
         public Settlement(string name, string raceTypeName, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
         {
             _id = (location.Y * Constants.WORLD_MAP_COLUMNS) + location.X;
