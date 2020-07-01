@@ -28,8 +28,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private BuildingsFrame _buildingsFrame;
         private ProducingFrame _producingFrame;
 
-        private readonly Vector2 _topLeftPositionMain;
-        private readonly Vector2 _topLeftPositionSecondary;
+        private Vector2 _topLeftPositionMain;
+        private Vector2 _topLeftPositionSecondary;
 
         internal Settlement Settlement { get; set; }
 
@@ -37,27 +37,33 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         {
             _worldView = worldView;
             Settlement = settlement;
-
-            _topLeftPositionMain = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.05f, 200.0f);
-            _topLeftPositionSecondary = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.65f, 200.0f);
         }
 
         internal void LoadContent(ContentManager content)
         {
+            _topLeftPositionMain = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.05f, 200.0f);
+            _topLeftPositionSecondary = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.65f, 200.0f);
+
             _guiTextures = AssetsManager.Instance.GetTexture("GUI_Textures_1");
             _guiAtlas = AssetsManager.Instance.GetAtlas("GUI_Textures_1");
 
             _mainFrame = new MainFrame(this, _topLeftPositionMain, _guiTextures, _guiAtlas);
+            _mainFrame.LoadContent(content);
             _secondaryFrame = new SecondaryFrame(this, _topLeftPositionSecondary, _guiTextures, _guiAtlas);
+            _secondaryFrame.LoadContent(content);
 
             _lblSettlementName1 = new Label("lblSettlementName1", "Carolingia-Regular-24", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 49.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
             _lblSettlementName2 = new Label("lblSettlementName2", "Carolingia-Regular-24", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 24.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
 
             _populationFrame = new PopulationFrame(this, new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 40.0f));
+            _populationFrame.LoadContent(content);
             _resourceFrame = new ResourceFrame(this, new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 190.0f));
+            _resourceFrame.LoadContent(content);
             _producingFrame = new ProducingFrame(this, new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 390.0f));
+            _producingFrame.LoadContent(content);
 
             _buildingsFrame = new BuildingsFrame(this, new Vector2(_topLeftPositionSecondary.X + 20.0f, _topLeftPositionSecondary.Y + 40.0f));
+            _buildingsFrame.LoadContent(content);
         }
 
         internal void Update(InputHandler input, float deltaTime)

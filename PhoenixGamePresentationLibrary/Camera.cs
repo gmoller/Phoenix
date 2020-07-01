@@ -1,23 +1,30 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 
 namespace PhoenixGamePresentationLibrary
 {
     public class Camera
     {
+        private readonly Rectangle _viewport;
+
         private float _zoom;
-        private readonly float _rotation;
-        private readonly Rectangle _bounds;
+        private float _rotation;
         private Vector2 _position;
 
         public Rectangle VisibleArea { get; private set; }
         public Matrix Transform { get; private set; }
-        public int Width => _bounds.Width;
-        public int Height => _bounds.Height;
+        public int Width => _viewport.Width;
+        public int Height => _viewport.Height;
 
         public Camera(Rectangle viewport)
         {
-            _bounds = viewport;
+            _viewport = viewport;
+        }
+
+        internal void LoadContent(ContentManager content)
+        {
             _zoom = 1.0f;
+            _rotation = 0.0f;
             _position = Vector2.Zero;
         }
 
@@ -74,8 +81,8 @@ namespace PhoenixGamePresentationLibrary
         private void ClampCamera()
         {
             // TODO: scale not taken into account!
-            _position.X = MathHelper.Clamp(_position.X, _bounds.Center.X, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _bounds.Center.X);
-            _position.Y = MathHelper.Clamp(_position.Y, _bounds.Center.Y, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _bounds.Center.Y);
+            _position.X = MathHelper.Clamp(_position.X, _viewport.Center.X, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _viewport.Center.X);
+            _position.Y = MathHelper.Clamp(_position.Y, _viewport.Center.Y, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _viewport.Center.Y);
         }
 
         private void UpdateMatrix()
@@ -83,7 +90,7 @@ namespace PhoenixGamePresentationLibrary
             Transform = Matrix.CreateTranslation(new Vector3(-_position.X, -_position.Y, 0)) *
                         Matrix.CreateRotationZ(_rotation) *
                         Matrix.CreateScale(_zoom) *
-                        Matrix.CreateTranslation(new Vector3(_bounds.Width * 0.5f, _bounds.Height * 0.5f, 0));
+                        Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0));
             UpdateVisibleArea();
         }
 
@@ -92,9 +99,9 @@ namespace PhoenixGamePresentationLibrary
             var inverseViewMatrix = Matrix.Invert(Transform);
 
             var tl = Vector2.Transform(Vector2.Zero, inverseViewMatrix);
-            var tr = Vector2.Transform(new Vector2(_bounds.X, 0), inverseViewMatrix);
-            var bl = Vector2.Transform(new Vector2(0, _bounds.Y), inverseViewMatrix);
-            var br = Vector2.Transform(new Vector2(_bounds.Width, _bounds.Height), inverseViewMatrix);
+            var tr = Vector2.Transform(new Vector2(_viewport.X, 0), inverseViewMatrix);
+            var bl = Vector2.Transform(new Vector2(0, _viewport.Y), inverseViewMatrix);
+            var br = Vector2.Transform(new Vector2(_viewport.Width, _viewport.Height), inverseViewMatrix);
 
             var min = new Vector2(
                 MathHelper.Min(tl.X, MathHelper.Min(tr.X, MathHelper.Min(bl.X, br.X))),

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Utilities;
@@ -7,31 +8,53 @@ namespace PhoenixGamePresentationLibrary
 {
     public class FrameDynamicSizing
     {
-        private readonly Texture2D _texture;
-        private readonly Rectangle[] _sourcePatches;
-        private readonly Rectangle[] _destinationPatches;
+        private readonly string _textureAtlasString;
+        private readonly string _textureString;
+        private readonly Vector2 _size;
+        private readonly int _topPadding;
+        private readonly int _bottomPadding;
+        private readonly int _leftPadding;
+        private readonly int _rightPadding;
+
+        private Texture2D _texture;
+        private Rectangle[] _sourcePatches;
+        private Rectangle[] _destinationPatches;
 
         private readonly int _numberOfSlotsX;
         private readonly int _numberOfSlotsY;
-        private readonly Rectangle _slot;
+        private Rectangle _slot;
 
-        public Vector2 TopLeftPosition { get; }
+        public Vector2 TopLeftPosition { get; private set; }
 
         public FrameDynamicSizing(Vector2 topLeftPosition, Vector2 size, string textureAtlasString, string textureString, int topPadding, int bottomPadding, int leftPadding, int rightPadding, int numberOfSlotsX = 0, int numberOfSlotsY = 0)
         {
-            _texture = AssetsManager.Instance.GetTexture(textureAtlasString);
-            var atlas = AssetsManager.Instance.GetAtlas(textureAtlasString);
+            TopLeftPosition = topLeftPosition;
+            _size = size;
+            _textureAtlasString = textureAtlasString;
+            _textureString = textureString;
 
-            var frame = atlas.Frames[textureString];
-            _sourcePatches = CreatePatches(frame.ToRectangle(), topPadding, bottomPadding, leftPadding, rightPadding);
-            _destinationPatches = CreatePatches(new Rectangle((int)topLeftPosition.X, (int)topLeftPosition.Y, (int)size.X, (int)size.Y), topPadding, bottomPadding, leftPadding, rightPadding);
+            _topPadding = topPadding;
+            _bottomPadding = bottomPadding;
+            _leftPadding = leftPadding;
+            _rightPadding = rightPadding;
 
             _numberOfSlotsX = numberOfSlotsX;
             _numberOfSlotsY = numberOfSlotsY;
+        }
+
+        internal void LoadContent(ContentManager content)
+        {
+            _texture = AssetsManager.Instance.GetTexture(_textureAtlasString);
+            var atlas = AssetsManager.Instance.GetAtlas(_textureAtlasString);
+
+            var frame = atlas.Frames[_textureString];
+            _sourcePatches = CreatePatches(frame.ToRectangle(), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
+            _destinationPatches = CreatePatches(new Rectangle((int)TopLeftPosition.X, (int)TopLeftPosition.Y, (int)_size.X, (int)_size.Y), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
+
             frame = atlas.Frames["slot"];
             _slot = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
-            TopLeftPosition = topLeftPosition + new Vector2(6.0f, 6.0f); // TODO: de-hardcode
+            TopLeftPosition += new Vector2(6.0f, 6.0f); // TODO: de-hardcode
         }
 
         public void Draw()

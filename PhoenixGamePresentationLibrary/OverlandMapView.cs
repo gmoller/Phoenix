@@ -1,11 +1,10 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
-using GameLogic;
 using HexLibrary;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.Commands;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
@@ -21,26 +20,12 @@ namespace PhoenixGamePresentationLibrary
             _overlandMap = overlandMap;
         }
 
+        internal void LoadContent(ContentManager content)
+        {
+        }
+
         internal void Update(InputHandler input, float deltaTime)
         {
-            //if (input.IsLeftMouseButtonDown)
-            //{
-            //}
-
-            //if (input.IsRightMouseButtonReleased)
-            //{
-            //    var hex = DeviceManager.Instance.WorldHex;
-            //    var cell = _overlandMap.CellGrid.GetCell(hex.X, hex.Y);
-            //    if (cell.HasSettlement)
-            //    {
-            //        Command openSettlementCommand = new OpenSettlementCommand();
-            //        openSettlementCommand.Payload = settlement;
-            //        Globals.Instance.MessageQueue.Enqueue(openSettlementCommand);
-
-            //        var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
-            //        _worldView.Camera.LookAt(worldPixelLocation);
-            //    }
-            //}
         }
 
         internal void Draw(SpriteBatch spriteBatch)

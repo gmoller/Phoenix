@@ -69,6 +69,7 @@ namespace Phoenix
             _phoenixGameView.LoadContent(GraphicsDevice, Content);
 
             _metricsPanel = new MetricsPanel(new Vector2(0.0f, 200.0f));
+            _metricsPanel.LoadContent(Content);
 
             Logger.Instance.LogComplete();
         }

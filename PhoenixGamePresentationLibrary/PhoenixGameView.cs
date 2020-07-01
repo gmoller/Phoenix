@@ -7,19 +7,16 @@ namespace PhoenixGamePresentationLibrary
 {
     public class PhoenixGameView
     {
-        private readonly WorldView _worldView;
-        private readonly CursorView _cursorView;
-        private readonly Cursor _cursor;
-        private readonly InputHandler _input;
+        private readonly PhoenixGame _phoenixGame;
+
+        private WorldView _worldView;
+        private CursorView _cursorView;
+        private Cursor _cursor;
+        private InputHandler _input;
 
         public PhoenixGameView(PhoenixGame phoenixGame)
         {
-            _worldView = new WorldView(phoenixGame.World);
-            _cursor = new Cursor();
-            _cursorView = new CursorView(_cursor);
-
-            _input = new InputHandler();
-            _input.Initialize();
+            _phoenixGame = phoenixGame;
         }
 
         public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
@@ -72,6 +69,13 @@ namespace PhoenixGamePresentationLibrary
 
             AssetsManager.Instance.AddTexture("Citizens", "TextureAtlases\\Citizens");
             AssetsManager.Instance.AddAtlas("Citizens", "TextureAtlases\\Citizens");
+
+            _worldView = new WorldView(_phoenixGame.World);
+            _cursor = new Cursor();
+            _cursorView = new CursorView(_cursor);
+
+            _input = new InputHandler();
+            _input.Initialize();
 
             _worldView.LoadContent(content);
             _cursorView.LoadContent(content);

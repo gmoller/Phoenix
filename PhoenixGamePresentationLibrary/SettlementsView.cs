@@ -9,6 +9,7 @@ namespace PhoenixGamePresentationLibrary
     {
         private readonly WorldView _worldView;
         private readonly Settlements _settlements;
+
         private ContentManager _content;
 
         private List<SettlementView.SettlementView> _settlementViews;
@@ -19,7 +20,7 @@ namespace PhoenixGamePresentationLibrary
             _settlements = settlements;
         }
 
-        public void LoadContent(ContentManager content)
+        internal void LoadContent(ContentManager content)
         {
             _content = content;
         }

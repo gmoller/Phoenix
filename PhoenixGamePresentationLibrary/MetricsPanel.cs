@@ -1,13 +1,16 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 using GuiControls;
 using Utilities;
-using Microsoft.Xna.Framework.Input;
 
 namespace PhoenixGamePresentationLibrary
 {
     public class MetricsPanel
     {
+        private readonly Vector2 _position;
+
         private FramesPerSecondCounter _fps;
 
         private Label _lblGCCount1;
@@ -27,12 +30,17 @@ namespace PhoenixGamePresentationLibrary
 
         public MetricsPanel(Vector2 position)
         {
+            _position = position;
+        }
+
+        public void LoadContent(ContentManager content)
+        {
             _fps = new FramesPerSecondCounter();
 
             var size1 = new Vector2(142.0f, 20.0f);
             var size2 = new Vector2(142.0f, 20.0f);
 
-            _lblScreenPosition1 = new Label("lblScreenPosition1", "CrimsonText-Regular-12", position, HorizontalAlignment.Left, VerticalAlignment.Bottom, size1, "SCREEN POS:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblScreenPosition1 = new Label("lblScreenPosition1", "CrimsonText-Regular-12", _position, HorizontalAlignment.Left, VerticalAlignment.Bottom, size1, "SCREEN POS:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblScreenPosition2 = new Label("lblScreenPosition2", "CrimsonText-Regular-12", _lblScreenPosition1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
             _lblViewportPosition1 = new Label("lblViewportPosition1", "CrimsonText-Regular-12", _lblScreenPosition1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "VIEWPORT POS:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);

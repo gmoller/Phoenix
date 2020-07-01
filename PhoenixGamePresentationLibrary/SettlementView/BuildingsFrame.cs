@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GameLogic;
@@ -10,30 +11,35 @@ namespace PhoenixGamePresentationLibrary.SettlementView
     internal class BuildingsFrame
     {
         private readonly SettlementView _parent;
-
         private readonly Vector2 _topLeftPosition;
 
-        private readonly Texture2D _texture;
-        private readonly AtlasSpec2 _atlas;
+        private Texture2D _texture;
+        private AtlasSpec2 _atlas;
 
-        private readonly FrameDynamicSizing _smallFrameBuildings;
-        private readonly FrameDynamicSizing _smallFrameUnits;
-        private readonly FrameDynamicSizing _smallFrameOther;
-        private readonly Label _lblBuildings;
-        private readonly Label _lblUnits;
-        private readonly Label _lblOther;
+        private FrameDynamicSizing _smallFrameBuildings;
+        private FrameDynamicSizing _smallFrameUnits;
+        private FrameDynamicSizing _smallFrameOther;
+        private Label _lblBuildings;
+        private Label _lblUnits;
+        private Label _lblOther;
 
         internal BuildingsFrame(SettlementView parent, Vector2 topLeftPosition)
         {
             _parent = parent;
             _topLeftPosition = topLeftPosition;
+        }
 
-            _smallFrameBuildings = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 10, 13);
-            _lblBuildings = new Label("lblBuildings", "CrimsonText-Regular-12", topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
-            _smallFrameUnits = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 495.0f), new Vector2(515, 75), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 10, 2);
-            _lblUnits = new Label("lblUnits", "CrimsonText-Regular-12", topLeftPosition + new Vector2(0, 485), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
-            _smallFrameOther = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 610.0f), new Vector2(515, 65), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 2, 1);
-            _lblOther = new Label("lblOther", "CrimsonText-Regular-12", topLeftPosition + new Vector2(0, 600), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
+        internal void LoadContent(ContentManager content)
+        {
+            _smallFrameBuildings = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 10, 13);
+            _smallFrameBuildings.LoadContent(content);
+            _lblBuildings = new Label("lblBuildings", "CrimsonText-Regular-12", _topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
+            _smallFrameUnits = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 495.0f), new Vector2(515, 75), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 10, 2);
+            _smallFrameUnits.LoadContent(content);
+            _lblUnits = new Label("lblUnits", "CrimsonText-Regular-12", _topLeftPosition + new Vector2(0, 485), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
+            _smallFrameOther = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 610.0f), new Vector2(515, 65), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 2, 1);
+            _smallFrameOther.LoadContent(content);
+            _lblOther = new Label("lblOther", "CrimsonText-Regular-12", _topLeftPosition + new Vector2(0, 600), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
 
             _texture = AssetsManager.Instance.GetTexture("Buildings");
             _atlas = AssetsManager.Instance.GetAtlas("Buildings");

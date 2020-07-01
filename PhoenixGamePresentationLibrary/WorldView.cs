@@ -11,29 +11,30 @@ namespace PhoenixGamePresentationLibrary
     {
         private readonly World _world;
 
-        private readonly OverlandMapView _overlandMapView;
-        private readonly UnitsView _unitsView;
-        private readonly SettlementsView _settlementsView;
-        private readonly HudView _hudView;
+        private OverlandMapView _overlandMapView;
+        private UnitsView _unitsView;
+        private SettlementsView _settlementsView;
+        private HudView _hudView;
 
-        public Camera Camera { get; }
+        public Camera Camera { get; private set; }
 
         internal WorldView(World world)
         {
             _world = world;
-            _overlandMapView = new OverlandMapView(this, world.OverlandMap);
-            _unitsView = new UnitsView(this, world.Units);
-            _settlementsView = new SettlementsView(this, world.Settlements);
-            _hudView = new HudView();
-
-            Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
-            Camera.LookAt(new Vector2(800.0f, 400.0f));
         }
 
         internal void LoadContent(ContentManager content)
         {
+            _overlandMapView = new OverlandMapView(this, _world.OverlandMap);
+            _unitsView = new UnitsView(this, _world.Units);
+            _settlementsView = new SettlementsView(this, _world.Settlements);
+            _hudView = new HudView();
+
+            Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
+            Camera.LoadContent(content);
+            Camera.LookAt(new Vector2(800.0f, 400.0f));
+
             _unitsView.LoadContent(content);
-            _settlementsView.LoadContent(content);
             _hudView.LoadContent(content);
         }
 

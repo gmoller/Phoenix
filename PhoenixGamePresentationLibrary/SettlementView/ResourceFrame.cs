@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 
@@ -9,35 +10,39 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly SettlementView _parent;
 
         private readonly Vector2 _topLeftPosition;
-        private readonly FrameDynamicSizing _smallFrame;
-        private readonly Label _lblResources;
-        private readonly Label _lblFood;
-        private readonly Label _lblProduction;
-        private readonly Label _lblGold;
-        private readonly Label _lblPower;
-        private readonly Label _lblResearch;
-        private readonly FoodView _foodView;
-        private readonly ProductionView _productionView;
+        private FrameDynamicSizing _smallFrame;
+        private Label _lblResources;
+        private Label _lblFood;
+        private Label _lblProduction;
+        private Label _lblGold;
+        private Label _lblPower;
+        private Label _lblResearch;
+        private FoodView _foodView;
+        private ProductionView _productionView;
 
         internal ResourceFrame(SettlementView parent, Vector2 topLeftPosition)
         {
             _parent = parent;
             _topLeftPosition = topLeftPosition;
+        }
 
-            _smallFrame = new FrameDynamicSizing(topLeftPosition + new Vector2(0.0f, 0.0f), new Vector2(515, 175), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
+        internal void LoadContent(ContentManager content)
+        {
+            _smallFrame = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 0.0f), new Vector2(515, 175), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
+            _smallFrame.LoadContent(content);
 
-            _lblResources = new Label("lblResources", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Resources", HorizontalAlignment.Left, Color.Orange, Color.Red);
-            _lblFood = new Label("lblFood", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 30.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Food", HorizontalAlignment.Left, Color.Orange);
-            _lblProduction = new Label("lblProduction", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 60.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Production", HorizontalAlignment.Left, Color.Orange);
-            _lblGold = new Label("lblGold", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 90.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Gold", HorizontalAlignment.Left, Color.Orange);
-            //_lblGold2 = new Label("lblGold2", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 100.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
-            _lblPower = new Label("lblPower", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 120.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Power", HorizontalAlignment.Left, Color.Orange);
-            //_lblPower2 = new Label("lblPower2", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 130.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
-            _lblResearch = new Label("lblResearch", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 20.0f, topLeftPosition.Y + 150.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Research", HorizontalAlignment.Left, Color.Orange);
-            //_lblResearch2 = new Label("lblResearch2", "CrimsonText-Regular-12", new Vector2(topLeftPosition.X + 200.0f, topLeftPosition.Y + 160.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblResources = new Label("lblResources", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Resources", HorizontalAlignment.Left, Color.Orange, Color.Red);
+            _lblFood = new Label("lblFood", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 30.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Food", HorizontalAlignment.Left, Color.Orange);
+            _lblProduction = new Label("lblProduction", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 60.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Production", HorizontalAlignment.Left, Color.Orange);
+            _lblGold = new Label("lblGold", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 90.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Gold", HorizontalAlignment.Left, Color.Orange);
+            //_lblGold2 = new Label("lblGold2", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 200.0f, _topLeftPosition.Y + 100.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblPower = new Label("lblPower", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 120.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Power", HorizontalAlignment.Left, Color.Orange);
+            //_lblPower2 = new Label("lblPower2", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 200.0f, _topLeftPosition.Y + 130.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
+            _lblResearch = new Label("lblResearch", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 150.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Research", HorizontalAlignment.Left, Color.Orange);
+            //_lblResearch2 = new Label("lblResearch2", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 200.0f, _topLeftPosition.Y + 160.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
 
-            _foodView = new FoodView(new Vector2(topLeftPosition.X + 150.0f, topLeftPosition.Y + 20.0f), parent);
-            _productionView = new ProductionView(new Vector2(topLeftPosition.X + 150.0f, topLeftPosition.Y + 50.0f), parent);
+            _foodView = new FoodView(new Vector2(_topLeftPosition.X + 150.0f, _topLeftPosition.Y + 20.0f), _parent);
+            _productionView = new ProductionView(new Vector2(_topLeftPosition.X + 150.0f, _topLeftPosition.Y + 50.0f), _parent);
         }
 
         internal void Update(float deltaTime, InputHandler input)

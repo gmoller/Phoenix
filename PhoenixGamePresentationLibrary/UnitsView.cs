@@ -18,7 +18,7 @@ namespace PhoenixGamePresentationLibrary
             _units = units;
         }
 
-        public void LoadContent(ContentManager content)
+        internal void LoadContent(ContentManager content)
         {
             _texture = AssetsManager.Instance.GetTexture("brutal-helm");
         }

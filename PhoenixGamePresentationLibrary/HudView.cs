@@ -12,9 +12,9 @@ namespace PhoenixGamePresentationLibrary
 {
     internal class HudView
     {
-        private readonly Image _imgGold;
-        private readonly Image _imgMana;
-        private readonly Image _imgFood;
+        private Image _imgGold;
+        private Image _imgMana;
+        private Image _imgFood;
 
         private SpriteFont _font;
         private FrameDynamicSizing _frame;
@@ -28,20 +28,21 @@ namespace PhoenixGamePresentationLibrary
 
         internal HudView()
         {
+        }
+
+        internal void LoadContent(ContentManager content)
+        {
             var topLeftPosition = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f, 0.0f);
             var position = new Vector2(topLeftPosition.X + 20.0f, 200.0f);
             _imgGold = new Image("imgGold", position, new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R");
             _imgMana = new Image("imgMana", _imgGold.BottomLeft.ToVector2() + new Vector2(0.0f, 10.0f), new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R");
             _imgFood = new Image("imgFood", _imgMana.BottomLeft.ToVector2() + new Vector2(0.0f, 10.0f), new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R");
-        }
 
-        internal void LoadContent(ContentManager content)
-        {
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
 
-            var topLeftPosition = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f, 0.0f);
             var size = new Vector2(250.0f, DeviceManager.Instance.GraphicsDevice.Viewport.Height - 60);
             _frame = new FrameDynamicSizing(topLeftPosition, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
+            _frame.LoadContent(content);
 
             var topCenterPosition = new Vector2(topLeftPosition.X + size.X / 2, topLeftPosition.Y) + new Vector2(0.0f, 10.0f);
             _lblCurrentDate = new Label("lblCurrentDate", "Maleficio-Regular-18", topCenterPosition, HorizontalAlignment.Center, VerticalAlignment.Top, Vector2.Zero, "Date:", HorizontalAlignment.Center, Color.Aquamarine);
