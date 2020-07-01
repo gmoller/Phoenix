@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GameLogic;
 using GuiControls;
+using Input;
 
 namespace PhoenixGamePresentationLibrary.SettlementView
 {
@@ -30,7 +31,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _lblCurrent = new Label("lblCurrent", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 40.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
         }
 
-        internal void Update(float deltaTime, InputHandler input)
+        internal void Update(InputHandler input, float deltaTime)
         {
             _lblProducing.Text = "Producing";
             if (_parent.Settlement.CurrentlyBuilding.BuildingId == -1)

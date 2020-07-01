@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using Input;
 using PhoenixGameLibrary;
 
 namespace PhoenixGamePresentationLibrary

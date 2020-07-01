@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Input;
 using PhoenixGameLibrary;
 using Utilities;
 
@@ -40,17 +41,17 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            Camera.Update(input, deltaTime);
-
-            _overlandMapView.Update(input, deltaTime);
-            _unitsView.Update(input, deltaTime);
-            _settlementsView.Update(input, deltaTime);
-            _hudView.Update(input, deltaTime);
-
             var worldPos = Camera.ScreenToWorld(new Vector2(input.MousePostion.X, input.MousePostion.Y));
             DeviceManager.Instance.WorldPosition = new Utilities.Point((int)worldPos.X, (int)worldPos.Y);
             var worldHex = HexOffsetCoordinates.OffsetCoordinatesFromPixel((int)worldPos.X, (int)worldPos.Y);
             DeviceManager.Instance.WorldHex = new Utilities.Point(worldHex.Col, worldHex.Row);
+
+            Camera.Update(input, deltaTime);
+
+            _hudView.Update(input, deltaTime);
+            _overlandMapView.Update(input, deltaTime);
+            _unitsView.Update(input, deltaTime);
+            _settlementsView.Update(input, deltaTime);
         }
 
         internal void Draw(SpriteBatch spriteBatch)

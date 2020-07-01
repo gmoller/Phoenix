@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using HexLibrary;
+using Input;
 using PhoenixGameLibrary;
 using Utilities;
 
@@ -26,6 +27,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Update(InputHandler input, float deltaTime)
         {
+            if (input.Eaten) return;
         }
 
         internal void Draw(SpriteBatch spriteBatch)

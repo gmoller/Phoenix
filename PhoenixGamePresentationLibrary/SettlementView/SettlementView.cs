@@ -5,10 +5,11 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GameLogic;
 using GuiControls;
+using HexLibrary;
+using Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using Utilities;
-using HexLibrary;
 
 namespace PhoenixGamePresentationLibrary.SettlementView
 {
@@ -78,16 +79,16 @@ namespace PhoenixGamePresentationLibrary.SettlementView
                 _worldView.Camera.LookAt(worldPixelLocation);
             }
 
-            _mainFrame.Update(deltaTime, input);
-            _secondaryFrame.Update(deltaTime, input);
+            _mainFrame.Update(input, deltaTime);
+            _secondaryFrame.Update(input, deltaTime);
 
             _lblSettlementName1.Text = $"{Settlement.SettlementType} of";
             _lblSettlementName2.Text = $"{Settlement.Name}";
 
-            _populationFrame.Update(deltaTime, input);
-            _resourceFrame.Update(deltaTime, input);
-            _producingFrame.Update(deltaTime, input);
-            _buildingsFrame.Update(deltaTime, input);
+            _populationFrame.Update(input, deltaTime);
+            _resourceFrame.Update(input, deltaTime);
+            _producingFrame.Update(input, deltaTime);
+            _buildingsFrame.Update(input, deltaTime);
         }
 
         internal void Draw(SpriteBatch spriteBatch)

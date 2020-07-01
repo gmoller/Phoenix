@@ -56,6 +56,7 @@
     <Compile Include="SettlementView\PopulationFrame.cs" />
     <Compile Include="SettlementView\ProducingFrame.cs" />
     <Compile Include="SettlementView\ResourceFrame.cs" />
+    <Compile Include="SettlementView\SecondaryFrame.cs" />
     <Compile Include="SettlementView\SettlementView.cs" />
     <Compile Include="ToolTip.cs" />
     <Compile Include="UnitsView.cs" />

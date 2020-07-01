@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
+using Input;
 
 namespace PhoenixGamePresentationLibrary.SettlementView
 {
@@ -45,7 +46,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _productionView = new ProductionView(new Vector2(_topLeftPosition.X + 150.0f, _topLeftPosition.Y + 50.0f), _parent);
         }
 
-        internal void Update(float deltaTime, InputHandler input)
+        internal void Update(InputHandler input, float deltaTime)
         {
             _foodView.Update(deltaTime, input);
             _productionView.Update(deltaTime, input);

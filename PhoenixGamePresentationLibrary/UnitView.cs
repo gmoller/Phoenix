@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GameLogic;
 using HexLibrary;
+using Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using Utilities;

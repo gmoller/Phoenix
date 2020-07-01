@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GameLogic;
 using GuiControls;
+using Input;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary.SettlementView
@@ -45,7 +46,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _atlas = AssetsManager.Instance.GetAtlas("Buildings");
         }
 
-        internal void Update(float deltaTime, InputHandler input)
+        internal void Update(InputHandler input, float deltaTime)
         {
             _lblBuildings.Text = "Buildings";
             _lblUnits.Text = "Units";

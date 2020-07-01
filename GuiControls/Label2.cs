@@ -59,7 +59,7 @@ namespace GuiControls
             _contentLoaded = false;
         }
 
-        public void Update(float deltaTime, Matrix? transform = null)
+        public void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
             var mousePosition = DetermineMousePosition(transform);
         }

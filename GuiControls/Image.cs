@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using Input;
 using Utilities;
 
 namespace GuiControls
@@ -84,7 +85,7 @@ namespace GuiControls
             _contentLoaded = false;
         }
 
-        public void Update(float deltaTime, Matrix? transform = null)
+        public void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
         }
 

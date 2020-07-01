@@ -59,7 +59,7 @@ namespace GuiControls
             Transform = transform;
         }
 
-        public virtual void Update(float deltaTime)
+        public virtual void Update(InputHandler input, float deltaTime)
         {
             Microsoft.Xna.Framework.Point mousePosition;
             if (Transform == null)

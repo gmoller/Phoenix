@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GameLogic;
 using GuiControls;
+using Input;
 using PhoenixGameLibrary.Commands;
 using Utilities;
 
@@ -57,24 +58,24 @@ namespace PhoenixGamePresentationLibrary
             _btnEndTurn.Click += btnEndTurnClick;
         }
 
-        public void Update(InputHandler input,  float deltaTime)
+        public void Update(InputHandler input, float deltaTime)
         {
-            _lblCurrentDate.Update(deltaTime);
+            _lblCurrentDate.Update(input, deltaTime);
             _lblCurrentDate.Text = Globals.Instance.World.CurrentDate;
 
-            _imgGold.Update(deltaTime);
-            _lblGold.Update(deltaTime);
+            _imgGold.Update(input, deltaTime);
+            _lblGold.Update(input, deltaTime);
             _lblGold.Text = $"{Globals.Instance.World.PlayerFaction.GoldInTreasury} GP (+{Globals.Instance.World.PlayerFaction.GoldPerTurn})";
 
-            _imgMana.Update(deltaTime);
-            _lblMana.Update(deltaTime);
+            _imgMana.Update(input, deltaTime);
+            _lblMana.Update(input, deltaTime);
             _lblMana.Text = "5 MP (+1)";
 
-            _imgFood.Update(deltaTime);
-            _lblFood.Update(deltaTime);
+            _imgFood.Update(input, deltaTime);
+            _lblFood.Update(input, deltaTime);
             _lblFood.Text = $"{Globals.Instance.World.PlayerFaction.FoodPerTurn} Food";
 
-            _btnEndTurn.Update(deltaTime);
+            _btnEndTurn.Update(input, deltaTime);
         }
 
         internal void Draw(SpriteBatch spriteBatch)

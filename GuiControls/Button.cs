@@ -42,7 +42,7 @@ namespace GuiControls
             Enabled = true;
         }
 
-        public void Update(float deltaTime)
+        public void Update(InputHandler input, float deltaTime)
         {
             if (!Enabled)
             {
@@ -53,6 +53,7 @@ namespace GuiControls
             }
 
             MouseOver = Area.Contains(MouseHandler.MousePosition);
+            input.Eaten = MouseOver;
 
             if (_cooldownTime > 0.0f)
             {
@@ -81,7 +82,7 @@ namespace GuiControls
                 }
             }
 
-            _label?.Update(deltaTime);
+            _label?.Update(input, deltaTime);
         }
 
         public void Draw(Matrix? transform = null)

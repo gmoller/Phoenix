@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Input;
 
 namespace GuiControls
 {
@@ -6,7 +7,7 @@ namespace GuiControls
     {
         Vector2 Position { get; set; }
 
-        void Update(float deltaTime, Matrix? transform = null);
+        void Update(InputHandler input, float deltaTime, Matrix? transform = null);
         void Draw(Matrix? transform = null);
     }
 }
