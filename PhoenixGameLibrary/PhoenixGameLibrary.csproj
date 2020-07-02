@@ -38,6 +38,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AddUnitCommand.cs" />
     <Compile Include="Commands\CloseSettlementCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\EndTurnCommand.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="GameData\TerrainCanSettleOnType.cs" />
     <Compile Include="GameData\TerrainFoodOutputType.cs" />
     <Compile Include="GameData\TerrainProductionPercentageType.cs" />
+    <Compile Include="GameData\UnitType.cs" />
     <Compile Include="Helpers\BaseFoodLevel.cs" />
     <Compile Include="Helpers\PopulationGrowthRate.cs" />
     <Compile Include="Helpers\SettlementFoodProduction.cs" />

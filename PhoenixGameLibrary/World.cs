@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using GameLogic;
+using PhoenixGameLibrary.Commands;
 using Utilities;
 
 namespace PhoenixGameLibrary
@@ -46,7 +47,10 @@ namespace PhoenixGameLibrary
 
         public void AddStartingUnit()
         {
-            Units.AddUnit(new Point(11, 9));
+            var addUnitCommand = new AddUnitCommand();
+            addUnitCommand.Payload = new Point(11, 9);
+            Globals.Instance.MessageQueue.Enqueue(addUnitCommand);
+            //Units.AddUnit(new Point(11, 9));
         }
 
         public void Update(float deltaTime)

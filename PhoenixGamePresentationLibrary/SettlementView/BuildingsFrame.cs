@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
@@ -24,6 +26,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private Label _lblUnits;
         private Label _lblOther;
 
+        private List<Label> _units;
+
         internal BuildingsFrame(SettlementView parent, Vector2 topLeftPosition)
         {
             _parent = parent;
@@ -44,6 +48,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
             _texture = AssetsManager.Instance.GetTexture("Buildings");
             _atlas = AssetsManager.Instance.GetAtlas("Buildings");
+
+            _units = CreateUnits();
+
         }
 
         internal void Update(InputHandler input, float deltaTime)
@@ -71,6 +78,16 @@ namespace PhoenixGamePresentationLibrary.SettlementView
                         }
                     }
                 }
+
+                //if (_smallFrameUnits.IsMouseOverSlot(input.MousePostion))
+                //{
+                //    Console.WriteLine();
+                //}
+            }
+
+            foreach (var unit in _units)
+            {
+                unit.Update(input, deltaTime);
             }
         }
 
@@ -84,6 +101,15 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _smallFrameOther.Draw();
             _lblOther.Draw(spriteBatch);
 
+            DrawBuildings(spriteBatch);
+            DrawUnits(spriteBatch);
+            DrawArrows(spriteBatch);
+
+            spriteBatch.End();
+        }
+
+        private void DrawBuildings(SpriteBatch spriteBatch)
+        {
             int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
             int baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
             foreach (var building in Globals.Instance.BuildingTypes)
@@ -91,11 +117,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
                 int topLeftX = baseTopLeftX + building.Slot.X * 49;
                 int topLeftY = baseTopLeftY + building.Slot.Y * 25;
                 DrawBuilding(spriteBatch, building.Name, topLeftX, topLeftY);
-            }
-
-            DrawArrows(spriteBatch);
-
-            spriteBatch.End();
+            } 
         }
 
         private void DrawBuilding(SpriteBatch spriteBatch, string buildingName, int topLeftX, int topLeftY)
@@ -121,6 +143,67 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
             spriteBatch.FillRectangle(rect, color, 0.0f);
             spriteBatch.Draw(_texture, rect, _atlas.Frames[buildingName].ToRectangle(), Color.White);
+        }
+
+        private List<Label> CreateUnits()
+        {
+            var units = new List<Label>();
+
+            int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
+            int baseTopLeftY = (int)(_topLeftPosition.Y + 510.0f);
+            int x = baseTopLeftX;
+            int y = baseTopLeftY;
+
+            foreach (var unit in Globals.Instance.UnitTypes)
+            {
+                if (_parent.Settlement.UnitCanBeBuilt(unit.Name))
+                {
+                    var rect = new Rectangle(x, y, 40, 20);
+                    var color = Color.PowderBlue;
+                    var lbl = new Label(unit.Name, "Carolingia-Regular-12", new Vector2(x, y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(40, 20), unit.ShortName, HorizontalAlignment.Center, Color.HotPink, Color.Red, Color.PowderBlue);
+                    lbl.Click += UnitClick;
+                    units.Add(lbl);
+
+                    x += 49;
+                }
+            }
+
+            return units;
+        }
+
+        private void UnitClick(object sender, EventArgs e)
+        {
+            var unit = (Label)sender;
+            var unit2 = Globals.Instance.UnitTypes[unit.Name];
+            _parent.Settlement.AddToProductionQueue(unit2);
+        }
+
+        private void DrawUnits(SpriteBatch spriteBatch)
+        {
+            foreach (var lbl in _units)
+            {
+                lbl.Draw(spriteBatch);
+            }
+
+            //int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
+            //int baseTopLeftY = (int)(_topLeftPosition.Y + 510.0f);
+            //int x = baseTopLeftX;
+            //int y = baseTopLeftY;
+
+            //foreach (var unit in Globals.Instance.UnitTypes)
+            //{
+            //    if (_parent.Settlement.UnitCanBeBuilt(unit.Name))
+            //    {
+            //        var rect = new Rectangle(x, y, 40, 20);
+            //        var color = Color.PowderBlue;
+            //        spriteBatch.FillRectangle(rect, color, 0.0f);
+            //        //spriteBatch.DrawString(font, unit.Name, new Vector2(x, y), Color.HotPink);
+            //        var lbl = new Label("lbl", "CrimsonText-Regular-12", new Vector2(x, y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(40, 20), unit.Name, HorizontalAlignment.Center, Color.HotPink, Color.Red);
+            //        lbl.Draw(spriteBatch);
+
+            //        x += 49;
+            //    }
+            //}
         }
 
         private void DrawArrows(SpriteBatch spriteBatch)

@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Utilities;
+using System;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -23,6 +25,7 @@ namespace PhoenixGamePresentationLibrary
         private readonly int _numberOfSlotsX;
         private readonly int _numberOfSlotsY;
         private Rectangle _slot;
+        private List<Rectangle> _slots;
 
         public Vector2 TopLeftPosition { get; private set; }
 
@@ -53,8 +56,32 @@ namespace PhoenixGamePresentationLibrary
 
             frame = atlas.Frames["slot"];
             _slot = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
+            _slots = CreateSlots();
 
             TopLeftPosition += new Vector2(6.0f, 6.0f); // TODO: de-hardcode
+        }
+
+        private List<Rectangle> CreateSlots()
+        {
+            var slots = new List<Rectangle>();
+
+            float x = _destinationPatches[0].X + 10.0f;
+            float y = _destinationPatches[0].Y + 10.0f;
+
+            for (int j = 0; j < _numberOfSlotsY; ++j)
+            {
+                for (int i = 0; i < _numberOfSlotsX; ++i)
+                {
+                    var rect = new Rectangle((int)x, (int)y, 49, 25);
+                    slots.Add(rect);
+                    x += 49.0f; // _slot.Width + 0.0f
+                }
+
+                x = _destinationPatches[0].X + 10.0f;
+                y += 25.0f;
+            }
+
+            return slots;
         }
 
         public void Draw()
@@ -73,23 +100,26 @@ namespace PhoenixGamePresentationLibrary
             DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
         }
 
+
         private void DrawSlots(SpriteBatch spriteBatch)
         {
-            float x = _destinationPatches[0].X + 10.0f;
-            float y = _destinationPatches[0].Y + 10.0f;
-
-            for (int j = 0; j < _numberOfSlotsY; ++j)
+            foreach (var slot in _slots)
             {
-                for (int i = 0; i < _numberOfSlotsX; ++i)
-                {
-                    var rect = new Rectangle((int)x, (int)y, 49, 25);
-                    spriteBatch.Draw(_texture, rect, _slot, Color.White);
-                    x += 49.0f; // _slot.Width + 0.0f;
-                }
-
-                x = _destinationPatches[0].X + 10.0f;
-                y += 25.0f;
+                spriteBatch.Draw(_texture, slot, _slot, Color.White);
             }
+        }
+
+        public bool IsMouseOverSlot(Microsoft.Xna.Framework.Point mousePostion)
+        {
+            foreach (var slot in _slots)
+            {
+                if (slot.Contains(mousePostion))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private Rectangle[] CreatePatches(Rectangle rectangle, int topPadding, int bottomPadding, int leftPadding, int rightPadding)

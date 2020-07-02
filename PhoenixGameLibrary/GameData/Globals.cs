@@ -25,7 +25,7 @@ namespace GameLogic
 
         //public MovementTypes MovementTypes { get; }
         //public MineralTypes MineralTypes { get; }
-        //public UnitTypes UnitTypes { get; }
+        public NamedDataList<UnitType> UnitTypes { get; }
 
         public static Globals Instance => Lazy.Value;
 
@@ -47,7 +47,7 @@ namespace GameLogic
 
             //MovementTypes = MovementTypes.Create(new List<MovementType> { MovementType.Create(1, "Ground") });
             //MineralTypes = MineralTypes.Create(MineralTypesLoader.GetMineralTypes());
-            //UnitTypes = UnitTypes.Create(UnitTypesLoader.GetUnitTypes(MovementTypes));
+            UnitTypes = NamedDataList<UnitType>.Create(UnitTypesLoader.Load());
         }
     }
 }

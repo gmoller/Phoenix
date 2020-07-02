@@ -34,15 +34,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         internal void Update(InputHandler input, float deltaTime)
         {
             _lblProducing.Text = "Producing";
-            if (_parent.Settlement.CurrentlyBuilding.BuildingId == -1)
-            {
-                _lblCurrent.Text = "Current: <nothing>";
-            }
-            else
-            {
-                var building = Globals.Instance.BuildingTypes[_parent.Settlement.CurrentlyBuilding.BuildingId];
-                _lblCurrent.Text = $"Current: {building.Name} ({_parent.Settlement.CurrentlyBuilding.ProductionAccrued}/{building.ConstructionCost})";
-            }
+            _lblCurrent.Text = _parent.Settlement.CurrentlyBuilding;
         }
 
         internal void Draw(SpriteBatch spriteBatch)
