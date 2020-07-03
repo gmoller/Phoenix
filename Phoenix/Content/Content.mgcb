@@ -48,6 +48,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Carolingia-Regular-48.spritefont
 
+#begin Fonts/Carolingia-Regular-6.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Carolingia-Regular-6.spritefont
+
 #begin Fonts/Carolingia-Regular-60.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -61,6 +68,13 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Carolingia-Regular-72.spritefont
+
+#begin Fonts/Carolingia-Regular-8.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Carolingia-Regular-8.spritefont
 
 #begin Fonts/CrimsonText-Regular-12.spritefont
 /importer:FontDescriptionImporter
@@ -97,6 +111,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/CrimsonText-Regular-48.spritefont
 
+#begin Fonts/CrimsonText-Regular-6.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/CrimsonText-Regular-6.spritefont
+
 #begin Fonts/CrimsonText-Regular-60.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -110,6 +131,13 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/CrimsonText-Regular-72.spritefont
+
+#begin Fonts/CrimsonText-Regular-8.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/CrimsonText-Regular-8.spritefont
 
 #begin Fonts/Maleficio-Regular-12.spritefont
 /importer:FontDescriptionImporter
@@ -146,6 +174,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Maleficio-Regular-48.spritefont
 
+#begin Fonts/Maleficio-Regular-6.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Maleficio-Regular-6.spritefont
+
 #begin Fonts/Maleficio-Regular-60.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -159,6 +194,13 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Maleficio-Regular-72.spritefont
+
+#begin Fonts/Maleficio-Regular-8.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Maleficio-Regular-8.spritefont
 
 #begin TextureAtlases/Buildings.atlasspec
 /copy:TextureAtlases/Buildings.atlasspec

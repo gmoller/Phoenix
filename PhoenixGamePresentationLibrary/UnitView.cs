@@ -36,13 +36,12 @@ namespace PhoenixGamePresentationLibrary
                 if (IsWithinOneHexOf(currentHex, hexToMoveTo))
                 {
                     var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
-                    int movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCostWalking;
+                    var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCostWalking;
 
                     if (Unit.MovementPoints >= movementCost)
                     {
-                        // move unit
-                        Unit.Location = hexToMoveTo;
-                        Unit.MovementPoints -= movementCost;
+                        // move unit TODO: make a command
+                        Unit.MoveTo(hexToMoveTo);
                     }
                 } 
             }

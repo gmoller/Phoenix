@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Utilities;
-using System;
 
-namespace PhoenixGamePresentationLibrary
+namespace GuiControls
 {
     public class FrameDynamicSizing
     {
@@ -18,18 +16,15 @@ namespace PhoenixGamePresentationLibrary
         private readonly int _leftPadding;
         private readonly int _rightPadding;
 
+        private readonly DynamicSlots _slots;
+
         private Texture2D _texture;
         private Rectangle[] _sourcePatches;
         private Rectangle[] _destinationPatches;
 
-        private readonly int _numberOfSlotsX;
-        private readonly int _numberOfSlotsY;
-        private Rectangle _slot;
-        private List<Rectangle> _slots;
-
         public Vector2 TopLeftPosition { get; private set; }
 
-        public FrameDynamicSizing(Vector2 topLeftPosition, Vector2 size, string textureAtlasString, string textureString, int topPadding, int bottomPadding, int leftPadding, int rightPadding, int numberOfSlotsX = 0, int numberOfSlotsY = 0)
+        public FrameDynamicSizing(Vector2 topLeftPosition, Vector2 size, string textureAtlasString, string textureString, int topPadding, int bottomPadding, int leftPadding, int rightPadding, DynamicSlots slots = null)
         {
             TopLeftPosition = topLeftPosition;
             _size = size;
@@ -41,11 +36,10 @@ namespace PhoenixGamePresentationLibrary
             _leftPadding = leftPadding;
             _rightPadding = rightPadding;
 
-            _numberOfSlotsX = numberOfSlotsX;
-            _numberOfSlotsY = numberOfSlotsY;
+            _slots = slots;
         }
 
-        internal void LoadContent(ContentManager content)
+        public void LoadContent(ContentManager content)
         {
             _texture = AssetsManager.Instance.GetTexture(_textureAtlasString);
             var atlas = AssetsManager.Instance.GetAtlas(_textureAtlasString);
@@ -53,35 +47,6 @@ namespace PhoenixGamePresentationLibrary
             var frame = atlas.Frames[_textureString];
             _sourcePatches = CreatePatches(frame.ToRectangle(), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
             _destinationPatches = CreatePatches(new Rectangle((int)TopLeftPosition.X, (int)TopLeftPosition.Y, (int)_size.X, (int)_size.Y), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
-
-            frame = atlas.Frames["slot"];
-            _slot = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
-            _slots = CreateSlots();
-
-            TopLeftPosition += new Vector2(6.0f, 6.0f); // TODO: de-hardcode
-        }
-
-        private List<Rectangle> CreateSlots()
-        {
-            var slots = new List<Rectangle>();
-
-            float x = _destinationPatches[0].X + 10.0f;
-            float y = _destinationPatches[0].Y + 10.0f;
-
-            for (int j = 0; j < _numberOfSlotsY; ++j)
-            {
-                for (int i = 0; i < _numberOfSlotsX; ++i)
-                {
-                    var rect = new Rectangle((int)x, (int)y, 49, 25);
-                    slots.Add(rect);
-                    x += 49.0f; // _slot.Width + 0.0f
-                }
-
-                x = _destinationPatches[0].X + 10.0f;
-                y += 25.0f;
-            }
-
-            return slots;
         }
 
         public void Draw()
@@ -94,32 +59,10 @@ namespace PhoenixGamePresentationLibrary
                 spriteBatch.Draw(_texture, _destinationPatches[i], _sourcePatches[i], Color.White);
             }
 
-            DrawSlots(spriteBatch);
+            _slots?.Draw(spriteBatch);
 
             spriteBatch.End();
             DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
-        }
-
-
-        private void DrawSlots(SpriteBatch spriteBatch)
-        {
-            foreach (var slot in _slots)
-            {
-                spriteBatch.Draw(_texture, slot, _slot, Color.White);
-            }
-        }
-
-        public bool IsMouseOverSlot(Microsoft.Xna.Framework.Point mousePostion)
-        {
-            foreach (var slot in _slots)
-            {
-                if (slot.Contains(mousePostion))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         private Rectangle[] CreatePatches(Rectangle rectangle, int topPadding, int bottomPadding, int leftPadding, int rightPadding)
@@ -134,6 +77,7 @@ namespace PhoenixGamePresentationLibrary
             var rightX = x + w - rightPadding;
             var leftX = x + leftPadding;
             var topY = y + topPadding;
+
             var patches = new[]
             {
                 new Rectangle(x,      y,        leftPadding,  topPadding),      // top left

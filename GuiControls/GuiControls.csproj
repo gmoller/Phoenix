@@ -45,6 +45,8 @@
     <Compile Include="Button.cs" />
     <Compile Include="ContentAlignment.cs" />
     <Compile Include="Control.cs" />
+    <Compile Include="DynamicSlots.cs" />
+    <Compile Include="FrameDynamicSizing.cs" />
     <Compile Include="HorizontalAlignment.cs" />
     <Compile Include="IControl.cs" />
     <Compile Include="Image.cs" />

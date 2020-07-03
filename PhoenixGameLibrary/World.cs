@@ -48,7 +48,8 @@ namespace PhoenixGameLibrary
         public void AddStartingUnit()
         {
             var addUnitCommand = new AddUnitCommand();
-            addUnitCommand.Payload = new Point(11, 9);
+            var unitType = Globals.Instance.UnitTypes["Barbarian Spearmen"];
+            addUnitCommand.Payload = (new Point(11, 9), unitType);
             Globals.Instance.MessageQueue.Enqueue(addUnitCommand);
             //Units.AddUnit(new Point(11, 9));
         }

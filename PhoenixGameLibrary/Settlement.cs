@@ -179,11 +179,12 @@ namespace PhoenixGameLibrary
                 _currentlyBuilding = new CurrentlyBuilding(-1, _currentlyBuilding.UnitId, _currentlyBuilding.ProductionAccrued + SettlementProduction);
                 if (_currentlyBuilding.ProductionAccrued >= Globals.Instance.UnitTypes[_currentlyBuilding.UnitId].ConstructionCost)
                 {
-                    Globals.Instance.World.NotificationList.Add($"- {Name} has produced a {Globals.Instance.UnitTypes[_currentlyBuilding.UnitId].Name}");
+                    var unitType = Globals.Instance.UnitTypes[_currentlyBuilding.UnitId];
+                    Globals.Instance.World.NotificationList.Add($"- {Name} has produced a {unitType.Name}");
                     _currentlyBuilding = new CurrentlyBuilding(-1, -1, 0);
 
                     var addUnitCommand = new AddUnitCommand();
-                    addUnitCommand.Payload = new Point(11, 10);
+                    addUnitCommand.Payload = (new Point(11, 10), unitType);
                     Globals.Instance.MessageQueue.Enqueue(addUnitCommand);
                 }
             }

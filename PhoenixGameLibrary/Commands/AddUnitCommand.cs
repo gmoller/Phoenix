@@ -1,4 +1,5 @@
 ﻿using GameLogic;
+using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary.Commands
@@ -7,8 +8,10 @@ namespace PhoenixGameLibrary.Commands
     {
         internal override void Execute()
         {
-            var position = (Point)Payload;
-            Globals.Instance.World.Units.AddUnit(position);
+            var payload = ((Point position, UnitType unitType))Payload;
+            var unitType = payload.unitType;
+            var position = payload.position;
+            Globals.Instance.World.Units.AddUnit(unitType, position);
         }
     }
 }

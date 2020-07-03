@@ -36,14 +36,25 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _smallFrameBuildings = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 10, 13);
+            var slots1 = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 450), "GUI_Textures_1", "slot", 10, 13, 10.0f);
+            slots1.LoadContent(content);
+            _smallFrameBuildings = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots1);
             _smallFrameBuildings.LoadContent(content);
+
             _lblBuildings = new Label("lblBuildings", "CrimsonText-Regular-12", _topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
-            _smallFrameUnits = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 495.0f), new Vector2(515, 75), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 10, 2);
+
+            var slots2 = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 495.0f), new Vector2(515, 75), "GUI_Textures_1", "slot", 10, 2, 10.0f);
+            slots2.LoadContent(content);
+            _smallFrameUnits = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 495.0f), new Vector2(515, 75), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots2);
             _smallFrameUnits.LoadContent(content);
+
             _lblUnits = new Label("lblUnits", "CrimsonText-Regular-12", _topLeftPosition + new Vector2(0, 485), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
-            _smallFrameOther = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 610.0f), new Vector2(515, 65), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, 2, 1);
+
+            var slots3 = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 610.0f), new Vector2(515, 65), "GUI_Textures_1", "slot", 2, 1, 10.0f);
+            slots3.LoadContent(content);
+            _smallFrameOther = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 610.0f), new Vector2(515, 65), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots3);
             _smallFrameOther.LoadContent(content);
+
             _lblOther = new Label("lblOther", "CrimsonText-Regular-12", _topLeftPosition + new Vector2(0, 600), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
 
             _texture = AssetsManager.Instance.GetTexture("Buildings");
@@ -102,8 +113,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _lblOther.Draw(spriteBatch);
 
             DrawBuildings(spriteBatch);
-            DrawUnits(spriteBatch);
             DrawArrows(spriteBatch);
+
+            DrawUnits(spriteBatch);
 
             spriteBatch.End();
         }
@@ -143,67 +155,6 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
             spriteBatch.FillRectangle(rect, color, 0.0f);
             spriteBatch.Draw(_texture, rect, _atlas.Frames[buildingName].ToRectangle(), Color.White);
-        }
-
-        private List<Label> CreateUnits()
-        {
-            var units = new List<Label>();
-
-            int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
-            int baseTopLeftY = (int)(_topLeftPosition.Y + 510.0f);
-            int x = baseTopLeftX;
-            int y = baseTopLeftY;
-
-            foreach (var unit in Globals.Instance.UnitTypes)
-            {
-                if (_parent.Settlement.UnitCanBeBuilt(unit.Name))
-                {
-                    var rect = new Rectangle(x, y, 40, 20);
-                    var color = Color.PowderBlue;
-                    var lbl = new Label(unit.Name, "Carolingia-Regular-12", new Vector2(x, y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(40, 20), unit.ShortName, HorizontalAlignment.Center, Color.HotPink, Color.Red, Color.PowderBlue);
-                    lbl.Click += UnitClick;
-                    units.Add(lbl);
-
-                    x += 49;
-                }
-            }
-
-            return units;
-        }
-
-        private void UnitClick(object sender, EventArgs e)
-        {
-            var unit = (Label)sender;
-            var unit2 = Globals.Instance.UnitTypes[unit.Name];
-            _parent.Settlement.AddToProductionQueue(unit2);
-        }
-
-        private void DrawUnits(SpriteBatch spriteBatch)
-        {
-            foreach (var lbl in _units)
-            {
-                lbl.Draw(spriteBatch);
-            }
-
-            //int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
-            //int baseTopLeftY = (int)(_topLeftPosition.Y + 510.0f);
-            //int x = baseTopLeftX;
-            //int y = baseTopLeftY;
-
-            //foreach (var unit in Globals.Instance.UnitTypes)
-            //{
-            //    if (_parent.Settlement.UnitCanBeBuilt(unit.Name))
-            //    {
-            //        var rect = new Rectangle(x, y, 40, 20);
-            //        var color = Color.PowderBlue;
-            //        spriteBatch.FillRectangle(rect, color, 0.0f);
-            //        //spriteBatch.DrawString(font, unit.Name, new Vector2(x, y), Color.HotPink);
-            //        var lbl = new Label("lbl", "CrimsonText-Regular-12", new Vector2(x, y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(40, 20), unit.Name, HorizontalAlignment.Center, Color.HotPink, Color.Red);
-            //        lbl.Draw(spriteBatch);
-
-            //        x += 49;
-            //    }
-            //}
         }
 
         private void DrawArrows(SpriteBatch spriteBatch)
@@ -422,6 +373,47 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 20), _atlas.Frames["FlowChart_Right_To_Left"].ToRectangle(), Color.White);
             topLeftX += 49;
             spriteBatch.Draw(_texture, new Rectangle(topLeftX, topLeftY, 40, 20), _atlas.Frames["FlowChart_Up_To_Left"].ToRectangle(), Color.White);
+        }
+
+        private void DrawUnits(SpriteBatch spriteBatch)
+        {
+            foreach (var lbl in _units)
+            {
+                lbl.Draw(spriteBatch);
+            }
+        }
+
+        private List<Label> CreateUnits()
+        {
+            var units = new List<Label>();
+
+            int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
+            int baseTopLeftY = (int)(_topLeftPosition.Y + 510.0f);
+            int x = baseTopLeftX;
+            int y = baseTopLeftY;
+
+            foreach (var unit in Globals.Instance.UnitTypes)
+            {
+                if (_parent.Settlement.UnitCanBeBuilt(unit.Name))
+                {
+                    var rect = new Rectangle(x, y, 40, 20);
+                    var color = Color.PowderBlue;
+                    var lbl = new Label(unit.Name, "CrimsonText-Regular-6", new Vector2(x, y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(40, 20), unit.ShortName, HorizontalAlignment.Center, Color.Red, null, Color.PowderBlue);
+                    lbl.Click += UnitClick;
+                    units.Add(lbl);
+
+                    x += 49;
+                }
+            }
+
+            return units;
+        }
+
+        private void UnitClick(object sender, EventArgs e)
+        {
+            var unit = (Label)sender;
+            var unit2 = Globals.Instance.UnitTypes[unit.Name];
+            _parent.Settlement.AddToProductionQueue(unit2);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Utilities;
+﻿using GameLogic;
+using PhoenixGameLibrary.GameData;
+using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -14,12 +16,15 @@ namespace PhoenixGameLibrary
         public bool IsSelected { get; internal set; }
         public bool Blink { get; private set;  }
 
+        private UnitType _unitType;
+
         private float _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
 
-        public Unit(Point location)
+        public Unit(UnitType unitType, Point location)
         {
+            _unitType = unitType;
             Location = location;
-            MovementPoints = 2.0f;
+            MovementPoints = unitType.Moves;
         }
 
         public void Update(float deltaTime)
@@ -39,9 +44,18 @@ namespace PhoenixGameLibrary
             }
         }
 
+        public void MoveTo(Point locationToMoveTo)
+        {
+            Location = locationToMoveTo;
+
+            var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
+            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCostWalking;
+            MovementPoints -= movementCost;
+        }
+
         public void EndTurn()
         {
-            MovementPoints = 2.0f;
+            MovementPoints = _unitType.Moves;
         }
     }
 }

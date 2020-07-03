@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary
@@ -29,9 +30,9 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public void AddUnit(Point point)
+        public void AddUnit(UnitType unitType, Point point)
         {
-            var unit = new Unit(point);
+            var unit = new Unit(unitType, point);
             _units.Add(unit);
         }
 

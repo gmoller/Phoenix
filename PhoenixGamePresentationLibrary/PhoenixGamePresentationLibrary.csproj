@@ -42,7 +42,6 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="CursorView.cs" />
-    <Compile Include="FrameDynamicSizing.cs" />
     <Compile Include="FramesPerSecondCounter.cs" />
     <Compile Include="HudView.cs" />
     <Compile Include="InputHandler.cs" />

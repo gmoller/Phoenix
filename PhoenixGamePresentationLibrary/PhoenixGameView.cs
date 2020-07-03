@@ -24,6 +24,8 @@ namespace PhoenixGamePresentationLibrary
         {
             ContentLoader.LoadContent(graphicsDevice);
             AssetsManager.Instance.ContentManager = content;
+            AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-6", "Fonts\\Maleficio-Regular-6");
+            AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-8", "Fonts\\Maleficio-Regular-8");
             AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-12", "Fonts\\Maleficio-Regular-12");
             AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-18", "Fonts\\Maleficio-Regular-18");
             AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-24", "Fonts\\Maleficio-Regular-24");
@@ -31,6 +33,8 @@ namespace PhoenixGamePresentationLibrary
             AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-48", "Fonts\\Maleficio-Regular-48");
             AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-60", "Fonts\\Maleficio-Regular-60");
             AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-72", "Fonts\\Maleficio-Regular-72");
+            AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-6", "Fonts\\Carolingia-Regular-6");
+            AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-8", "Fonts\\Carolingia-Regular-8");
             AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-12", "Fonts\\Carolingia-Regular-12");
             AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-18", "Fonts\\Carolingia-Regular-18");
             AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-24", "Fonts\\Carolingia-Regular-24");
@@ -38,6 +42,8 @@ namespace PhoenixGamePresentationLibrary
             AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-48", "Fonts\\Carolingia-Regular-48");
             AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-60", "Fonts\\Carolingia-Regular-60");
             AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-72", "Fonts\\Carolingia-Regular-72");
+            AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-6", "Fonts\\CrimsonText-Regular-6");
+            AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-8", "Fonts\\CrimsonText-Regular-8");
             AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-12", "Fonts\\CrimsonText-Regular-12");
             AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-18", "Fonts\\CrimsonText-Regular-18");
             AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-24", "Fonts\\CrimsonText-Regular-24");

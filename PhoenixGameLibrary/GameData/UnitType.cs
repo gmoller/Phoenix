@@ -14,23 +14,25 @@ namespace PhoenixGameLibrary.GameData
         public string Name { get; }
         public string ShortName { get; }
         public float ConstructionCost { get; }
+        public float Moves { get; }
 
         private List<string> _whichRacesCanBuild;
         private List<string> _dependsOnBuildings;
 
-        private UnitType(int id, string name, string shortName, float constructionCost, List<string> whichRacesCanBuild, List<string> dependsOnBuildings)
+        private UnitType(int id, string name, string shortName, float constructionCost, float moves, List<string> whichRacesCanBuild, List<string> dependsOnBuildings)
         {
             Id = id;
             Name = name;
             ShortName = shortName;
             ConstructionCost = constructionCost;
+            Moves = moves;
             _whichRacesCanBuild = whichRacesCanBuild;
             _dependsOnBuildings = dependsOnBuildings;
         }
 
-        public static UnitType Create(int id, string name, string shortName, float constructionCost, List<string> whichRacesCanBuild, List<string> dependsOnBuildings)
+        public static UnitType Create(int id, string name, string shortName, float constructionCost, float moves, List<string> whichRacesCanBuild, List<string> dependsOnBuildings)
         {
-            return new UnitType(id, name, shortName, constructionCost, whichRacesCanBuild, dependsOnBuildings);
+            return new UnitType(id, name, shortName, constructionCost, moves, whichRacesCanBuild, dependsOnBuildings);
         }
 
         public bool CanBeBuiltBy(string name)
@@ -62,9 +64,9 @@ namespace PhoenixGameLibrary.GameData
         {
             var unitTypes = new List<UnitType>
             {
-                UnitType.Create(0, "Barbarian Settlers", "Settlers", 60, new List<string> { "Barbarians" }, new List<string>()),
-                UnitType.Create(1, "Barbarian Spearmen", "Spearmen", 15, new List<string> { "Barbarians" }, new List<string>()),
-                UnitType.Create(2, "Barbarian Swordsmen", "Swordsmen", 30, new List<string> { "Barbarians" }, new List<string> { "Barracks", "Smithy" }),
+                UnitType.Create(0, "Barbarian Settlers", "Settlers", 60.0f, 1.0f, new List<string> { "Barbarians" }, new List<string>()),
+                UnitType.Create(1, "Barbarian Spearmen", "Spearmen", 15.0f, 1.0f, new List<string> { "Barbarians" }, new List<string>()),
+                UnitType.Create(2, "Barbarian Swordsmen", "Swordsmen", 30.0f, 1.0f, new List<string> { "Barbarians" }, new List<string> { "Barracks", "Smithy" }),
             };
 
             return NamedDataList<UnitType>.Create(unitTypes);
