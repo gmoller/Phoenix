@@ -18,10 +18,11 @@ namespace GuiControls
         private Rectangle _slot;
         private List<Rectangle> _slots;
         private readonly float _slotPadding;
+        private readonly List<Label> _labels;
 
         private Texture2D _texture;
 
-        public DynamicSlots(Vector2 topLeftPosition, Vector2 size, string textureAtlasString, string textureString, int numberOfSlotsX, int numberOfSlotsY, float slotPadding)
+        public DynamicSlots(Vector2 topLeftPosition, Vector2 size, string textureAtlasString, string textureString, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<Label> labels = null)
         {
             _topLeftPosition = topLeftPosition;
             _size = size;
@@ -31,6 +32,8 @@ namespace GuiControls
             _numberOfSlotsX = numberOfSlotsX;
             _numberOfSlotsY = numberOfSlotsY;
             _slotPadding = slotPadding;
+
+            _labels = labels;
         }
 
         public void LoadContent(ContentManager content)
@@ -50,13 +53,19 @@ namespace GuiControls
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            int i = 0;
             foreach (var slot in _slots)
             {
                 spriteBatch.Draw(_texture, slot, _slot, Color.White);
+                if (_labels != null && i < _labels.Count)
+                {
+                    _labels[i].Draw(spriteBatch);
+                    i++;
+                }
             }
         }
 
-        public bool IsMouseOverSlot(Microsoft.Xna.Framework.Point mousePostion)
+        public bool IsMouseOverSlot(Point mousePostion)
         {
             foreach (var slot in _slots)
             {

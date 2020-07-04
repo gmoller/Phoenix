@@ -52,11 +52,13 @@
     <Compile Include="SettlementsView.cs" />
     <Compile Include="SettlementView\BuildingsFrame.cs" />
     <Compile Include="SettlementView\MainFrame.cs" />
+    <Compile Include="SettlementView\OtherFrame.cs" />
     <Compile Include="SettlementView\PopulationFrame.cs" />
     <Compile Include="SettlementView\ProducingFrame.cs" />
     <Compile Include="SettlementView\ResourceFrame.cs" />
     <Compile Include="SettlementView\SecondaryFrame.cs" />
     <Compile Include="SettlementView\SettlementView.cs" />
+    <Compile Include="SettlementView\UnitsFrame.cs" />
     <Compile Include="ToolTip.cs" />
     <Compile Include="UnitsView.cs" />
     <Compile Include="UnitView.cs" />
