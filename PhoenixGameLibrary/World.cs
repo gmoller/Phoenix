@@ -40,18 +40,19 @@ namespace PhoenixGameLibrary
             NotificationList = new NotificationList();
         }
 
-        public void AddStartingSettlement()
+        public void AddStartingSettlement(Point location)
         {
-            Settlements.AddSettlement("Fairhaven", "Barbarians", new Point(12, 9), OverlandMap.CellGrid);
+            Settlements.AddSettlement("Fairhaven", "Barbarians", location, OverlandMap.CellGrid);
         }
 
-        public void AddStartingUnit()
+        public void AddStartingUnit(Point location)
         {
-            var addUnitCommand = new AddUnitCommand();
             var unitType = Globals.Instance.UnitTypes["Barbarian Spearmen"];
-            addUnitCommand.Payload = (new Point(11, 9), unitType);
+            var addUnitCommand = new AddUnitCommand
+            {
+                Payload = (location, unitType)
+            };
             Globals.Instance.MessageQueue.Enqueue(addUnitCommand);
-            //Units.AddUnit(new Point(11, 9));
         }
 
         public void Update(float deltaTime)

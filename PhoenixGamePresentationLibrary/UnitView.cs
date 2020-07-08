@@ -49,9 +49,9 @@ namespace PhoenixGamePresentationLibrary
             if (input.IsRightMouseButtonReleased && CursorIsOnThisUnit())
             {
                 // TODO: show in hudview
-                Command command = new SelectUnitCommand();
-                command.Payload = Unit;
-                Globals.Instance.MessageQueue.Enqueue(command);
+                Command selectUnitCommand = new SelectUnitCommand();
+                selectUnitCommand.Payload = Unit;
+                Globals.Instance.MessageQueue.Enqueue(selectUnitCommand);
 
                 var hexPoint = GetHexPoint();
                 var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(hexPoint.X, hexPoint.Y);

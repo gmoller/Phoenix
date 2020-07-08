@@ -1,4 +1,5 @@
 ﻿using GameLogic;
+using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -10,8 +11,8 @@ namespace PhoenixGameLibrary
         {
             World = new World();
 
-            World.AddStartingSettlement();
-            World.AddStartingUnit();
+            World.AddStartingSettlement(new Point(12, 9));
+            World.AddStartingUnit(new Point(12, 9));
         }
 
         public void Update(float deltaTime)

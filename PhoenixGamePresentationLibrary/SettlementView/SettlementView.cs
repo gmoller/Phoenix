@@ -67,10 +67,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
             _buildingsFrame = new BuildingsFrame(this, new Vector2(_topLeftPositionSecondary.X + 20.0f, _topLeftPositionSecondary.Y + 40.0f));
             _buildingsFrame.LoadContent(content);
-
             _unitsFrame = new UnitsFrame(this, new Vector2(_topLeftPositionSecondary.X + 20.0f, _topLeftPositionSecondary.Y + 40.0f + 495.0f));
             _unitsFrame.LoadContent(content);
-
             _otherFrame = new OtherFrame(this, new Vector2(_topLeftPositionSecondary.X + 20.0f, _topLeftPositionSecondary.Y + 40.0f + 600.0f));
             _otherFrame.LoadContent(content);
         }
@@ -119,9 +117,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void CloseButtonClick(object sender, EventArgs e)
         {
-            Command command = new CloseSettlementCommand();
-            command.Payload = Settlement;
-            Globals.Instance.MessageQueue.Enqueue(command);
+            Command closeSettlementCommand = new CloseSettlementCommand();
+            closeSettlementCommand.Payload = Settlement;
+            Globals.Instance.MessageQueue.Enqueue(closeSettlementCommand);
         }
 
         private bool CursorIsOnThisSettlement()

@@ -16,9 +16,12 @@ namespace PhoenixGameLibrary
         public bool IsSelected { get; internal set; }
         public bool Blink { get; private set;  }
 
-        private UnitType _unitType;
+        private readonly UnitType _unitType;
 
         private float _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
+
+        public string Name => _unitType.Name;
+        public string ShortName => _unitType.ShortName;
 
         public Unit(UnitType unitType, Point location)
         {

@@ -59,7 +59,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             var units = new List<Label>();
 
             int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
-            int baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
+            int baseTopLeftY = (int)(_topLeftPosition.Y + 15.0f);
             int x = baseTopLeftX;
             int y = baseTopLeftY;
 
@@ -68,7 +68,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
                 if (_parent.Settlement.UnitCanBeBuilt(unit.Name))
                 {
                     var color = Color.PowderBlue;
-                    var lbl = new Label(unit.Name, "CrimsonText-Regular-6", new Vector2(x, y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(40, 20), unit.ShortName, HorizontalAlignment.Center, Color.Red, null, Color.PowderBlue);
+                    var lbl = new Label(unit.Name, "CrimsonText-Regular-6", new Vector2(x, y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(42.0f, 20.0f), unit.ShortName, HorizontalAlignment.Center, Color.Red, null, Color.PowderBlue);
                     lbl.Click += UnitClick;
                     units.Add(lbl);
 
@@ -80,7 +80,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         }
 
         private void UnitClick(object sender, EventArgs e)
-        {
+        { 
             var unit = (Label)sender;
             var unit2 = Globals.Instance.UnitTypes[unit.Name];
             _parent.Settlement.AddToProductionQueue(unit2);

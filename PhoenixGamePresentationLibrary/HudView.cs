@@ -97,6 +97,7 @@ namespace PhoenixGamePresentationLibrary
 
             spriteBatch.Begin();
             DrawNotifications(spriteBatch);
+            DrawSelectedUnits(spriteBatch);
             DrawTileInfo(spriteBatch);
             spriteBatch.End();
 
@@ -114,6 +115,23 @@ namespace PhoenixGamePresentationLibrary
                 {
                     spriteBatch.DrawString(_font, line, new Vector2(x, y), Color.Pink);
                     y += 20.0f;
+                }
+            }
+        }
+
+        private void DrawSelectedUnits(SpriteBatch spriteBatch)
+        {
+            var units = Globals.Instance.World.Units;
+
+            var x = DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f + 10.0f;
+            var y = DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2.0f;
+            foreach (var unit in units)
+            {
+                if (unit.IsSelected)
+                {
+                    var lbl = new Label(unit.Name, "CrimsonText-Regular-6", new Vector2(x, y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(42.0f, 20.0f), unit.ShortName, HorizontalAlignment.Center, Color.Red, null, Color.PowderBlue);
+                    lbl.Draw(spriteBatch);
+                    y += 25.0f;
                 }
             }
         }
@@ -145,7 +163,8 @@ namespace PhoenixGamePresentationLibrary
 
         private void btnEndTurnClick(object sender, EventArgs e)
         {
-            Globals.Instance.MessageQueue.Enqueue(new EndTurnCommand());
+            Command endTurnCommand = new EndTurnCommand();
+            Globals.Instance.MessageQueue.Enqueue(endTurnCommand);
         }
     }
 }

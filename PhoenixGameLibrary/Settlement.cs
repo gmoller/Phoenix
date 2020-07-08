@@ -183,8 +183,10 @@ namespace PhoenixGameLibrary
                     Globals.Instance.World.NotificationList.Add($"- {Name} has produced a {unitType.Name}");
                     _currentlyBuilding = new CurrentlyBuilding(-1, -1, 0);
 
-                    var addUnitCommand = new AddUnitCommand();
-                    addUnitCommand.Payload = (new Point(11, 10), unitType);
+                    var addUnitCommand = new AddUnitCommand
+                    {
+                        Payload = (Location, unitType)
+                    };
                     Globals.Instance.MessageQueue.Enqueue(addUnitCommand);
                 }
             }
