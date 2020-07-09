@@ -170,7 +170,9 @@ namespace PhoenixGameLibrary
                     _buildingsBuilt.Add(_currentlyBuilding.BuildingId);
                     Globals.Instance.World.NotificationList.Add($"- {Name} has produced a {Globals.Instance.BuildingTypes[_currentlyBuilding.BuildingId].Name}");
                     _currentlyBuilding = new CurrentlyBuilding(-1, -1, 0);
-                    Globals.Instance.MessageQueue.Enqueue(new OpenSettlementCommand());
+                    Command openSettlementCommand = new OpenSettlementCommand();
+                    openSettlementCommand.Payload = this;
+                    Globals.Instance.MessageQueue.Enqueue(openSettlementCommand);
                     // TODO: look at settlement
                 }
             }

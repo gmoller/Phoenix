@@ -16,10 +16,11 @@ namespace PhoenixGameLibrary.GameData
         public float ConstructionCost { get; }
         public float Moves { get; }
 
-        private List<string> _whichRacesCanBuild;
-        private List<string> _dependsOnBuildings;
+        private readonly List<string> _whichRacesCanBuild;
+        private readonly List<string> _dependsOnBuildings;
+        private List<string> _actions;
 
-        private UnitType(int id, string name, string shortName, float constructionCost, float moves, List<string> whichRacesCanBuild, List<string> dependsOnBuildings)
+        private UnitType(int id, string name, string shortName, float constructionCost, float moves, List<string> whichRacesCanBuild, List<string> dependsOnBuildings, List<string> actions)
         {
             Id = id;
             Name = name;
@@ -28,11 +29,12 @@ namespace PhoenixGameLibrary.GameData
             Moves = moves;
             _whichRacesCanBuild = whichRacesCanBuild;
             _dependsOnBuildings = dependsOnBuildings;
+            _actions = actions;
         }
 
-        public static UnitType Create(int id, string name, string shortName, float constructionCost, float moves, List<string> whichRacesCanBuild, List<string> dependsOnBuildings)
+        public static UnitType Create(int id, string name, string shortName, float constructionCost, float moves, List<string> whichRacesCanBuild, List<string> dependsOnBuildings, List<string> actions)
         {
-            return new UnitType(id, name, shortName, constructionCost, moves, whichRacesCanBuild, dependsOnBuildings);
+            return new UnitType(id, name, shortName, constructionCost, moves, whichRacesCanBuild, dependsOnBuildings, actions);
         }
 
         public bool CanBeBuiltBy(string name)
@@ -42,7 +44,6 @@ namespace PhoenixGameLibrary.GameData
 
         public bool IsReadyToBeBuilt(List<int> buildingsAlreadyBuilt)
         {
-            var isReadyToBeBuilt = true;
             foreach (var building in _dependsOnBuildings)
             {
                 var buildingId = Globals.Instance.BuildingTypes[building].Id;
@@ -52,7 +53,7 @@ namespace PhoenixGameLibrary.GameData
                 }
             }
 
-            return isReadyToBeBuilt;
+            return true;
         }
 
         private string DebuggerDisplay => $"{{Id={Id},Name={Name}}}";
@@ -64,9 +65,13 @@ namespace PhoenixGameLibrary.GameData
         {
             var unitTypes = new List<UnitType>
             {
-                UnitType.Create(0, "Barbarian Settlers", "Settlers", 60.0f, 1.0f, new List<string> { "Barbarians" }, new List<string>()),
-                UnitType.Create(1, "Barbarian Spearmen", "Spearmen", 15.0f, 1.0f, new List<string> { "Barbarians" }, new List<string>()),
-                UnitType.Create(2, "Barbarian Swordsmen", "Swordsmen", 30.0f, 1.0f, new List<string> { "Barbarians" }, new List<string> { "Barracks", "Smithy" }),
+                UnitType.Create(0, "Barbarian Settlers", "Settlers", 60.0f, 1.0f, new List<string> { "Barbarians" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait", "BuildOutpost" }),
+                UnitType.Create(1, "Barbarian Spearmen", "Spearmen", 15.0f, 1.0f, new List<string> { "Barbarians" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
+                UnitType.Create(2, "Barbarian Swordsmen", "Swordsmen", 30.0f, 1.0f, new List<string> { "Barbarians" }, new List<string> { "Barracks", "Smithy" }, new List<string> { "Done", "Patrol", "Wait" }),
+                UnitType.Create(3, "Barbarian Bowmen", "Bowmen", 30.0f, 1.0f, new List<string> { "Barbarians" }, new List<string> { "Barracks", "Sawmill" }, new List<string> { "Done", "Patrol", "Wait" }),
+                UnitType.Create(4, "Barbarian Cavalry", "Cavalry", 60.0f, 2.0f, new List<string> { "Barbarians" }, new List<string> { "Barracks", "Stables" }, new List<string> { "Done", "Patrol", "Wait" }),
+                UnitType.Create(5, "Barbarian Shamans", "Shamans", 50.0f, 1.0f, new List<string> { "Barbarians" }, new List<string> { "Shrine" }, new List<string> { "Done", "Patrol", "Wait" }),
+                UnitType.Create(6, "Barbarian Beserkers", "Beserkers", 120.0f, 1.0f, new List<string> { "Barbarians" }, new List<string> { "ArmorersGuild" }, new List<string> { "Done", "Patrol", "Wait" }),
             };
 
             return NamedDataList<UnitType>.Create(unitTypes);
