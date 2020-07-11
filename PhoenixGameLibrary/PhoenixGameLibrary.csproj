@@ -45,6 +45,7 @@
     <Compile Include="Commands\OpenSettlementCommand.cs" />
     <Compile Include="Commands\SelectUnitCommand.cs" />
     <Compile Include="Faction.cs" />
+    <Compile Include="GameData\ActionType.cs" />
     <Compile Include="GameData\BuildingFoodOutputIncreaseType.cs" />
     <Compile Include="GameData\BuildingMaximumPopulationIncreaseType.cs" />
     <Compile Include="GameData\BuildingPopulationGrowthType.cs" />
@@ -52,6 +53,9 @@
     <Compile Include="GameData\DataList.cs" />
     <Compile Include="GameData\Globals.cs" />
     <Compile Include="GameData\IIdentifiedById.cs" />
+    <Compile Include="GameData\Move.cs" />
+    <Compile Include="GameData\MovementType.cs" />
+    <Compile Include="GameData\MoveType.cs" />
     <Compile Include="GameData\RaceType.cs" />
     <Compile Include="GameData\TerrainCanSettleOnType.cs" />
     <Compile Include="GameData\TerrainFoodOutputType.cs" />

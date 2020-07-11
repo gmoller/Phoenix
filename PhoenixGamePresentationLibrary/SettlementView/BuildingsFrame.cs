@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
-using GameLogic;
 using GuiControls;
 using Input;
+using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary.SettlementView

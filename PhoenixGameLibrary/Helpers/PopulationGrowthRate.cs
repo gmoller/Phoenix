@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameLogic;
 using PhoenixGameLibrary.GameData;
 
 namespace PhoenixGameLibrary.Helpers

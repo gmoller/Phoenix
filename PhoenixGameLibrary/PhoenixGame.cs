@@ -1,4 +1,4 @@
-﻿using GameLogic;
+﻿using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary

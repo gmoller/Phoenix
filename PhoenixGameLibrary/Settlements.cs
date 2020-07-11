@@ -50,7 +50,7 @@ namespace PhoenixGameLibrary
 
         public void AddSettlement(string name, string raceTypeName, Point hexLocation, CellGrid cellGrid)
         {
-            var settlement = new Settlement(name, raceTypeName, hexLocation, 4, cellGrid, "BuildersHall", "Barracks", "Smithy");
+            var settlement = new Settlement(name, raceTypeName, hexLocation, 4, cellGrid, "Builders Hall", "Barracks", "Smithy");
             _settlements.Add(settlement);
         }
 

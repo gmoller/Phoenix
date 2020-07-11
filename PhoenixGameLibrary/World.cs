@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
-using GameLogic;
 using PhoenixGameLibrary.Commands;
+using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary

@@ -1,5 +1,4 @@
-﻿using GameLogic;
-using PhoenixGameLibrary.GameData;
+﻿using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary
@@ -27,7 +26,7 @@ namespace PhoenixGameLibrary
         {
             _unitType = unitType;
             Location = location;
-            MovementPoints = unitType.Moves;
+            MovementPoints = unitType.Moves.Moves;
         }
 
         public void Update(float deltaTime)
@@ -58,7 +57,7 @@ namespace PhoenixGameLibrary
 
         public void EndTurn()
         {
-            MovementPoints = _unitType.Moves;
+            MovementPoints = _unitType.Moves.Moves;
         }
     }
 }

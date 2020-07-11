@@ -1,5 +1,4 @@
-﻿using GameLogic;
-using PhoenixGameLibrary.GameData;
+﻿using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary.Commands

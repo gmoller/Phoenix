@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using GameLogic;
 using HexLibrary;
 using Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
+using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary

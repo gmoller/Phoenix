@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using GameLogic;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -42,7 +41,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class TerrainTypesLoader
     {
-        public static NamedDataList<TerrainType> GetTerrainTypes()
+        public static NamedDataList<TerrainType> Load()
         {
             var terrainTypes = new List<TerrainType>
             {

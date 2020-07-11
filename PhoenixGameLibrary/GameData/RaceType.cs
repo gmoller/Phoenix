@@ -43,7 +43,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class RaceTypesLoader
     {
-        public static NamedDataList<RaceType> GetRaceTypes()
+        public static NamedDataList<RaceType> Load()
         {
             var raceTypes = new List<RaceType>
             {

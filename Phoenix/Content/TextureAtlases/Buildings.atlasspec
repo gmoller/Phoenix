@@ -9,7 +9,7 @@
       "Height": 40
     },
     {
-      "Name": "BuildersHall",
+      "Name": "Builders Hall",
       "X": 40,
       "Y": 0,
       "Width": 40,
@@ -30,7 +30,7 @@
       "Height": 40
     },
     {
-      "Name": "ShipwrightsGuild",
+      "Name": "Shipwrights Guild",
       "X": 160,
       "Y": 0,
       "Width": 40,
@@ -51,7 +51,7 @@
       "Height": 40
     },
 	{
-      "Name": "ForestersGuild",
+      "Name": "Foresters Guild",
       "X": 280,
       "Y": 0,
       "Width": 40,
@@ -79,28 +79,28 @@
       "Height": 40
     },
 	{
-      "Name": "MaritimeGuild",
+      "Name": "Maritime Guild",
       "X": 440,
       "Y": 0,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FightersGuild",
+      "Name": "Fighters Guild",
       "X": 480,
       "Y": 0,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "CityWalls",
+      "Name": "City Walls",
       "X": 520,
       "Y": 0,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "WarCollege",
+      "Name": "War College",
       "X": 560,
       "Y": 0,
       "Width": 40,
@@ -114,7 +114,7 @@
       "Height": 40
     },
 	{
-      "Name": "MerchantsGuild",
+      "Name": "Merchants Guild",
       "X": 640,
       "Y": 0,
       "Width": 40,
@@ -128,7 +128,7 @@
       "Height": 40
     },
 	{
-      "Name": "MinersGuild",
+      "Name": "Miners Guild",
       "X": 40,
       "Y": 40,
       "Width": 40,
@@ -142,7 +142,7 @@
       "Height": 40
     },
 	{
-      "Name": "ArmorersGuild",
+      "Name": "Armorers Guild",
       "X": 120,
       "Y": 40,
       "Width": 40,
@@ -156,21 +156,21 @@
       "Height": 40
     },
 	{
-      "Name": "SagesGuild",
+      "Name": "Sages Guild",
       "X": 200,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FarmersMarket",
+      "Name": "Farmers Market",
       "X": 240,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "AnimistsGuild",
+      "Name": "Animists Guild",
       "X": 280,
       "Y": 40,
       "Width": 40,
@@ -191,28 +191,28 @@
       "Height": 40
     },
 	{
-      "Name": "AlchemistsGuild",
+      "Name": "Alchemists Guild",
       "X": 400,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "FantasticStable",
+      "Name": "Fantastic Stable",
       "X": 440,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "MechaniciansGuild",
+      "Name": "Mechanicians Guild",
       "X": 480,
       "Y": 40,
       "Width": 40,
       "Height": 40
     },
 	{
-      "Name": "WizardsGuild",
+      "Name": "Wizards Guild",
       "X": 520,
       "Y": 40,
       "Width": 40,
@@ -233,7 +233,7 @@
       "Height": 40
     },
 	{
-      "Name": "SummoningCircle",
+      "Name": "Summoning Circle",
       "X": 640,
       "Y": 40,
       "Width": 40,
