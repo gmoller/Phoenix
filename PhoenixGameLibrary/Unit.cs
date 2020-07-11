@@ -21,6 +21,7 @@ namespace PhoenixGameLibrary
 
         public string Name => _unitType.Name;
         public string ShortName => _unitType.ShortName;
+        public string MovementTypeName => "Walking"; // TODO: remove hard-coding
 
         public Unit(UnitType unitType, Point location)
         {
@@ -51,8 +52,8 @@ namespace PhoenixGameLibrary
             Location = locationToMoveTo;
 
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
-            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCostWalking;
-            MovementPoints -= movementCost;
+            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[MovementTypeName];
+            MovementPoints -= movementCost.Moves;
         }
 
         public void EndTurn()

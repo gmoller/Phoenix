@@ -36,9 +36,9 @@ namespace PhoenixGamePresentationLibrary
                 if (IsWithinOneHexOf(currentHex, hexToMoveTo))
                 {
                     var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
-                    var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCostWalking;
+                    var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[Unit.MovementTypeName];
 
-                    if (Unit.MovementPoints >= movementCost)
+                    if (Unit.MovementPoints >= movementCost.Moves)
                     {
                         // move unit TODO: make a command
                         Unit.MoveTo(hexToMoveTo);
