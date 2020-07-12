@@ -12,7 +12,6 @@ namespace PhoenixGameLibrary
         public OverlandMap OverlandMap { get; }
         public Settlements Settlements { get; }
         public Units Units { get; set; }
-        //public Unit Unit { get; set; }
         public Faction PlayerFaction { get; }
         public string CurrentDate
         {
@@ -48,17 +47,15 @@ namespace PhoenixGameLibrary
         public void AddStartingUnit(Point location)
         {
             var unitType = Globals.Instance.UnitTypes["Barbarian Spearmen"];
-            var addUnitCommand = new AddUnitCommand
-            {
-                Payload = (location, unitType)
-            };
+            var addUnitCommand = new AddUnitCommand();
+            addUnitCommand.Payload = (location, unitType);
             Globals.Instance.MessageQueue.Enqueue(addUnitCommand);
         }
 
         public void Update(float deltaTime)
         {
             Settlements.Update(deltaTime);
-            Units.Update(deltaTime);
+            //Units.Update(deltaTime);
 
             PlayerFaction.FoodPerTurn = Settlements.FoodProducedThisTurn;
         }

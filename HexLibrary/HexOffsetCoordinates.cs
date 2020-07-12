@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
 
 namespace HexLibrary
 {
@@ -41,20 +43,54 @@ namespace HexLibrary
             return offsetCoordinates;
         }
 
-        // TODO: figure out how not to keep instantiating a new array
         public static HexOffsetCoordinates[] GetAllNeighbors(int col, int row)
         {
-            HexCube cube = OffsetCoordinatesToCube(col, row);
-            HexCube[] allNeighboringCubes = HexCube.GetAllNeighbors(cube.X, cube.Y, cube.Z);
+            var cube = OffsetCoordinatesToCube(col, row);
+            var allNeighboringCubes = HexCube.GetAllNeighbors(cube.X, cube.Y, cube.Z);
 
-            HexOffsetCoordinates[] neighbors = new HexOffsetCoordinates[HexCube.Directions.Length];
-            for (int i = 0; i < HexCube.Directions.Length; ++i)
+            var neighbors = new HexOffsetCoordinates[HexCube.Directions.Length];
+            for (var i = 0; i < HexCube.Directions.Length; ++i)
             {
-                HexCube neighboringCube = allNeighboringCubes[i];
+                var neighboringCube = allNeighboringCubes[i];
                 neighbors[i] = HexCube.CubeToOffsetCoordinates(neighboringCube.X, neighboringCube.Y, neighboringCube.Z);
             }
 
             return neighbors;
+        }
+
+        public static HexOffsetCoordinates[] GetSingleRing(int col, int row, int radius)
+        {
+            var ring = new List<HexOffsetCoordinates>();
+
+            var cube = OffsetCoordinatesToCube(col, row);
+            var scaledCube = HexCube.ScaleHex(HexCube.Directions[4], radius);
+            cube = HexCube.AddHex(cube, scaledCube);
+
+            for (int i = 0; i < 6; ++i)
+            {
+                for (int j = 0; j < radius; ++j)
+                {
+                    var offset = HexCube.CubeToOffsetCoordinates(cube.X, cube.Y, cube.Z);
+                    ring.Add(offset);
+                    cube = HexCube.GetNeighbor(cube.X, cube.Y, cube.Z, (Direction)i);
+                    offset = HexCube.CubeToOffsetCoordinates(cube.X, cube.Y, cube.Z);
+                }
+            }
+
+            return ring.ToArray();
+        }
+
+        public static HexOffsetCoordinates[] GetSpiralRing(int col, int row, int radius)
+        {
+            var ring = new List<HexOffsetCoordinates>();
+
+            for (int k = 1; k <= radius; ++k)
+            {
+                var o = HexOffsetCoordinates.GetSingleRing(col, row, k);
+                ring.AddRange(o.ToList());
+            }
+
+            return ring.ToArray();
         }
 
         //public static HexOffsetCoordinates RoundOffsetCoordinates(float col, float row)

@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Input;
@@ -12,11 +14,13 @@ namespace PhoenixGamePresentationLibrary
 
         private Texture2D _texture;
         private readonly Units _units;
+        private readonly Dictionary<Guid, UnitView> _unitViews;
 
         public UnitsView(WorldView worldView, Units units)
         {
             _worldView = worldView;
             _units = units;
+            _unitViews = new Dictionary<Guid, UnitView>();
         }
 
         internal void LoadContent(ContentManager content)
@@ -28,17 +32,27 @@ namespace PhoenixGamePresentationLibrary
         {
             foreach (var unit in _units)
             {
-                var unitView = new UnitView(_worldView, unit);
+                UnitView unitView;
+
+                if (_unitViews.ContainsKey(unit.Id))
+                {
+                    unitView = _unitViews[unit.Id];
+                }
+                else
+                {
+                    unitView = new UnitView(_worldView, unit);
+                    _unitViews.Add(unit.Id, unitView);
+                }
+                
                 unitView.Update(input, deltaTime);
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var unit in _units)
+            foreach (var unit in _unitViews)
             {
-                var unitView = new UnitView(_worldView, unit);
-                unitView.Draw(spriteBatch, _texture);
+                unit.Value.Draw(spriteBatch, _texture);
             }
         }
     }

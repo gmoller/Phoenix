@@ -11,20 +11,20 @@ namespace HexLibrary
             new HexCube( 0, -1, +1), // southeast
             new HexCube(-1,  0, +1), // southwest
             new HexCube(-1, +1,  0), // west
-            new HexCube( 0, +1, -1), // northhwest
+            new HexCube( 0, +1, -1), // northwest
             new HexCube(+1,  0, -1), // northeast,
-            new HexCube(+2, -1, -1), // EastOfNorthEast
-            new HexCube(+2, -2,  0), // EastOfEast
-            new HexCube(+1, -2, +1), // EastOfSouthEast
-            new HexCube( 0, -2, +2), // SouthEastOfSouthEast
-            new HexCube(-1, -1, +2), // SouthEastOfSouthWest,
-            new HexCube(-2,  0, +2), // SouthWestOfSouthWest,
-            new HexCube(-2, +1, +1), // SouthWestOfWest,
-            new HexCube(-2, +2,  0), // WestofWest,
-            new HexCube(-1, +2, -1), // NorthWestofWest,
-            new HexCube( 0, +2, -2), // NorthWestofNorthWest,
-            new HexCube(+1, +1, -2), // NorthEastofNorthWest,
-            new HexCube(+2,  0, -2), // NorthEastOfNorthEast,
+            //new HexCube(+2, -1, -1), // EastOfNorthEast
+            //new HexCube(+2, -2,  0), // EastOfEast
+            //new HexCube(+1, -2, +1), // EastOfSouthEast
+            //new HexCube( 0, -2, +2), // SouthEastOfSouthEast
+            //new HexCube(-1, -1, +2), // SouthEastOfSouthWest,
+            //new HexCube(-2,  0, +2), // SouthWestOfSouthWest,
+            //new HexCube(-2, +1, +1), // SouthWestOfWest,
+            //new HexCube(-2, +2,  0), // WestofWest,
+            //new HexCube(-1, +2, -1), // NorthWestofWest,
+            //new HexCube( 0, +2, -2), // NorthWestofNorthWest,
+            //new HexCube(+1, +1, -2), // NorthEastofNorthWest,
+            //new HexCube(+2,  0, -2), // NorthEastOfNorthEast,
         };
 
         public int X { get; }
@@ -74,6 +74,16 @@ namespace HexLibrary
             }
 
             return neighbors;
+        }
+
+        public static HexCube AddHex(HexCube a, HexCube b)
+        {
+            return new HexCube(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+        }
+
+        public static HexCube ScaleHex(HexCube a, int k)
+        {
+            return new HexCube(a.X * k, a.Y * k, a.Z * k);
         }
 
         public static HexCube RoundCube(float x, float y, float z)

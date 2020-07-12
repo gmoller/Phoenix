@@ -88,7 +88,7 @@ namespace PhoenixGameLibrary
             }
             Citizens = new SettlementCitizens(this, settlementSize, _buildingsBuilt);
 
-            _catchmentCells = cellGrid.GetCatchment(location.X, location.Y);
+            _catchmentCells = cellGrid.GetCatchment(location.X, location.Y, 2);
             foreach (var item in _catchmentCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
@@ -97,9 +97,9 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public void Update(float deltaTime)
-        {
-        }
+        //public void Update(float deltaTime)
+        //{
+        //}
 
         public bool BuildingHasBeenBuilt(string buildingName)
         {
@@ -184,10 +184,8 @@ namespace PhoenixGameLibrary
                     Globals.Instance.World.NotificationList.Add($"- {Name} has produced a {unitType.Name}");
                     _currentlyBuilding = new CurrentlyBuilding(-1, -1, 0);
 
-                    var addUnitCommand = new AddUnitCommand
-                    {
-                        Payload = (Location, unitType)
-                    };
+                    var addUnitCommand = new AddUnitCommand();
+                    addUnitCommand.Payload = (Location, unitType);
                     Globals.Instance.MessageQueue.Enqueue(addUnitCommand);
                 }
             }

@@ -36,10 +36,10 @@ namespace PhoenixGameLibrary
             _cellGrid[column, row] = cell;
         }
 
-        public List<Cell> GetCatchment(int column, int row)
+        public List<Cell> GetCatchment(int column, int row, int radius)
         {
             var catchmentCells = new List<Cell>();
-            var catchment = HexOffsetCoordinates.GetAllNeighbors(column, row);
+            var catchment = HexOffsetCoordinates.GetSpiralRing(column, row, radius);
             foreach (var tile in catchment)
             {
                 if (tile.Col >= 0 && tile.Row >= 0 && tile.Col < Constants.WORLD_MAP_COLUMNS && tile.Row < Constants.WORLD_MAP_ROWS)

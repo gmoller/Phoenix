@@ -16,7 +16,7 @@ namespace PhoenixGameLibrary.GameData
         public MovementCosts MovementCosts { get; }
         public float FoodOutput => Globals.Instance.TerrainFoodOutputTypes.Contains(Id) ? Globals.Instance.TerrainFoodOutputTypes[Id].FoodOutput  : 0.0f;
         public float ProductionPercentage => Globals.Instance.TerrainProductionPercentageTypes.Contains(Id) ? Globals.Instance.TerrainProductionPercentageTypes[Id].ProductionPercentage : 0.0f;
-        public bool CanSettleOn => Globals.Instance.TerrainCanSettleOnTypes.Contains(Id) ? true : false;
+        public bool CanSettleOn => Globals.Instance.TerrainCanSettleOnTypes.Contains(Id);
         public List<Texture> PossibleTextures { get; }
 
         private TerrainType(int id, string name, MovementCosts movementCosts, params Texture[] possibleTextures)

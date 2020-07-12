@@ -9,26 +9,20 @@ namespace PhoenixGameLibrary
     {
         private readonly List<Unit> _units;
 
-        public Unit this[int index]
-        {
-            get
-            {
-                return _units[index];
-            }
-        }
+        public Unit this[int index] => _units[index];
 
         public Units()
         {
             _units = new List<Unit>();
         }
 
-        public void Update(float deltaTime)
-        {
-            foreach (var unit in _units)
-            {
-                unit.Update(deltaTime);
-            }
-        }
+        //public void Update(float deltaTime)
+        //{
+        //    foreach (var unit in _units)
+        //    {
+        //        unit.Update(deltaTime);
+        //    }
+        //}
 
         public void AddUnit(UnitType unitType, Point point)
         {

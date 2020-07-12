@@ -28,7 +28,7 @@ namespace PhoenixGameLibrary
             int foodProducedThisTurn = 0;
             foreach (var settlement in _settlements)
             {
-                settlement.Update(deltaTime);
+                //settlement.Update(deltaTime);
                 foodProducedThisTurn += settlement.FoodSurplus;
             }
 
