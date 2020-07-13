@@ -23,6 +23,11 @@ namespace PhoenixGameLibrary.GameData
             return new TerrainProductionPercentageType(terrainId, productionPercentage);
         }
 
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
         private string DebuggerDisplay => $"{{Id={Id},ProductionPercentage={ProductionPercentage}}}";
     }
 

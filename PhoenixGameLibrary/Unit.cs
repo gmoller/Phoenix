@@ -19,13 +19,14 @@ namespace PhoenixGameLibrary
         public string Name => _unitType.Name;
         public string ShortName => _unitType.ShortName;
         public string MovementTypeName => "Walking"; // TODO: remove hard-coding
+        public Moves UnitTypeMoves => _unitType.Moves;
 
         public Unit(UnitType unitType, Point location)
         {
             Id = Guid.NewGuid();
             _unitType = unitType;
             Location = location;
-            MovementPoints = unitType.Moves.Moves;
+            MovementPoints = unitType.Moves["Ground"].Moves;
         }
 
         //public void Update(float deltaTime)
@@ -38,12 +39,12 @@ namespace PhoenixGameLibrary
 
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
             var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[MovementTypeName];
-            MovementPoints -= movementCost.Moves;
+            MovementPoints -= movementCost.Cost;
         }
 
         public void EndTurn()
         {
-            MovementPoints = _unitType.Moves.Moves;
+            MovementPoints = _unitType.Moves["Ground"].Moves;
         }
     }
 }

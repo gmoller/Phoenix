@@ -36,6 +36,11 @@ namespace PhoenixGameLibrary.GameData
             return new TerrainType(id, name, movementCosts, possibleTextures);
         }
 
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
         private string DebuggerDisplay => $"{{Id={Id},Name={Name}}}";
     }
 

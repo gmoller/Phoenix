@@ -21,6 +21,11 @@ namespace PhoenixGameLibrary.GameData
             return new TerrainCanSettleOnType(terrainId);
         }
 
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
         private string DebuggerDisplay => $"{{Id={Id}}}";
     }
 

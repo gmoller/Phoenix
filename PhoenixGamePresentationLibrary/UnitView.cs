@@ -89,7 +89,8 @@ namespace PhoenixGamePresentationLibrary
                     var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
                     var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.MovementTypeName];
 
-                    if (_unit.MovementPoints >= movementCost.Moves)
+                    // TODO: assumes all units are walking: checking movement type
+                    if (movementCost.Cost > 0.0f && _unit.MovementPoints > 0.0f)
                     {
                         return true;
                     }

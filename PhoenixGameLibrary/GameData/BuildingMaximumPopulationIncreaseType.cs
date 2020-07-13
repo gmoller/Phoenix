@@ -23,6 +23,11 @@ namespace PhoenixGameLibrary.GameData
             return new BuildingMaximumPopulationIncreaseType(buildingId, populationGrowthRateIncrease);
         }
 
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
         private string DebuggerDisplay => $"{{Id={Id},MaximumPopulationIncrease={MaximumPopulationIncrease}}}";
     }
 

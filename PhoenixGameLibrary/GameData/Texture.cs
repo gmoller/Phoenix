@@ -17,6 +17,11 @@ namespace PhoenixGameLibrary.GameData
             TextureId = textureId;
         }
 
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
         private string DebuggerDisplay => $"{{TexturePalette={TexturePalette},TextureId={TextureId}}}";
     }
 }

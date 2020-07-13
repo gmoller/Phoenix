@@ -23,6 +23,11 @@ namespace PhoenixGameLibrary.GameData
             return new MoveType(id, name);
         }
 
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
         private string DebuggerDisplay => $"{{Id={Id},Name={Name}}}";
     }
 

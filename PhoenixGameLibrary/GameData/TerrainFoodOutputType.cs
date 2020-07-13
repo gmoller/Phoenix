@@ -23,6 +23,11 @@ namespace PhoenixGameLibrary.GameData
             return new TerrainFoodOutputType(terrainId, foodOutput);
         }
 
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
         private string DebuggerDisplay => $"{{Id={Id},FoodOutput={FoodOutput}}}";
     }
 

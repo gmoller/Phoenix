@@ -63,6 +63,11 @@ namespace PhoenixGameLibrary.GameData
             return GetEnumerator();
         }
 
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
         private string DebuggerDisplay => $"{{Count={_items.Count}}}";
     }
 
@@ -132,6 +137,11 @@ namespace PhoenixGameLibrary.GameData
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
         }
 
         private string DebuggerDisplay => $"{{Count={_items.Count}}}";

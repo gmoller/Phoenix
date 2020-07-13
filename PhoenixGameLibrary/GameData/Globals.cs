@@ -22,7 +22,7 @@ namespace PhoenixGameLibrary.GameData
         public DataList<BuildingFoodOutputIncreaseType> BuildingFoodOutputIncreaseTypes { get; }
 
         public NamedDataList<MoveType> MoveTypes { get; }
-        public NamedDataList<MovementType> MovementTypes { get; }
+        public NamedDataList<UnitStackMovementType> UnitStackMovementTypes { get; }
         //public MineralTypes MineralTypes { get; }
         public NamedDataList<UnitType> UnitTypes { get; }
         public NamedDataList<ActionType> ActionTypes { get; }
@@ -46,7 +46,7 @@ namespace PhoenixGameLibrary.GameData
             BuildingFoodOutputIncreaseTypes = DataList<BuildingFoodOutputIncreaseType>.Create(BuildingFoodOutputIncreaseTypesLoader.Load());
 
             MoveTypes = NamedDataList<MoveType>.Create(MoveTypesLoader.Load());
-            MovementTypes = NamedDataList<MovementType>.Create(MovementTypesLoader.Load());
+            UnitStackMovementTypes = NamedDataList<UnitStackMovementType>.Create(MovementTypesLoader.Load());
             //MineralTypes = MineralTypes.Create(MineralTypesLoader.GetMineralTypes());
             UnitTypes = NamedDataList<UnitType>.Create(UnitTypesLoader.Load());
             ActionTypes = NamedDataList<ActionType>.Create(ActionTypesLoader.Load());
