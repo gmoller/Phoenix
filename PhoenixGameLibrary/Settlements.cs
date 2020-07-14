@@ -10,13 +10,7 @@ namespace PhoenixGameLibrary
 
         public int FoodProducedThisTurn { get; private set; }
 
-        public Settlement this[int index]
-        {
-            get
-            {
-                return _settlements[index];
-            }
-        }
+        public Settlement this[int index] => _settlements[index];
 
         public Settlements()
         {
@@ -28,24 +22,10 @@ namespace PhoenixGameLibrary
             int foodProducedThisTurn = 0;
             foreach (var settlement in _settlements)
             {
-                //settlement.Update(deltaTime);
                 foodProducedThisTurn += settlement.FoodSurplus;
             }
 
             FoodProducedThisTurn = foodProducedThisTurn;
-        }
-
-        internal bool HasSettlementOnCell(int column, int row)
-        {
-            foreach (var item in _settlements)
-            {
-                if (item.Location.X == column && item.Location.Y == row)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public void AddSettlement(string name, string raceTypeName, Point hexLocation, CellGrid cellGrid)

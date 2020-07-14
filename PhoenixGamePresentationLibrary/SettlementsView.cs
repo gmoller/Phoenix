@@ -8,16 +8,14 @@ namespace PhoenixGamePresentationLibrary
 {
     internal class SettlementsView
     {
-        private readonly WorldView _worldView;
         private readonly Settlements _settlements;
 
         private ContentManager _content;
 
         private List<SettlementView.SettlementView> _settlementViews;
 
-        internal SettlementsView(WorldView worldView, Settlements settlements)
+        internal SettlementsView(Settlements settlements)
         {
-            _worldView = worldView;
             _settlements = settlements;
         }
 
@@ -31,7 +29,7 @@ namespace PhoenixGamePresentationLibrary
             _settlementViews = new List<SettlementView.SettlementView>();
             foreach (var settlement in _settlements)
             {
-                var settlementView = new SettlementView.SettlementView(_worldView, settlement);
+                var settlementView = new SettlementView.SettlementView(settlement);
                 settlementView.LoadContent(_content);
                 settlementView.Update(input, deltaTime);
                 _settlementViews.Add(settlementView);

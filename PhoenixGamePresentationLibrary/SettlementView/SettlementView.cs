@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
-using HexLibrary;
 using Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
@@ -15,8 +14,6 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 {
     internal class SettlementView
     {
-        private readonly WorldView _worldView;
-
         private Texture2D _guiTextures;
         private AtlasSpec2 _guiAtlas;
 
@@ -36,9 +33,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal Settlement Settlement { get; set; }
 
-        internal SettlementView(WorldView worldView, Settlement settlement)
+        internal SettlementView(Settlement settlement)
         {
-            _worldView = worldView;
             Settlement = settlement;
         }
 
@@ -75,16 +71,6 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            if (input.IsRightMouseButtonReleased && CursorIsOnThisSettlement())
-            {
-                Command openSettlementCommand = new OpenSettlementCommand();
-                openSettlementCommand.Payload = Settlement;
-                Globals.Instance.MessageQueue.Enqueue(openSettlementCommand);
-
-                var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(Settlement.Location.X, Settlement.Location.Y);
-                _worldView.Camera.LookAt(worldPixelLocation);
-            }
-
             _mainFrame.Update(input, deltaTime);
             _secondaryFrame.Update(input, deltaTime);
 
@@ -120,21 +106,6 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             Command closeSettlementCommand = new CloseSettlementCommand();
             closeSettlementCommand.Payload = Settlement;
             Globals.Instance.MessageQueue.Enqueue(closeSettlementCommand);
-        }
-
-        private bool CursorIsOnThisSettlement()
-        {
-            var hexPoint = GetHexPoint();
-
-            return Settlement.Location == hexPoint;
-        }
-
-        private Utilities.Point GetHexPoint()
-        {
-            var hex = DeviceManager.Instance.WorldHex;
-            var hexPoint = new Utilities.Point(hex.X, hex.Y);
-
-            return hexPoint;
         }
     }
 }

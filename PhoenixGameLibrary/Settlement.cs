@@ -17,7 +17,7 @@ namespace PhoenixGameLibrary
         private readonly int _id;
 
         private readonly List<Cell> _catchmentCells;
-        private List<int> _buildingsBuilt;
+        private readonly List<int> _buildingsBuilt;
         private int _populationGrowth;
         private CurrentlyBuilding _currentlyBuilding;
 
@@ -95,11 +95,15 @@ namespace PhoenixGameLibrary
                 cell.BelongsToSettlement = _id;
                 cellGrid.SetCell(item.Column, item.Row, cell);
             }
-        }
 
-        //public void Update(float deltaTime)
-        //{
-        //}
+            var sightCells = cellGrid.GetCatchment(location.X, location.Y, 3);
+            foreach (var item in sightCells)
+            {
+                var cell = cellGrid.GetCell(item.Column, item.Row);
+                cell.FogOfWar = false;
+                cellGrid.SetCell(item.Column, item.Row, cell);
+            }
+        }
 
         public bool BuildingHasBeenBuilt(string buildingName)
         {

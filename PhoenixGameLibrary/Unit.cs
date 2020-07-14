@@ -27,15 +27,14 @@ namespace PhoenixGameLibrary
             _unitType = unitType;
             Location = location;
             MovementPoints = unitType.Moves["Ground"].Moves;
-        }
 
-        //public void Update(float deltaTime)
-        //{
-        //}
+            SetSeenCells(location);
+        }
 
         public void MoveTo(Point locationToMoveTo)
         {
             Location = locationToMoveTo;
+            SetSeenCells(Location);
 
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
             var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[MovementTypeName];
@@ -45,6 +44,18 @@ namespace PhoenixGameLibrary
         public void EndTurn()
         {
             MovementPoints = _unitType.Moves["Ground"].Moves;
+        }
+
+        private void SetSeenCells(Point location)
+        {
+            var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
+            var sightCells = cellGrid.GetCatchment(location.X, location.Y, 2);
+            foreach (var item in sightCells)
+            {
+                var cell = cellGrid.GetCell(item.Column, item.Row);
+                cell.FogOfWar = false;
+                cellGrid.SetCell(item.Column, item.Row, cell);
+            }
         }
     }
 }

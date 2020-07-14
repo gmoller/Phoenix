@@ -47,6 +47,8 @@
     <Compile Include="InputHandler.cs" />
     <Compile Include="MetricsPanel.cs" />
     <Compile Include="OverlandMapView.cs" />
+    <Compile Include="OverlandSettlementsView.cs" />
+    <Compile Include="OverlandSettlementView.cs" />
     <Compile Include="PhoenixGameView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettlementsView.cs" />

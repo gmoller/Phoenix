@@ -60,17 +60,18 @@ namespace PhoenixGamePresentationLibrary
                 for (int q = fromColumn; q < toColumn; ++q)
                 {
                     var cell = cellGrid.GetCell(q, r);
-                    if (cell.BelongsToSettlement >= 0) // TODO: only display if IsCityView
+
+                    if (cell.FogOfWar)
+                    {
+                        DrawCell(spriteBatch, cell, Color.Black);
+                    }
+                    else if (cell.BelongsToSettlement >= 0) // TODO: only display if IsCityView
                     {
                         DrawCell(spriteBatch, cell, Color.LightSlateGray);
                     }
                     else
                     {
                         DrawCell(spriteBatch, cell, Color.White);
-                    }
-                    if (cell.HasSettlement)
-                    {
-                        DrawSettlement(spriteBatch, cell);
                     }
                     //DrawHexBorder(cell);
                 }
@@ -94,22 +95,6 @@ namespace PhoenixGamePresentationLibrary
             //var size = new Vector2(111, 192);
             //var imgTile = new Image("imgTile", centerPosition - PhoenixGameLibrary.Constants.HEX_ORIGIN / 2 + new Vector2(10.0f, 0.0f), ContentAlignment.MiddleCenter, size, cell.Texture.TexturePalette, cell.Texture.TextureId, layerDepth);
             //imgTile.Draw(spriteBatch);
-        }
-
-        private void DrawSettlement(SpriteBatch spriteBatch, Cell cell)
-        {
-            var texture = AssetsManager.Instance.GetTexture("VillageSmall00");
-            var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
-            var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(HexLibrary.Constants.HEX_ACTUAL_WIDTH * 0.5f), (int)(HexLibrary.Constants.HEX_ACTUAL_HEIGHT * 0.75f));
-            var sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
-            var layerDepth = cell.Index / 10000.0f + 0.00001f;
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
-
-            //var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
-            //var layerDepth = cell.Index / 10000.0f + 0.00001f;
-            //var size = new Vector2((float)(HexLibrary.Constants.HEX_ACTUAL_WIDTH * 0.5f), HexLibrary.Constants.HEX_ACTUAL_HEIGHT * 0.75f);
-            //var imgSettlement = new Image("imgSettlement", position - PhoenixGameLibrary.Constants.HEX_ORIGIN / 2 + new Vector2(10.0f, 0.0f), size, "VillageSmall00", layerDepth);
-            //imgSettlement.Draw();
         }
 
         private void DrawHexBorder(Cell cell)

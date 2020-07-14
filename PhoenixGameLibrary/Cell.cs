@@ -4,7 +4,7 @@ using Utilities;
 
 namespace PhoenixGameLibrary
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct Cell
     {
         public int Index { get; }
@@ -13,7 +13,7 @@ namespace PhoenixGameLibrary
         public int TerrainTypeId { get; }
         public Texture Texture { get; }
         public int BelongsToSettlement { get; set; }
-        public bool HasSettlement => CellHasSettlement();
+        public bool FogOfWar { get; set; }
 
         public Cell(int col, int row, TerrainType terrainType)
         {
@@ -21,11 +21,12 @@ namespace PhoenixGameLibrary
             TerrainTypeId = terrainType.Id;
             Texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
             BelongsToSettlement = -1;
+            FogOfWar = true;
         }
 
-        private bool CellHasSettlement()
+        public override string ToString()
         {
-            return Globals.Instance.World.Settlements.HasSettlementOnCell(Column, Row);
+            return DebuggerDisplay;
         }
 
         private string DebuggerDisplay => $"{{Col={Column},Row={Row},TerrainTypeId={TerrainTypeId}}}";

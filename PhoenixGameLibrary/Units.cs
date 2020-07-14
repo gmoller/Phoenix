@@ -16,14 +16,6 @@ namespace PhoenixGameLibrary
             _units = new List<Unit>();
         }
 
-        //public void Update(float deltaTime)
-        //{
-        //    foreach (var unit in _units)
-        //    {
-        //        unit.Update(deltaTime);
-        //    }
-        //}
-
         public void AddUnit(UnitType unitType, Point point)
         {
             var unit = new Unit(unitType, point);
