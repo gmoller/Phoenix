@@ -101,7 +101,8 @@ namespace PhoenixGameLibrary
             foreach (var item in sightCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
-                cell.FogOfWar = false;
+                //cell.FogOfWar = false;
+                cell.SeenState = SeenState.Current;
                 cellGrid.SetCell(item.Column, item.Row, cell);
             }
         }

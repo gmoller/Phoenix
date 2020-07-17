@@ -14,7 +14,9 @@ namespace PhoenixGameLibrary
         public Texture Texture { get; }
         public Texture TextureFogOfWar { get; }
         public int BelongsToSettlement { get; set; }
-        public bool FogOfWar { get; set; }
+        //public bool FogOfWar { get; set; }
+        //public bool CurrentlySeen { get; set; }
+        public SeenState SeenState { get; set; }
 
         public bool IsSeenByPlayer(World world)
         {
@@ -44,7 +46,9 @@ namespace PhoenixGameLibrary
             Texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
             TextureFogOfWar = new Texture("terrain_hextiles_basic_1", (byte)RandomNumberGenerator.Instance.GetRandomInt(36, 39)); //28-31,36-39
             BelongsToSettlement = -1;
-            FogOfWar = true;
+            SeenState = SeenState.Never;
+            //FogOfWar = true;
+            //CurrentlySeen = false;
         }
 
         public override string ToString()
@@ -53,5 +57,12 @@ namespace PhoenixGameLibrary
         }
 
         private string DebuggerDisplay => $"{{Col={Column},Row={Row},TerrainTypeId={TerrainTypeId}}}";
+    }
+
+    public enum SeenState
+    {
+        Never,
+        Current,
+        HasBeen
     }
 }

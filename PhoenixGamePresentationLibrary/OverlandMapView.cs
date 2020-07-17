@@ -66,7 +66,7 @@ namespace PhoenixGamePresentationLibrary
                     //{
                     //    DrawCell(spriteBatch, cell, Color.LightSlateGray);
                     //}
-                    if (cell.FogOfWar)
+                    if (cell.SeenState == SeenState.Never)
                     {
                         DrawCell(spriteBatch, cell, Color.White);
                     }
@@ -87,9 +87,10 @@ namespace PhoenixGamePresentationLibrary
         private void DrawCell(SpriteBatch spriteBatch, Cell cell, Color color)
         {
             //var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
-             var texture = AssetsManager.Instance.GetTexture(cell.FogOfWar ? cell.TextureFogOfWar.TexturePalette  : cell.Texture.TexturePalette);
-            var spec = AssetsManager.Instance.GetAtlas(cell.FogOfWar ? cell.TextureFogOfWar.TexturePalette : cell.Texture.TexturePalette);
-            var frame = spec.Frames[cell.FogOfWar ? cell.TextureFogOfWar.TextureId : cell.Texture.TextureId];
+            bool neverSeen = cell.SeenState == SeenState.Never;
+             var texture = AssetsManager.Instance.GetTexture(neverSeen ? cell.TextureFogOfWar.TexturePalette  : cell.Texture.TexturePalette);
+            var spec = AssetsManager.Instance.GetAtlas(neverSeen ? cell.TextureFogOfWar.TexturePalette : cell.Texture.TexturePalette);
+            var frame = spec.Frames[neverSeen ? cell.TextureFogOfWar.TextureId : cell.Texture.TextureId];
             var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
             var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
