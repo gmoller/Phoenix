@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using HexLibrary;
 
 namespace PhoenixGameLibrary
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class CellGrid
     {
         private readonly Cell[,] _cellGrid;
@@ -51,5 +53,12 @@ namespace PhoenixGameLibrary
 
             return catchmentCells;
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{NumberOfColumns={NumberOfColumns},NumberOfRows={NumberOfRows}}}";
     }
 }

@@ -23,6 +23,7 @@ namespace PhoenixGameLibrary
 
         public string Name { get; }
         public RaceType RaceType { get; }
+
         public Point Location { get; }
         public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
         public int GrowthRate => DetermineGrowthRate();
@@ -193,6 +194,22 @@ namespace PhoenixGameLibrary
                     Globals.Instance.MessageQueue.Enqueue(addUnitCommand);
                 }
             }
+        }
+
+        public bool CanSeeCell(Cell cell)
+        {
+            // if cell is within 4 hexes
+            var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
+            var sightCells = cellGrid.GetCatchment(Location.X, Location.Y, 4);
+            foreach (var item in sightCells)
+            {
+                if (cell.Column == item.Column && cell.Row == item.Row)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private int DetermineGrowthRate()

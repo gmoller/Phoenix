@@ -46,6 +46,22 @@ namespace PhoenixGameLibrary
             MovementPoints = _unitType.Moves["Ground"].Moves;
         }
 
+        public bool CanSeeCell(Cell cell)
+        {
+            // if cell is within 4 hexes
+            var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
+            var sightCells = cellGrid.GetCatchment(Location.X, Location.Y, 2);
+            foreach (var item in sightCells)
+            {
+                if (cell.Column == item.Column && cell.Row == item.Row)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void SetSeenCells(Point location)
         {
             var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;

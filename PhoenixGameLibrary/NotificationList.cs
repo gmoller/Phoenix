@@ -5,7 +5,7 @@ namespace PhoenixGameLibrary
 {
     public class NotificationList : IEnumerable<string>
     {
-        private List<string> _notifications;
+        private readonly List<string> _notifications;
 
         public NotificationList()
         {

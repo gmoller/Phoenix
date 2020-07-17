@@ -12,14 +12,37 @@ namespace PhoenixGameLibrary
         public int Row => Index / Constants.WORLD_MAP_COLUMNS;
         public int TerrainTypeId { get; }
         public Texture Texture { get; }
+        public Texture TextureFogOfWar { get; }
         public int BelongsToSettlement { get; set; }
         public bool FogOfWar { get; set; }
+
+        public bool IsSeenByPlayer(World world)
+        {
+            foreach (var settlement in world.Settlements)
+            {
+                if (settlement.CanSeeCell(this))
+                {
+                    return true;
+                }
+            }
+
+            foreach (var unit in world.Units)
+            {
+                if (unit.CanSeeCell(this))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public Cell(int col, int row, TerrainType terrainType)
         {
             Index = (row * Constants.WORLD_MAP_COLUMNS) + col;
             TerrainTypeId = terrainType.Id;
             Texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
+            TextureFogOfWar = new Texture("terrain_hextiles_basic_1", (byte)RandomNumberGenerator.Instance.GetRandomInt(36, 39)); //28-31,36-39
             BelongsToSettlement = -1;
             FogOfWar = true;
         }

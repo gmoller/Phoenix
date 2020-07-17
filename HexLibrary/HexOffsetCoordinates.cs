@@ -73,7 +73,6 @@ namespace HexLibrary
                     var offset = HexCube.CubeToOffsetCoordinates(cube.X, cube.Y, cube.Z);
                     ring.Add(offset);
                     cube = HexCube.GetNeighbor(cube.X, cube.Y, cube.Z, (Direction)i);
-                    offset = HexCube.CubeToOffsetCoordinates(cube.X, cube.Y, cube.Z);
                 }
             }
 
@@ -82,7 +81,7 @@ namespace HexLibrary
 
         public static HexOffsetCoordinates[] GetSpiralRing(int col, int row, int radius)
         {
-            var ring = new List<HexOffsetCoordinates>();
+            var ring = new List<HexOffsetCoordinates> {new HexOffsetCoordinates(col, row)};
 
             for (int k = 1; k <= radius; ++k)
             {

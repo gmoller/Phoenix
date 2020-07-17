@@ -6,6 +6,7 @@ using AssetsLibrary;
 using HexLibrary;
 using Input;
 using PhoenixGameLibrary;
+using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
@@ -37,7 +38,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawCellGrid(SpriteBatch spriteBatch, CellGrid cellGrid, Camera camera)
         {
-            var center = camera.ScreenToWorld(new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width / 2, DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2));
+            var center = camera.ScreenToWorld(new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width / 2.0f, DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2.0f));
             var centerHex = HexOffsetCoordinates.OffsetCoordinatesFromPixel((int)center.X, (int)center.Y);
 
             var columnsToLeft = 10; // TODO: remove hardcoding, use size of hex and cater for zoom (how many hexes fit on the screen)
@@ -61,18 +62,23 @@ namespace PhoenixGamePresentationLibrary
                 {
                     var cell = cellGrid.GetCell(q, r);
 
+                    //if (cell.BelongsToSettlement >= 0) // TODO: only display if IsCityView
+                    //{
+                    //    DrawCell(spriteBatch, cell, Color.LightSlateGray);
+                    //}
                     if (cell.FogOfWar)
-                    {
-                        DrawCell(spriteBatch, cell, Color.Black);
-                    }
-                    else if (cell.BelongsToSettlement >= 0) // TODO: only display if IsCityView
-                    {
-                        DrawCell(spriteBatch, cell, Color.LightSlateGray);
-                    }
-                    else
                     {
                         DrawCell(spriteBatch, cell, Color.White);
                     }
+                    else if (cell.IsSeenByPlayer(Globals.Instance.World))
+                    {
+                        DrawCell(spriteBatch, cell, Color.White);
+                    }  
+                    else
+                    {
+                        DrawCell(spriteBatch, cell, Color.DarkGray);
+                    }
+
                     //DrawHexBorder(cell);
                 }
             }
@@ -80,14 +86,13 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawCell(SpriteBatch spriteBatch, Cell cell, Color color)
         {
-            var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
-
             //var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
-            var texture = AssetsManager.Instance.GetTexture(cell.Texture.TexturePalette);
-            var spec = AssetsManager.Instance.GetAtlas(cell.Texture.TexturePalette);
-            var frame = spec.Frames[cell.Texture.TextureId];
+             var texture = AssetsManager.Instance.GetTexture(cell.FogOfWar ? cell.TextureFogOfWar.TexturePalette  : cell.Texture.TexturePalette);
+            var spec = AssetsManager.Instance.GetAtlas(cell.FogOfWar ? cell.TextureFogOfWar.TexturePalette : cell.Texture.TexturePalette);
+            var frame = spec.Frames[cell.FogOfWar ? cell.TextureFogOfWar.TextureId : cell.Texture.TextureId];
             var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
+            var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
             var layerDepth = cell.Index / 10000.0f;
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
