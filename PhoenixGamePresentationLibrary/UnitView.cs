@@ -190,7 +190,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Draw(SpriteBatch spriteBatch, Texture2D textures, AtlasSpec2 atlas)
         {
-            var frame = atlas.Frames[1]; // TODO: use _unit to get texture frame
+            var frame = atlas.Frames[_unit.UnitTypeTextureName];
             if (!_unit.IsSelected)
             {
                 DrawUnit(spriteBatch, textures, frame);
