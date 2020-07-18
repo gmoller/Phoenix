@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HexLibrary;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Input;
+using Utilities;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -39,7 +41,20 @@ namespace PhoenixGamePresentationLibrary
             return Vector2.Transform(screenPosition, Matrix.Invert(Transform));
         }
 
-        public void LookAt(Vector2 newPosition)
+        public void LookAtCell(Utilities.Point hexPoint)
+        {
+            var newPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(hexPoint.X, hexPoint.Y);
+            _position = newPosition;
+        }
+
+        public void LookAtCellPointedAtByMouse()
+        {
+            var hexPoint = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
+            var newPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(hexPoint.X, hexPoint.Y);
+            _position = newPosition;
+        }
+
+        public void LookAtPixel(Vector2 newPosition)
         {
             _position = newPosition;
         }

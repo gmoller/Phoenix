@@ -44,7 +44,6 @@
     <Compile Include="Commands\EndTurnCommand.cs" />
     <Compile Include="Commands\MoveUnitCommand.cs" />
     <Compile Include="Commands\OpenSettlementCommand.cs" />
-    <Compile Include="Commands\SelectUnitCommand.cs" />
     <Compile Include="Faction.cs" />
     <Compile Include="GameData\ActionType.cs" />
     <Compile Include="GameData\BuildingFoodOutputIncreaseType.cs" />

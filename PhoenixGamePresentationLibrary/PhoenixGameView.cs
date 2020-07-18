@@ -93,8 +93,7 @@ namespace PhoenixGamePresentationLibrary
             _cursorView.LoadContent(content);
 
             var settlement = Globals.Instance.World.Settlements[0];
-            var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(settlement.Location.X, settlement.Location.Y);
-            _worldView.Camera.LookAt(worldPixelLocation);
+            _worldView.Camera.LookAtCell(settlement.Location);
         }
 
         public void Update(float deltaTime)

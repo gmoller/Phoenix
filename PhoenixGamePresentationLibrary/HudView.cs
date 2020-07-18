@@ -28,8 +28,11 @@ namespace PhoenixGamePresentationLibrary
 
         private Button _btnEndTurn;
 
-        internal HudView()
+        private readonly UnitsView _unitsView;
+
+        internal HudView(UnitsView unitsView)
         {
+            _unitsView = unitsView;
         }
 
         internal void LoadContent(ContentManager content)
@@ -126,11 +129,11 @@ namespace PhoenixGamePresentationLibrary
 
             var x = DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f + 10.0f;
             var y = DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2.0f;
-            foreach (var unit in units)
+            foreach (UnitView unitView in _unitsView)
             {
-                if (unit.IsSelected)
+                if (unitView.IsSelected)
                 {
-                    var lbl = new Label(unit.Name, "CrimsonText-Regular-6", new Vector2(x, y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(42.0f, 20.0f), unit.ShortName, HorizontalAlignment.Center, Color.Red, null, Color.PowderBlue);
+                    var lbl = new Label(unitView.Name, "CrimsonText-Regular-6", new Vector2(x, y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(42.0f, 20.0f), unitView.ShortName, HorizontalAlignment.Center, Color.Red, null, Color.PowderBlue);
                     lbl.Draw(spriteBatch);
                     y += 25.0f;
                 }
@@ -144,10 +147,10 @@ namespace PhoenixGamePresentationLibrary
 
             // get tile mouse is over
             var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
-            var hex = DeviceManager.Instance.WorldHex;
-            if (hex.X >= 0 && hex.Y >= 0 && hex.X < PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS && hex.Y < PhoenixGameLibrary.Constants.WORLD_MAP_ROWS)
+            var hexPoint = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
+            if (hexPoint.X >= 0 && hexPoint.Y >= 0 && hexPoint.X < PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS && hexPoint.Y < PhoenixGameLibrary.Constants.WORLD_MAP_ROWS)
             {
-                var cell = cellGrid.GetCell(hex.X, hex.Y);
+                var cell = cellGrid.GetCell(hexPoint.X, hexPoint.Y);
                 if (cell.SeenState != SeenState.Never)
                 {
                     var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
@@ -156,8 +159,8 @@ namespace PhoenixGamePresentationLibrary
 
                     if (terrainType.CanSettleOn)
                     {
-                        var catchment = cellGrid.GetCatchment(hex.X, hex.Y, 2);
-                        var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Utilities.Point(hex.X, hex.Y), catchment);
+                        var catchment = cellGrid.GetCatchment(hexPoint.X, hexPoint.Y, 2);
+                        var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Utilities.Point(hexPoint.X, hexPoint.Y), catchment);
                         var text2 = $"Maximum Pop - {maxPop}";
                         spriteBatch.DrawString(_font, text2, new Vector2(x, y + 15.0f), Color.White);
                     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,13 +9,12 @@ using PhoenixGameLibrary;
 
 namespace PhoenixGamePresentationLibrary
 {
-    public class UnitsView
+    public class UnitsView : IEnumerable<UnitView>
     {
         private readonly WorldView _worldView;
 
         private Texture2D _textures;
         private AtlasSpec2 _atlas;
-        //private Texture2D _texture;
         private readonly Units _units;
         private readonly Dictionary<Guid, UnitView> _unitViews;
 
@@ -29,7 +29,6 @@ namespace PhoenixGamePresentationLibrary
         {
             _textures = AssetsManager.Instance.GetTexture("Units");
             _atlas = AssetsManager.Instance.GetAtlas("Units");
-            //_texture = AssetsManager.Instance.GetTexture("brutal-helm");
         }
 
         internal void Update(InputHandler input, float deltaTime)
@@ -58,6 +57,19 @@ namespace PhoenixGamePresentationLibrary
             {
                 unit.Value.Draw(spriteBatch, _textures, _atlas);
             }
+        }
+
+        public IEnumerator<UnitView> GetEnumerator()
+        {
+            foreach (var item in _unitViews)
+            {
+                yield return item.Value;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

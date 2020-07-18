@@ -8,7 +8,6 @@ using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using Utilities;
-using Point = Utilities.Point;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -42,8 +41,7 @@ namespace PhoenixGamePresentationLibrary
                 openSettlementCommand.Payload = Settlement;
                 Globals.Instance.MessageQueue.Enqueue(openSettlementCommand);
 
-                var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(Settlement.Location.X, Settlement.Location.Y);
-                _worldView.Camera.LookAt(worldPixelLocation);
+                _worldView.Camera.LookAtCell(Settlement.Location);
             }
         }
 
@@ -56,17 +54,10 @@ namespace PhoenixGamePresentationLibrary
 
         private bool CursorIsOnThisSettlement(Settlement settlement)
         {
-            var hexPoint = GetHexPoint();
+            var hexPoint = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
+            bool cursorIsOnThisSettlement = settlement.Location == hexPoint;
 
-            return settlement.Location == hexPoint;
-        }
-
-        private Point GetHexPoint()
-        {
-            var hex = DeviceManager.Instance.WorldHex;
-            var hexPoint = new Point(hex.X, hex.Y);
-
-            return hexPoint;
+            return cursorIsOnThisSettlement;
         }
 
         private void DrawSettlement(SpriteBatch spriteBatch, Cell cell)
@@ -76,12 +67,6 @@ namespace PhoenixGamePresentationLibrary
             var sourceRectangle = new Rectangle(0, 0, _texture.Width, _texture.Height);
             var layerDepth = cell.Index / 10000.0f + 0.00001f;
             spriteBatch.Draw(_texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
-
-            //var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
-            //var layerDepth = cell.Index / 10000.0f + 0.00001f;
-            //var size = new Vector2((float)(HexLibrary.Constants.HEX_ACTUAL_WIDTH * 0.5f), HexLibrary.Constants.HEX_ACTUAL_HEIGHT * 0.75f);
-            //var imgSettlement = new Image("imgSettlement", position - PhoenixGameLibrary.Constants.HEX_ORIGIN / 2 + new Vector2(10.0f, 0.0f), size, "VillageSmall00", layerDepth);
-            //imgSettlement.Draw();
         }
     }
 }

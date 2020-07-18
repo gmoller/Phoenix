@@ -13,7 +13,6 @@ namespace PhoenixGameLibrary
         public Guid Id { get; }
         public Point Location { get; set; } // hex cell the unit is in
         public float MovementPoints { get; set; }
-        public bool IsSelected { get; internal set; }
 
         private readonly UnitType _unitType;
         private List<Cell> _seenCells;
@@ -42,11 +41,6 @@ namespace PhoenixGameLibrary
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
             var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[MovementTypeName];
             MovementPoints -= movementCost.Cost;
-
-            if (MovementPoints <= 0.0f)
-            {
-                IsSelected = false;
-            }
         }
 
         public void EndTurn()

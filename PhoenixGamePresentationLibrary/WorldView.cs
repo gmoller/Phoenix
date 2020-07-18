@@ -31,11 +31,11 @@ namespace PhoenixGamePresentationLibrary
             _overlandSettlementsView = new OverlandSettlementsView(this, _world.Settlements);
             _unitsView = new UnitsView(this, _world.Units);
             _settlementsView = new SettlementsView(_world.Settlements);
-            _hudView = new HudView();
+            _hudView = new HudView(_unitsView);
 
             Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
             Camera.LoadContent(content);
-            Camera.LookAt(new Vector2(800.0f, 400.0f));
+            Camera.LookAtPixel(new Vector2(800.0f, 400.0f));
 
             _overlandSettlementsView.LoadContent(content);
             _unitsView.LoadContent(content);
@@ -48,7 +48,7 @@ namespace PhoenixGamePresentationLibrary
             var worldPos = Camera.ScreenToWorld(new Vector2(input.MousePostion.X, input.MousePostion.Y));
             DeviceManager.Instance.WorldPosition = new Utilities.Point((int)worldPos.X, (int)worldPos.Y);
             var worldHex = HexOffsetCoordinates.OffsetCoordinatesFromPixel((int)worldPos.X, (int)worldPos.Y);
-            DeviceManager.Instance.WorldHex = new Utilities.Point(worldHex.Col, worldHex.Row);
+            DeviceManager.Instance.WorldHexPointedAtByMouseCursor = new Utilities.Point(worldHex.Col, worldHex.Row);
 
             Camera.Update(input, deltaTime);
 
