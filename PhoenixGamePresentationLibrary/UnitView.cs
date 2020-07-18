@@ -19,7 +19,6 @@ namespace PhoenixGamePresentationLibrary
 
         private readonly WorldView _worldView;
         private readonly Unit _unit;
-        private bool _isSelected;
         private float _blinkCooldownInMilliseconds;
         private bool _blink;
 
@@ -29,7 +28,7 @@ namespace PhoenixGamePresentationLibrary
 
         private Vector2 _currentPositionOnScreen;
 
-        public bool IsSelected => _isSelected;
+        public bool IsSelected { get; private set; }
         public string Name => _unit.Name;
         public string ShortName => _unit.ShortName;
 
@@ -67,7 +66,7 @@ namespace PhoenixGamePresentationLibrary
 
         private bool DetermineBlinkState(float deltaTime)
         {
-            if (_isSelected && !UnitIsMoving())
+            if (IsSelected && !UnitIsMoving())
             {
                 _blinkCooldownInMilliseconds -= deltaTime;
                 if (_blinkCooldownInMilliseconds > 0.0f) return _blink;
@@ -86,7 +85,7 @@ namespace PhoenixGamePresentationLibrary
 
         private bool CheckForUnitMovementInitiation(InputHandler input)
         {
-            if (!_isSelected || !input.IsLeftMouseButtonReleased || _isMovingState) return false;
+            if (!IsSelected || !input.IsLeftMouseButtonReleased || _isMovingState) return false;
 
             var currentHex = _unit.Location;
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
@@ -148,61 +147,31 @@ namespace PhoenixGamePresentationLibrary
 
         private bool CheckForUnitSelection(InputHandler input)
         {
-            if (_isSelected)
-            {
-                return false;
-            }
-            else
-            {
-                if (input.IsRightMouseButtonReleased)
-                {
-                    if (CursorIsOnThisUnit())
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            if (IsSelected) return false;
+            if (input.IsRightMouseButtonReleased) return CursorIsOnThisUnit();
+
+            return false;
         }
 
         private bool CheckForUnitDeselection(Unit unit)
         {
-            if (_isSelected)
-            {
-                if (unit.MovementPoints <= 0.0f)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            if (IsSelected) return unit.MovementPoints <= 0.0f;
+
+            return false;
         }
 
-        private void SelectUnit()
+        internal void SelectUnit()
         {
             // TODO: show in hudview
 
-            _isSelected = true;
+            IsSelected = true;
 
             _worldView.Camera.LookAtCellPointedAtByMouse();
         }
 
         private void DeselectUnit()
         {
-            _isSelected = false;
+            IsSelected = false;
         }
 
         private bool IsWithinOneHexOf(Point currentHex, Point hexToMoveTo)
@@ -230,7 +199,7 @@ namespace PhoenixGamePresentationLibrary
         internal void Draw(SpriteBatch spriteBatch, Texture2D textures, AtlasSpec2 atlas)
         {
             var frame = atlas.Frames[_unit.UnitTypeTextureName];
-            if (_isSelected)
+            if (IsSelected)
             {
                 if (!_blink)
                 {

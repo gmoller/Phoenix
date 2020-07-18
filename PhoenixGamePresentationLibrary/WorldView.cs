@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
-using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
@@ -79,7 +78,14 @@ namespace PhoenixGamePresentationLibrary
 
         public void BeginTurn()
         {
-            //_world.BeginTurn();
+            Command beginTurnCommand = new BeginTurnCommand();
+            beginTurnCommand.Payload = _world;
+            beginTurnCommand.Execute();
+
+            foreach (var unitView in _unitsView)
+            {
+                unitView.SelectUnit();
+            }
 
             var unit = _world.Units[0];
             Camera.LookAtCell(unit.Location);
@@ -90,6 +96,7 @@ namespace PhoenixGamePresentationLibrary
             Command endTurnCommand = new EndTurnCommand();
             endTurnCommand.Payload = _world;
             endTurnCommand.Execute();
+
             BeginTurn();
         }
     }

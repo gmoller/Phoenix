@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AddUnitCommand.cs" />
+    <Compile Include="Commands\BeginTurnCommand.cs" />
     <Compile Include="Commands\CloseSettlementCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\EndTurnCommand.cs" />

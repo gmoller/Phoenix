@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
@@ -9,6 +10,7 @@ using PhoenixGameLibrary;
 
 namespace PhoenixGamePresentationLibrary
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class UnitsView : IEnumerable<UnitView>
     {
         private readonly WorldView _worldView;
@@ -58,6 +60,13 @@ namespace PhoenixGamePresentationLibrary
                 unit.Value.Draw(spriteBatch, _textures, _atlas);
             }
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Count={_unitViews.Count}}}";
 
         public IEnumerator<UnitView> GetEnumerator()
         {
