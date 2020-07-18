@@ -17,6 +17,7 @@ namespace PhoenixGameLibrary
         private readonly int _id;
 
         private readonly List<Cell> _catchmentCells;
+        private readonly List<Cell> _seenCells;
         private readonly List<int> _buildingsBuilt;
         private int _populationGrowth;
         private CurrentlyBuilding _currentlyBuilding;
@@ -97,8 +98,8 @@ namespace PhoenixGameLibrary
                 cellGrid.SetCell(item.Column, item.Row, cell);
             }
 
-            var sightCells = cellGrid.GetCatchment(location.X, location.Y, 3);
-            foreach (var item in sightCells)
+            _seenCells = cellGrid.GetCatchment(location.X, location.Y, 3);
+            foreach (var item in _seenCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
                 //cell.FogOfWar = false;
@@ -199,10 +200,8 @@ namespace PhoenixGameLibrary
 
         public bool CanSeeCell(Cell cell)
         {
-            // if cell is within 4 hexes
-            var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
-            var sightCells = cellGrid.GetCatchment(Location.X, Location.Y, 4);
-            foreach (var item in sightCells)
+            // if cell is within 3 hexes
+            foreach (var item in _seenCells)
             {
                 if (cell.Column == item.Column && cell.Row == item.Row)
                 {

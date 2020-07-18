@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -15,6 +16,7 @@ namespace PhoenixGameLibrary
         public bool IsSelected { get; internal set; }
 
         private readonly UnitType _unitType;
+        private List<Cell> _seenCells;
 
         public string Name => _unitType.Name;
         public string ShortName => _unitType.ShortName;
@@ -49,9 +51,7 @@ namespace PhoenixGameLibrary
         public bool CanSeeCell(Cell cell)
         {
             // if cell is within 4 hexes
-            var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
-            var sightCells = cellGrid.GetCatchment(Location.X, Location.Y, 2);
-            foreach (var item in sightCells)
+            foreach (var item in _seenCells)
             {
                 if (cell.Column == item.Column && cell.Row == item.Row)
                 {
@@ -65,8 +65,8 @@ namespace PhoenixGameLibrary
         private void SetSeenCells(Point location)
         {
             var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
-            var sightCells = cellGrid.GetCatchment(location.X, location.Y, 2);
-            foreach (var item in sightCells)
+            _seenCells = cellGrid.GetCatchment(location.X, location.Y, 2);
+            foreach (var item in _seenCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
                 //cell.FogOfWar = false;
