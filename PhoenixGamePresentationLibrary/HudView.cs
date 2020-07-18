@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
 using Input;
+using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using Utilities;
@@ -147,16 +148,19 @@ namespace PhoenixGamePresentationLibrary
             if (hex.X >= 0 && hex.Y >= 0 && hex.X < PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS && hex.Y < PhoenixGameLibrary.Constants.WORLD_MAP_ROWS)
             {
                 var cell = cellGrid.GetCell(hex.X, hex.Y);
-                var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
-                var text1 = $"{terrainType.Name} - {terrainType.FoodOutput} food";
-                spriteBatch.DrawString(_font, text1, new Vector2(x, y), Color.White);
-
-                if (terrainType.CanSettleOn)
+                if (cell.SeenState != SeenState.Never)
                 {
-                    var catchment = cellGrid.GetCatchment(hex.X, hex.Y, 2); 
-                    var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Utilities.Point(hex.X, hex.Y), catchment);
-                    var text2 = $"Maximum Pop - {maxPop}";
-                    spriteBatch.DrawString(_font, text2, new Vector2(x, y + 15.0f), Color.White);
+                    var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
+                    var text1 = $"{terrainType.Name} - {terrainType.FoodOutput} food";
+                    spriteBatch.DrawString(_font, text1, new Vector2(x, y), Color.White);
+
+                    if (terrainType.CanSettleOn)
+                    {
+                        var catchment = cellGrid.GetCatchment(hex.X, hex.Y, 2);
+                        var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Utilities.Point(hex.X, hex.Y), catchment);
+                        var text2 = $"Maximum Pop - {maxPop}";
+                        spriteBatch.DrawString(_font, text2, new Vector2(x, y + 15.0f), Color.White);
+                    }
                 }
             }
         }

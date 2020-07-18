@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using HexLibrary;
 using Input;
 using PhoenixGameLibrary;
+using PhoenixGameLibrary.GameData;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -77,6 +79,9 @@ namespace PhoenixGamePresentationLibrary
             AssetsManager.Instance.AddTexture("Citizens", "TextureAtlases\\Citizens");
             AssetsManager.Instance.AddAtlas("Citizens", "TextureAtlases\\Citizens");
 
+            AssetsManager.Instance.AddTexture("Units", "TextureAtlases\\Units");
+            AssetsManager.Instance.AddAtlas("Units", "TextureAtlases\\Units");
+
             _worldView = new WorldView(_phoenixGame.World);
             _cursor = new Cursor();
             _cursorView = new CursorView(_cursor);
@@ -86,6 +91,10 @@ namespace PhoenixGamePresentationLibrary
 
             _worldView.LoadContent(content);
             _cursorView.LoadContent(content);
+
+            var settlement = Globals.Instance.World.Settlements[0];
+            var worldPixelLocation = HexOffsetCoordinates.OffsetCoordinatesToPixel(settlement.Location.X, settlement.Location.Y);
+            _worldView.Camera.LookAt(worldPixelLocation);
         }
 
         public void Update(float deltaTime)

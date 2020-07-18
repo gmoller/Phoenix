@@ -12,7 +12,9 @@ namespace PhoenixGamePresentationLibrary
     {
         private readonly WorldView _worldView;
 
-        private Texture2D _texture;
+        private Texture2D _textures;
+        private AtlasSpec2 _atlas;
+        //private Texture2D _texture;
         private readonly Units _units;
         private readonly Dictionary<Guid, UnitView> _unitViews;
 
@@ -25,7 +27,9 @@ namespace PhoenixGamePresentationLibrary
 
         internal void LoadContent(ContentManager content)
         {
-            _texture = AssetsManager.Instance.GetTexture("brutal-helm");
+            _textures = AssetsManager.Instance.GetTexture("Units");
+            _atlas = AssetsManager.Instance.GetAtlas("Units");
+            //_texture = AssetsManager.Instance.GetTexture("brutal-helm");
         }
 
         internal void Update(InputHandler input, float deltaTime)
@@ -52,7 +56,7 @@ namespace PhoenixGamePresentationLibrary
         {
             foreach (var unit in _unitViews)
             {
-                unit.Value.Draw(spriteBatch, _texture);
+                unit.Value.Draw(spriteBatch, _textures, _atlas);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AssetsLibrary;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using HexLibrary;
@@ -187,25 +188,25 @@ namespace PhoenixGamePresentationLibrary
             return hexPoint;
         }
 
-        internal void Draw(SpriteBatch spriteBatch, Texture2D texture)
+        internal void Draw(SpriteBatch spriteBatch, Texture2D textures, AtlasSpec2 atlas)
         {
+            var frame = atlas.Frames[1]; // TODO: use _unit to get texture frame
             if (!_unit.IsSelected)
             {
-                DrawUnit(spriteBatch, texture);
+                DrawUnit(spriteBatch, textures, frame);
             }
             else if (!_blink)
             {
-                DrawUnit(spriteBatch, texture);
+                DrawUnit(spriteBatch, textures, frame);
             }
         }
 
-        private void DrawUnit(SpriteBatch spriteBatch, Texture2D texture)
+        private void DrawUnit(SpriteBatch spriteBatch, Texture2D textures, AtlasFrame frame)
         {
             //var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(_unit.Location.X, _unit.Location.Y);
             var destinationRectangle = new Rectangle((int)_currentPositionOnScreen.X, (int)_currentPositionOnScreen.Y, 50, 50);
-            var sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
-
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.Navy, 0.0f, new Vector2(texture.Width / 2.0f, texture.Height / 2.0f), SpriteEffects.None, 0.0f);
+            var sourceRectangle = frame.ToRectangle();
+            spriteBatch.Draw(textures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(frame.Width / 2.0f, frame.Height / 2.0f), SpriteEffects.None, 0.0f);
         }
     }
 }

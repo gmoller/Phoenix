@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
 namespace AssetsLibrary
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct AtlasFrame
     {
         public string Name { get; set; }
@@ -16,6 +18,13 @@ namespace AssetsLibrary
         {
             return new Rectangle(X, Y, Width, Height);
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Name={Name}}}";
     }
 
     public class AtlasFrames

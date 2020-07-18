@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using HexLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using Utilities;
