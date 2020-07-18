@@ -1,0 +1,316 @@
+{
+  "SpriteSheetName": "Units",
+  "Frames": [
+	{
+      "Name": "Unit_Icon_BarbarianBowmen_Transparent",
+      "X": 0,
+      "Y": 0,
+      "Width": 36,
+      "Height": 32
+    },
+	{
+      "Name": "Unit_Icon_BarbarianCavalry_Transparent",
+      "X": 36,
+      "Y": 0,
+      "Width": 36,
+      "Height": 32
+    },
+	{
+      "Name": "Unit_Icon_BarbarianShamans_Transparent",
+      "X": 72,
+      "Y": 0,
+      "Width": 36,
+      "Height": 32
+    },
+	{
+      "Name": "Unit_Icon_BarbarianSpearmen_Transparent",
+      "X": 108,
+      "Y": 0,
+      "Width": 36,
+      "Height": 32
+    },
+	{
+      "Name": "Unit_Icon_BarbarianSwordsmen_Transparent",
+      "X": 144,
+      "Y": 0,
+      "Width": 36,
+      "Height": 32
+    },  
+    {
+      "Name": "Unit_Icon_BeastmenBowmen_Transparent",
+      "X": 0,
+      "Y": 32,
+      "Width": 36,
+      "Height": 32
+    },
+	{
+      "Name": "Unit_Icon_BeastmenEngineers_Transparent",
+      "X": 36,
+      "Y": 32,
+      "Width": 36,
+      "Height": 32
+    },
+	{
+      "Name": "Unit_Icon_BeastmenHalberdiers_Transparent",
+      "X": 72,
+      "Y": 32,
+      "Width": 36,
+      "Height": 32
+    },
+	{
+      "Name": "Unit_Icon_BeastmenMagicians_Transparent",
+      "X": 108,
+      "Y": 32,
+      "Width": 36,
+      "Height": 32
+    },
+	{
+      "Name": "Unit_Icon_BeastmenPriests_Transparent",
+      "X": 144,
+      "Y": 32,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_BeastmenSpearmen_Transparent",
+      "X": 180,
+      "Y": 32,
+      "Width": 36,
+      "Height": 32
+    },
+	{
+      "Name": "Unit_Icon_BeastmenSwordsmen_Transparent",
+      "X": 216,
+      "Y": 32,
+      "Width": 36,
+      "Height": 32
+    },
+    
+    
+    
+    {
+      "Name": "Unit_Icon_Airship_Transparent",
+      "X": 0,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Berserkers_Transparent",
+      "X": 36,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Catapult_Transparent",
+      "X": 72,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Centaurs_Transparent",
+      "X": 108,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_DoomDrakes_Transparent",
+      "X": 144,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_DragonTurtle_Transparent",
+      "X": 180,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_ElvenLords_Transparent",
+      "X": 216,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Galley_Transparent",
+      "X": 252,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Golem_Transparent",
+      "X": 288,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Griffins_Transparent",
+      "X": 324,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Hammerhands_Transparent",
+      "X": 360,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Horsebowmen_Transparent",
+      "X": 396,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Javelineers_Transparent",
+      "X": 432,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Longbowmen_Transparent",
+      "X": 468,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Manticores_Transparent",
+      "X": 504,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Minotaurs_Transparent",
+      "X": 540,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Nightblades_Transparent",
+      "X": 576,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Nightmares_Transparent",
+      "X": 612,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Paladins_Transparent",
+      "X": 648,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Pegasai_Transparent",
+      "X": 684,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Rangers_Transparent",
+      "X": 720,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Settlers_Transparent",
+      "X": 756,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Slingers_Transparent",
+      "X": 792,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_StagBeetle_Transparent",
+      "X": 828,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_SteamCannon_Transparent",
+      "X": 864,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Trireme_Transparent",
+      "X": 900,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Warlocks_Transparent",
+      "X": 936,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_WarMammoths_Transparent",
+      "X": 972,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_Warship_Transparent",
+      "X": 1008,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_WarTrolls_Transparent",
+      "X": 1044,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_WolfRiders_Transparent",
+      "X": 1080,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    },
+    {
+      "Name": "Unit_Icon_WyvernRiders_Transparent",
+      "X": 1116,
+      "Y": 64,
+      "Width": 36,
+      "Height": 32
+    }
+  ]
+}

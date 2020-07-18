@@ -75,6 +75,7 @@ namespace GuiControls
 
         public Image(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, float layerDepth = 0.0f)
         {
+            _name = name;
             _textureAtlas = textureAtlas;
             _textureName = textureName;
             _textureId = null;

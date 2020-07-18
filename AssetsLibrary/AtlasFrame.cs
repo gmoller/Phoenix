@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 namespace AssetsLibrary
@@ -19,10 +20,12 @@ namespace AssetsLibrary
 
     public class AtlasFrames
     {
-        private List<AtlasFrame> _frames;
+        private readonly string _atlasName;
+        private readonly List<AtlasFrame> _frames;
 
-        public AtlasFrames()
+        public AtlasFrames(string atlasName)
         {
+            _atlasName = atlasName;
             _frames = new List<AtlasFrame>();
         }
 
@@ -33,6 +36,8 @@ namespace AssetsLibrary
             get
             {
                 var frame = _frames.Find(o => o.Name == name);
+
+                if (frame.Width == 0 && frame.Height == 0) throw new Exception($"Frame [{name}] not found in atlas [{_atlasName}].");
 
                 return frame;
             }

@@ -9,59 +9,290 @@
       "Height": 28
     },
 	{
-      "Name": "Citizen_Barbarians_Worker",
+      "Name": "Citizen_Barbarians_Rebel",
       "X": 20,
+      "Y": 0,
+      "Width": 16,
+      "Height": 30
+    },
+	{
+      "Name": "Citizen_Barbarians_Worker",
+      "X": 40,
       "Y": 0,
       "Width": 16,
       "Height": 28
     },
-	{
-      "Name": "Citizen_Barbarians_Rebel",
-      "X": 40,
-      "Y": 0,
-      "Width": 16,
-      "Height": 30
-    },
-	{
+    {
       "Name": "Citizen_Beastmen_Farmer",
       "X": 0,
-      "Y": 30,
+      "Y": 32,
       "Width": 20,
       "Height": 26
     },
 	{
-      "Name": "Citizen_Beastmen_Worker",
-      "X": 20,
-      "Y": 30,
-      "Width": 16,
-      "Height": 26
-    },
-	{
       "Name": "Citizen_Beastmen_Rebel",
-      "X": 40,
-      "Y": 30,
+      "X": 20,
+      "Y": 32,
       "Width": 16,
       "Height": 30
     },
 	{
-      "Name": "Citizen_DarkElves_Farmer",
+      "Name": "Citizen_Beastmen_Worker",
+      "X": 40,
+      "Y": 32,
+      "Width": 16,
+      "Height": 26
+    },
+    {
+      "Name": "Citizen_DarkElf_Farmer",
       "X": 0,
-      "Y": 60,
+      "Y": 64,
       "Width": 18,
       "Height": 26
     },
 	{
-      "Name": "Citizen_DarkElves_Worker",
+      "Name": "Citizen_DarkElf_Rebel",
       "X": 20,
-      "Y": 60,
+      "Y": 64,
+      "Width": 16,
+      "Height": 28
+    },
+	{
+      "Name": "Citizen_DarkElf_Worker",
+      "X": 40,
+      "Y": 64,
       "Width": 14,
       "Height": 26
     },
+    {
+      "Name": "Citizen_Draconian_Farmer",
+      "X": 0,
+      "Y": 96,
+      "Width": 20,
+      "Height": 26
+    },
 	{
-      "Name": "Citizen_DarkElves_Rebel",
-      "X": 40,
-      "Y": 60,
+      "Name": "Citizen_Draconian_Rebel",
+      "X": 20,
+      "Y": 96,
       "Width": 16,
+      "Height": 26
+    },
+	{
+      "Name": "Citizen_Draconian_Worker",
+      "X": 40,
+      "Y": 96,
+      "Width": 16,
+      "Height": 28
+    },
+    {
+      "Name": "Citizen_Dwarf_Farmer",
+      "X": 0,
+      "Y": 128,
+      "Width": 20,
+      "Height": 22
+    },
+	{
+      "Name": "Citizen_Dwarf_Rebel",
+      "X": 20,
+      "Y": 128,
+      "Width": 16,
+      "Height": 24
+    },
+	{
+      "Name": "Citizen_Dwarf_Worker",
+      "X": 40,
+      "Y": 128,
+      "Width": 16,
+      "Height": 22
+    },
+    {
+      "Name": "Citizen_Gnoll_Farmer",
+      "X": 0,
+      "Y": 160,
+      "Width": 20,
+      "Height": 28
+    },
+	{
+      "Name": "Citizen_Gnoll_Rebel",
+      "X": 20,
+      "Y": 160,
+      "Width": 16,
+      "Height": 30
+    },
+	{
+      "Name": "Citizen_Gnoll_Worker",
+      "X": 40,
+      "Y": 160,
+      "Width": 16,
+      "Height": 28
+    },
+    {
+      "Name": "Citizen_Halfling_Farmer",
+      "X": 0,
+      "Y": 192,
+      "Width": 20,
+      "Height": 28
+    },
+	{
+      "Name": "Citizen_Halfling_Rebel",
+      "X": 20,
+      "Y": 192,
+      "Width": 16,
+      "Height": 20
+    },
+	{
+      "Name": "Citizen_Halfling_Worker",
+      "X": 40,
+      "Y": 192,
+      "Width": 16,
+      "Height": 20
+    },
+    {
+      "Name": "Citizen_HighElf_Farmer",
+      "X": 0,
+      "Y": 224,
+      "Width": 20,
+      "Height": 26
+    },
+	{
+      "Name": "Citizen_HighElf_Rebel",
+      "X": 20,
+      "Y": 224,
+      "Width": 14,
+      "Height": 28
+    },
+	{
+      "Name": "Citizen_HighElf_Worker",
+      "X": 40,
+      "Y": 224,
+      "Width": 14,
+      "Height": 26
+    },
+    {
+      "Name": "Citizen_HighMen_Farmer",
+      "X": 0,
+      "Y": 256,
+      "Width": 20,
+      "Height": 28
+    },
+	{
+      "Name": "Citizen_HighMen_Rebel",
+      "X": 20,
+      "Y": 256,
+      "Width": 16,
+      "Height": 30
+    },
+	{
+      "Name": "Citizen_HighMen_Worker",
+      "X": 40,
+      "Y": 256,
+      "Width": 16,
+      "Height": 28
+    },
+    {
+      "Name": "Citizen_Klackon_Farmer",
+      "X": 0,
+      "Y": 288,
+      "Width": 16,
+      "Height": 26
+    },
+	{
+      "Name": "Citizen_Klackon_Rebel",
+      "X": 20,
+      "Y": 288,
+      "Width": 16,
+      "Height": 26
+    },
+	{
+      "Name": "Citizen_Klackon_Worker",
+      "X": 40,
+      "Y": 288,
+      "Width": 16,
+      "Height": 28
+    },
+    {
+      "Name": "Citizen_Lizardmen_Farmer",
+      "X": 0,
+      "Y": 320,
+      "Width": 20,
+      "Height": 28
+    },
+	{
+      "Name": "Citizen_Lizardmen_Rebel",
+      "X": 20,
+      "Y": 320,
+      "Width": 16,
+      "Height": 28
+    },
+	{
+      "Name": "Citizen_Lizardmen_Worker",
+      "X": 40,
+      "Y": 320,
+      "Width": 16,
+      "Height": 28
+    },
+    {
+      "Name": "Citizen_Nomad_Farmer",
+      "X": 0,
+      "Y": 352,
+      "Width": 20,
+      "Height": 28
+    },
+	{
+      "Name": "Citizen_Nomad_Rebel",
+      "X": 20,
+      "Y": 352,
+      "Width": 16,
+      "Height": 28
+    },
+	{
+      "Name": "Citizen_Nomad_Worker",
+      "X": 40,
+      "Y": 352,
+      "Width": 16,
+      "Height": 26
+    },
+    {
+      "Name": "Citizen_Orc_Farmer",
+      "X": 0,
+      "Y": 384,
+      "Width": 20,
+      "Height": 26
+    },
+	{
+      "Name": "Citizen_Orc_Rebel",
+      "X": 20,
+      "Y": 384,
+      "Width": 16,
+      "Height": 30
+    },
+	{
+      "Name": "Citizen_Orc_Worker",
+      "X": 40,
+      "Y": 384,
+      "Width": 16,
+      "Height": 26
+    },
+    {
+      "Name": "Citizen_Troll_Farmer",
+      "X": 0,
+      "Y": 416,
+      "Width": 20,
+      "Height": 26
+    },
+	{
+      "Name": "Citizen_Troll_Rebel",
+      "X": 20,
+      "Y": 416,
+      "Width": 16,
+      "Height": 32
+    },
+	{
+      "Name": "Citizen_Troll_Worker",
+      "X": 40,
+      "Y": 416,
+      "Width": 18,
       "Height": 28
     }
   ]

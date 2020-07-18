@@ -102,7 +102,7 @@ namespace AssetsLibrary
         {
             var spec2 = new AtlasSpec2();
             spec2.SpriteSheetName = spec.SpriteSheetName;
-            spec2.Frames = new AtlasFrames();
+            spec2.Frames = new AtlasFrames(spec.SpriteSheetName);
             foreach (var item in spec.Frames)
             {
                 spec2.Frames.Add(item);
