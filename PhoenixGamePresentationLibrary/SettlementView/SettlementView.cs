@@ -105,7 +105,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         {
             Command closeSettlementCommand = new CloseSettlementCommand();
             closeSettlementCommand.Payload = Settlement;
-            Globals.Instance.MessageQueue.Enqueue(closeSettlementCommand);
+            closeSettlementCommand.Execute();
         }
     }
 }

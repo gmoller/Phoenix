@@ -14,6 +14,8 @@ namespace PhoenixGamePresentationLibrary
 {
     internal class HudView
     {
+        private readonly WorldView _worldView;
+
         private Image _imgGold;
         private Image _imgMana;
         private Image _imgFood;
@@ -30,8 +32,9 @@ namespace PhoenixGamePresentationLibrary
 
         private readonly UnitsView _unitsView;
 
-        internal HudView(UnitsView unitsView)
+        internal HudView(WorldView worldView, UnitsView unitsView)
         {
+            _worldView = worldView;
             _unitsView = unitsView;
         }
 
@@ -170,8 +173,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void btnEndTurnClick(object sender, EventArgs e)
         {
-            Command endTurnCommand = new EndTurnCommand();
-            Globals.Instance.MessageQueue.Enqueue(endTurnCommand);
+            _worldView.EndTurn();
         }
     }
 }

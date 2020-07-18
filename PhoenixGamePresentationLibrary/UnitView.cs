@@ -143,7 +143,7 @@ namespace PhoenixGamePresentationLibrary
 
             Command moveUnitCommand = new MoveUnitCommand();
             moveUnitCommand.Payload = (_unit, _hexToMoveTo);
-            Globals.Instance.MessageQueue.Enqueue(moveUnitCommand);
+            moveUnitCommand.Execute();
         }
 
         private bool CheckForUnitSelection(InputHandler input)

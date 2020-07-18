@@ -11,25 +11,13 @@ namespace PhoenixGameLibrary
         {
             World = new World();
 
-            World.AddStartingSettlement(new Point(12, 9));
-            World.AddStartingUnit(new Point(12, 9));
+            World.AddSettlement(new Point(12, 9), "Fairhaven", "Barbarians");
+            World.AddUnit(new Point(12, 9), Globals.Instance.UnitTypes["Barbarian Spearmen"]);
         }
 
         public void Update(float deltaTime)
         {
             World.Update(deltaTime);
-
-            ProcessMessages();
-        }
-
-        private void ProcessMessages()
-        {
-            var queue = Globals.Instance.MessageQueue;
-            while (queue.Count > 0)
-            {
-                var command = queue.Dequeue();
-                command.Execute();
-            }
         }
     }
 }

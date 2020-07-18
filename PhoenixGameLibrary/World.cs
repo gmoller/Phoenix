@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using HexLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using Utilities;
@@ -28,40 +27,42 @@ namespace PhoenixGameLibrary
 
         public NotificationList NotificationList { get; }
 
-        public World()
+        internal World()
         {
             Globals.Instance.World = this;
 
             PlayerFaction = new Faction();
             OverlandMap = new OverlandMap(this);
-            Settlements = new Settlements();
+            Settlements = new Settlements(this);
             Units = new Units();
             _turnNumber = 0;
             NotificationList = new NotificationList();
         }
 
-        public void AddStartingSettlement(Point location)
+        internal void AddSettlement(Point location, string name, string raceTypeName)
         {
-            Settlements.AddSettlement("Fairhaven", "Barbarians", location, OverlandMap.CellGrid);
+            Settlements.AddSettlement(name, raceTypeName, location, OverlandMap.CellGrid);
         }
 
-        public void AddStartingUnit(Point location)
+        internal void AddUnit(Point location, UnitType unitType)
         {
-            var unitType = Globals.Instance.UnitTypes["Barbarian Spearmen"];
             var addUnitCommand = new AddUnitCommand();
-            addUnitCommand.Payload = (location, unitType);
-            Globals.Instance.MessageQueue.Enqueue(addUnitCommand);
+            addUnitCommand.Payload = (location, unitType, Units);
+            addUnitCommand.Execute();
         }
 
-        public void Update(float deltaTime)
+        internal void Update(float deltaTime)
         {
             Settlements.Update(deltaTime);
-            //Units.Update(deltaTime);
 
             PlayerFaction.FoodPerTurn = Settlements.FoodProducedThisTurn;
         }
 
-        public void EndTurn()
+        internal void BeginTurn()
+        {
+        }
+
+        internal void EndTurn()
         {
             NotificationList.Clear();
             Settlements.EndTurn();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using PhoenixGameLibrary.Helpers;
@@ -12,8 +13,11 @@ namespace PhoenixGameLibrary
     /// player/AI to do things such as build new units and add buildings to
     /// improve the settlement.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Settlement
     {
+        private readonly World _world;
+
         private readonly int _id;
 
         private readonly List<Cell> _catchmentCells;
@@ -74,8 +78,9 @@ namespace PhoenixGameLibrary
 
         public bool IsSelected { get; set; }
 
-        public Settlement(string name, string raceTypeName, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
+        internal Settlement(World world, string name, string raceTypeName, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
         {
+            _world = world;
             _id = (location.Y * Constants.WORLD_MAP_COLUMNS) + location.X;
 
             Name = name;
@@ -158,7 +163,7 @@ namespace PhoenixGameLibrary
             _currentlyBuilding = new CurrentlyBuilding(-1, unit.Id, _currentlyBuilding.ProductionAccrued);
         }
 
-        public void EndTurn()
+        internal void EndTurn()
         {
             _populationGrowth += GrowthRate;
             if (_populationGrowth >= 1000 && Citizens.TotalPopulation < Constants.MAXIMUM_POPULATION_SIZE)
@@ -178,7 +183,7 @@ namespace PhoenixGameLibrary
                     _currentlyBuilding = new CurrentlyBuilding(-1, -1, 0);
                     Command openSettlementCommand = new OpenSettlementCommand();
                     openSettlementCommand.Payload = this;
-                    Globals.Instance.MessageQueue.Enqueue(openSettlementCommand);
+                    openSettlementCommand.Execute();
                     // TODO: look at settlement
                 }
             }
@@ -188,17 +193,14 @@ namespace PhoenixGameLibrary
                 if (_currentlyBuilding.ProductionAccrued >= Globals.Instance.UnitTypes[_currentlyBuilding.UnitId].ConstructionCost)
                 {
                     var unitType = Globals.Instance.UnitTypes[_currentlyBuilding.UnitId];
+                    _world.AddUnit(Location, unitType);
                     Globals.Instance.World.NotificationList.Add($"- {Name} has produced a {unitType.Name}");
                     _currentlyBuilding = new CurrentlyBuilding(-1, -1, 0);
-
-                    var addUnitCommand = new AddUnitCommand();
-                    addUnitCommand.Payload = (Location, unitType);
-                    Globals.Instance.MessageQueue.Enqueue(addUnitCommand);
                 }
             }
         }
 
-        public bool CanSeeCell(Cell cell)
+        internal bool CanSeeCell(Cell cell)
         {
             // if cell is within 3 hexes
             foreach (var item in _seenCells)
@@ -235,6 +237,13 @@ namespace PhoenixGameLibrary
 
             return baseFoodLevel > Constants.MAXIMUM_POPULATION_SIZE ? Constants.MAXIMUM_POPULATION_SIZE : baseFoodLevel;
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Id={_id},Name={Name}}}";
     }
 
     public struct CurrentlyBuilding

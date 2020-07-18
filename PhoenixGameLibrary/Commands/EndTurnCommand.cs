@@ -1,12 +1,11 @@
-﻿using PhoenixGameLibrary.GameData;
-
-namespace PhoenixGameLibrary.Commands
+﻿namespace PhoenixGameLibrary.Commands
 {
     public class EndTurnCommand : Command
     {
-        internal override void Execute()
+        public override void Execute()
         {
-            Globals.Instance.World.EndTurn();
+            var payload = (World)Payload;
+            payload.EndTurn();
         }
     }
 }

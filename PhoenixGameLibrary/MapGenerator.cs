@@ -5,7 +5,7 @@ namespace PhoenixGameLibrary
 {
     public static class MapGenerator
     {
-        public static TerrainType[,] Generate(int numberOfColumns, int numberOfRows)
+        internal static TerrainType[,] Generate(int numberOfColumns, int numberOfRows)
         {
             // make some noise!
             float[,] noise = MakeNoise(numberOfColumns, numberOfRows);

@@ -1,10 +1,8 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
-using HexLibrary;
 using Input;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.GameData;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -92,8 +90,7 @@ namespace PhoenixGamePresentationLibrary
             _worldView.LoadContent(content);
             _cursorView.LoadContent(content);
 
-            var settlement = Globals.Instance.World.Settlements[0];
-            _worldView.Camera.LookAtCell(settlement.Location);
+            _worldView.BeginTurn();
         }
 
         public void Update(float deltaTime)

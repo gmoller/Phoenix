@@ -2,7 +2,7 @@
 {
     public class CloseSettlementCommand : Command
     {
-        internal override void Execute()
+        public override void Execute()
         {
             var settlement = (Settlement)Payload;
             settlement.IsSelected = false;

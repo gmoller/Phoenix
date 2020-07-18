@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Input;
 using PhoenixGameLibrary;
+using PhoenixGameLibrary.Commands;
+using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
@@ -31,11 +33,11 @@ namespace PhoenixGamePresentationLibrary
             _overlandSettlementsView = new OverlandSettlementsView(this, _world.Settlements);
             _unitsView = new UnitsView(this, _world.Units);
             _settlementsView = new SettlementsView(_world.Settlements);
-            _hudView = new HudView(_unitsView);
+            _hudView = new HudView(this, _unitsView);
 
             Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
             Camera.LoadContent(content);
-            Camera.LookAtPixel(new Vector2(800.0f, 400.0f));
+            //Camera.LookAtPixel(new Vector2(800.0f, 400.0f));
 
             _overlandSettlementsView.LoadContent(content);
             _unitsView.LoadContent(content);
@@ -73,6 +75,22 @@ namespace PhoenixGamePresentationLibrary
             _hudView.Draw(spriteBatch);
 
             _settlementsView.Draw(spriteBatch);
+        }
+
+        public void BeginTurn()
+        {
+            //_world.BeginTurn();
+
+            var unit = _world.Units[0];
+            Camera.LookAtCell(unit.Location);
+        }
+
+        public void EndTurn()
+        {
+            Command endTurnCommand = new EndTurnCommand();
+            endTurnCommand.Payload = _world;
+            endTurnCommand.Execute();
+            BeginTurn();
         }
     }
 }

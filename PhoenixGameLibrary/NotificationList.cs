@@ -7,17 +7,17 @@ namespace PhoenixGameLibrary
     {
         private readonly List<string> _notifications;
 
-        public NotificationList()
+        internal NotificationList()
         {
             _notifications = new List<string>();
         }
 
-        public void Add(string notification)
+        internal void Add(string notification)
         {
             _notifications.Add(notification);
         }
 
-        public void Clear()
+        internal void Clear()
         {
             if (_notifications.Count > 0)
             {

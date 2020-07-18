@@ -6,7 +6,6 @@ namespace PhoenixGameLibrary.GameData
     {
         private static readonly Lazy<Globals> Lazy = new Lazy<Globals>(() => new Globals());
 
-        public MessageQueue MessageQueue { get; }
         public World World { get; set; }
 
         public NamedDataList<TerrainType> TerrainTypes { get; }
@@ -31,8 +30,6 @@ namespace PhoenixGameLibrary.GameData
 
         private Globals()
         {
-            MessageQueue = new MessageQueue();
-
             TerrainTypes = NamedDataList<TerrainType>.Create(TerrainTypesLoader.Load());
             TerrainFoodOutputTypes = DataList<TerrainFoodOutputType>.Create(TerrainFoodOutputTypesLoader.Load());
             TerrainProductionPercentageTypes = DataList<TerrainProductionPercentageType>.Create(TerrainProductionPercentageTypesLoader.Load());

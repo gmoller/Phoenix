@@ -2,7 +2,7 @@
 {
     public class OpenSettlementCommand : Command
     {
-        internal override void Execute()
+        public override void Execute()
         {
             var settlement = (Settlement)Payload;
             settlement.IsSelected = true;

@@ -5,12 +5,13 @@ namespace PhoenixGameLibrary.Commands
 {
     public class AddUnitCommand : Command
     {
-        internal override void Execute()
+        public override void Execute()
         {
-            var payload = ((Point position, UnitType unitType))Payload;
+            var payload = ((Point position, UnitType unitType, Units units))Payload;
             var unitType = payload.unitType;
             var position = payload.position;
-            Globals.Instance.World.Units.AddUnit(unitType, position);
+            var units = payload.units;
+            units.AddUnit(unitType, position);
         }
     }
 }

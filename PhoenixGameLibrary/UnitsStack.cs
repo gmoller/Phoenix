@@ -4,12 +4,12 @@
     {
         private readonly Units _units;
 
-        public UnitsStack(Units units)
+        internal UnitsStack(Units units)
         {
             _units = units;
         }
 
-        public string DetermineMovementType()
+        internal string DetermineMovementType()
         {
             // flying
             bool flying = false;

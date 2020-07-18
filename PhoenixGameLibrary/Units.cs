@@ -1,34 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Units : IEnumerable<Unit>
     {
         private readonly List<Unit> _units;
 
         public Unit this[int index] => _units[index];
 
-        public Units()
+        internal Units()
         {
             _units = new List<Unit>();
         }
 
-        public void AddUnit(UnitType unitType, Point point)
+        internal void AddUnit(UnitType unitType, Point point)
         {
             var unit = new Unit(unitType, point);
             _units.Add(unit);
         }
 
-        public void EndTurn()
+        internal void EndTurn()
         {
             foreach (var unit in _units)
             {
                 unit.EndTurn();
             }
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Count={_units.Count}}}";
 
         public IEnumerator<Unit> GetEnumerator()
         {

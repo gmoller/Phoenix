@@ -39,7 +39,7 @@ namespace PhoenixGamePresentationLibrary
             {
                 Command openSettlementCommand = new OpenSettlementCommand();
                 openSettlementCommand.Payload = Settlement;
-                Globals.Instance.MessageQueue.Enqueue(openSettlementCommand);
+                openSettlementCommand.Execute();
 
                 _worldView.Camera.LookAtCell(Settlement.Location);
             }

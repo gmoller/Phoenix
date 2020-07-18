@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -8,6 +9,7 @@ namespace PhoenixGameLibrary
     /// <summary>
     /// A Unit is a game entity that can be moved around the map.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Unit
     {
         public Guid Id { get; }
@@ -23,7 +25,7 @@ namespace PhoenixGameLibrary
         public Moves UnitTypeMoves => _unitType.Moves;
         public string UnitTypeTextureName => _unitType.TextureName;
 
-        public Unit(UnitType unitType, Point location)
+        internal Unit(UnitType unitType, Point location)
         {
             Id = Guid.NewGuid();
             _unitType = unitType;
@@ -33,7 +35,7 @@ namespace PhoenixGameLibrary
             SetSeenCells(location);
         }
 
-        public void MoveTo(Point locationToMoveTo)
+        internal void MoveTo(Point locationToMoveTo)
         {
             Location = locationToMoveTo;
             SetSeenCells(Location);
@@ -43,12 +45,12 @@ namespace PhoenixGameLibrary
             MovementPoints -= movementCost.Cost;
         }
 
-        public void EndTurn()
+        internal void EndTurn()
         {
             MovementPoints = _unitType.Moves["Ground"].Moves;
         }
 
-        public bool CanSeeCell(Cell cell)
+        internal bool CanSeeCell(Cell cell)
         {
             // if cell is within 4 hexes
             foreach (var item in _seenCells)
@@ -73,5 +75,12 @@ namespace PhoenixGameLibrary
                 cellGrid.SetCell(item.Column, item.Row, cell);
             }
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Id={Id},Name={Name},Location={Location}}}";
     }
 }

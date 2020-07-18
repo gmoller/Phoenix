@@ -16,7 +16,7 @@ namespace PhoenixGameLibrary
 
         public int TotalPopulation => SubsistenceFarmers + AdditionalFarmers + Workers; // _rebels
 
-        public SettlementCitizens(Settlement settlement, int settlementSize, List<int> buildingsBuilt)
+        internal SettlementCitizens(Settlement settlement, int settlementSize, List<int> buildingsBuilt)
         {
             _settlement = settlement;
 
@@ -25,7 +25,7 @@ namespace PhoenixGameLibrary
             Workers = 0;
         }
 
-        public void IncreaseByOne(List<int> buildingsBuilt)
+        internal void IncreaseByOne(List<int> buildingsBuilt)
         {
             var subsistenceFarmers = CalculateSubsistenceFarmers(TotalPopulation + 1, buildingsBuilt);
 

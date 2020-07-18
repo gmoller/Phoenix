@@ -6,7 +6,7 @@
 
         public CellGrid CellGrid { get; }
 
-        public OverlandMap(World world)
+        internal OverlandMap(World world)
         {
             _world = world;
             CellGrid = new CellGrid(Constants.WORLD_MAP_COLUMNS, Constants.WORLD_MAP_ROWS);
