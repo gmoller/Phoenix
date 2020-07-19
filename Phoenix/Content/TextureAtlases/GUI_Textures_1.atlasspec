@@ -58,6 +58,13 @@
       "Height": 52
     },
     {
+      "Name": "name_shadowing",
+      "X": 939,
+      "Y": 261,
+      "Width": 82,
+      "Height": 21
+    },
+    {
       "Name": "reg_button_n",
       "X": 556,
       "Y": 282,
@@ -127,7 +134,6 @@
       "Width": 317,
       "Height": 406
     },
-	
 	{
       "Name": "minus_n",
       "X": 616,
@@ -170,5 +176,12 @@
       "Width": 19,
       "Height": 19
     },
+    {
+      "Name": "sp_frame",
+      "X": 801,
+      "Y": 688,
+      "Width": 71,
+      "Height": 71
+    }
   ]
 }

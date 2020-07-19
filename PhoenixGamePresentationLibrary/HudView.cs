@@ -6,7 +6,6 @@ using AssetsLibrary;
 using GuiControls;
 using Input;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -114,7 +113,7 @@ namespace PhoenixGamePresentationLibrary
         private void DrawNotifications(SpriteBatch spriteBatch)
         {
             var x = DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f + 10.0f;
-            var y = DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2.0f;
+            var y = DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2.0f - 150.0f;
             foreach (var item in Globals.Instance.World.NotificationList)
             {
                 var lines = TextWrapper.WrapText(item, 150, _font);
@@ -128,17 +127,22 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawSelectedUnits(SpriteBatch spriteBatch)
         {
-            var units = Globals.Instance.World.Units;
+            var startX = DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f + 10.0f;
+            var startY = DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2.0f;
+            var x = startX;
+            var y = startY;
 
-            var x = DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f + 10.0f;
-            var y = DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2.0f;
-            foreach (UnitView unitView in _unitsView)
+            foreach (var unitView in _unitsView)
             {
                 if (unitView.IsSelected)
                 {
-                    var lbl = new Label(unitView.Name, "CrimsonText-Regular-6", new Vector2(x, y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(42.0f, 20.0f), unitView.ShortName, HorizontalAlignment.Center, Color.Red, null, Color.PowderBlue);
-                    lbl.Draw(spriteBatch);
-                    y += 25.0f;
+                    unitView.DrawBadge(spriteBatch, new Vector2(x, y));
+                    x += 75.0f;
+                    if (x > startX + 150.0f)
+                    {
+                        x = startX;
+                        y += 75.0f;
+                    }
                 }
             }
         }

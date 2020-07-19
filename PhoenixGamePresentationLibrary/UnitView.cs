@@ -28,6 +28,11 @@ namespace PhoenixGamePresentationLibrary
 
         private Vector2 _currentPositionOnScreen;
 
+        private Texture2D _unitTextures;
+        private AtlasSpec2 _unitAtlas;
+        private Texture2D _guiTextures;
+        private AtlasSpec2 _guiAtlas;
+
         public bool IsSelected { get; private set; }
         public string Name => _unit.Name;
         public string ShortName => _unit.ShortName;
@@ -42,6 +47,16 @@ namespace PhoenixGamePresentationLibrary
 
         internal void LoadContent(ContentManager content)
         {
+            _unitTextures = AssetsManager.Instance.GetTexture("Units");
+            _unitAtlas = AssetsManager.Instance.GetAtlas("Units");
+            _guiTextures = AssetsManager.Instance.GetTexture("GUI_Textures_1");
+            _guiAtlas = AssetsManager.Instance.GetAtlas("GUI_Textures_1");
+        }
+
+        internal void SelectUnit()
+        {
+            IsSelected = true;
+            _worldView.Camera.LookAtCell(_unit.Location);
         }
 
         internal void Update(InputHandler input, float deltaTime)
@@ -160,15 +175,6 @@ namespace PhoenixGamePresentationLibrary
             return false;
         }
 
-        internal void SelectUnit()
-        {
-            // TODO: show in hudview
-
-            IsSelected = true;
-
-            _worldView.Camera.LookAtCellPointedAtByMouse();
-        }
-
         private void DeselectUnit()
         {
             IsSelected = false;
@@ -196,27 +202,44 @@ namespace PhoenixGamePresentationLibrary
             return _unit.Location == hexPoint;
         }
 
-        internal void Draw(SpriteBatch spriteBatch, Texture2D textures, AtlasSpec2 atlas)
+        internal void DrawBadge(SpriteBatch spriteBatch, Vector2 topLeftPosition)
         {
-            var frame = atlas.Frames[_unit.UnitTypeTextureName];
+            var destinationRectangle = new Rectangle((int)topLeftPosition.X, (int)topLeftPosition.Y, 70, 70);
+            var frame = _guiAtlas.Frames["sp_frame"];
+            var sourceRectangle = frame.ToRectangle();
+            spriteBatch.Draw(_guiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.0f);
+
+            destinationRectangle = new Rectangle((int)topLeftPosition.X + 10, (int)topLeftPosition.Y + 10, 50, 50);
+            if (IsSelected)
+            {
+                spriteBatch.FillRectangle(destinationRectangle, Color.Green, 0.0f);
+            }
+            frame = _unitAtlas.Frames[_unit.UnitTypeTextureName];
+            sourceRectangle = frame.ToRectangle();
+            spriteBatch.Draw(_unitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.0f);
+        }
+
+        internal void Draw(SpriteBatch spriteBatch)
+        {
             if (IsSelected)
             {
                 if (!_blink)
                 {
-                    DrawUnit(spriteBatch, textures, frame);
+                    DrawUnit(spriteBatch);
                 }
             }
             else
             {
-                DrawUnit(spriteBatch, textures, frame);
+                DrawUnit(spriteBatch);
             }
         }
 
-        private void DrawUnit(SpriteBatch spriteBatch, Texture2D textures, AtlasFrame frame)
+        private void DrawUnit(SpriteBatch spriteBatch)
         {
             var destinationRectangle = new Rectangle((int)_currentPositionOnScreen.X, (int)_currentPositionOnScreen.Y, 50, 50);
+            var frame = _unitAtlas.Frames[_unit.UnitTypeTextureName];
             var sourceRectangle = frame.ToRectangle();
-            spriteBatch.Draw(textures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(frame.Width / 2.0f, frame.Height / 2.0f), SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(_unitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(frame.Width / 2.0f, frame.Height / 2.0f), SpriteEffects.None, 0.0f);
         }
     }
 }

@@ -14,41 +14,36 @@ namespace PhoenixGamePresentationLibrary
     public class UnitsView : IEnumerable<UnitView>
     {
         private readonly WorldView _worldView;
+        private ContentManager _content;
 
-        private Texture2D _textures;
-        private AtlasSpec2 _atlas;
-        private readonly Units _units;
-        private readonly Dictionary<Guid, UnitView> _unitViews;
+        private Dictionary<Guid, UnitView> _unitViews;
 
-        public UnitsView(WorldView worldView, Units units)
+        public UnitsView(WorldView worldView)
         {
             _worldView = worldView;
-            _units = units;
             _unitViews = new Dictionary<Guid, UnitView>();
         }
 
         internal void LoadContent(ContentManager content)
         {
-            _textures = AssetsManager.Instance.GetTexture("Units");
-            _atlas = AssetsManager.Instance.GetAtlas("Units");
+            _content = content;
+        }
+
+        internal void Refresh(Units units)
+        {
+            _unitViews = new Dictionary<Guid, UnitView>();
+            foreach (var unit in units)
+            {
+                var unitView = new UnitView(_worldView, unit);
+                unitView.LoadContent(_content);
+                _unitViews.Add(unit.Id, unitView);
+            }
         }
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            foreach (var unit in _units)
+            foreach (var unitView in _unitViews.Values)
             {
-                UnitView unitView;
-
-                if (_unitViews.ContainsKey(unit.Id))
-                {
-                    unitView = _unitViews[unit.Id];
-                }
-                else
-                {
-                    unitView = new UnitView(_worldView, unit);
-                    _unitViews.Add(unit.Id, unitView);
-                }
-                
                 unitView.Update(input, deltaTime);
             }
         }
@@ -57,7 +52,7 @@ namespace PhoenixGamePresentationLibrary
         {
             foreach (var unit in _unitViews)
             {
-                unit.Value.Draw(spriteBatch, _textures, _atlas);
+                unit.Value.Draw(spriteBatch);
             }
         }
 

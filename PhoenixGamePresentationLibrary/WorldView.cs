@@ -30,13 +30,12 @@ namespace PhoenixGamePresentationLibrary
         {
             _overlandMapView = new OverlandMapView(this, _world.OverlandMap);
             _overlandSettlementsView = new OverlandSettlementsView(this, _world.Settlements);
-            _unitsView = new UnitsView(this, _world.Units);
+            _unitsView = new UnitsView(this);
             _settlementsView = new SettlementsView(_world.Settlements);
             _hudView = new HudView(this, _unitsView);
 
             Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
             Camera.LoadContent(content);
-            //Camera.LookAtPixel(new Vector2(800.0f, 400.0f));
 
             _overlandSettlementsView.LoadContent(content);
             _unitsView.LoadContent(content);
@@ -82,13 +81,11 @@ namespace PhoenixGamePresentationLibrary
             beginTurnCommand.Payload = _world;
             beginTurnCommand.Execute();
 
+            _unitsView.Refresh(_world.Units);
             foreach (var unitView in _unitsView)
             {
                 unitView.SelectUnit();
             }
-
-            var unit = _world.Units[0];
-            Camera.LookAtCell(unit.Location);
         }
 
         public void EndTurn()
