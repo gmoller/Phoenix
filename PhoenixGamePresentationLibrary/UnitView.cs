@@ -65,7 +65,31 @@ namespace PhoenixGamePresentationLibrary
             _blink = DetermineBlinkState(deltaTime);
 
             // unit movement
-              
+            var startUnitMovement = CheckForUnitMovementFromKeyboardInitiation(input);
+            if (startUnitMovement.startMovement)
+            {
+                StartUnitMovement(startUnitMovement.hexToMoveTo);
+            }
+            else
+            {
+                startUnitMovement = CheckForUnitMovementFromMouseInitiation(input);
+                if (startUnitMovement.startMovement)
+                {
+                    StartUnitMovement(startUnitMovement.hexToMoveTo);
+                }
+            }
+
+            if (UnitIsMoving())
+            {
+                MoveUnit(deltaTime);
+                var unitHasReachedDestination = CheckIfUnitHasReachedDestination();
+                if (unitHasReachedDestination) MoveUnitToCell();
+            }
+
+            var selectUnit = CheckForUnitSelection(input);
+            if (selectUnit) SelectUnit();
+            var deselectUit = CheckForUnitDeselection(_unit);
+            if (deselectUit) DeselectUnit();
         }
 
         private bool DetermineBlinkState(float deltaTime)
