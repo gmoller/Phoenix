@@ -1,4 +1,5 @@
-﻿using Utilities;
+﻿using Microsoft.Xna.Framework.Input;
+using Utilities;
 
 namespace Input
 {
@@ -18,6 +19,14 @@ namespace Input
         public bool MouseIsAtLeftOfScreen => MouseHandler.MousePosition.X < DeviceManager.Instance.MapViewport.X + 5.0f;
         public bool MouseIsAtRightOfScreen => MouseHandler.MousePosition.X > DeviceManager.Instance.MapViewport.Width - 5.0f;
 
+        public bool AreAnyNumPadKeysDown =>
+            KeyboardHandler.IsKeyDown(Keys.NumPad4) ||
+            KeyboardHandler.IsKeyDown(Keys.NumPad6) ||
+            KeyboardHandler.IsKeyDown(Keys.NumPad7) ||
+            KeyboardHandler.IsKeyDown(Keys.NumPad9) ||
+            KeyboardHandler.IsKeyDown(Keys.NumPad1) ||
+            KeyboardHandler.IsKeyDown(Keys.NumPad3);
+
         public bool Eaten { get; set; }
 
         public void Initialize()
@@ -30,6 +39,11 @@ namespace Input
         {
             KeyboardHandler.Update();
             MouseHandler.Update();
+        }
+
+        public bool IsKeyDown(Keys key)
+        {
+            return KeyboardHandler.IsKeyDown(key);
         }
     }
 }

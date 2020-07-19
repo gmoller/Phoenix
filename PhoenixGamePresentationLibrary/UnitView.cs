@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using HexLibrary;
 using Input;
+using Microsoft.Xna.Framework.Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
@@ -64,19 +65,7 @@ namespace PhoenixGamePresentationLibrary
             _blink = DetermineBlinkState(deltaTime);
 
             // unit movement
-            var startUnitMovement = CheckForUnitMovementInitiation(input);
-            if (startUnitMovement) StartUnitMovement();
-            if (UnitIsMoving())
-            {
-                MoveUnit(deltaTime);
-                var unitHasReachedDestination = CheckIfUnitHasReachedDestination();
-                if (unitHasReachedDestination) MoveUnitToCell();
-            }
-
-            var selectUnit = CheckForUnitSelection(input);
-            if (selectUnit) SelectUnit();
-            var deselectUit = CheckForUnitDeselection(_unit);
-            if (deselectUit) DeselectUnit();
+              
         }
 
         private bool DetermineBlinkState(float deltaTime)
@@ -98,32 +87,81 @@ namespace PhoenixGamePresentationLibrary
             return _blink;
         }
 
-        private bool CheckForUnitMovementInitiation(InputHandler input)
+        private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromKeyboardInitiation(InputHandler input)
         {
-            if (!IsSelected || !input.IsLeftMouseButtonReleased || _isMovingState) return false;
+            if (!IsSelected || _isMovingState || !input.AreAnyNumPadKeysDown) return (false, new Point(0, 0));
 
-            var currentHex = _unit.Location;
-            var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
-
-            if (IsWithinOneHexOf(currentHex, hexToMoveTo))
+            // unit is selected, a number pad key has been pressed and unit is not already moving
+            // determine hex to move to:
+            Direction direction;
+            if (input.IsKeyDown(Keys.NumPad4))
             {
-                var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
-                var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.MovementTypeName];
-
-                // TODO: assumes all units are walking: checking movement type
-                if (movementCost.Cost > 0.0f && _unit.MovementPoints > 0.0f)
-                {
-                    return true;
-                }
+                direction = Direction.West;
+            }
+            else if (input.IsKeyDown(Keys.NumPad6))
+            {
+                direction = Direction.East;
+            }
+            else if (input.IsKeyDown(Keys.NumPad7))
+            {
+                direction = Direction.NorthWest;
+            }
+            else if (input.IsKeyDown(Keys.NumPad9))
+            {
+                direction = Direction.NorthEast;
+            }
+            else if (input.IsKeyDown(Keys.NumPad1))
+            {
+                direction = Direction.SouthWest;
+            }
+            else if (input.IsKeyDown(Keys.NumPad3))
+            {
+                direction = Direction.SouthEast;
+            }
+            else
+            {
+                return (false, new Point(0, 0));
             }
 
-            return false;
+            var o = HexOffsetCoordinates.GetNeighbor(_unit.Location.X, _unit.Location.Y, direction);
+            var hexToMoveTo = new Point(o.Col, o.Row);
+
+            var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
+            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.MovementTypeName];
+
+            // TODO: assumes all units are walking: checking movement type
+            if (movementCost.Cost > 0.0f && _unit.MovementPoints > 0.0f)
+            {
+                return (true, hexToMoveTo);
+            }
+
+            return (false, new Point(0, 0));
         }
 
-        private void StartUnitMovement()
+        private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input)
+        {
+            if (!IsSelected || _isMovingState || !input.IsLeftMouseButtonReleased) return (false, new Point(0, 0));
+
+            // unit is selected, left mouse button released and unit is not already moving
+            //var currentHex = _unit.Location;
+            var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
+
+            var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
+            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.MovementTypeName];
+
+            // TODO: assumes all units are walking: checking movement type
+            if (movementCost.Cost > 0.0f)
+            {
+                return (true, hexToMoveTo);
+            }
+
+            return (false, new Point(0, 0));
+        }
+
+        private void StartUnitMovement(Point hexToMoveTo)
         {
             _isMovingState = true;
-            _hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
+            _hexToMoveTo = hexToMoveTo;
             _movementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
         }
 
@@ -178,21 +216,6 @@ namespace PhoenixGamePresentationLibrary
         private void DeselectUnit()
         {
             IsSelected = false;
-        }
-
-        private bool IsWithinOneHexOf(Point currentHex, Point hexToMoveTo)
-        {
-            var neighbors = HexOffsetCoordinates.GetAllNeighbors(currentHex.X, currentHex.Y);
-
-            foreach (var neighbor in neighbors)
-            {
-                if (neighbor.Col == hexToMoveTo.X && neighbor.Row == hexToMoveTo.Y)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         private bool CursorIsOnThisUnit()
