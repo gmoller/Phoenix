@@ -25,6 +25,9 @@ namespace PhoenixGameLibrary
         public Moves UnitTypeMoves => _unitType.Moves;
         public string UnitTypeTextureName => _unitType.TextureName;
 
+        public Point[] MovementPath { get; set; }
+        public int CurrentPositionInMovementPath { get; set; }
+
         internal Unit(UnitType unitType, Point location)
         {
             Id = Guid.NewGuid();

@@ -39,7 +39,7 @@ namespace PhoenixGamePresentationLibrary
         private void DrawCellGrid(SpriteBatch spriteBatch, CellGrid cellGrid, Camera camera)
         {
             var center = camera.ScreenToWorld(new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width / 2.0f, DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2.0f));
-            var centerHex = HexOffsetCoordinates.OffsetCoordinatesFromPixel((int)center.X, (int)center.Y);
+            var centerHex = HexOffsetCoordinates.FromPixel((int)center.X, (int)center.Y);
 
             var columnsToLeft = 10; // TODO: remove hardcoding, use size of hex and cater for zoom (how many hexes fit on the screen)
             var columnsToRight = 10;
@@ -93,7 +93,7 @@ namespace PhoenixGamePresentationLibrary
             var frame = spec.Frames[neverSeen ? cell.TextureFogOfWar.TextureId : cell.Texture.TextureId];
             var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
-            var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
+            var centerPosition = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row);
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
             var layerDepth = cell.Index / 10000.0f;
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
@@ -105,7 +105,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawHexBorder(Cell cell)
         {
-            var centerPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
+            var centerPosition = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row);
 
             var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
 

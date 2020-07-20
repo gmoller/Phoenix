@@ -72,7 +72,7 @@ namespace PhoenixGameLibrary.GameData
             var unitTypes = new List<UnitType>
             {
                 UnitType.Create(0, "Barbarian Settlers", "Settlers", 60.0f, new Moves(new Move("Ground", 1.0f)), "Unit_Icon_Settlers_Transparent", new List<string> { "Barbarians" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait", "BuildOutpost" }),
-                UnitType.Create(1, "Barbarian Spearmen", "Spearmen", 15.0f, new Moves(new Move("Ground", 1.0f)), "Unit_Icon_BarbarianSpearmen_Transparent", new List<string> { "Barbarians" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
+                UnitType.Create(1, "Barbarian Spearmen", "Spearmen", 15.0f, new Moves(new Move("Ground", 4.0f)), "Unit_Icon_BarbarianSpearmen_Transparent", new List<string> { "Barbarians" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
                 UnitType.Create(2, "Barbarian Swordsmen", "Swordsmen", 30.0f, new Moves(new Move("Ground", 1.0f)), "Unit_Icon_BarbarianSwordsmen_Transparent", new List<string> { "Barbarians" }, new List<string> { "Barracks", "Smithy" }, new List<string> { "Done", "Patrol", "Wait" }),
                 UnitType.Create(3, "Barbarian Bowmen", "Bowmen", 30.0f, new Moves(new Move("Ground", 1.0f)), "Unit_Icon_BarbarianBowmen_Transparent", new List<string> { "Barbarians" }, new List<string> { "Barracks", "Sawmill" }, new List<string> { "Done", "Patrol", "Wait" }),
                 UnitType.Create(4, "Barbarian Cavalry", "Cavalry", 60.0f, new Moves(new Move("Ground", 2.0f)), "Unit_Icon_BarbarianCavalry_Transparent", new List<string> { "Barbarians" }, new List<string> { "Barracks", "Stables" }, new List<string> { "Done", "Patrol", "Wait" }),

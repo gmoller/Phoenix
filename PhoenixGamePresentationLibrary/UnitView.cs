@@ -24,15 +24,14 @@ namespace PhoenixGamePresentationLibrary
         private bool _blink;
 
         private bool _isMovingState;
-        private Point _hexToMoveTo;
         private float _movementCountdownTime;
 
         private Vector2 _currentPositionOnScreen;
 
-        private Texture2D _unitTextures;
-        private AtlasSpec2 _unitAtlas;
         private Texture2D _guiTextures;
         private AtlasSpec2 _guiAtlas;
+        private Texture2D _unitTextures;
+        private AtlasSpec2 _unitAtlas;
 
         public bool IsSelected { get; private set; }
         public string Name => _unit.Name;
@@ -43,15 +42,15 @@ namespace PhoenixGamePresentationLibrary
             _worldView = worldView;
             _unit = unit;
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
-            _currentPositionOnScreen = HexOffsetCoordinates.OffsetCoordinatesToPixel(unit.Location.X, unit.Location.Y);
+            _currentPositionOnScreen = HexOffsetCoordinates.ToPixel(unit.Location.X, unit.Location.Y);
         }
 
         internal void LoadContent(ContentManager content)
         {
-            _unitTextures = AssetsManager.Instance.GetTexture("Units");
-            _unitAtlas = AssetsManager.Instance.GetAtlas("Units");
             _guiTextures = AssetsManager.Instance.GetTexture("GUI_Textures_1");
             _guiAtlas = AssetsManager.Instance.GetAtlas("GUI_Textures_1");
+            _unitTextures = AssetsManager.Instance.GetTexture("Units");
+            _unitAtlas = AssetsManager.Instance.GetAtlas("Units");
         }
 
         internal void SelectUnit()
@@ -65,25 +64,35 @@ namespace PhoenixGamePresentationLibrary
             _blink = DetermineBlinkState(deltaTime);
 
             // unit movement
+            var restartMovement = CheckForRestartOfMovement();
+            if (restartMovement)
+            {
+                StartUnitMovement();
+            }
+
             var startUnitMovement = CheckForUnitMovementFromKeyboardInitiation(input);
             if (startUnitMovement.startMovement)
             {
-                StartUnitMovement(startUnitMovement.hexToMoveTo);
+                _unit.MovementPath = DetermineMovementPath(startUnitMovement.hexToMoveTo);
+                _unit.CurrentPositionInMovementPath = 1;
+                StartUnitMovement();
             }
             else
             {
                 startUnitMovement = CheckForUnitMovementFromMouseInitiation(input);
                 if (startUnitMovement.startMovement)
                 {
-                    StartUnitMovement(startUnitMovement.hexToMoveTo);
+                    _unit.MovementPath = DetermineMovementPath(startUnitMovement.hexToMoveTo);
+                    _unit.CurrentPositionInMovementPath = 1;
+                    StartUnitMovement();
                 }
             }
 
             if (UnitIsMoving())
             {
                 MoveUnit(deltaTime);
-                var unitHasReachedDestination = CheckIfUnitHasReachedDestination();
-                if (unitHasReachedDestination) MoveUnitToCell();
+                var unitHasReachedNextCell = CheckIfUnitHasReachedNextCell();
+                if (unitHasReachedNextCell) MoveUnitToCell();
             }
 
             var selectUnit = CheckForUnitSelection(input);
@@ -109,6 +118,16 @@ namespace PhoenixGamePresentationLibrary
             }
 
             return _blink;
+        }
+
+        private bool CheckForRestartOfMovement()
+        {
+            if (_isMovingState == false && _unit.CurrentPositionInMovementPath > 0 && _unit.MovementPoints > 0.0f)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromKeyboardInitiation(InputHandler input)
@@ -167,10 +186,9 @@ namespace PhoenixGamePresentationLibrary
             if (!IsSelected || _isMovingState || !input.IsLeftMouseButtonReleased) return (false, new Point(0, 0));
 
             // unit is selected, left mouse button released and unit is not already moving
-            //var currentHex = _unit.Location;
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
-
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
+            if (cellToMoveTo.SeenState == SeenState.Never) return (false, new Point(0, 0));
             var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.MovementTypeName];
 
             // TODO: assumes all units are walking: checking movement type
@@ -182,10 +200,22 @@ namespace PhoenixGamePresentationLibrary
             return (false, new Point(0, 0));
         }
 
-        private void StartUnitMovement(Point hexToMoveTo)
+        private Point[] DetermineMovementPath(Point hexToMoveTo)
+        {
+            var hexes = HexOffsetCoordinates.GetLine(_unit.Location.X, _unit.Location.Y, hexToMoveTo.X, hexToMoveTo.Y);
+            var result = new Point[hexes.Count];
+            var cnt = 0;
+            foreach (var hex in hexes)
+            {
+                result[cnt++] = new Point(hex.Col, hex.Row);
+            }
+
+            return result;
+        }
+
+        private void StartUnitMovement()
         {
             _isMovingState = true;
-            _hexToMoveTo = hexToMoveTo;
             _movementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
         }
 
@@ -199,27 +229,46 @@ namespace PhoenixGamePresentationLibrary
             _movementCountdownTime -= deltaTime;
 
             // determine start cell screen position
-            var startPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(_unit.Location.X, _unit.Location.Y);
+            var startPosition = HexOffsetCoordinates.ToPixel(_unit.Location.X, _unit.Location.Y);
             // determine end cell screen position
-            var endPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(_hexToMoveTo.X, _hexToMoveTo.Y);
+            var hexToMoveTo = _unit.MovementPath[_unit.CurrentPositionInMovementPath];
+            var endPosition = HexOffsetCoordinates.ToPixel(hexToMoveTo.X, hexToMoveTo.Y);
             // lerp between the two positions
             var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - _movementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
 
             _currentPositionOnScreen = newPosition;
         }
 
-        private bool CheckIfUnitHasReachedDestination()
+        private bool CheckIfUnitHasReachedNextCell()
         {
             return _movementCountdownTime <= 0;
         }
 
         private void MoveUnitToCell()
         {
-            _isMovingState = false;
+            _movementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
 
             Command moveUnitCommand = new MoveUnitCommand();
-            moveUnitCommand.Payload = (_unit, _hexToMoveTo);
+            moveUnitCommand.Payload = (_unit, _unit.MovementPath[_unit.CurrentPositionInMovementPath]);
             moveUnitCommand.Execute();
+
+            // if run out of movement points
+            if (_unit.MovementPoints <= 0.0f)
+            {
+                _isMovingState = false;
+            }
+
+            // if reached final destination
+            if (_unit.CurrentPositionInMovementPath >= _unit.MovementPath.Length - 1)
+            {
+                _isMovingState = false;
+                _unit.MovementPath = null;
+                _unit.CurrentPositionInMovementPath = 0;
+            }
+            else
+            {
+                _unit.CurrentPositionInMovementPath++;
+            }
         }
 
         private bool CheckForUnitSelection(InputHandler input)

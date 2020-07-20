@@ -62,7 +62,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawSettlement(SpriteBatch spriteBatch, Cell cell)
         {
-            var position = HexOffsetCoordinates.OffsetCoordinatesToPixel(cell.Column, cell.Row);
+            var position = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row);
             var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(HexLibrary.Constants.HEX_ACTUAL_WIDTH * 0.5f), (int)(HexLibrary.Constants.HEX_ACTUAL_HEIGHT * 0.75f));
             var sourceRectangle = new Rectangle(0, 0, _texture.Width, _texture.Height);
             var layerDepth = cell.Index / 10000.0f + 0.00001f;

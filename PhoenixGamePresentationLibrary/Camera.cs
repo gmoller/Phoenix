@@ -43,14 +43,14 @@ namespace PhoenixGamePresentationLibrary
 
         public void LookAtCell(Utilities.Point hexPoint)
         {
-            var newPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(hexPoint.X, hexPoint.Y);
+            var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y);
             _position = newPosition;
         }
 
         public void LookAtCellPointedAtByMouse()
         {
             var hexPoint = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
-            var newPosition = HexOffsetCoordinates.OffsetCoordinatesToPixel(hexPoint.X, hexPoint.Y);
+            var newPosition = HexOffsetCoordinates.ToPixel (hexPoint.X, hexPoint.Y);
             _position = newPosition;
         }
 

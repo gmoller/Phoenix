@@ -47,7 +47,7 @@ namespace PhoenixGamePresentationLibrary
         {
             var worldPos = Camera.ScreenToWorld(new Vector2(input.MousePostion.X, input.MousePostion.Y));
             DeviceManager.Instance.WorldPosition = new Utilities.Point((int)worldPos.X, (int)worldPos.Y);
-            var worldHex = HexOffsetCoordinates.OffsetCoordinatesFromPixel((int)worldPos.X, (int)worldPos.Y);
+            var worldHex = HexOffsetCoordinates.FromPixel((int)worldPos.X, (int)worldPos.Y);
             DeviceManager.Instance.WorldHexPointedAtByMouseCursor = new Utilities.Point(worldHex.Col, worldHex.Row);
 
             Camera.Update(input, deltaTime);

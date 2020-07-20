@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace HexLibrary
 {
     // odd-R
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct HexOffsetCoordinates
     {
         public int Col { get; }
@@ -16,105 +18,189 @@ namespace HexLibrary
             Row = row;
         }
 
-        public static HexAxial OffsetCoordinatesToAxial(int col, int row)
+        public static HexAxial ToAxial(HexOffsetCoordinates offsetCoordinates)
         {
-            HexCube cube = OffsetCoordinatesToCube(col, row);
-            HexAxial axial = HexCube.CubeToAxial(cube.X, cube.Y, cube.Z);
+            return ToAxial(offsetCoordinates.Col, offsetCoordinates.Row);
+        }
+
+        public static HexAxial ToAxial(int col, int row)
+        {
+            var cube = ToCube(col, row);
+            var axial = HexCube.ToAxial(cube);
 
             return axial;
         }
 
-        public static HexCube OffsetCoordinatesToCube(int col, int row)
+        public static HexCube ToCube(HexOffsetCoordinates offsetCoordinates)
         {
-            int x = col - (row - (row & 1)) / 2;
-            int z = row;
-            int y = -x - z;
-            HexCube cube = new HexCube(x, y, z);
+            return ToCube(offsetCoordinates.Col, offsetCoordinates.Row);
+        }
+
+        public static HexCube ToCube(int col, int row)
+        {
+            var x = col - (row - (row & 1)) / 2;
+            var z = row;
+            var y = -x - z;
+            var cube = new HexCube(x, y, z);
 
             return cube;
         }
 
+        public static HexOffsetCoordinates GetNeighbor(HexOffsetCoordinates offsetCoordinates, Direction direction)
+        {
+            return GetNeighbor(offsetCoordinates.Col, offsetCoordinates.Row, direction);
+        }
+
         public static HexOffsetCoordinates GetNeighbor(int col, int row, Direction direction)
         {
-            HexCube cube = OffsetCoordinatesToCube(col, row);
-            HexCube neighbor = HexCube.GetNeighbor(cube.X, cube.Y, cube.Z, direction);
-            HexOffsetCoordinates offsetCoordinates = HexCube.CubeToOffsetCoordinates(neighbor.X, neighbor.Y, neighbor.Z);
+            var cube = ToCube(col, row);
+            var neighbor = HexCube.GetNeighbor(cube, direction);
+            var offsetCoordinates = HexCube.ToOffsetCoordinates(neighbor);
 
             return offsetCoordinates;
         }
 
+        public static HexOffsetCoordinates[] GetAllNeighbors(HexOffsetCoordinates offsetCoordinates)
+        {
+            return GetAllNeighbors(offsetCoordinates.Col, offsetCoordinates.Row);
+        }
+
         public static HexOffsetCoordinates[] GetAllNeighbors(int col, int row)
         {
-            var cube = OffsetCoordinatesToCube(col, row);
+            var cube = ToCube(col, row);
             var allNeighboringCubes = HexCube.GetAllNeighbors(cube.X, cube.Y, cube.Z);
 
             var neighbors = new HexOffsetCoordinates[HexCube.Directions.Length];
             for (var i = 0; i < HexCube.Directions.Length; ++i)
             {
                 var neighboringCube = allNeighboringCubes[i];
-                neighbors[i] = HexCube.CubeToOffsetCoordinates(neighboringCube.X, neighboringCube.Y, neighboringCube.Z);
+                neighbors[i] = HexCube.ToOffsetCoordinates(neighboringCube);
             }
 
             return neighbors;
+        }
+
+        public static HexOffsetCoordinates[] GetSingleRing(HexOffsetCoordinates offsetCoordinates, int radius)
+        {
+            return GetSingleRing(offsetCoordinates.Col, offsetCoordinates.Row, radius);
         }
 
         public static HexOffsetCoordinates[] GetSingleRing(int col, int row, int radius)
         {
             var ring = new List<HexOffsetCoordinates>();
 
-            var cube = OffsetCoordinatesToCube(col, row);
-            var scaledCube = HexCube.ScaleHex(HexCube.Directions[4], radius);
-            cube = HexCube.AddHex(cube, scaledCube);
+            var cube = ToCube(col, row);
+            var scaledCube = HexCube.Scale(HexCube.Directions[4], radius);
+            cube = HexCube.Add(cube, scaledCube);
 
-            for (int i = 0; i < 6; ++i)
+            for (var i = 0; i < 6; ++i)
             {
-                for (int j = 0; j < radius; ++j)
+                for (var j = 0; j < radius; ++j)
                 {
-                    var offset = HexCube.CubeToOffsetCoordinates(cube.X, cube.Y, cube.Z);
+                    var offset = HexCube.ToOffsetCoordinates(cube);
                     ring.Add(offset);
-                    cube = HexCube.GetNeighbor(cube.X, cube.Y, cube.Z, (Direction)i);
+                    cube = HexCube.GetNeighbor(cube, (Direction)i);
                 }
             }
 
             return ring.ToArray();
         }
 
+        public static HexOffsetCoordinates[] GetSpiralRing(HexOffsetCoordinates offsetCoordinates, int radius)
+        {
+            return GetSpiralRing(offsetCoordinates.Col, offsetCoordinates.Row, radius);
+        }
+
         public static HexOffsetCoordinates[] GetSpiralRing(int col, int row, int radius)
         {
-            var ring = new List<HexOffsetCoordinates> {new HexOffsetCoordinates(col, row)};
+            var ring = new List<HexOffsetCoordinates> { new HexOffsetCoordinates(col, row) };
 
-            for (int k = 1; k <= radius; ++k)
+            for (var k = 1; k <= radius; ++k)
             {
-                var o = HexOffsetCoordinates.GetSingleRing(col, row, k);
+                var o = GetSingleRing(col, row, k);
                 ring.AddRange(o.ToList());
             }
 
             return ring.ToArray();
         }
 
-        //public static HexOffsetCoordinates RoundOffsetCoordinates(float col, float row)
+        //public static HexOffsetCoordinates Round(float col, float row)
         //{
-        //    HexCube cube = HexCube.RoundCube(q, -q - r, r);
-        //    HexOffsetCoordinates offsetCoordinates = HexCube.CubeToOffsetCoordinates(cube.X, cube.Y, cube.Z);
+        //    var cube = HexCube.Round(q, -q - r, r);
+        //    var offsetCoordinates = HexCube.ToOffsetCoordinates(cube);
         //
         //    return offsetCoordinates;
         //}
 
-        public static Vector2 OffsetCoordinatesToPixel(int col, int row)
+        public static Vector2 ToPixel(HexOffsetCoordinates offsetCoordinates)
         {
-            double x = Constants.HEX_SIZE * (Constants.SQUARE_ROOT_OF_3 * (col + 0.5f * (row & 1)));
-            float y = Constants.HEX_SIZE * (1.5f * row);
-            Vector2 pixel = new Vector2((float)x, y);
+            return ToPixel(offsetCoordinates.Col, offsetCoordinates.Row);
+        }
+
+        public static Vector2 ToPixel(int col, int row)
+        {
+            var x = Constants.HEX_SIZE * (Constants.SQUARE_ROOT_OF_3 * (col + 0.5f * (row & 1)));
+            var y = Constants.HEX_SIZE * (1.5f * row);
+            var pixel = new Vector2((float)x, y);
 
             return pixel;
         }
 
-        public static HexOffsetCoordinates OffsetCoordinatesFromPixel(int x, int y)
+        public static HexOffsetCoordinates FromPixel(HexOffsetCoordinates offsetCoordinates)
         {
-            HexCube cube = HexCube.CubeFromPixel(x, y);
-            HexOffsetCoordinates offsetCoordinates = HexCube.CubeToOffsetCoordinates(cube.X, cube.Y, cube.Z);
+            return FromPixel(offsetCoordinates.Col, offsetCoordinates.Row);
+        }
+
+        public static HexOffsetCoordinates FromPixel(int x, int y)
+        {
+            var cube = HexCube.FromPixel(x, y);
+            var offsetCoordinates = HexCube.ToOffsetCoordinates(cube);
 
             return offsetCoordinates;
         }
+
+        public static int GetDistance(HexOffsetCoordinates from, HexOffsetCoordinates to)
+        {
+            return GetDistance(from.Col, from.Row, to.Col, to.Row);
+        }
+
+        public static int GetDistance(int fromCol, int fromRow, int toCol, int toRow)
+        {
+            var fromCube = ToCube(fromCol, fromRow);
+            var toCube = ToCube(toCol, toRow);
+
+            var distance = HexCube.GetDistance(fromCube, toCube);
+
+            return distance;
+        }
+
+        public static List<HexOffsetCoordinates> GetLine(HexOffsetCoordinates from, HexOffsetCoordinates to)
+        {
+            return GetLine(from.Col, from.Row, to.Col, to.Row);
+        }
+
+        public static List<HexOffsetCoordinates> GetLine(int fromCol, int fromRow, int toCol, int toRow)
+        {
+            var fromCube = ToCube(fromCol, fromRow);
+            var toCube = ToCube(toCol, toRow);
+
+            var hexes = HexCube.GetLine(fromCube.X, fromCube.Y, fromCube.Z, toCube.X, toCube.Y, toCube.Z);
+
+            var result = new List<HexOffsetCoordinates>();
+            foreach (var hex in hexes)
+            {
+                var o = HexCube.ToOffsetCoordinates(hex);
+                result.Add(o);
+            }
+
+            return result;
+        }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Col={Col},Row={Row}}}";
     }
 }
