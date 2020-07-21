@@ -1,9 +1,9 @@
 ﻿using AssetsLibrary;
+using HexLibrary;
+using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using HexLibrary;
-using Input;
 using Microsoft.Xna.Framework.Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
@@ -67,24 +67,20 @@ namespace PhoenixGamePresentationLibrary
             var restartMovement = CheckForRestartOfMovement();
             if (restartMovement)
             {
-                StartUnitMovement();
+                RestartUnitMovement();
             }
 
             var startUnitMovement = CheckForUnitMovementFromKeyboardInitiation(input);
             if (startUnitMovement.startMovement)
             {
-                _unit.MovementPath = DetermineMovementPath(startUnitMovement.hexToMoveTo);
-                _unit.CurrentPositionInMovementPath = 1;
-                StartUnitMovement();
+                StartUnitMovement(startUnitMovement.hexToMoveTo);
             }
             else
             {
                 startUnitMovement = CheckForUnitMovementFromMouseInitiation(input);
                 if (startUnitMovement.startMovement)
                 {
-                    _unit.MovementPath = DetermineMovementPath(startUnitMovement.hexToMoveTo);
-                    _unit.CurrentPositionInMovementPath = 1;
-                    StartUnitMovement();
+                    StartUnitMovement(startUnitMovement.hexToMoveTo);
                 }
             }
 
@@ -134,40 +130,11 @@ namespace PhoenixGamePresentationLibrary
         {
             if (!IsSelected || _isMovingState || !input.AreAnyNumPadKeysDown) return (false, new Point(0, 0));
 
-            // unit is selected, a number pad key has been pressed and unit is not already moving
-            // determine hex to move to:
-            Direction direction;
-            if (input.IsKeyDown(Keys.NumPad4))
-            {
-                direction = Direction.West;
-            }
-            else if (input.IsKeyDown(Keys.NumPad6))
-            {
-                direction = Direction.East;
-            }
-            else if (input.IsKeyDown(Keys.NumPad7))
-            {
-                direction = Direction.NorthWest;
-            }
-            else if (input.IsKeyDown(Keys.NumPad9))
-            {
-                direction = Direction.NorthEast;
-            }
-            else if (input.IsKeyDown(Keys.NumPad1))
-            {
-                direction = Direction.SouthWest;
-            }
-            else if (input.IsKeyDown(Keys.NumPad3))
-            {
-                direction = Direction.SouthEast;
-            }
-            else
-            {
-                return (false, new Point(0, 0));
-            }
+            var direction = DetermineDirection(input);
+            if (direction == Direction.None) return (false, new Point(0, 0));
 
-            var o = HexOffsetCoordinates.GetNeighbor(_unit.Location.X, _unit.Location.Y, direction);
-            var hexToMoveTo = new Point(o.Col, o.Row);
+            var neighbor = HexOffsetCoordinates.GetNeighbor(_unit.Location.X, _unit.Location.Y, direction);
+            var hexToMoveTo = new Point(neighbor.Col, neighbor.Row);
 
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.MovementTypeName];
@@ -179,6 +146,41 @@ namespace PhoenixGamePresentationLibrary
             }
 
             return (false, new Point(0, 0));
+        }
+
+        private Direction DetermineDirection(InputHandler input)
+        {
+            if (input.IsKeyDown(Keys.NumPad4))
+            {
+                return Direction.West;
+            }
+
+            if (input.IsKeyDown(Keys.NumPad6))
+            {
+                return Direction.East;
+            }
+
+            if (input.IsKeyDown(Keys.NumPad7))
+            {
+                return Direction.NorthWest;
+            }
+
+            if (input.IsKeyDown(Keys.NumPad9))
+            {
+                return Direction.NorthEast;
+            }
+
+            if (input.IsKeyDown(Keys.NumPad1))
+            {
+                return Direction.SouthWest;
+            }
+
+            if (input.IsKeyDown(Keys.NumPad3))
+            {
+                return Direction.SouthEast;
+            }
+
+            return Direction.None;
         }
 
         private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input)
@@ -200,6 +202,21 @@ namespace PhoenixGamePresentationLibrary
             return (false, new Point(0, 0));
         }
 
+        private void RestartUnitMovement()
+        {
+            _isMovingState = true;
+            _movementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
+        }
+
+        private void StartUnitMovement(Point hexToMoveTo)
+        {
+            _unit.MovementPath = DetermineMovementPath(hexToMoveTo);
+            _unit.CurrentPositionInMovementPath = 1;
+
+            _isMovingState = true;
+            _movementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
+        }
+
         private Point[] DetermineMovementPath(Point hexToMoveTo)
         {
             var hexes = HexOffsetCoordinates.GetLine(_unit.Location.X, _unit.Location.Y, hexToMoveTo.X, hexToMoveTo.Y);
@@ -211,12 +228,6 @@ namespace PhoenixGamePresentationLibrary
             }
 
             return result;
-        }
-
-        private void StartUnitMovement()
-        {
-            _isMovingState = true;
-            _movementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
         }
 
         private bool UnitIsMoving()

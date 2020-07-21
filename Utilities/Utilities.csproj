@@ -38,10 +38,13 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BreadthFirstSearch.cs" />
     <Compile Include="DeviceManager.cs" />
+    <Compile Include="Graph.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ObjectPool.cs" />
     <Compile Include="Point.cs" />
+    <Compile Include="PriorityQueue.cs" />
     <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="Primitives2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
