@@ -3,67 +3,67 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Input
 {
-    public static class MouseHandler
+    internal static class MouseHandler
     {
         private static MouseState _currentState;
         private static MouseState _previousState;
 
-        public static void Initialize()
+        internal static void Initialize()
         {
             _currentState = Mouse.GetState();
         }
 
-        public static void Update()
+        internal static void Update()
         {
             _previousState = _currentState;
             _currentState = Mouse.GetState();
         }
 
-        public static Point MousePosition => _currentState.Position;
+        internal static Point MousePosition => _currentState.Position;
 
-        public static Point MouseMovement => _currentState.Position - _previousState.Position;
+        internal static Point MouseMovement => _currentState.Position - _previousState.Position;
 
-        public static bool IsLeftButtonDown()
+        internal static bool IsLeftButtonDown()
         {
             return _currentState.LeftButton == ButtonState.Pressed;
         }
 
-        public static bool IsRightButtonDown()
+        internal static bool IsRightButtonDown()
         {
             return _currentState.RightButton == ButtonState.Pressed;
         }
 
-        public static bool IsLeftButtonPressed()
+        internal static bool IsLeftButtonPressed()
         {
             return _previousState.LeftButton == ButtonState.Released && _currentState.LeftButton == ButtonState.Pressed;
         }
 
-        public static bool IsLeftButtonReleased()
+        internal static bool IsLeftButtonReleased()
         {
             return _previousState.LeftButton == ButtonState.Pressed && _currentState.LeftButton == ButtonState.Released;
         }
 
-        public static bool IsRightButtonPressed()
+        internal static bool IsRightButtonPressed()
         {
             return _previousState.RightButton == ButtonState.Released && _currentState.RightButton == ButtonState.Pressed;
         }
 
-        public static bool IsRightButtonReleased()
+        internal static bool IsRightButtonReleased()
         {
             return _previousState.RightButton == ButtonState.Pressed && _currentState.RightButton == ButtonState.Released;
         }
 
-        public static bool MouseWheelUp()
+        internal static bool MouseWheelUp()
         {
             return _currentState.ScrollWheelValue > _previousState.ScrollWheelValue;
         }
 
-        public static bool MouseWheelDown()
+        internal static bool MouseWheelDown()
         {
             return _currentState.ScrollWheelValue < _previousState.ScrollWheelValue;
         }
 
-        public static bool HasMouseMoved()
+        internal static bool HasMouseMoved()
         {
             return _previousState.Position != _currentState.Position;
         }

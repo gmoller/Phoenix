@@ -61,7 +61,7 @@ namespace GuiControls
 
         public void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
-            var mousePosition = DetermineMousePosition(transform);
+            var mousePosition = DetermineMousePosition(input, transform);
         }
 
         public void Draw(Matrix? transform = null)
@@ -127,11 +127,11 @@ namespace GuiControls
             }
         }
 
-        private Microsoft.Xna.Framework.Point DetermineMousePosition(Matrix? transform)
+        private Microsoft.Xna.Framework.Point DetermineMousePosition(InputHandler input, Matrix? transform)
         {
             if (transform == null)
             {
-                return MouseHandler.MousePosition;
+                return input.MousePosition;
             }
             else
             {

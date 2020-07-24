@@ -7,9 +7,9 @@ namespace PhoenixGamePresentationLibrary
     {
         public Vector2 Position { get; private set; }
 
-        public void Update(float deltaTime)
+        public void Update(InputHandler input, float deltaTime)
         {
-            Position = new Vector2(MouseHandler.MousePosition.X, MouseHandler.MousePosition.Y);
+            Position = new Vector2(input.MousePosition.X, input.MousePosition.Y);
         }
     }
 }

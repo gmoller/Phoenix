@@ -33,7 +33,7 @@ namespace PhoenixGamePresentationLibrary
             var neighbors = HexOffsetCoordinates.GetAllNeighbors(node.Position.X, node.Position.Y);
             foreach (var neighbor in neighbors)
             {
-                // TODO: is within bounds of map?
+                // is within bounds of map?
                 if (neighbor.Col < 0 || neighbor.Col >= _cellGrid.NumberOfColumns || neighbor.Row < 0 ||
                     neighbor.Row >= _cellGrid.NumberOfRows) continue;
 

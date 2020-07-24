@@ -52,7 +52,7 @@ namespace GuiControls
                 return;
             }
 
-            MouseOver = Area.Contains(MouseHandler.MousePosition);
+            MouseOver = Area.Contains(input.MousePosition);
             input.Eaten = MouseOver;
 
             if (_cooldownTime > 0.0f)
@@ -66,11 +66,11 @@ namespace GuiControls
             }
             else
             {
-                if (Area.Contains(MouseHandler.MousePosition))
+                if (Area.Contains(input.MousePosition))
                 {
                     var f = _spec.Frames[_textureHover];
                     _frame = new Rectangle(f.X, f.Y, f.Width, f.Height);
-                    if (MouseHandler.IsLeftButtonReleased())
+                    if (input.IsLeftMouseButtonReleased)
                     {
                         OnClick(new EventArgs());
                     }

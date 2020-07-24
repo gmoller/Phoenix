@@ -186,7 +186,7 @@ namespace PhoenixGamePresentationLibrary
 
         private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input)
         {
-            if (!IsSelected || _isMovingState || !input.IsLeftMouseButtonReleased) return (false, new Point(0, 0));
+            if (!IsSelected || _isMovingState || !input.IsLeftMouseButtonReleased || input.Eaten) return (false, new Point(0, 0));
 
             // unit is selected, left mouse button released and unit is not already moving
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;

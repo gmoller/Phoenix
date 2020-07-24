@@ -53,7 +53,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
                     int topLeftX = baseTopLeftX + building.Slot.X * 49;
                     int topLeftY = baseTopLeftY + building.Slot.Y * 25;
                     var slotRectangle = new Rectangle(topLeftX, topLeftY, 40, 20);
-                    if (slotRectangle.Contains(input.MousePostion))
+                    if (slotRectangle.Contains(input.MousePosition))
                     {
                         // can building be built? requirements met? not already built?
                         if (_parent.Settlement.BuildingReadyToBeBeBuilt(building.Name))

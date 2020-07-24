@@ -64,7 +64,7 @@ namespace GuiControls
             Microsoft.Xna.Framework.Point mousePosition;
             if (Transform == null)
             {
-                mousePosition = MouseHandler.MousePosition;
+                mousePosition = input.MousePosition;
             }
             else
             {
@@ -72,7 +72,7 @@ namespace GuiControls
                 mousePosition = new Microsoft.Xna.Framework.Point(worldPosition.X, worldPosition.Y);
             }
 
-            if (Area.Contains(mousePosition) && MouseHandler.IsLeftButtonReleased())
+            if (Area.Contains(mousePosition) && input.IsLeftMouseButtonReleased)
             {
                 OnClick(new EventArgs());
             }

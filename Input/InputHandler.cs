@@ -5,7 +5,7 @@ namespace Input
 {
     public class InputHandler
     {
-        public Microsoft.Xna.Framework.Point MousePostion => MouseHandler.MousePosition;
+        public Microsoft.Xna.Framework.Point MousePosition => MouseHandler.MousePosition;
         public Microsoft.Xna.Framework.Point MouseMovement => MouseHandler.MouseMovement;
         public bool MouseWheelUp => MouseHandler.MouseWheelUp();
         public bool MouseWheelDown => MouseHandler.MouseWheelDown();

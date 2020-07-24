@@ -93,9 +93,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void Update(float deltaTime, InputHandler input)
         {
-            if (_area.Contains(input.MousePostion))
+            if (_area.Contains(input.MousePosition))
             {
-                _toolTip = new ToolTip(input.MousePostion.ToVector2() + new Vector2(0.0f, 30.0f));
+                _toolTip = new ToolTip(input.MousePosition.ToVector2() + new Vector2(0.0f, 30.0f));
                 _toolTip.AddControl(new Image("Test1", new Vector2(0.0f, 0.0f), new Vector2(25.0f, 25.0f), "Icons_1", "Bread"));
                 _toolTip.AddControl(new Image("Test2", new Vector2(0.0f, 25.0f), new Vector2(25.0f, 25.0f), "Icons_1", "Pickaxe"));
                 _toolTip.AddControl(new Label2("Test3", new Vector2(0.0f, 50.0f), ContentAlignment.TopLeft, new Vector2(89.0f, 12.0f), "Here is some text!", "CrimsonText-Regular-12", Color.Blue, Color.Red));

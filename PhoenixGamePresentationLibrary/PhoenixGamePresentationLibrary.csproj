@@ -44,7 +44,6 @@
     <Compile Include="CursorView.cs" />
     <Compile Include="FramesPerSecondCounter.cs" />
     <Compile Include="HudView.cs" />
-    <Compile Include="InputHandler.cs" />
     <Compile Include="MapSolver.cs" />
     <Compile Include="MetricsPanel.cs" />
     <Compile Include="OverlandMapView.cs" />
