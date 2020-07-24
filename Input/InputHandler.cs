@@ -19,6 +19,11 @@ namespace Input
         public bool MouseIsAtLeftOfScreen => MouseHandler.MousePosition.X < DeviceManager.Instance.MapViewport.X + 5.0f;
         public bool MouseIsAtRightOfScreen => MouseHandler.MousePosition.X > DeviceManager.Instance.MapViewport.Width - 5.0f;
 
+        public bool MouseIsWithinScreen => MouseHandler.MousePosition.X >= DeviceManager.Instance.MapViewport.X &&
+                                           MouseHandler.MousePosition.X <= DeviceManager.Instance.MapViewport.Width &&
+                                           MouseHandler.MousePosition.Y >= DeviceManager.Instance.MapViewport.Y &&
+                                           MouseHandler.MousePosition.Y <= DeviceManager.Instance.MapViewport.Height;
+
         public bool AreAnyNumPadKeysDown =>
             KeyboardHandler.IsKeyDown(Keys.NumPad4) ||
             KeyboardHandler.IsKeyDown(Keys.NumPad6) ||
@@ -37,6 +42,8 @@ namespace Input
 
         public void Update(float deltaTime)
         {
+            //Eaten = false;
+
             KeyboardHandler.Update();
             MouseHandler.Update();
         }

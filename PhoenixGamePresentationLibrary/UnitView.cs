@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AssetsLibrary;
 using HexLibrary;
 using Input;
@@ -64,6 +65,18 @@ namespace PhoenixGamePresentationLibrary
         {
             _blink = DetermineBlinkState(deltaTime);
 
+            // potential movement
+            var potentialUnitMovement = CheckForPotentialUnitMovement(input);
+            if (potentialUnitMovement.potentialMovement)
+            {
+                var path = DetermineMovementPath(_unit.Location, potentialUnitMovement.hexToMoveTo);
+                _unit.PotentialMovementPath = path;
+            }
+            else
+            {
+                _unit.PotentialMovementPath = new List<Point>();
+            }
+
             // unit movement
             var restartMovement = CheckForRestartOfMovement();
             if (restartMovement)
@@ -92,10 +105,24 @@ namespace PhoenixGamePresentationLibrary
                 if (unitHasReachedNextCell) MoveUnitToCell();
             }
 
+            // unit selection/deselection
             var selectUnit = CheckForUnitSelection(input);
             if (selectUnit) SelectUnit();
             var deselectUit = CheckForUnitDeselection(_unit);
             if (deselectUit) DeselectUnit();
+        }
+
+        private (bool potentialMovement, Point hexToMoveTo) CheckForPotentialUnitMovement(InputHandler input)
+        {
+            if (!IsSelected || _isMovingState || !input.MouseIsWithinScreen || input.Eaten) return (false, new Point(0, 0));
+
+            var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
+            var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
+            if (cellToMoveTo.SeenState == SeenState.Never) return (false, new Point(0, 0));
+            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.MovementTypeName];
+            if (movementCost.Cost.AboutEquals(0.0f)) return (false, new Point(0, 0));
+
+            return (true, hexToMoveTo);
         }
 
         private bool DetermineBlinkState(float deltaTime)
@@ -119,7 +146,7 @@ namespace PhoenixGamePresentationLibrary
 
         private bool CheckForRestartOfMovement()
         {
-            if (_isMovingState == false && _unit.CurrentPositionInMovementPath > 0 && _unit.MovementPoints > 0.0f)
+            if (_isMovingState == false && _unit.MovementPath.Count > 0 && _unit.MovementPoints > 0.0f)
             {
                 return true;
             }
@@ -211,19 +238,20 @@ namespace PhoenixGamePresentationLibrary
 
         private void StartUnitMovement(Point hexToMoveTo)
         {
-            _unit.MovementPath = DetermineMovementPath(hexToMoveTo);
-            _unit.CurrentPositionInMovementPath = 1;
+            _unit.MovementPath = DetermineMovementPath(_unit.Location, hexToMoveTo);
 
             _isMovingState = true;
             _movementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
         }
 
-        private Point[] DetermineMovementPath(Point hexToMoveTo)
+        private List<Point> DetermineMovementPath(Point from, Point to)
         {
+            if (from.Equals(to)) return new List<Point>();
+
             var mapSolver = new MapSolver();
             var openList = new PriorityQueue<AStarSearch<Point, Cost>.Node>();
             var closedList = new Dictionary<Point, Cost>();
-            mapSolver.Graph(Globals.Instance.World.OverlandMap.CellGrid, _unit.Location, hexToMoveTo, openList, closedList);
+            mapSolver.Graph(Globals.Instance.World.OverlandMap.CellGrid, from, to, openList, closedList);
             if (mapSolver.Solution.HasValue)
             {
                 var pos = mapSolver.Solution.Value.Position;
@@ -237,22 +265,13 @@ namespace PhoenixGamePresentationLibrary
                     result.Add(pos);
                 } while (cost.ParentIndex >= 0);
 
+                result.RemoveAt(result.Count - 1);
                 result.Reverse();
 
-                return result.ToArray();
+                return result;
             }
 
-            return null;
-            //var hexes = HexOffsetCoordinates.GetLine(_unit.Location.X, _unit.Location.Y, hexToMoveTo.X, hexToMoveTo.Y);
-
-            //var result = new Point[hexes.Count];
-            //var cnt = 0;
-            //foreach (var hex in hexes)
-            //{
-            //    result[cnt++] = new Point(hex.Col, hex.Row);
-            //}
-
-            //return result;
+            return new List<Point>();
         }
 
         private bool UnitIsMoving()
@@ -267,7 +286,7 @@ namespace PhoenixGamePresentationLibrary
             // determine start cell screen position
             var startPosition = HexOffsetCoordinates.ToPixel(_unit.Location.X, _unit.Location.Y);
             // determine end cell screen position
-            var hexToMoveTo = _unit.MovementPath[_unit.CurrentPositionInMovementPath];
+            var hexToMoveTo = _unit.MovementPath[0];
             var endPosition = HexOffsetCoordinates.ToPixel(hexToMoveTo.X, hexToMoveTo.Y);
             // lerp between the two positions
             var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - _movementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
@@ -285,7 +304,7 @@ namespace PhoenixGamePresentationLibrary
             _movementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
 
             Command moveUnitCommand = new MoveUnitCommand();
-            moveUnitCommand.Payload = (_unit, _unit.MovementPath[_unit.CurrentPositionInMovementPath]);
+            moveUnitCommand.Payload = (_unit, _unit.MovementPath[0]);
             moveUnitCommand.Execute();
 
             // if run out of movement points
@@ -295,15 +314,19 @@ namespace PhoenixGamePresentationLibrary
             }
 
             // if reached final destination
-            if (_unit.CurrentPositionInMovementPath >= _unit.MovementPath.Length - 1)
+            if (_unit.MovementPath.Count == 0)
             {
                 _isMovingState = false;
-                _unit.MovementPath = null;
-                _unit.CurrentPositionInMovementPath = 0;
+                _unit.MovementPath = new List<Point>();
             }
             else
             {
-                _unit.CurrentPositionInMovementPath++;
+                _unit.MovementPath.RemoveAt(0);
+                if (_unit.MovementPath.Count == 0)
+                {
+                    _isMovingState = false;
+                    _unit.MovementPath = new List<Point>();
+                }
             }
         }
 
@@ -364,6 +387,9 @@ namespace PhoenixGamePresentationLibrary
             {
                 DrawUnit(spriteBatch);
             }
+
+            DrawMovementPath(spriteBatch, _unit.MovementPath, Color.White);
+            DrawMovementPath(spriteBatch, _unit.PotentialMovementPath, Color.Aqua);
         }
 
         private void DrawUnit(SpriteBatch spriteBatch)
@@ -372,6 +398,15 @@ namespace PhoenixGamePresentationLibrary
             var frame = _unitAtlas.Frames[_unit.UnitTypeTextureName];
             var sourceRectangle = frame.ToRectangle();
             spriteBatch.Draw(_unitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(frame.Width / 2.0f, frame.Height / 2.0f), SpriteEffects.None, 0.0f);
+        }
+
+        private void DrawMovementPath(SpriteBatch spriteBatch, List<Point> movementPath, Color color)
+        {
+            foreach (var item in movementPath)
+            {
+                var centerPosition = HexOffsetCoordinates.ToPixel(item.X, item.Y);
+                spriteBatch.DrawCircle(centerPosition, 3, 10, color);
+            }
         }
     }
 }

@@ -416,21 +416,7 @@ namespace Utilities
         /// <param name="radius">The radius of the circle</param>
         /// <param name="sides">The number of sides to generate</param>
         /// <param name="color">The color of the circle</param>
-        public static void DrawCircle(this SpriteBatch spriteBatch, Vector2 center, float radius, int sides, Color color)
-        {
-            DrawPoints(spriteBatch, center, CreateCircle(radius, sides), color, 1.0f);
-        }
-
-        /// <summary>
-        /// Draw a circle
-        /// </summary>
-        /// <param name="spriteBatch">The destination drawing surface</param>
-        /// <param name="center">The center of the circle</param>
-        /// <param name="radius">The radius of the circle</param>
-        /// <param name="sides">The number of sides to generate</param>
-        /// <param name="color">The color of the circle</param>
-        /// <param name="thickness">The thickness of the lines used</param>
-        public static void DrawCircle(this SpriteBatch spriteBatch, Vector2 center, float radius, int sides, Color color, float thickness)
+        public static void DrawCircle(this SpriteBatch spriteBatch, Vector2 center, float radius, int sides, Color color, float thickness = 1.0f)
         {
             DrawPoints(spriteBatch, center, CreateCircle(radius, sides), color, thickness);
         }
@@ -444,22 +430,7 @@ namespace Utilities
         /// <param name="radius">The radius of the circle</param>
         /// <param name="sides">The number of sides to generate</param>
         /// <param name="color">The color of the circle</param>
-        public static void DrawCircle(this SpriteBatch spriteBatch, float x, float y, float radius, int sides, Color color)
-        {
-            DrawPoints(spriteBatch, new Vector2(x, y), CreateCircle(radius, sides), color, 1.0f);
-        }
-
-        /// <summary>
-        /// Draw a circle
-        /// </summary>
-        /// <param name="spriteBatch">The destination drawing surface</param>
-        /// <param name="x">The center X of the circle</param>
-        /// <param name="y">The center Y of the circle</param>
-        /// <param name="radius">The radius of the circle</param>
-        /// <param name="sides">The number of sides to generate</param>
-        /// <param name="color">The color of the circle</param>
-        /// <param name="thickness">The thickness of the lines used</param>
-        public static void DrawCircle(this SpriteBatch spriteBatch, float x, float y, float radius, int sides, Color color, float thickness)
+        public static void DrawCircle(this SpriteBatch spriteBatch, float x, float y, float radius, int sides, Color color, float thickness = 1.0f)
         {
             DrawPoints(spriteBatch, new Vector2(x, y), CreateCircle(radius, sides), color, thickness);
         }

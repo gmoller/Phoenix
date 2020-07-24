@@ -25,8 +25,8 @@ namespace PhoenixGameLibrary
         public Moves UnitTypeMoves => _unitType.Moves;
         public string UnitTypeTextureName => _unitType.TextureName;
 
-        public Point[] MovementPath { get; set; }
-        public int CurrentPositionInMovementPath { get; set; }
+        public List<Point> PotentialMovementPath { get; set; }
+        public List<Point> MovementPath { get; set; }
 
         internal Unit(UnitType unitType, Point location)
         {
@@ -34,6 +34,8 @@ namespace PhoenixGameLibrary
             _unitType = unitType;
             Location = location;
             MovementPoints = unitType.Moves["Ground"].Moves;
+            MovementPath = new List<Point>();
+            PotentialMovementPath = new List<Point>();
 
             SetSeenCells(location);
         }

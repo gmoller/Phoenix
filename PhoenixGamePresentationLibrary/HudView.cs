@@ -15,6 +15,8 @@ namespace PhoenixGamePresentationLibrary
     {
         private readonly WorldView _worldView;
 
+        private readonly Rectangle _area;
+
         private Image _imgGold;
         private Image _imgMana;
         private Image _imgFood;
@@ -33,13 +35,15 @@ namespace PhoenixGamePresentationLibrary
 
         internal HudView(WorldView worldView, UnitsView unitsView)
         {
+            _area = new Rectangle(DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250, 0, 250, DeviceManager.Instance.GraphicsDevice.Viewport.Height - 60);
+
             _worldView = worldView;
             _unitsView = unitsView;
         }
 
         internal void LoadContent(ContentManager content)
         {
-            var topLeftPosition = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f, 0.0f);
+            var topLeftPosition = new Vector2(_area.X, _area.Y);
             var position = new Vector2(topLeftPosition.X + 20.0f, 200.0f);
             _imgGold = new Image("imgGold", position, new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R");
             _imgMana = new Image("imgMana", _imgGold.BottomLeft.ToVector2() + new Vector2(0.0f, 10.0f), new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R");
@@ -47,7 +51,7 @@ namespace PhoenixGamePresentationLibrary
 
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
 
-            var size = new Vector2(250.0f, DeviceManager.Instance.GraphicsDevice.Viewport.Height - 60);
+            var size = new Vector2(_area.Width, _area.Height);
             _frame = new FrameDynamicSizing(topLeftPosition, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
             _frame.LoadContent(content);
 
@@ -66,6 +70,9 @@ namespace PhoenixGamePresentationLibrary
 
         public void Update(InputHandler input, float deltaTime)
         {
+            var mouseOver = _area.Contains(input.MousePosition);
+            input.Eaten = mouseOver;
+
             _lblCurrentDate.Update(input, deltaTime);
             _lblCurrentDate.Text = Globals.Instance.World.CurrentDate;
 
@@ -112,8 +119,8 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawNotifications(SpriteBatch spriteBatch)
         {
-            var x = DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f + 10.0f;
-            var y = DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2.0f - 150.0f;
+            var x = _area.X + 10.0f;
+            var y = _area.Y + 400.0f;
             foreach (var item in Globals.Instance.World.NotificationList)
             {
                 var lines = TextWrapper.WrapText(item, 150, _font);
@@ -127,8 +134,8 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawSelectedUnits(SpriteBatch spriteBatch)
         {
-            var startX = DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f + 10.0f;
-            var startY = DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2.0f;
+            var startX = _area.X + 10.0f;
+            var startY = _area.Y + _area.Height / 2.0f;
             var x = startX;
             var y = startY;
 
@@ -149,8 +156,8 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawTileInfo(SpriteBatch spriteBatch)
         {
-            var x = DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250.0f + 10.0f;
-            var y = DeviceManager.Instance.GraphicsDevice.Viewport.Height * 0.90f;
+            var x = _area.X + 10.0f;
+            var y = _area.Y + _area.Height * 0.96f;
 
             // get tile mouse is over
             var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
