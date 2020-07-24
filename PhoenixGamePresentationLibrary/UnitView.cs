@@ -1,4 +1,5 @@
-﻿using AssetsLibrary;
+﻿using System.Collections.Generic;
+using AssetsLibrary;
 using HexLibrary;
 using Input;
 using Microsoft.Xna.Framework;
@@ -219,15 +220,39 @@ namespace PhoenixGamePresentationLibrary
 
         private Point[] DetermineMovementPath(Point hexToMoveTo)
         {
-            var hexes = HexOffsetCoordinates.GetLine(_unit.Location.X, _unit.Location.Y, hexToMoveTo.X, hexToMoveTo.Y);
-            var result = new Point[hexes.Count];
-            var cnt = 0;
-            foreach (var hex in hexes)
+            var mapSolver = new MapSolver();
+            var openList = new PriorityQueue<AStarSearch<Point, Cost>.Node>();
+            var closedList = new Dictionary<Point, Cost>();
+            mapSolver.Graph(Globals.Instance.World.OverlandMap.CellGrid, _unit.Location, hexToMoveTo, openList, closedList);
+            if (mapSolver.Solution.HasValue)
             {
-                result[cnt++] = new Point(hex.Col, hex.Row);
+                var pos = mapSolver.Solution.Value.Position;
+                var cost = mapSolver.Solution.Value.Cost;
+
+                var result = new List<Point> {pos};
+                do
+                {
+                    pos = mapSolver.ToPosition(cost.ParentIndex);
+                    cost = closedList[pos];
+                    result.Add(pos);
+                } while (cost.ParentIndex >= 0);
+
+                result.Reverse();
+
+                return result.ToArray();
             }
 
-            return result;
+            return null;
+            //var hexes = HexOffsetCoordinates.GetLine(_unit.Location.X, _unit.Location.Y, hexToMoveTo.X, hexToMoveTo.Y);
+
+            //var result = new Point[hexes.Count];
+            //var cnt = 0;
+            //foreach (var hex in hexes)
+            //{
+            //    result[cnt++] = new Point(hex.Col, hex.Row);
+            //}
+
+            //return result;
         }
 
         private bool UnitIsMoving()

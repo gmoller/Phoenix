@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AStarTests.cs" />
     <Compile Include="HexTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -59,6 +60,18 @@
     <ProjectReference Include="..\HexLibrary\HexLibrary.csproj">
       <Project>{8f48f47a-ed5a-4cc6-b54c-996689fc7422}</Project>
       <Name>HexLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PhoenixGameLibrary\PhoenixGameLibrary.csproj">
+      <Project>{21921023-2B2B-4B3D-82A3-7F335F24C644}</Project>
+      <Name>PhoenixGameLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PhoenixGamePresentationLibrary\PhoenixGamePresentationLibrary.csproj">
+      <Project>{46ad3ad4-2dd6-4462-8bc9-e28a6b8ff13e}</Project>
+      <Name>PhoenixGamePresentationLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{5320ff4a-6c80-4627-9b74-9e7cb1a109fd}</Project>
+      <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
