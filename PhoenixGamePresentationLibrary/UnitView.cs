@@ -388,8 +388,8 @@ namespace PhoenixGamePresentationLibrary
                 DrawUnit(spriteBatch);
             }
 
-            DrawMovementPath(spriteBatch, _unit.MovementPath, Color.White);
-            DrawMovementPath(spriteBatch, _unit.PotentialMovementPath, Color.Aqua);
+            DrawMovementPath(spriteBatch, _unit.MovementPath, Color.Black, 5.0f, 5.0f);
+            DrawMovementPath(spriteBatch, _unit.PotentialMovementPath, Color.White, 3.0f, 1.0f);
         }
 
         private void DrawUnit(SpriteBatch spriteBatch)
@@ -400,12 +400,12 @@ namespace PhoenixGamePresentationLibrary
             spriteBatch.Draw(_unitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(frame.Width / 2.0f, frame.Height / 2.0f), SpriteEffects.None, 0.0f);
         }
 
-        private void DrawMovementPath(SpriteBatch spriteBatch, List<Point> movementPath, Color color)
+        private void DrawMovementPath(SpriteBatch spriteBatch, List<Point> movementPath, Color color, float radius, float thickness)
         {
             foreach (var item in movementPath)
             {
                 var centerPosition = HexOffsetCoordinates.ToPixel(item.X, item.Y);
-                spriteBatch.DrawCircle(centerPosition, 3, 10, color);
+                spriteBatch.DrawCircle(centerPosition, radius, 10, color, thickness);
             }
         }
     }

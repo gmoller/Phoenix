@@ -10,7 +10,7 @@ namespace Phoenix
 {
     public class MainGame : Game
     {
-        private GraphicsDeviceManager _graphicsDeviceManager;
+        private readonly GraphicsDeviceManager _graphicsDeviceManager;
 
         private PhoenixGame _phoenixGame;
         private PhoenixGameView _phoenixGameView;
