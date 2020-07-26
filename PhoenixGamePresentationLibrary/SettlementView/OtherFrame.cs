@@ -12,7 +12,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly Vector2 _topLeftPosition;
 
         private Label _lblOther;
-        private FrameDynamicSizing _smallFrameOther;
+        private Frame _smallFrameOther;
 
         internal OtherFrame(SettlementView parent, Vector2 topLeftPosition)
         {
@@ -22,11 +22,11 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblOther = new Label("lblOther", "CrimsonText-Regular-12", _topLeftPosition + new Vector2(0.0f, -10.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
+            _lblOther = new Label("lblOther", "CrimsonText-Regular-12", _topLeftPosition + new Vector2(0.0f, -10.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
 
             var slots3 = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 0.0f), new Vector2(515, 65), "GUI_Textures_1", "slot", 2, 1, 10.0f);
             slots3.LoadContent(content);
-            _smallFrameOther = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 0.0f), new Vector2(515, 65), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots3);
+            _smallFrameOther = new Frame("SmallFrameOther", _topLeftPosition + new Vector2(0.0f, 0.0f), new Vector2(515, 65), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots3);
             _smallFrameOther.LoadContent(content);
         }
 

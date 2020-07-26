@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AStarTests.cs" />
-    <Compile Include="GuiControlTests.cs" />
+    <Compile Include="GuiControlTests_Image.cs" />
     <Compile Include="HexTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

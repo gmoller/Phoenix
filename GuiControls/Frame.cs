@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
@@ -7,11 +8,13 @@ using Input;
 
 namespace GuiControls
 {
-    public class FrameDynamicSizing : IControl
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
+    public class Frame : IControl
     {
+        private readonly IControl _parent; // TODO: move into base/interface?
+
         private readonly string _textureAtlasString;
         private readonly string _textureString;
-        private readonly Vector2 _size;
         private readonly int _topPadding;
         private readonly int _bottomPadding;
         private readonly int _leftPadding;
@@ -23,16 +26,30 @@ namespace GuiControls
         private Rectangle[] _sourcePatches;
         private Rectangle[] _destinationPatches;
 
-        public Vector2 TopLeftPosition { get; set; }
-        public Vector2 TopRightPosition { get; }
-        public Vector2 BottomLeftPosition { get; }
-        public Vector2 BottomRightPosition { get; }
-        public Vector2 RelativePosition => new Vector2(0 + TopLeftPosition.X, 0 + TopLeftPosition.Y);
+        private Rectangle _area;
 
-        public FrameDynamicSizing(Vector2 topLeftPosition, Vector2 size, string textureAtlasString, string textureString, int topPadding, int bottomPadding, int leftPadding, int rightPadding, DynamicSlots slots = null)
+        public string Name { get; }
+        public int Top => _area.Top;
+        public int Bottom => _area.Bottom;
+        public int Left => _area.Left;
+        public int Right => _area.Right;
+        public int Width => _area.Width;
+        public int Height => _area.Height;
+        public Microsoft.Xna.Framework.Point Center => _area.Center;
+        public Microsoft.Xna.Framework.Point TopLeft => new Microsoft.Xna.Framework.Point(Left, Top);
+        public Microsoft.Xna.Framework.Point TopRight => new Microsoft.Xna.Framework.Point(Right, Top);
+        public Microsoft.Xna.Framework.Point BottomLeft => new Microsoft.Xna.Framework.Point(Left, Bottom);
+        public Microsoft.Xna.Framework.Point BottomRight => new Microsoft.Xna.Framework.Point(Right, Bottom);
+        public Microsoft.Xna.Framework.Point Size => _area.Size;
+
+        public Vector2 RelativePosition => new Vector2(0 + TopLeft.X, 0 + TopLeft.Y);
+
+        public Frame(string name, Vector2 topLeftPosition, Vector2 size, string textureAtlasString, string textureString, int topPadding, int bottomPadding, int leftPadding, int rightPadding, DynamicSlots slots = null, IControl parent = null)
         {
-            TopLeftPosition = topLeftPosition;
-            _size = size;
+            _parent = parent;
+
+            Name = name;
+            _area = new Rectangle((int)topLeftPosition.X, (int)topLeftPosition.Y, (int)size.X, (int)size.Y);
             _textureAtlasString = textureAtlasString;
             _textureString = textureString;
 
@@ -44,6 +61,12 @@ namespace GuiControls
             _slots = slots;
         }
 
+        public void SetTopLeftPosition(int x, int y)
+        {
+            //_area.X = x;
+            //_area.Y = y;
+        }
+
         public void LoadContent(ContentManager content)
         {
             _texture = AssetsManager.Instance.GetTexture(_textureAtlasString);
@@ -51,7 +74,7 @@ namespace GuiControls
 
             var frame = atlas.Frames[_textureString];
             _sourcePatches = CreatePatches(frame.ToRectangle(), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
-            _destinationPatches = CreatePatches(new Rectangle((int)TopLeftPosition.X, (int)TopLeftPosition.Y, (int)_size.X, (int)_size.Y), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
+            _destinationPatches = CreatePatches(new Rectangle(TopLeft.X, TopLeft.Y, (int)Size.X, (int)Size.Y), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
         }
 
         public void Update(InputHandler input, float deltaTime, Matrix? transform = null)
@@ -102,5 +125,12 @@ namespace GuiControls
 
             return patches;
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Name={Name},TopLeftPosition={TopLeft},RelativePosition={RelativePosition},Size={Size}}}";
     }
 }

@@ -15,7 +15,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly Vector2 _topLeftPosition;
 
         private Label _lblUnits;
-        private FrameDynamicSizing _smallFrameUnits;
+        private Frame _smallFrameUnits;
         private List<Label> _unitLabels;
 
         internal UnitsFrame(SettlementView parent, Vector2 topLeftPosition)
@@ -26,13 +26,13 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblUnits = new Label("lblUnits", "CrimsonText-Regular-12", _topLeftPosition + new Vector2(0.0f, -10.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
+            _lblUnits = new Label("lblUnits", "CrimsonText-Regular-12", _topLeftPosition + new Vector2(0.0f, -10.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
 
             _unitLabels = CreateUnitLabels();
 
             var slots2 = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 0.0f), new Vector2(515, 75), "GUI_Textures_1", "slot", 10, 2, 10.0f, _unitLabels);
             slots2.LoadContent(content);
-            _smallFrameUnits = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 0.0f), new Vector2(515, 75), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots2);
+            _smallFrameUnits = new Frame("SmallFrameUnits", _topLeftPosition + new Vector2(0.0f, 0.0f), new Vector2(515, 75), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots2);
             _smallFrameUnits.LoadContent(content);
         }
 

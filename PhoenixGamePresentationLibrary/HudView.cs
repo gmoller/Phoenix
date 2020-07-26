@@ -24,7 +24,7 @@ namespace PhoenixGamePresentationLibrary
         private Image _imgFood;
 
         private SpriteFont _font;
-        private FrameDynamicSizing _frame;
+        private Frame _frame;
 
         private Label _lblCurrentDate;
         private Label _lblGold;
@@ -50,7 +50,7 @@ namespace PhoenixGamePresentationLibrary
         internal void LoadContent(ContentManager content)
         {
             var topLeftPosition = new Vector2(_area.X, _area.Y);
-            _resourceFrame = new FrameDynamicSizing(topLeftPosition + new Vector2(10.0f, 50.0f), new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame3_whole", 0, 0, 0, 0, null);
+            _resourceFrame = new Frame("ResourceFrame", topLeftPosition + new Vector2(10.0f, 50.0f), new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole", 0, 0, 0, 0, null);
             _resourceFrame.LoadContent(content);
 
             _imgGold = new Image("imgGold", new Vector2(10.0f, 10.0f), new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R", 0.0f, _resourceFrame);
@@ -69,11 +69,11 @@ namespace PhoenixGamePresentationLibrary
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
 
             var size = new Vector2(_area.Width, _area.Height);
-            _frame = new FrameDynamicSizing(topLeftPosition, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
+            _frame = new Frame("Frame", topLeftPosition, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
             _frame.LoadContent(content);
 
             var topCenterPosition = new Vector2(topLeftPosition.X + size.X / 2.0f, topLeftPosition.Y) + new Vector2(0.0f, 10.0f);
-            _lblCurrentDate = new Label("lblCurrentDate", "Maleficio-Regular-18", topCenterPosition, HorizontalAlignment.Center, VerticalAlignment.Top, Vector2.Zero, "Date:", HorizontalAlignment.Center, Color.Aquamarine);
+            _lblCurrentDate = new Label("lblCurrentDate", "Maleficio-Regular-18", topCenterPosition, HorizontalAlignment.Center, VerticalAlignment.Top, new Vector2(10,10), "Date:", HorizontalAlignment.Center, Color.Aquamarine);
 
             var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
             var label = new Label("lblNextTurn", "CrimsonText-Regular-12", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "Next Turn", HorizontalAlignment.Center, Color.White, Color.Blue);

@@ -10,8 +10,8 @@ namespace GuiControls
 {
     public class Label2 : IControl
     {
-        private readonly IControl _parent;
-        private readonly string _name;
+        private readonly IControl _parent; // TODO: move into base/interface?
+
         private readonly string _fontName;
         private readonly Color _textColor;
         private readonly Color _backColor;
@@ -27,21 +27,21 @@ namespace GuiControls
 
         private bool _contentLoaded;
 
-        public Vector2 TopLeftPosition
-        {
-            get => new Vector2(_area.Left, _area.Top);
+        public string Name { get; }
+        public int Top => _area.Top;
+        public int Bottom => _area.Bottom;
+        public int Left => _area.Left;
+        public int Right => _area.Right;
+        public int Width => _area.Width;
+        public int Height => _area.Height;
+        public Microsoft.Xna.Framework.Point Center => _area.Center;
+        public Microsoft.Xna.Framework.Point TopLeft => new Microsoft.Xna.Framework.Point(Left, Top);
+        public Microsoft.Xna.Framework.Point TopRight => new Microsoft.Xna.Framework.Point(Right, Top);
+        public Microsoft.Xna.Framework.Point BottomLeft => new Microsoft.Xna.Framework.Point(Left, Bottom);
+        public Microsoft.Xna.Framework.Point BottomRight => new Microsoft.Xna.Framework.Point(Right, Bottom);
+        public Microsoft.Xna.Framework.Point Size => _area.Size;
 
-            set
-            {
-                _area.X = (int)value.X;
-                _area.Y = (int)value.Y;
-            }
-        }
-        public Vector2 TopRightPosition => new Vector2(_area.Right, _area.Top);
-        public Vector2 BottomLeftPosition => new Vector2(_area.Left, _area.Bottom);
-        public Vector2 BottomRightPosition => new Vector2(_area.Right, _area.Bottom);
-
-        public Vector2 RelativePosition => new Vector2(_parent.RelativePosition.X + TopLeftPosition.X, _parent.RelativePosition.Y + TopLeftPosition.Y);
+        public Vector2 RelativePosition => new Vector2(_parent.RelativePosition.X + TopLeft.X, _parent.RelativePosition.Y + TopLeft.Y);
 
         private Rectangle DestinationRectangle => new Rectangle(_area.X - (int)_origin.X, _area.Y - (int)_origin.Y, _area.Width, _area.Height);
 
@@ -53,7 +53,7 @@ namespace GuiControls
         public Label2(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string text, string fontName, Color textColor, Color backColor, float layerDepth = 0.0f, IControl parent = null)
         {
             _parent = parent;
-            _name = name;
+            Name = name;
             _fontName = fontName;
             _area = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
             _text = text;
@@ -63,6 +63,12 @@ namespace GuiControls
             _layerDepth = layerDepth;
             _alignment = alignment;
             _contentLoaded = false;
+        }
+
+        public void SetTopLeftPosition(int x, int y)
+        {
+            _area.X = x;
+            _area.Y = y;
         }
 
         public void LoadContent(ContentManager content)
@@ -90,7 +96,7 @@ namespace GuiControls
                 spriteBatch.FillRectangle(DestinationRectangle, _backColor, _layerDepth);
             }
 
-            spriteBatch.DrawString(_font, _text, TopLeftPosition, _textColor, 0.0f, _origin, _scale, SpriteEffects.None, _layerDepth);
+            spriteBatch.DrawString(_font, _text, TopLeft.ToVector2(), _textColor, 0.0f, _origin, _scale, SpriteEffects.None, _layerDepth);
 
             EndSpriteBatch(spriteBatch);
         }

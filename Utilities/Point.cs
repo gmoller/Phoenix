@@ -1,7 +1,8 @@
-﻿using System;
+﻿using System.Diagnostics;
 
 namespace Utilities
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct Point
     {
         public int X { get; }
@@ -47,7 +48,9 @@ namespace Utilities
 
         public override string ToString()
         {
-            return $"({X};{Y})";
+            return DebuggerDisplay;
         }
+
+        private string DebuggerDisplay => $"{{X={X},Y={Y}}}";
     }
 }

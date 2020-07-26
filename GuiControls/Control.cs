@@ -35,7 +35,7 @@ namespace GuiControls
 
         protected Control(string name, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size)
         {
-            Name = Name;
+            Name = name;
             if (controlToDockTo != null)
             {
                 if (verticalAlignment == VerticalAlignment.Top)

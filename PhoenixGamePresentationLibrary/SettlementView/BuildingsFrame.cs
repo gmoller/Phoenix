@@ -18,7 +18,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private AtlasSpec2 _atlas;
 
         private Label _lblBuildings;
-        private FrameDynamicSizing _smallFrameBuildings;
+        private Frame _smallFrameBuildings;
 
         internal BuildingsFrame(SettlementView parent, Vector2 topLeftPosition)
         {
@@ -28,11 +28,11 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblBuildings = new Label("lblBuildings", "CrimsonText-Regular-12", _topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
+            _lblBuildings = new Label("lblBuildings", "CrimsonText-Regular-12", _topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
 
             var slots = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 450), "GUI_Textures_1", "slot", 10, 13, 10.0f);
             slots.LoadContent(content);
-            _smallFrameBuildings = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots);
+            _smallFrameBuildings = new Frame("SmallFrameBuildings", _topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots);
             _smallFrameBuildings.LoadContent(content);
 
             _texture = AssetsManager.Instance.GetTexture("Buildings");

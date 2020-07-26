@@ -16,7 +16,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         private Label _lblRace;
         private Label _lblPopulationGrowth;
-        private FrameDynamicSizing _smallFrame;
+        private Frame _smallFrame;
         private Label _lblFarmers1;
         private Label _lblWorkers1;
         private Label _lblRebels1;
@@ -34,15 +34,15 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblRace = new Label("lblRace", "CrimsonText-Regular-12", _topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Middle, Vector2.Zero, string.Empty, HorizontalAlignment.Left, Color.Orange);
-            _lblPopulationGrowth = new Label("lblPopulationGrowth", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 516.0f, _topLeftPosition.Y), HorizontalAlignment.Right, VerticalAlignment.Middle, Vector2.Zero, "Population: 0", HorizontalAlignment.Right, Color.Orange);
+            _lblRace = new Label("lblRace", "CrimsonText-Regular-12", _topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Middle, new Vector2(10,10), string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblPopulationGrowth = new Label("lblPopulationGrowth", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 516.0f, _topLeftPosition.Y), HorizontalAlignment.Right, VerticalAlignment.Middle, new Vector2(10, 10), "Population: 0", HorizontalAlignment.Right, Color.Orange);
 
-            _smallFrame = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 120), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
+            _smallFrame = new Frame("SmallFrame", _topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 120), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
             _smallFrame.LoadContent(content);
 
-            _lblFarmers1 = new Label("lblFarmers1", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 30.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Farmers:", HorizontalAlignment.Left, Color.Orange);
-            _lblWorkers1 = new Label("lblWorkers1", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 60.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Workers:", HorizontalAlignment.Left, Color.Orange);
-            _lblRebels1 = new Label("lblRebels1", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 90.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Rebels:", HorizontalAlignment.Left, Color.Orange);
+            _lblFarmers1 = new Label("lblFarmers1", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 30.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Farmers:", HorizontalAlignment.Left, Color.Orange);
+            _lblWorkers1 = new Label("lblWorkers1", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 60.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Workers:", HorizontalAlignment.Left, Color.Orange);
+            _lblRebels1 = new Label("lblRebels1", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 90.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Rebels:", HorizontalAlignment.Left, Color.Orange);
 
             _btnSubtractFarmer = new Button("btnSubtractFarmer", new Vector2(_topLeftPosition.X + 140.0f, _topLeftPosition.Y + 25.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h");
             _btnSubtractFarmer.Click += btnSubtractFarmerClick;
@@ -101,7 +101,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             image.LoadContent(_content);
             for (int i = 0; i < citizenCount; ++i)
             {
-                image.TopLeftPosition = new Vector2(x, y);
+                image.SetTopLeftPosition(x, y);
                 image.Draw();
 
                 x += 20;

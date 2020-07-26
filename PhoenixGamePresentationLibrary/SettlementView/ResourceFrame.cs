@@ -11,7 +11,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly SettlementView _parent;
 
         private readonly Vector2 _topLeftPosition;
-        private FrameDynamicSizing _smallFrame;
+        private Frame _smallFrame;
         private Label _lblResources;
         private Label _lblFood;
         private Label _lblProduction;
@@ -29,17 +29,17 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _smallFrame = new FrameDynamicSizing(_topLeftPosition + new Vector2(0.0f, 0.0f), new Vector2(515, 175), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
+            _smallFrame = new Frame("SmallFrame", _topLeftPosition + new Vector2(0.0f, 0.0f), new Vector2(515, 175), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
             _smallFrame.LoadContent(content);
 
-            _lblResources = new Label("lblResources", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Resources", HorizontalAlignment.Left, Color.Orange, Color.Red);
-            _lblFood = new Label("lblFood", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 30.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Food", HorizontalAlignment.Left, Color.Orange);
-            _lblProduction = new Label("lblProduction", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 60.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Production", HorizontalAlignment.Left, Color.Orange);
-            _lblGold = new Label("lblGold", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 90.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Gold", HorizontalAlignment.Left, Color.Orange);
+            _lblResources = new Label("lblResources", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Resources", HorizontalAlignment.Left, Color.Orange, Color.Red);
+            _lblFood = new Label("lblFood", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 30.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Food", HorizontalAlignment.Left, Color.Orange);
+            _lblProduction = new Label("lblProduction", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 60.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Production", HorizontalAlignment.Left, Color.Orange);
+            _lblGold = new Label("lblGold", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 90.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Gold", HorizontalAlignment.Left, Color.Orange);
             //_lblGold2 = new Label("lblGold2", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 200.0f, _topLeftPosition.Y + 100.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
-            _lblPower = new Label("lblPower", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 120.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Power", HorizontalAlignment.Left, Color.Orange);
+            _lblPower = new Label("lblPower", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 120.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Power", HorizontalAlignment.Left, Color.Orange);
             //_lblPower2 = new Label("lblPower2", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 200.0f, _topLeftPosition.Y + 130.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
-            _lblResearch = new Label("lblResearch", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 150.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, "Research", HorizontalAlignment.Left, Color.Orange);
+            _lblResearch = new Label("lblResearch", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 150.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Research", HorizontalAlignment.Left, Color.Orange);
             //_lblResearch2 = new Label("lblResearch2", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 200.0f, _topLeftPosition.Y + 160.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
 
             _foodView = new FoodView(new Vector2(_topLeftPosition.X + 150.0f, _topLeftPosition.Y + 20.0f), _parent);
@@ -136,14 +136,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
             for (int i = 0; i < numberOfBread; ++i)
             {
-                _image1.TopLeftPosition = new Vector2(x, y);
+                _image1.SetTopLeftPosition(x, y);
                 _image1.Draw();
                 x += 30;
             }
 
             for (int i = 0; i < numberOfCorn; ++i)
             {
-                _image2.TopLeftPosition = new Vector2(x, y);
+                _image2.SetTopLeftPosition(x, y);
                 _image2.Draw();
                 x += 20;
             }
@@ -196,18 +196,18 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private int Draw(SpriteBatch spriteBatch, int x, int y, int production)
         {
             var numberOfAnvils = production / 10;
-            var numberofPickaxes = production % 10;
+            var numberOfPickaxes = production % 10;
 
             for (int i = 0; i < numberOfAnvils; ++i)
             {
-                _image1.TopLeftPosition = new Vector2(x, y);
+                _image1.SetTopLeftPosition(x, y);
                 _image1.Draw();
                 x += 30;
             }
 
-            for (int i = 0; i < numberofPickaxes; ++i)
+            for (int i = 0; i < numberOfPickaxes; ++i)
             {
-                _image2.TopLeftPosition = new Vector2(x, y);
+                _image2.SetTopLeftPosition(x, y);
                 _image2.Draw();
                 x += 20;
             }

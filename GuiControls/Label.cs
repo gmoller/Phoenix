@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
@@ -8,6 +9,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace GuiControls
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Label : Control, IControl
     {
         private readonly IControl _parent; // TODO: move into base/interface?
@@ -21,11 +23,22 @@ namespace GuiControls
         public SpriteFont Font { get; }
         public string Text { get; set; }
         public Matrix? Transform { get; set; }
-        public Vector2 TopLeftPosition => TopLeft;
-        public Vector2 TopRightPosition => TopRight;
-        public Vector2 BottomLeftPosition => BottomLeft;
-        public Vector2 BottomRightPosition => BottomRight;
-        public Vector2 RelativePosition => new Vector2(_parent.RelativePosition.X + TopLeftPosition.X, _parent.RelativePosition.Y + TopLeftPosition.Y);
+
+        public int Top => Area.Top;
+        public int Bottom => Area.Bottom;
+        public int Left => Area.Left;
+        public int Right => Area.Right;
+        public int Width => Area.Width;
+        public int Height => Area.Height;
+        public Microsoft.Xna.Framework.Point Center => Area.Center;
+        public Microsoft.Xna.Framework.Point TopLeft => TopLeft;
+        public Microsoft.Xna.Framework.Point TopRight => new Microsoft.Xna.Framework.Point(Right, Top);
+        public Microsoft.Xna.Framework.Point BottomLeft => new Microsoft.Xna.Framework.Point(Left, Bottom);
+        public Microsoft.Xna.Framework.Point BottomRight => new Microsoft.Xna.Framework.Point(Right, Bottom);
+        public Microsoft.Xna.Framework.Point Size => Area.Size;
+
+        //public Vector2 RelativePosition => new Vector2(_parent.RelativePosition.X + TopLeftPosition.X, _parent.RelativePosition.Y + TopLeftPosition.Y);
+        public Vector2 RelativePosition => new Vector2(Left - _parent.TopLeft.X, Top - _parent.TopLeft.Y);
 
         public event EventHandler Click;
 
@@ -36,7 +49,8 @@ namespace GuiControls
             var font = AssetsManager.Instance.GetSpriteFont(fontName);
             if (size.Equals(Vector2.Zero))
             {
-                Size = font.MeasureString(text);
+                throw new NotSupportedException("Autosize not currently supported.");
+                //Size = font.MeasureString(text);
             }
 
             Font = font;
@@ -56,7 +70,8 @@ namespace GuiControls
             var font = AssetsManager.Instance.GetSpriteFont(fontName);
             if (size.Equals(Vector2.Zero))
             {
-                Size = font.MeasureString(text);
+                throw new NotSupportedException("Autosize not currently supported.");
+                //Size = font.MeasureString(text);
             }
 
             Font = font;
@@ -67,6 +82,12 @@ namespace GuiControls
             _backColor = backColor;
             _borderColor = borderColor;
             Transform = transform;
+        }
+
+        public void SetTopLeftPosition(int x, int y)
+        {
+            //_actualDestinationRectangle.X = x;
+            //_actualDestinationRectangle.Y = y;
         }
 
         public void LoadContent(ContentManager content)
@@ -147,7 +168,7 @@ namespace GuiControls
                     position = new Vector2(Right - textSize.X, Center.Y);
                     break;
                 case HorizontalAlignment.Center:
-                    position = Center;
+                    position = Center.ToVector2();
                     break;
             }
 
@@ -177,5 +198,12 @@ namespace GuiControls
         {
             Click?.Invoke(this, e);
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => "";//$"{{Name={Name},TopLeftPosition={TopLeft},RelativePosition={RelativePosition},Size={Size}}}";
     }
 }

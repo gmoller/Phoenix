@@ -9,7 +9,7 @@ namespace PhoenixGamePresentationLibrary
     {
         private readonly Vector2 _topLeftPosition;
 
-        private FrameDynamicSizing _frame;
+        private Frame _frame;
         private List<IControl> _controls;
 
         public Vector2 Position { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
@@ -21,7 +21,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void LoadContent(ContentManager content)
         {
-            _frame = new FrameDynamicSizing(_topLeftPosition, new Vector2(100.0f, 100.0f), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
+            _frame = new Frame("Frame", _topLeftPosition, new Vector2(100.0f, 100.0f), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
             _frame.LoadContent(content);
             _controls = new List<IControl>();
         }

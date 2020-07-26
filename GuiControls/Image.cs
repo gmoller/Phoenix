@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
@@ -8,11 +9,11 @@ using Microsoft.Xna.Framework.Content;
 
 namespace GuiControls
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Image : IControl
     {
         private readonly IControl _parent; // TODO: move into base/interface?
 
-        private readonly string _name;
         private readonly string _textureAtlas;
         private readonly string _textureName;
         private readonly byte? _textureId;
@@ -23,7 +24,7 @@ namespace GuiControls
         private Rectangle _actualDestinationRectangle;
         private Rectangle _sourceRectangle;
 
-        // offset from parent
+        public string Name { get; }
         public int Top => _actualDestinationRectangle.Top;
         public int Bottom => _actualDestinationRectangle.Bottom;
         public int Left => _actualDestinationRectangle.Left;
@@ -35,22 +36,9 @@ namespace GuiControls
         public Microsoft.Xna.Framework.Point TopRight => new Microsoft.Xna.Framework.Point(Right, Top);
         public Microsoft.Xna.Framework.Point BottomLeft => new Microsoft.Xna.Framework.Point(Left, Bottom);
         public Microsoft.Xna.Framework.Point BottomRight => new Microsoft.Xna.Framework.Point(Right, Bottom);
+        public Microsoft.Xna.Framework.Point Size => _actualDestinationRectangle.Size;
 
-        public Vector2 TopLeftPosition
-        {
-            get => new Vector2(_actualDestinationRectangle.Left, _actualDestinationRectangle.Top);
-
-            set
-            {
-                _actualDestinationRectangle.X = (int)value.X;
-                _actualDestinationRectangle.Y = (int)value.Y;
-            }
-        }
-        public Vector2 TopRightPosition => new Vector2(_actualDestinationRectangle.Right, _actualDestinationRectangle.Top);
-        public Vector2 BottomLeftPosition => new Vector2(_actualDestinationRectangle.Left, _actualDestinationRectangle.Bottom);
-        public Vector2 BottomRightPosition => new Vector2(_actualDestinationRectangle.Right, _actualDestinationRectangle.Bottom);
-
-        public Vector2 RelativePosition => new Vector2(Left - _parent.TopLeftPosition.X, Top - _parent.TopLeftPosition.Y);
+        public Vector2 RelativePosition => new Vector2(Left - _parent.TopLeft.X, Top - _parent.TopLeft.Y);
 
         public Image(string name, Vector2 position, Vector2 size, string textureName, float layerDepth = 0.0f, IControl parent = null) : 
             this(name, position, ContentAlignment.TopLeft, size, string.Empty, textureName, null, layerDepth, parent)
@@ -76,7 +64,7 @@ namespace GuiControls
         {
             _parent = parent;
 
-            _name = name;
+            Name = name;
             _textureAtlas = textureAtlas;
             _textureName = textureName;
             _textureId = textureId;
@@ -90,13 +78,19 @@ namespace GuiControls
             else
             {
                 // offset from parent's position
-                int x =  (int)(_parent.TopLeftPosition.X + topLeft.X);
-                int y =  (int)(_parent.TopLeftPosition.Y + topLeft.Y);
+                int x =  (int)(_parent.TopLeft.X + topLeft.X);
+                int y =  (int)(_parent.TopLeft.Y + topLeft.Y);
                 _actualDestinationRectangle = new Rectangle(x, y, (int)size.X, (int)size.Y);
             }
             
             _color = Color.White;
             _layerDepth = layerDepth;
+        }
+
+        public void SetTopLeftPosition(int x, int y)
+        {
+            _actualDestinationRectangle.X = x;
+            _actualDestinationRectangle.Y = y;
         }
 
         public void LoadContent(ContentManager content)
@@ -179,5 +173,12 @@ namespace GuiControls
             spriteBatch.End();
             DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Name={Name},TopLeftPosition={TopLeft},RelativePosition={RelativePosition},Size={Size}}}";
     }
 }
