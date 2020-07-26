@@ -14,10 +14,10 @@ namespace Input
         public bool IsRightMouseButtonReleased => MouseHandler.IsRightButtonReleased();
 
         public bool HasMouseMoved => MouseHandler.HasMouseMoved();
-        public bool MouseIsAtTopOfScreen => MouseHandler.MousePosition.Y < DeviceManager.Instance.MapViewport.Y + 5.0f;
-        public bool MouseIsAtBottomOfScreen => MouseHandler.MousePosition.Y > DeviceManager.Instance.MapViewport.Height - 5.0f;
-        public bool MouseIsAtLeftOfScreen => MouseHandler.MousePosition.X < DeviceManager.Instance.MapViewport.X + 5.0f;
-        public bool MouseIsAtRightOfScreen => MouseHandler.MousePosition.X > DeviceManager.Instance.MapViewport.Width - 5.0f;
+        public bool MouseIsAtTopOfScreen => MouseHandler.MousePosition.Y < DeviceManager.Instance.MapViewport.Y + 20.0f && MouseHandler.MousePosition.Y >= DeviceManager.Instance.MapViewport.Y;
+        public bool MouseIsAtBottomOfScreen => MouseHandler.MousePosition.Y > DeviceManager.Instance.MapViewport.Height - 20.0f && MouseHandler.MousePosition.Y <= DeviceManager.Instance.MapViewport.Height;
+        public bool MouseIsAtLeftOfScreen => MouseHandler.MousePosition.X < DeviceManager.Instance.MapViewport.X + 20.0f && MouseHandler.MousePosition.X >= DeviceManager.Instance.MapViewport.X;
+        public bool MouseIsAtRightOfScreen => MouseHandler.MousePosition.X > DeviceManager.Instance.MapViewport.Width - 20.0f && MouseHandler.MousePosition.X <= DeviceManager.Instance.MapViewport.Width;
 
         public bool MouseIsWithinScreen => MouseHandler.MousePosition.X >= DeviceManager.Instance.MapViewport.X &&
                                            MouseHandler.MousePosition.X <= DeviceManager.Instance.MapViewport.Width &&

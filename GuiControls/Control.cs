@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Utilities;
 
 namespace GuiControls
 {
@@ -26,99 +27,103 @@ namespace GuiControls
         public Vector2 BottomRight => new Vector2(Area.Right, Area.Bottom);
         public Vector2 Center => new Vector2(Area.Center.X, Area.Center.Y);
 
-        protected Control(string name, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size)
+        protected Control(string name, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size) :
+            this(name, null, horizontalAlignment, verticalAlignment, size)
         {
-            Name = name;
             Position = position;
-            HorizontalAlignment = horizontalAlignment;
-            VerticalAlignment = verticalAlignment;
-            Size = new Vector2(size.X % 2 == 0 ? size.X : size.X + 1, size.Y % 2 == 0 ? size.Y : size.Y + 1);
         }
 
         protected Control(string name, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size)
         {
             Name = Name;
-            if (verticalAlignment == VerticalAlignment.Top)
+            if (controlToDockTo != null)
             {
-                if (horizontalAlignment == HorizontalAlignment.Left)
+                if (verticalAlignment == VerticalAlignment.Top)
                 {
-                    Position = controlToDockTo.TopLeft;
-                    VerticalAlignment = VerticalAlignment.Bottom;
-                    HorizontalAlignment = HorizontalAlignment.Right;
+                    if (horizontalAlignment == HorizontalAlignment.Left)
+                    {
+                        Position = controlToDockTo.TopLeft;
+                        VerticalAlignment = VerticalAlignment.Bottom;
+                        HorizontalAlignment = HorizontalAlignment.Right;
+                    }
+                    else if (horizontalAlignment == HorizontalAlignment.Center)
+                    {
+                        Position = new Vector2(controlToDockTo.Center.X, controlToDockTo.Top);
+                        VerticalAlignment = VerticalAlignment.Bottom;
+                        HorizontalAlignment = HorizontalAlignment.Center;
+                    }
+                    else if (horizontalAlignment == HorizontalAlignment.Right)
+                    {
+                        Position = controlToDockTo.TopRight;
+                        VerticalAlignment = VerticalAlignment.Bottom;
+                        HorizontalAlignment = HorizontalAlignment.Left;
+                    }
+                    else
+                    {
+                        throw new Exception(
+                            $"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
+                    }
                 }
-                else if (horizontalAlignment == HorizontalAlignment.Center)
+                else if (verticalAlignment == VerticalAlignment.Middle)
                 {
-                    Position = new Vector2(controlToDockTo.Center.X, controlToDockTo.Top);
-                    VerticalAlignment = VerticalAlignment.Bottom;
-                    HorizontalAlignment = HorizontalAlignment.Center;
+                    if (horizontalAlignment == HorizontalAlignment.Left)
+                    {
+                        Position = new Vector2(controlToDockTo.Left, controlToDockTo.Center.Y);
+                        VerticalAlignment = VerticalAlignment.Middle;
+                        HorizontalAlignment = HorizontalAlignment.Right;
+                    }
+                    else if (horizontalAlignment == HorizontalAlignment.Center)
+                    {
+                        Position = new Vector2(controlToDockTo.Center.X, controlToDockTo.Center.Y);
+                        VerticalAlignment = VerticalAlignment.Middle;
+                        HorizontalAlignment = HorizontalAlignment.Center;
+                    }
+                    else if (horizontalAlignment == HorizontalAlignment.Right)
+                    {
+                        Position = new Vector2(controlToDockTo.Right, controlToDockTo.Center.Y);
+                        VerticalAlignment = VerticalAlignment.Middle;
+                        HorizontalAlignment = HorizontalAlignment.Left;
+                    }
+                    else
+                    {
+                        throw new Exception(
+                            $"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
+                    }
                 }
-                else if (horizontalAlignment == HorizontalAlignment.Right)
+                else if (verticalAlignment == VerticalAlignment.Bottom)
                 {
-                    Position = controlToDockTo.TopRight;
-                    VerticalAlignment = VerticalAlignment.Bottom;
-                    HorizontalAlignment = HorizontalAlignment.Left;
+                    if (horizontalAlignment == HorizontalAlignment.Left)
+                    {
+                        Position = controlToDockTo.BottomLeft;
+                        VerticalAlignment = VerticalAlignment.Top;
+                        HorizontalAlignment = HorizontalAlignment.Right;
+                    }
+                    else if (horizontalAlignment == HorizontalAlignment.Center)
+                    {
+                        Position = new Vector2(controlToDockTo.Center.X, controlToDockTo.Bottom);
+                        VerticalAlignment = VerticalAlignment.Top;
+                        HorizontalAlignment = HorizontalAlignment.Center;
+                    }
+                    else if (horizontalAlignment == HorizontalAlignment.Right)
+                    {
+                        Position = controlToDockTo.BottomRight;
+                        VerticalAlignment = VerticalAlignment.Top;
+                        HorizontalAlignment = HorizontalAlignment.Left;
+                    }
+                    else
+                    {
+                        throw new Exception(
+                            $"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
+                    }
                 }
                 else
                 {
-                    throw new Exception($"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
+                    throw new Exception(
+                        $"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
                 }
-            }
-            else if (verticalAlignment == VerticalAlignment.Middle)
-            {
-                if (horizontalAlignment == HorizontalAlignment.Left)
-                {
-                    Position = new Vector2(controlToDockTo.Left, controlToDockTo.Center.Y);
-                    VerticalAlignment = VerticalAlignment.Middle;
-                    HorizontalAlignment = HorizontalAlignment.Right;
-                }
-                else if (horizontalAlignment == HorizontalAlignment.Center)
-                {
-                    Position = new Vector2(controlToDockTo.Center.X, controlToDockTo.Center.Y);
-                    VerticalAlignment = VerticalAlignment.Middle;
-                    HorizontalAlignment = HorizontalAlignment.Center;
-                }
-                else if (horizontalAlignment == HorizontalAlignment.Right)
-                {
-                    Position = new Vector2(controlToDockTo.Right, controlToDockTo.Center.Y);
-                    VerticalAlignment = VerticalAlignment.Middle;
-                    HorizontalAlignment = HorizontalAlignment.Left;
-                }
-                else
-                {
-                    throw new Exception($"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
-                }
-            }
-            else if (verticalAlignment == VerticalAlignment.Bottom)
-            {
-                if (horizontalAlignment == HorizontalAlignment.Left)
-                {
-                    Position = controlToDockTo.BottomLeft;
-                    VerticalAlignment = VerticalAlignment.Top;
-                    HorizontalAlignment = HorizontalAlignment.Right;
-                }
-                else if (horizontalAlignment == HorizontalAlignment.Center)
-                {
-                    Position = new Vector2(controlToDockTo.Center.X, controlToDockTo.Bottom);
-                    VerticalAlignment = VerticalAlignment.Top;
-                    HorizontalAlignment = HorizontalAlignment.Center;
-                }
-                else if (horizontalAlignment == HorizontalAlignment.Right)
-                {
-                    Position = controlToDockTo.BottomRight;
-                    VerticalAlignment = VerticalAlignment.Top;
-                    HorizontalAlignment = HorizontalAlignment.Left;
-                }
-                else
-                {
-                    throw new Exception($"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
-                }
-            }
-            else
-            {
-                throw new Exception($"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
             }
 
-            Size = new Vector2(size.X % 2 == 0 ? size.X : size.X + 1, size.Y % 2 == 0 ? size.Y : size.Y + 1);
+            Size = new Vector2((size.X % 2).AboutEquals(0.0f) ? size.X : size.X + 1, (size.Y % 2).AboutEquals(0.0f) ? size.Y : size.Y + 1);
         }
 
         private Rectangle DetermineArea(VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 position, int width, int height)

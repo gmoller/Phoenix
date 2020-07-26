@@ -17,6 +17,8 @@ namespace PhoenixGamePresentationLibrary
 
         private readonly Rectangle _area;
 
+        private IControl _resourceFrame;
+
         private Image _imgGold;
         private Image _imgMana;
         private Image _imgFood;
@@ -35,7 +37,11 @@ namespace PhoenixGamePresentationLibrary
 
         internal HudView(WorldView worldView, UnitsView unitsView)
         {
-            _area = new Rectangle(DeviceManager.Instance.GraphicsDevice.Viewport.Width - 250, 0, 250, DeviceManager.Instance.GraphicsDevice.Viewport.Height - 60);
+            var width = (int)(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.1305f); // 13.05% of screen width
+            var height = (int)(DeviceManager.Instance.GraphicsDevice.Viewport.Height * 0.945f); // 94.5% of screen height
+            var x = DeviceManager.Instance.GraphicsDevice.Viewport.Width - width;
+            var y = 0;
+            _area = new Rectangle(x, y, width, height); // 250x1020
 
             _worldView = worldView;
             _unitsView = unitsView;
@@ -44,10 +50,21 @@ namespace PhoenixGamePresentationLibrary
         internal void LoadContent(ContentManager content)
         {
             var topLeftPosition = new Vector2(_area.X, _area.Y);
-            var position = new Vector2(topLeftPosition.X + 20.0f, 200.0f);
-            _imgGold = new Image("imgGold", position, new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R");
-            _imgMana = new Image("imgMana", _imgGold.BottomLeft.ToVector2() + new Vector2(0.0f, 10.0f), new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R");
-            _imgFood = new Image("imgFood", _imgMana.BottomLeft.ToVector2() + new Vector2(0.0f, 10.0f), new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R");
+            _resourceFrame = new FrameDynamicSizing(topLeftPosition + new Vector2(10.0f, 50.0f), new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame3_whole", 0, 0, 0, 0, null);
+            _resourceFrame.LoadContent(content);
+
+            _imgGold = new Image("imgGold", new Vector2(10.0f, 10.0f), new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R", 0.0f, _resourceFrame);
+            _imgGold.LoadContent(content);
+            _imgMana = new Image("imgMana", _imgGold.RelativePosition + new Vector2(0.0f, _imgGold.Height) + new Vector2(0.0f, 10.0f), new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R", 0.0f, _resourceFrame);
+            _imgMana.LoadContent(content);
+            _imgFood = new Image("imgFood", _imgMana.RelativePosition + new Vector2(0.0f, _imgMana.Height) + new Vector2(0.0f, 10.0f), new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", 0.0f, _resourceFrame);
+            _imgFood.LoadContent(content);
+            _lblGold = new Label("lblGold", "CrimsonText-Regular-12", _imgGold.RelativePosition + new Vector2(_imgGold.Width, 0.0f) + new Vector2(20.0f, 0.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(100.0f, 25.0f), string.Empty, HorizontalAlignment.Left, Color.Yellow, Color.Black, Color.TransparentBlack, null, null, _resourceFrame);
+            _lblGold.LoadContent(content);
+            _lblMana = new Label("lblMana", "CrimsonText-Regular-12", new Vector2(_imgMana.Right + 20.0f, _imgMana.Center.Y), HorizontalAlignment.Left, VerticalAlignment.Middle, new Vector2(100.0f, 25.0f), string.Empty, HorizontalAlignment.Left, Color.Yellow, Color.Black, Color.TransparentBlack, null, null, _resourceFrame);
+            _lblMana.LoadContent(content);
+            _lblFood = new Label("lblFood", "CrimsonText-Regular-12", new Vector2(_imgFood.Right + 20.0f, _imgFood.Center.Y), HorizontalAlignment.Left, VerticalAlignment.Middle, new Vector2(100.0f, 25.0f), string.Empty, HorizontalAlignment.Left, Color.Yellow, Color.Black, Color.TransparentBlack, null, null, _resourceFrame);
+            _lblFood.LoadContent(content);
 
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
 
@@ -55,23 +72,21 @@ namespace PhoenixGamePresentationLibrary
             _frame = new FrameDynamicSizing(topLeftPosition, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
             _frame.LoadContent(content);
 
-            var topCenterPosition = new Vector2(topLeftPosition.X + size.X / 2, topLeftPosition.Y) + new Vector2(0.0f, 10.0f);
+            var topCenterPosition = new Vector2(topLeftPosition.X + size.X / 2.0f, topLeftPosition.Y) + new Vector2(0.0f, 10.0f);
             _lblCurrentDate = new Label("lblCurrentDate", "Maleficio-Regular-18", topCenterPosition, HorizontalAlignment.Center, VerticalAlignment.Top, Vector2.Zero, "Date:", HorizontalAlignment.Center, Color.Aquamarine);
-
-            _lblGold = new Label("lblGold", "CrimsonText-Regular-12", new Vector2(_imgGold.Right + 20.0f, _imgGold.Center.Y), HorizontalAlignment.Left, VerticalAlignment.Middle, new Vector2(100.0f, 25.0f), string.Empty, HorizontalAlignment.Left, Color.Yellow, Color.Black, Color.TransparentBlack);
-            _lblMana = new Label("lblMana", "CrimsonText-Regular-12", new Vector2(_imgMana.Right + 20.0f, _imgMana.Center.Y), HorizontalAlignment.Left, VerticalAlignment.Middle, new Vector2(100.0f, 25.0f), string.Empty, HorizontalAlignment.Left, Color.Yellow, Color.Black, Color.TransparentBlack);
-            _lblFood = new Label("lblFood", "CrimsonText-Regular-12", new Vector2(_imgFood.Right + 20.0f, _imgFood.Center.Y), HorizontalAlignment.Left, VerticalAlignment.Middle, new Vector2(100.0f, 25.0f), string.Empty, HorizontalAlignment.Left, Color.Yellow, Color.Black, Color.TransparentBlack);
 
             var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
             var label = new Label("lblNextTurn", "CrimsonText-Regular-12", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "Next Turn", HorizontalAlignment.Center, Color.White, Color.Blue);
             _btnEndTurn = new Button("btnEndTurn", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h", label);
-            _btnEndTurn.Click += btnEndTurnClick;
+            _btnEndTurn.Click += BtnEndTurnClick;
         }
 
         public void Update(InputHandler input, float deltaTime)
         {
             var mouseOver = _area.Contains(input.MousePosition);
             input.Eaten = mouseOver;
+
+            _resourceFrame.Update(input, deltaTime);
 
             _lblCurrentDate.Update(input, deltaTime);
             _lblCurrentDate.Text = Globals.Instance.World.CurrentDate;
@@ -96,6 +111,8 @@ namespace PhoenixGamePresentationLibrary
             spriteBatch.Begin();
             _frame.Draw();
             spriteBatch.End();
+
+            _resourceFrame.Draw();
 
             _lblCurrentDate.Draw();
 
@@ -182,7 +199,7 @@ namespace PhoenixGamePresentationLibrary
             }
         }
 
-        private void btnEndTurnClick(object sender, EventArgs e)
+        private void BtnEndTurnClick(object sender, EventArgs e)
         {
             _worldView.EndTurn();
         }

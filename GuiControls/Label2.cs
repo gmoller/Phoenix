@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Input;
 using Utilities;
+using Microsoft.Xna.Framework.Content;
 
 namespace GuiControls
 {
@@ -21,14 +22,14 @@ namespace GuiControls
         private SpriteFont _font;
         private Rectangle _area;
         private Rectangle _originalScissorRectangle;
-        private string _text;
+        private readonly string _text;
         private Vector2 _origin;
 
         private bool _contentLoaded;
 
-        public Vector2 Position
+        public Vector2 TopLeftPosition
         {
-            get => new Vector2(_area.X, _area.Y);
+            get => new Vector2(_area.Left, _area.Top);
 
             set
             {
@@ -36,6 +37,11 @@ namespace GuiControls
                 _area.Y = (int)value.Y;
             }
         }
+        public Vector2 TopRightPosition => new Vector2(_area.Right, _area.Top);
+        public Vector2 BottomLeftPosition => new Vector2(_area.Left, _area.Bottom);
+        public Vector2 BottomRightPosition => new Vector2(_area.Right, _area.Bottom);
+
+        public Vector2 RelativePosition => new Vector2(_parent.RelativePosition.X + TopLeftPosition.X, _parent.RelativePosition.Y + TopLeftPosition.Y);
 
         private Rectangle DestinationRectangle => new Rectangle(_area.X - (int)_origin.X, _area.Y - (int)_origin.Y, _area.Width, _area.Height);
 
@@ -59,28 +65,7 @@ namespace GuiControls
             _contentLoaded = false;
         }
 
-        public void Update(InputHandler input, float deltaTime, Matrix? transform = null)
-        {
-            var mousePosition = DetermineMousePosition(input, transform);
-        }
-
-        public void Draw(Matrix? transform = null)
-        {
-            LoadContent();
-
-            var spriteBatch = BeginSpriteBatch(transform);
-
-            if (_backColor != null)
-            {
-                spriteBatch.FillRectangle(DestinationRectangle, _backColor, _layerDepth);
-            }
-
-            spriteBatch.DrawString(_font, _text, Position, _textColor, 0.0f, _origin, _scale, SpriteEffects.None, _layerDepth);
-
-            EndSpriteBatch(spriteBatch);
-        }
-
-        private void LoadContent()
+        public void LoadContent(ContentManager content)
         {
             if (_contentLoaded) return;
 
@@ -89,6 +74,25 @@ namespace GuiControls
             DetermineOrigin(_alignment);
 
             _contentLoaded = true;
+        }
+
+        public void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        {
+            var mousePosition = DetermineMousePosition(input, transform);
+        }
+
+        public void Draw(Matrix? transform = null)
+        {
+            var spriteBatch = BeginSpriteBatch(transform);
+
+            if (_backColor != null)
+            {
+                spriteBatch.FillRectangle(DestinationRectangle, _backColor, _layerDepth);
+            }
+
+            spriteBatch.DrawString(_font, _text, TopLeftPosition, _textColor, 0.0f, _origin, _scale, SpriteEffects.None, _layerDepth);
+
+            EndSpriteBatch(spriteBatch);
         }
 
         private void DetermineOrigin(ContentAlignment alignment)

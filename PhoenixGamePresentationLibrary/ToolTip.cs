@@ -28,7 +28,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void AddControl(IControl control)
         {
-            control.Position = _frame.TopLeftPosition + control.Position;
+            //control.TopLeftPosition = _frame.TopLeftPosition + control.TopLeftPosition;
             _controls.Add(control);
         }
 

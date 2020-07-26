@@ -61,7 +61,7 @@ namespace PhoenixGamePresentationLibrary
 
         public void MoveCamera(Vector2 movePosition)
         {
-            Vector2 newPosition = _position + movePosition;
+            var newPosition = _position + movePosition;
 
             _position = newPosition;
         }
@@ -69,7 +69,7 @@ namespace PhoenixGamePresentationLibrary
         public void AdjustZoom(float zoomAmount)
         {
             _zoom += zoomAmount;
-            _zoom = MathHelper.Clamp(_zoom, 0.35f, 2.0f); // 0.1 - 5.0f
+            _zoom = MathHelper.Clamp(_zoom, 0.35f, 5.0f); // 0.1 - 5.0f
         }
 
         public void Update(InputHandler input, float deltaTime)
@@ -81,13 +81,13 @@ namespace PhoenixGamePresentationLibrary
             var panCameraDistance = input.IsLeftMouseButtonDown && input.HasMouseMoved ? input.MouseMovement.ToVector2() : Vector2.Zero;
             MoveCamera(panCameraDistance);
 
-            panCameraDistance = input.MouseIsAtTopOfScreen ? new Vector2(0.0f, -2.0f) * deltaTime : Vector2.Zero;
+            panCameraDistance = input.MouseIsAtTopOfScreen ? new Vector2(0.0f, -1.0f) * deltaTime : Vector2.Zero;
             MoveCamera(panCameraDistance);
-            panCameraDistance = input.MouseIsAtBottomOfScreen ? new Vector2(0.0f, 2.0f) * deltaTime : Vector2.Zero;
+            panCameraDistance = input.MouseIsAtBottomOfScreen ? new Vector2(0.0f, 1.0f) * deltaTime : Vector2.Zero;
             MoveCamera(panCameraDistance);
-            panCameraDistance = input.MouseIsAtLeftOfScreen ? new Vector2(-2.0f, 0.0f) * deltaTime : Vector2.Zero;
+            panCameraDistance = input.MouseIsAtLeftOfScreen ? new Vector2(-1.0f, 0.0f) * deltaTime : Vector2.Zero;
             MoveCamera(panCameraDistance);
-            panCameraDistance = input.MouseIsAtRightOfScreen ? new Vector2(2.0f, 0.0f) * deltaTime : Vector2.Zero;
+            panCameraDistance = input.MouseIsAtRightOfScreen ? new Vector2(1.0f, 0.0f) * deltaTime : Vector2.Zero;
             MoveCamera(panCameraDistance);
 
             ClampCamera();

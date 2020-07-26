@@ -28,8 +28,12 @@ namespace Phoenix
 
             Window.Position = new Microsoft.Xna.Framework.Point(0, 0);
             VariableTimeStep();
-            SetGraphicsResolution(1920, 1080); // 1600, 800
             DeviceManager.Instance.GraphicsDevice = GraphicsDevice;
+            DeviceManager.Instance.GraphicsDeviceManager = _graphicsDeviceManager;
+            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1600, 800);
+            //DeviceManager.Instance.SetScreenResolution(800, 600);
+            //DeviceManager.Instance.SetScreenResolution(320, 240);
 
             _phoenixGame = new PhoenixGame();
             _phoenixGameView = new PhoenixGameView(_phoenixGame);
@@ -37,14 +41,6 @@ namespace Phoenix
             Logger.Instance.LogComplete();
 
             base.Initialize();
-        }
-
-        private void SetGraphicsResolution(int width, int height)
-        {
-            _graphicsDeviceManager.PreferredBackBufferWidth = width;
-            _graphicsDeviceManager.PreferredBackBufferHeight = height;
-            //_graphicsDeviceManager.IsFullScreen = true;
-            _graphicsDeviceManager.ApplyChanges();
         }
 
         private void VariableTimeStep()

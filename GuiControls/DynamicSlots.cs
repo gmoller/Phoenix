@@ -59,7 +59,7 @@ namespace GuiControls
                 spriteBatch.Draw(_texture, slot, _slot, Color.White);
                 if (_labels != null && i < _labels.Count)
                 {
-                    _labels[i].Draw(spriteBatch);
+                    _labels[i].Draw();
                     i++;
                 }
             }

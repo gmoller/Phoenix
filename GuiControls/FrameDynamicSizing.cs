@@ -3,10 +3,11 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Utilities;
+using Input;
 
 namespace GuiControls
 {
-    public class FrameDynamicSizing
+    public class FrameDynamicSizing : IControl
     {
         private readonly string _textureAtlasString;
         private readonly string _textureString;
@@ -22,7 +23,11 @@ namespace GuiControls
         private Rectangle[] _sourcePatches;
         private Rectangle[] _destinationPatches;
 
-        public Vector2 TopLeftPosition { get; private set; }
+        public Vector2 TopLeftPosition { get; set; }
+        public Vector2 TopRightPosition { get; }
+        public Vector2 BottomLeftPosition { get; }
+        public Vector2 BottomRightPosition { get; }
+        public Vector2 RelativePosition => new Vector2(0 + TopLeftPosition.X, 0 + TopLeftPosition.Y);
 
         public FrameDynamicSizing(Vector2 topLeftPosition, Vector2 size, string textureAtlasString, string textureString, int topPadding, int bottomPadding, int leftPadding, int rightPadding, DynamicSlots slots = null)
         {
@@ -49,7 +54,11 @@ namespace GuiControls
             _destinationPatches = CreatePatches(new Rectangle((int)TopLeftPosition.X, (int)TopLeftPosition.Y, (int)_size.X, (int)_size.Y), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
         }
 
-        public void Draw()
+        public void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        {
+        }
+
+        public void Draw(Matrix? transform = null)
         {
             var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
             spriteBatch.Begin();

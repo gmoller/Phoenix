@@ -38,7 +38,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         internal void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            _lblOther.Draw(spriteBatch);
+            _lblOther.Draw();
             _smallFrameOther.Draw();
             spriteBatch.End();
         }

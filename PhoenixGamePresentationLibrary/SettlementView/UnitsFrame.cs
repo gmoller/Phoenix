@@ -49,7 +49,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         internal void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            _lblUnits.Draw(spriteBatch);
+            _lblUnits.Draw();
             _smallFrameUnits.Draw();
             spriteBatch.End();
         }

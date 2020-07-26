@@ -4,11 +4,14 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Input;
 using Utilities;
+using Microsoft.Xna.Framework.Content;
 
 namespace GuiControls
 {
-    public class Label : Control
+    public class Label : Control, IControl
     {
+        private readonly IControl _parent; // TODO: move into base/interface?
+
         private readonly HorizontalAlignment _textAlignment;
         private readonly Color _textColor;
         private readonly Color? _textShadowColor;
@@ -18,12 +21,18 @@ namespace GuiControls
         public SpriteFont Font { get; }
         public string Text { get; set; }
         public Matrix? Transform { get; set; }
+        public Vector2 TopLeftPosition => TopLeft;
+        public Vector2 TopRightPosition => TopRight;
+        public Vector2 BottomLeftPosition => BottomLeft;
+        public Vector2 BottomRightPosition => BottomRight;
+        public Vector2 RelativePosition => new Vector2(_parent.RelativePosition.X + TopLeftPosition.X, _parent.RelativePosition.Y + TopLeftPosition.Y);
 
         public event EventHandler Click;
 
-        public Label(string name, string fontName, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Matrix? transform = null) :
+        public Label(string name, string fontName, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Matrix? transform = null, IControl parent = null) :
             base(name, position, horizontalAlignment, verticalAlignment, size)
         {
+            _parent = parent;
             var font = AssetsManager.Instance.GetSpriteFont(fontName);
             if (size.Equals(Vector2.Zero))
             {
@@ -40,9 +49,10 @@ namespace GuiControls
             Transform = transform;
         }
 
-        public Label(string name, string fontName, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Matrix? transform = null) :
+        public Label(string name, string fontName, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string text, HorizontalAlignment textAlignment, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color ? borderColor = null, Matrix? transform = null, IControl parent = null) :
             base(name, controlToDockTo, horizontalAlignment, verticalAlignment, size)
         {
+            _parent = parent;
             var font = AssetsManager.Instance.GetSpriteFont(fontName);
             if (size.Equals(Vector2.Zero))
             {
@@ -59,7 +69,11 @@ namespace GuiControls
             Transform = transform;
         }
 
-        public virtual void Update(InputHandler input, float deltaTime)
+        public void LoadContent(ContentManager content)
+        {
+        }
+
+        public virtual void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
             Microsoft.Xna.Framework.Point mousePosition;
             if (Transform == null)
@@ -78,14 +92,9 @@ namespace GuiControls
             }
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch = null)
+        public virtual void Draw(Matrix? transform = null)
         {
-            bool newSpritebatch = spriteBatch == null;
-            if (newSpritebatch)
-            {
-                spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Transform);
-            }
+            var spriteBatch = BeginSpriteBatch(transform);
 
             if (_backColor != null)
             {
@@ -109,11 +118,21 @@ namespace GuiControls
 
             spriteBatch.DrawString(Font, Text, position, _textColor, 0.0f, origin, 1.0f, SpriteEffects.None, 0.5f);
 
-            if (newSpritebatch)
-            {
-                spriteBatch.End();
-                DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
-            }
+            EndSpriteBatch(spriteBatch);
+        }
+
+        private SpriteBatch BeginSpriteBatch(Matrix? transform)
+        {
+            var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
+            spriteBatch.Begin(transformMatrix: transform);
+
+            return spriteBatch;
+        }
+
+        private void EndSpriteBatch(SpriteBatch spriteBatch)
+        {
+            spriteBatch.End();
+            DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
         }
 
         private Vector2 GetPosition(Vector2 textSize)

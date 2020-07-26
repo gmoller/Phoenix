@@ -10,8 +10,8 @@ namespace Utilities
 
         #region Private Members
 
-        private static readonly Dictionary<string, List<Vector2>> _circleCache = new Dictionary<string, List<Vector2>>(); // not thread-safe
-        private static readonly Dictionary<string, List<Vector2>> _arcCache = new Dictionary<string, List<Vector2>>(); // not thread-safe
+        private static readonly Dictionary<string, List<Vector2>> CircleCache = new Dictionary<string, List<Vector2>>(); // not thread-safe
+        private static readonly Dictionary<string, List<Vector2>> ArcCache = new Dictionary<string, List<Vector2>>(); // not thread-safe
         private static Texture2D _pixel;
 
         #endregion
@@ -53,9 +53,9 @@ namespace Utilities
         {
             // Look for a cached version of this circle
             var circleKey = $"{radius}.{sides}";
-            if (_circleCache.ContainsKey(circleKey))
+            if (CircleCache.ContainsKey(circleKey))
             {
-                return _circleCache[circleKey];
+                return CircleCache[circleKey];
             }
 
             var points = new List<Vector2>();
@@ -72,7 +72,7 @@ namespace Utilities
             points.Add(new Vector2(radius, 0.0f)); //new Vector2((float)(radius * Math.Cos(0)), (float)(radius * Math.Sin(0)))
 
             // Cache this circle so that it can be quickly drawn next time
-            _circleCache.Add(circleKey, points);
+            CircleCache.Add(circleKey, points);
 
             return points;
         }
@@ -89,9 +89,9 @@ namespace Utilities
         {
             // Look for a cached version of this arc
             var arcKey = $"{radius}.{sides}.{startingAngle}.{radians}";
-            if (_arcCache.ContainsKey(arcKey))
+            if (ArcCache.ContainsKey(arcKey))
             {
-                return _arcCache[arcKey];
+                return ArcCache[arcKey];
             }
 
             var points = new List<Vector2>();
@@ -120,7 +120,7 @@ namespace Utilities
             points.RemoveRange(sidesInArc + 1, points.Count - sidesInArc - 1);
 
             // Cache this arc so that it can be quickly drawn next time
-            _circleCache.Add(arcKey, points);
+            ArcCache.Add(arcKey, points);
 
             return points;
         }

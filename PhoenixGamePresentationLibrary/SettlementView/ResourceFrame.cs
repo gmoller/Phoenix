@@ -43,7 +43,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             //_lblResearch2 = new Label("lblResearch2", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 200.0f, _topLeftPosition.Y + 160.0f), HorizontalAlignment.Left, VerticalAlignment.Top, Vector2.Zero, string.Empty, HorizontalAlignment.Right, Color.Orange);
 
             _foodView = new FoodView(new Vector2(_topLeftPosition.X + 150.0f, _topLeftPosition.Y + 20.0f), _parent);
+            _foodView.LoadContent(content);
             _productionView = new ProductionView(new Vector2(_topLeftPosition.X + 150.0f, _topLeftPosition.Y + 50.0f), _parent);
+            _productionView.LoadContent(content);
         }
 
         internal void Update(InputHandler input, float deltaTime)
@@ -56,12 +58,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         {
             spriteBatch.Begin();
             _smallFrame.Draw();
-            _lblResources.Draw(spriteBatch);
-            _lblFood.Draw(spriteBatch);
-            _lblProduction.Draw(spriteBatch);
-            _lblGold.Draw(spriteBatch);
-            _lblPower.Draw(spriteBatch);
-            _lblResearch.Draw(spriteBatch);
+            _lblResources.Draw();
+            _lblFood.Draw();
+            _lblProduction.Draw();
+            _lblGold.Draw();
+            _lblPower.Draw();
+            _lblResearch.Draw();
 
             _foodView.Draw(spriteBatch);
             _productionView.Draw(spriteBatch);
@@ -73,8 +75,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
     {
         private readonly Vector2 _topLeftPosition;
         private readonly SettlementView _parent;
-        private readonly Image _image1;
-        private readonly Image _image2;
+        private Image _image1;
+        private Image _image2;
 
         private ToolTip _toolTip;
 
@@ -86,9 +88,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _parent = parent;
 
             _area = new Rectangle();
+        }
 
+        internal void LoadContent(ContentManager content)
+        {
             _image1 = new Image("Image1", Vector2.Zero, new Vector2(30.0f, 30.0f), "Icons_1", "Bread");
+            _image1.LoadContent(content);
             _image2 = new Image("Image2", Vector2.Zero, new Vector2(20.0f, 20.0f), "Icons_1", "Corn");
+            _image2.LoadContent(content);
         }
 
         internal void Update(float deltaTime, InputHandler input)
@@ -125,18 +132,18 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private int Draw(SpriteBatch spriteBatch, int x, int y, int food)
         {
             var numberOfBread = food / 10;
-            var numberofCorn = food % 10;
+            var numberOfCorn = food % 10;
 
             for (int i = 0; i < numberOfBread; ++i)
             {
-                _image1.Position = new Vector2(x, y);
+                _image1.TopLeftPosition = new Vector2(x, y);
                 _image1.Draw();
                 x += 30;
             }
 
-            for (int i = 0; i < numberofCorn; ++i)
+            for (int i = 0; i < numberOfCorn; ++i)
             {
-                _image2.Position = new Vector2(x, y);
+                _image2.TopLeftPosition = new Vector2(x, y);
                 _image2.Draw();
                 x += 20;
             }
@@ -149,8 +156,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
     {
         private readonly Vector2 _topLeftPosition;
         private readonly SettlementView _parent;
-        private readonly Image _image1;
-        private readonly Image _image2;
+        private  Image _image1;
+        private  Image _image2;
 
         private Rectangle _area;
 
@@ -160,9 +167,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _parent = parent;
 
             _area = new Rectangle();
+        }
 
+        internal void LoadContent(ContentManager content)
+        {
             _image1 = new Image("Image1", Vector2.Zero, new Vector2(30.0f, 30.0f), "Icons_1", "Anvil");
+            _image1.LoadContent(content);
             _image2 = new Image("Image2", Vector2.Zero, new Vector2(20.0f, 20.0f), "Icons_1", "Pickaxe");
+            _image2.LoadContent(content);
         }
 
         internal void Update(float deltaTime, InputHandler input)
@@ -188,14 +200,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
             for (int i = 0; i < numberOfAnvils; ++i)
             {
-                _image1.Position = new Vector2(x, y);
+                _image1.TopLeftPosition = new Vector2(x, y);
                 _image1.Draw();
                 x += 30;
             }
 
             for (int i = 0; i < numberofPickaxes; ++i)
             {
-                _image2.Position = new Vector2(x, y);
+                _image2.TopLeftPosition = new Vector2(x, y);
                 _image2.Draw();
                 x += 20;
             }

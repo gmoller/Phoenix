@@ -10,6 +10,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
     internal class PopulationFrame
     {
         private readonly SettlementView _parent;
+        private ContentManager _content;
+
         private readonly Vector2 _topLeftPosition;
 
         private Label _lblRace;
@@ -52,6 +54,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _btnAddWorker.Click += btnAddWorkerClick;
 
             EnableOrDisableButtons();
+
+            _content = content;
         }
 
         internal void Update(InputHandler input, float deltaTime)
@@ -70,12 +74,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         internal void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            _lblRace.Draw(spriteBatch);
-            _lblPopulationGrowth.Draw(spriteBatch);
+            _lblRace.Draw();
+            _lblPopulationGrowth.Draw();
             _smallFrame.Draw();
-            _lblFarmers1.Draw(spriteBatch);
-            _lblWorkers1.Draw(spriteBatch);
-            _lblRebels1.Draw(spriteBatch);
+            _lblFarmers1.Draw();
+            _lblWorkers1.Draw();
+            _lblRebels1.Draw();
 
             DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200, _topLeftPosition.Y + 20), _parent.Settlement.RaceType.Name, "Farmer", _parent.Settlement.Citizens.SubsistenceFarmers);
             DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200 + (_parent.Settlement.Citizens.SubsistenceFarmers * 20) + 20, _topLeftPosition.Y + 20), _parent.Settlement.RaceType.Name, "Farmer", _parent.Settlement.Citizens.AdditionalFarmers);
@@ -94,9 +98,10 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             int x = (int)position.X;
             int y = (int)position.Y;
             var image = new Image("Image", Vector2.Zero, new Vector2(20, 30), "Citizens", $"Citizen_{raceTypeName}_{citizenType}");
+            image.LoadContent(_content);
             for (int i = 0; i < citizenCount; ++i)
             {
-                image.Position = new Vector2(x, y);
+                image.TopLeftPosition = new Vector2(x, y);
                 image.Draw();
 
                 x += 20;

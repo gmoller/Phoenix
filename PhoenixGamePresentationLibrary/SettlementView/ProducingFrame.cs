@@ -40,8 +40,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         {
             spriteBatch.Begin();
             _smallFrame.Draw();
-            _lblProducing.Draw(spriteBatch);
-            _lblCurrent.Draw(spriteBatch);
+            _lblProducing.Draw();
+            _lblCurrent.Draw();
             spriteBatch.End();
         }
     }
