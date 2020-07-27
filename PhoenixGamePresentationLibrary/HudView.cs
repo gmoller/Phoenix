@@ -26,10 +26,10 @@ namespace PhoenixGamePresentationLibrary
         private SpriteFont _font;
         private Frame _frame;
 
-        private Label _lblCurrentDate;
-        private Label _lblGold;
-        private Label _lblMana;
-        private Label _lblFood;
+        private Label2 _lblCurrentDate;
+        private Label2 _lblGold;
+        private Label2 _lblMana;
+        private Label2 _lblFood;
 
         private Button _btnEndTurn;
 
@@ -59,11 +59,11 @@ namespace PhoenixGamePresentationLibrary
             _imgMana.LoadContent(content);
             _imgFood = new Image("imgFood", _imgMana.RelativePosition + new Vector2(0.0f, _imgMana.Height) + new Vector2(0.0f, 10.0f), new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", 0.0f, _resourceFrame);
             _imgFood.LoadContent(content);
-            _lblGold = new Label("lblGold", "CrimsonText-Regular-12", _imgGold.RelativePosition + new Vector2(_imgGold.Width, 0.0f) + new Vector2(20.0f, 0.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(100.0f, 25.0f), string.Empty, HorizontalAlignment.Left, Color.Yellow, Color.Black, Color.TransparentBlack, null, null, _resourceFrame);
+            _lblGold = new Label2("lblGold", new Vector2(80.0f, 25.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 20.0f), "", "CrimsonText-Regular-12", Color.Yellow, null, 0.0f, _resourceFrame); //_imgGold.TopRightRelative.ToVector2()
             _lblGold.LoadContent(content);
-            _lblMana = new Label("lblMana", "CrimsonText-Regular-12", new Vector2(_imgMana.Right + 20.0f, _imgMana.Center.Y), HorizontalAlignment.Left, VerticalAlignment.Middle, new Vector2(100.0f, 25.0f), string.Empty, HorizontalAlignment.Left, Color.Yellow, Color.Black, Color.TransparentBlack, null, null, _resourceFrame);
+            _lblMana = new Label2("lblMana", new Vector2(80.0f, 85.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 20.0f), "", "CrimsonText-Regular-12", Color.Yellow, null, 0.0f, _resourceFrame); //_imgMana.TopRightRelative.ToVector2()
             _lblMana.LoadContent(content);
-            _lblFood = new Label("lblFood", "CrimsonText-Regular-12", new Vector2(_imgFood.Right + 20.0f, _imgFood.Center.Y), HorizontalAlignment.Left, VerticalAlignment.Middle, new Vector2(100.0f, 25.0f), string.Empty, HorizontalAlignment.Left, Color.Yellow, Color.Black, Color.TransparentBlack, null, null, _resourceFrame);
+            _lblFood = new Label2("lblFood", new Vector2(80.0f, 145.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 20.0f), "", "CrimsonText-Regular-12", Color.Yellow, null, 0.0f, _resourceFrame); //_imgFood.TopRightRelative.ToVector2()
             _lblFood.LoadContent(content);
 
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
@@ -72,8 +72,8 @@ namespace PhoenixGamePresentationLibrary
             _frame = new Frame("Frame", topLeftPosition, ContentAlignment.TopLeft, size, "GUI_Textures_1", "frame3_whole", null, 47, 47, 47, 47);
             _frame.LoadContent(content);
 
-            var topCenterPosition = new Vector2(topLeftPosition.X + size.X / 2.0f, topLeftPosition.Y) + new Vector2(0.0f, 10.0f);
-            _lblCurrentDate = new Label("lblCurrentDate", "Maleficio-Regular-18", topCenterPosition, HorizontalAlignment.Center, VerticalAlignment.Top, new Vector2(10,10), "Date:", HorizontalAlignment.Center, Color.Aquamarine);
+            _lblCurrentDate = new Label2("lblCurrentDate", new Vector2(_frame.Width * 0.5f,20.0f), ContentAlignment.MiddleCenter, new Vector2(130, 23), "Date:", "Maleficio-Regular-18", Color.Aquamarine, null, 0.0f, _frame);
+            _lblCurrentDate.LoadContent(content);
 
             var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
             var label = new Label("lblNextTurn", "CrimsonText-Regular-12", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "Next Turn", HorizontalAlignment.Center, Color.White, Color.Blue);
