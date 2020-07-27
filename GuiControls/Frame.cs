@@ -54,7 +54,7 @@ namespace GuiControls
                 spriteBatch.Draw(Texture, _destinationPatches[i], _sourcePatches[i], Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
             }
 
-            _slots?.Draw(spriteBatch);
+            _slots?.Draw(transform);
 
             EndSpriteBatch(spriteBatch);
         }

@@ -17,7 +17,7 @@ namespace GuiControls
         private string _textureDisabled;
         private Rectangle _frame;
 
-        private Label _label;
+        public Label2 Label { get; set; }
 
         private float _cooldownTime; // in milliseconds
 
@@ -26,7 +26,7 @@ namespace GuiControls
         public bool MouseOver { get; private set; }
         public bool Enabled { get; set; }
 
-        public Button(string name, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string guiTextures, string textureNormal, string textureActive, string textureDisabled, string textureHover, Label label = null) :
+        public Button(string name, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size, string guiTextures, string textureNormal, string textureActive, string textureDisabled, string textureHover) :
             base(name, position, horizontalAlignment, verticalAlignment, size)
         {
             _cooldownTime = 0.0f;
@@ -38,7 +38,6 @@ namespace GuiControls
             _textureHover = textureHover;
             _textureDisabled = textureDisabled;
 
-            _label = label;
             Enabled = true;
         }
 
@@ -82,7 +81,7 @@ namespace GuiControls
                 }
             }
 
-            _label?.Update(input, deltaTime);
+            Label?.Update(input, deltaTime);
         }
 
         public void Draw(Matrix? transform = null)
@@ -93,7 +92,7 @@ namespace GuiControls
             spriteBatch.Draw(_texture, Area, _frame, Color.White);
             spriteBatch.End();
 
-            _label?.Draw();
+            Label?.Draw();
         }
 
         private void OnClick(EventArgs e)

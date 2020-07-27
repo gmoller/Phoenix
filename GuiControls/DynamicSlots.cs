@@ -1,34 +1,25 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using Input;
 
 namespace GuiControls
 {
-    public class DynamicSlots
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
+    public class DynamicSlots : ControlBase
     {
-        private readonly string _textureAtlasString;
-        private readonly string _textureString;
-        private readonly Vector2 _size;
-        private readonly Vector2 _topLeftPosition;
-
         private readonly int _numberOfSlotsX;
         private readonly int _numberOfSlotsY;
         private Rectangle _slot;
         private List<Rectangle> _slots;
         private readonly float _slotPadding;
-        private readonly List<Label> _labels;
+        private readonly List<Label2> _labels;
 
-        private Texture2D _texture;
-
-        public DynamicSlots(Vector2 topLeftPosition, Vector2 size, string textureAtlasString, string textureString, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<Label> labels = null)
+        public DynamicSlots(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, byte? textureId, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<Label2> labels = null) :
+            base(name, position, alignment, size, textureAtlas, textureName, textureId, 0.0f, null)
         {
-            _topLeftPosition = topLeftPosition;
-            _size = size;
-            _textureAtlasString = textureAtlasString;
-            _textureString = textureString;
-
             _numberOfSlotsX = numberOfSlotsX;
             _numberOfSlotsY = numberOfSlotsY;
             _slotPadding = slotPadding;
@@ -36,46 +27,41 @@ namespace GuiControls
             _labels = labels;
         }
 
-        public void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content)
         {
-            _texture = AssetsManager.Instance.GetTexture(_textureAtlasString);
-            var atlas = AssetsManager.Instance.GetAtlas(_textureAtlasString);
+            Texture = AssetsManager.Instance.GetTexture(TextureAtlas);
+            var atlas = AssetsManager.Instance.GetAtlas(TextureAtlas);
 
-            var frame = atlas.Frames[_textureString];
+            var frame = atlas.Frames[TextureName];
             _slot = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
-            float startX = _topLeftPosition.X + _slotPadding;
-            float startY = _topLeftPosition.Y + _slotPadding;
-            float slotWidth = (_size.X - _slotPadding * 2.0f) / _numberOfSlotsX;
-            float slotHeight = (_size.Y - _slotPadding * 2.0f) / _numberOfSlotsY;
+            float startX = TopLeft.X + _slotPadding;
+            float startY = TopLeft.Y + _slotPadding;
+            float slotWidth = (Size.X - _slotPadding * 2.0f) / _numberOfSlotsX;
+            float slotHeight = (Size.Y - _slotPadding * 2.0f) / _numberOfSlotsY;
             _slots = CreateSlots(startX, startY, slotWidth, slotHeight, _numberOfSlotsX, _numberOfSlotsY);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
+        }
+
+        public override void Draw(Matrix? transform = null)
+        {
+            var spriteBatch = BeginSpriteBatch(transform);
+
             int i = 0;
             foreach (var slot in _slots)
             {
-                spriteBatch.Draw(_texture, slot, _slot, Color.White);
+                spriteBatch.Draw(Texture, slot, _slot, Color.White);
                 if (_labels != null && i < _labels.Count)
                 {
                     _labels[i].Draw();
                     i++;
                 }
             }
-        }
 
-        public bool IsMouseOverSlot(Point mousePostion)
-        {
-            foreach (var slot in _slots)
-            {
-                if (slot.Contains(mousePostion))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            EndSpriteBatch(spriteBatch);
         }
 
         private List<Rectangle> CreateSlots(float startX, float startY, float slotWidth, float slotHeight, int numberOfSlotsX, int numberOfSlotsY)
