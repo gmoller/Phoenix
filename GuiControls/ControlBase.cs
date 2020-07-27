@@ -10,6 +10,8 @@ namespace GuiControls
 {
     public abstract class ControlBase : IControl
     {
+        private Rectangle _originalScissorRectangle;
+
         protected readonly IControl Parent;
 
         protected readonly string TextureAtlas;
@@ -76,7 +78,7 @@ namespace GuiControls
 
         public abstract void Draw(Matrix? transform = null);
 
-        protected Vector2 DetermineTopLeft(Vector2 position, ContentAlignment alignment, Vector2 size)
+        private Vector2 DetermineTopLeft(Vector2 position, ContentAlignment alignment, Vector2 size)
         {
             Vector2 topLeft;
             switch (alignment)
@@ -118,7 +120,11 @@ namespace GuiControls
         protected SpriteBatch BeginSpriteBatch(Matrix? transform)
         {
             var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
-            spriteBatch.Begin(transformMatrix: transform);
+            //spriteBatch.Begin(transformMatrix: transform);
+            spriteBatch.Begin(rasterizerState: new RasterizerState { ScissorTestEnable = true }, transformMatrix: transform);
+
+            _originalScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+            spriteBatch.GraphicsDevice.ScissorRectangle = ActualDestinationRectangle;
 
             return spriteBatch;
         }
@@ -126,6 +132,7 @@ namespace GuiControls
         protected void EndSpriteBatch(SpriteBatch spriteBatch)
         {
             spriteBatch.End();
+            spriteBatch.GraphicsDevice.ScissorRectangle = _originalScissorRectangle;
             DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
         }
 
