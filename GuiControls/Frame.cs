@@ -1,20 +1,15 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
-using Utilities;
 using Input;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GuiControls
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class Frame : IControl
+    public class Frame : ControlBase
     {
-        private readonly IControl _parent; // TODO: move into base/interface?
-
-        private readonly string _textureAtlasString;
-        private readonly string _textureString;
         private readonly int _topPadding;
         private readonly int _bottomPadding;
         private readonly int _leftPadding;
@@ -22,37 +17,12 @@ namespace GuiControls
 
         private readonly DynamicSlots _slots;
 
-        private Texture2D _texture;
         private Rectangle[] _sourcePatches;
         private Rectangle[] _destinationPatches;
 
-        private Rectangle _area;
-
-        public string Name { get; }
-        public int Top => _area.Top;
-        public int Bottom => _area.Bottom;
-        public int Left => _area.Left;
-        public int Right => _area.Right;
-        public int Width => _area.Width;
-        public int Height => _area.Height;
-        public Microsoft.Xna.Framework.Point Center => _area.Center;
-        public Microsoft.Xna.Framework.Point TopLeft => new Microsoft.Xna.Framework.Point(Left, Top);
-        public Microsoft.Xna.Framework.Point TopRight => new Microsoft.Xna.Framework.Point(Right, Top);
-        public Microsoft.Xna.Framework.Point BottomLeft => new Microsoft.Xna.Framework.Point(Left, Bottom);
-        public Microsoft.Xna.Framework.Point BottomRight => new Microsoft.Xna.Framework.Point(Right, Bottom);
-        public Microsoft.Xna.Framework.Point Size => _area.Size;
-
-        public Vector2 RelativePosition => new Vector2(0 + TopLeft.X, 0 + TopLeft.Y);
-
-        public Frame(string name, Vector2 topLeftPosition, Vector2 size, string textureAtlasString, string textureString, int topPadding, int bottomPadding, int leftPadding, int rightPadding, DynamicSlots slots = null, IControl parent = null)
+        public Frame(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, byte? textureId, int topPadding, int bottomPadding, int leftPadding, int rightPadding, DynamicSlots slots = null, float layerDepth = 0.0f, IControl parent = null) :
+            base(name, position, alignment, size, textureAtlas, textureName, textureId, layerDepth, parent)
         {
-            _parent = parent;
-
-            Name = name;
-            _area = new Rectangle((int)topLeftPosition.X, (int)topLeftPosition.Y, (int)size.X, (int)size.Y);
-            _textureAtlasString = textureAtlasString;
-            _textureString = textureString;
-
             _topPadding = topPadding;
             _bottomPadding = bottomPadding;
             _leftPadding = leftPadding;
@@ -61,40 +31,32 @@ namespace GuiControls
             _slots = slots;
         }
 
-        public void SetTopLeftPosition(int x, int y)
+        public override void LoadContent(ContentManager content)
         {
-            //_area.X = x;
-            //_area.Y = y;
-        }
+            Texture = AssetsManager.Instance.GetTexture(TextureAtlas);
+            var atlas = AssetsManager.Instance.GetAtlas(TextureAtlas);
 
-        public void LoadContent(ContentManager content)
-        {
-            _texture = AssetsManager.Instance.GetTexture(_textureAtlasString);
-            var atlas = AssetsManager.Instance.GetAtlas(_textureAtlasString);
-
-            var frame = atlas.Frames[_textureString];
+            var frame = atlas.Frames[TextureName];
             _sourcePatches = CreatePatches(frame.ToRectangle(), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
             _destinationPatches = CreatePatches(new Rectangle(TopLeft.X, TopLeft.Y, (int)Size.X, (int)Size.Y), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
         }
 
-        public void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
         }
 
-        public void Draw(Matrix? transform = null)
+        public override void Draw(Matrix? transform = null)
         {
-            var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
-            spriteBatch.Begin();
+            var spriteBatch = BeginSpriteBatch(transform);
 
             for (var i = 0; i < _sourcePatches.Length; ++i)
             {
-                spriteBatch.Draw(_texture, _destinationPatches[i], _sourcePatches[i], Color.White);
+                spriteBatch.Draw(Texture, _destinationPatches[i], _sourcePatches[i], Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
             }
 
             _slots?.Draw(spriteBatch);
 
-            spriteBatch.End();
-            DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
+            EndSpriteBatch(spriteBatch);
         }
 
         private Rectangle[] CreatePatches(Rectangle rectangle, int topPadding, int bottomPadding, int leftPadding, int rightPadding)
@@ -125,12 +87,5 @@ namespace GuiControls
 
             return patches;
         }
-
-        public override string ToString()
-        {
-            return DebuggerDisplay;
-        }
-
-        private string DebuggerDisplay => $"{{Name={Name},TopLeftPosition={TopLeft},RelativePosition={RelativePosition},Size={Size}}}";
     }
 }

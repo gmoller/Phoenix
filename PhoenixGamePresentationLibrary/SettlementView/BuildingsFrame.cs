@@ -32,7 +32,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
             var slots = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 450), "GUI_Textures_1", "slot", 10, 13, 10.0f);
             slots.LoadContent(content);
-            _smallFrameBuildings = new Frame("SmallFrameBuildings", _topLeftPosition + new Vector2(0.0f, 10.0f), new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots);
+            _smallFrameBuildings = new Frame("SmallFrameBuildings", _topLeftPosition + new Vector2(0.0f, 10.0f), ContentAlignment.TopLeft, new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", null, 50, 50, 50, 50, slots);
             _smallFrameBuildings.LoadContent(content);
 
             _texture = AssetsManager.Instance.GetTexture("Buildings");

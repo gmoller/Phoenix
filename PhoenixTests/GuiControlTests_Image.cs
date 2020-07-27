@@ -218,7 +218,7 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl parent = new Image("ParentImage", new Vector2(100.0f, 100.0f), ContentAlignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", 0);
+            var parent = new Image("ParentImage", new Vector2(100.0f, 100.0f), ContentAlignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", 0);
 
             IControl image = new Image("ImageName", new Vector2(50.0f, 50.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", 0, 0.0f, parent);
             Assert.AreEqual(new Point(50, 50), image.TopLeft);

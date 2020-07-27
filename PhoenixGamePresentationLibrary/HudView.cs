@@ -50,7 +50,7 @@ namespace PhoenixGamePresentationLibrary
         internal void LoadContent(ContentManager content)
         {
             var topLeftPosition = new Vector2(_area.X, _area.Y);
-            _resourceFrame = new Frame("ResourceFrame", topLeftPosition + new Vector2(10.0f, 50.0f), new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole", 0, 0, 0, 0, null);
+            _resourceFrame = new Frame("ResourceFrame", topLeftPosition + new Vector2(10.0f, 50.0f), ContentAlignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole", null, 0, 0, 0, 0, null);
             _resourceFrame.LoadContent(content);
 
             _imgGold = new Image("imgGold", new Vector2(10.0f, 10.0f), new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R", 0.0f, _resourceFrame);
@@ -69,7 +69,7 @@ namespace PhoenixGamePresentationLibrary
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
 
             var size = new Vector2(_area.Width, _area.Height);
-            _frame = new Frame("Frame", topLeftPosition, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
+            _frame = new Frame("Frame", topLeftPosition, ContentAlignment.TopLeft, size, "GUI_Textures_1", "frame3_whole", null, 47, 47, 47, 47);
             _frame.LoadContent(content);
 
             var topCenterPosition = new Vector2(topLeftPosition.X + size.X / 2.0f, topLeftPosition.Y) + new Vector2(0.0f, 10.0f);
