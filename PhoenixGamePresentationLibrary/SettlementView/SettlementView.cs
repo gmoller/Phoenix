@@ -19,8 +19,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         private MainFrame _mainFrame;
         private SecondaryFrame _secondaryFrame;
-        private Label _lblSettlementName1;
-        private Label _lblSettlementName2;
+        private LabelOld _lblSettlementName1;
+        private LabelOld _lblSettlementName2;
         private PopulationFrame _populationFrame;
         private ResourceFrame _resourceFrame;
         private BuildingsFrame _buildingsFrame;
@@ -51,8 +51,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _secondaryFrame = new SecondaryFrame(this, _topLeftPositionSecondary, _guiTextures, _guiAtlas);
             _secondaryFrame.LoadContent(content);
 
-            _lblSettlementName1 = new Label("lblSettlementName1", "Carolingia-Regular-24", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 49.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, new Vector2(10,10), string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
-            _lblSettlementName2 = new Label("lblSettlementName2", "Carolingia-Regular-24", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 24.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, new Vector2(10, 10), string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
+            _lblSettlementName1 = new LabelOld("lblSettlementName1", "Carolingia-Regular-24", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 49.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, new Vector2(10,10), string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
+            _lblSettlementName2 = new LabelOld("lblSettlementName2", "Carolingia-Regular-24", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 24.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, new Vector2(10, 10), string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
 
             _populationFrame = new PopulationFrame(this, new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 40.0f));
             _populationFrame.LoadContent(content);

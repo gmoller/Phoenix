@@ -14,17 +14,17 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         private readonly Vector2 _topLeftPosition;
 
-        private Label _lblRace;
-        private Label _lblPopulationGrowth;
+        private LabelOld _lblRace;
+        private LabelOld _lblPopulationGrowth;
         private Frame _smallFrame;
-        private Label _lblFarmers1;
-        private Label _lblWorkers1;
-        private Label _lblRebels1;
+        private LabelOld _lblFarmers1;
+        private LabelOld _lblWorkers1;
+        private LabelOld _lblRebels1;
 
-        private Button _btnSubtractFarmer;
-        private Button _btnAddFarmer;
-        private Button _btnSubtractWorker;
-        private Button _btnAddWorker;
+        private ButtonOld _btnSubtractFarmer;
+        private ButtonOld _btnAddFarmer;
+        private ButtonOld _btnSubtractWorker;
+        private ButtonOld _btnAddWorker;
 
         internal PopulationFrame(SettlementView parent, Vector2 topLeftPosition)
         {
@@ -34,23 +34,23 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblRace = new Label("lblRace", "CrimsonText-Regular-12", _topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Middle, new Vector2(10,10), string.Empty, HorizontalAlignment.Left, Color.Orange);
-            _lblPopulationGrowth = new Label("lblPopulationGrowth", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 516.0f, _topLeftPosition.Y), HorizontalAlignment.Right, VerticalAlignment.Middle, new Vector2(10, 10), "Population: 0", HorizontalAlignment.Right, Color.Orange);
+            _lblRace = new LabelOld("lblRace", "CrimsonText-Regular-12", _topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Middle, new Vector2(10,10), string.Empty, HorizontalAlignment.Left, Color.Orange);
+            _lblPopulationGrowth = new LabelOld("lblPopulationGrowth", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 516.0f, _topLeftPosition.Y), HorizontalAlignment.Right, VerticalAlignment.Middle, new Vector2(10, 10), "Population: 0", HorizontalAlignment.Right, Color.Orange);
 
             _smallFrame = new Frame("SmallFrame", _topLeftPosition + new Vector2(0.0f, 10.0f), ContentAlignment.TopLeft, new Vector2(515, 120), "GUI_Textures_1", "frame2_whole", null, 50, 50, 50, 50);
             _smallFrame.LoadContent(content);
 
-            _lblFarmers1 = new Label("lblFarmers1", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 30.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Farmers:", HorizontalAlignment.Left, Color.Orange);
-            _lblWorkers1 = new Label("lblWorkers1", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 60.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Workers:", HorizontalAlignment.Left, Color.Orange);
-            _lblRebels1 = new Label("lblRebels1", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 90.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Rebels:", HorizontalAlignment.Left, Color.Orange);
+            _lblFarmers1 = new LabelOld("lblFarmers1", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 30.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Farmers:", HorizontalAlignment.Left, Color.Orange);
+            _lblWorkers1 = new LabelOld("lblWorkers1", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 60.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Workers:", HorizontalAlignment.Left, Color.Orange);
+            _lblRebels1 = new LabelOld("lblRebels1", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 90.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Rebels:", HorizontalAlignment.Left, Color.Orange);
 
-            _btnSubtractFarmer = new Button("btnSubtractFarmer", new Vector2(_topLeftPosition.X + 140.0f, _topLeftPosition.Y + 25.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h");
+            _btnSubtractFarmer = new ButtonOld("btnSubtractFarmer", new Vector2(_topLeftPosition.X + 140.0f, _topLeftPosition.Y + 25.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h");
             _btnSubtractFarmer.Click += btnSubtractFarmerClick;
-            _btnAddFarmer = new Button("btnAddFarmer", new Vector2(_topLeftPosition.X + 160.0f, _topLeftPosition.Y + 25.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h");
+            _btnAddFarmer = new ButtonOld("btnAddFarmer", new Vector2(_topLeftPosition.X + 160.0f, _topLeftPosition.Y + 25.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h");
             _btnAddFarmer.Click += btnAddFarmerClick;
-            _btnSubtractWorker = new Button("btnSubtractWorker", new Vector2(_topLeftPosition.X + 140.0f, _topLeftPosition.Y + 55.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h");
+            _btnSubtractWorker = new ButtonOld("btnSubtractWorker", new Vector2(_topLeftPosition.X + 140.0f, _topLeftPosition.Y + 55.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h");
             _btnSubtractWorker.Click += btnSubtractWorkerClick;
-            _btnAddWorker = new Button("btnAddWorker", new Vector2(_topLeftPosition.X + 160.0f, _topLeftPosition.Y + 55.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h");
+            _btnAddWorker = new ButtonOld("btnAddWorker", new Vector2(_topLeftPosition.X + 160.0f, _topLeftPosition.Y + 55.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h");
             _btnAddWorker.Click += btnAddWorkerClick;
 
             EnableOrDisableButtons();

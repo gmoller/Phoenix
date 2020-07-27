@@ -8,7 +8,7 @@ using Input;
 namespace GuiControls
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class Image : ControlBase
+    public class Image : Control
     {
         public Image(string name, Vector2 position, Vector2 size, string textureName, float layerDepth = 0.0f, IControl parent = null) : 
             this(name, position, ContentAlignment.TopLeft, size, string.Empty, textureName, null, layerDepth, parent)

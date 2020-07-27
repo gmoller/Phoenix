@@ -1,190 +1,146 @@
 ﻿using System;
+using Input;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Utilities;
+using Point = Microsoft.Xna.Framework.Point;
 
 namespace GuiControls
 {
-    public abstract class Control
+    public abstract class Control : IControl
     {
-        protected readonly VerticalAlignment VerticalAlignment;
-        protected readonly HorizontalAlignment HorizontalAlignment;
+        private Rectangle _originalScissorRectangle;
 
-        protected int Width => (int)Size.X;
-        protected int Height => (int)Size.Y;
+        protected readonly IControl Parent;
 
-        public string Name { get; }
-        public Vector2 Position { get; set; } // Position of the control relative to it's alignment
-        public Vector2 Size { get; set; }
+        protected readonly string TextureAtlas;
+        protected readonly string TextureName;
+        protected readonly byte? TextureId;
+        protected readonly Color Color;
+        protected readonly float LayerDepth;
 
-        public Rectangle Area => DetermineArea(VerticalAlignment, HorizontalAlignment, Position, Width, Height);
-        public float Left => Area.Left;
-        public float Right => Area.Right;
-        public float Top => Area.Top;
-        public float Bottom => Area.Bottom;
-        public Vector2 TopLeft => new Vector2(Area.Left, Area.Top);
-        public Vector2 TopRight => new Vector2(Area.Right, Area.Top);
-        public Vector2 BottomLeft => new Vector2(Area.Left, Area.Bottom);
-        public Vector2 BottomRight => new Vector2(Area.Right, Area.Bottom);
-        public Vector2 Center => new Vector2(Area.Center.X, Area.Center.Y);
+        protected Texture2D Texture;
+        protected Rectangle ActualDestinationRectangle;
+        protected Rectangle SourceRectangle;
 
-        protected Control(string name, Vector2 position, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size) :
-            this(name, null, horizontalAlignment, verticalAlignment, size)
+        public string Name { get; protected set; }
+        public int Top => ActualDestinationRectangle.Top;
+        public int Bottom => ActualDestinationRectangle.Bottom;
+        public int Left => ActualDestinationRectangle.Left;
+        public int Right => ActualDestinationRectangle.Right;
+        public int Width => ActualDestinationRectangle.Width;
+        public int Height => ActualDestinationRectangle.Height;
+        public Point Center => ActualDestinationRectangle.Center;
+        public Point TopLeft => new Point(Left, Top);
+        public Point TopRight => new Point(Right, Top);
+        public Point BottomLeft => new Point(Left, Bottom);
+        public Point BottomRight => new Point(Right, Bottom);
+        public Point Size => ActualDestinationRectangle.Size;
+
+        public Vector2 RelativePosition => new Vector2(Left - Parent.TopLeft.X, Top - Parent.TopLeft.Y);
+
+        protected Control(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, byte? textureId = null, float layerDepth = 0.0f, IControl parent = null)
         {
-            Position = position;
-        }
+            Parent = parent;
 
-        protected Control(string name, Control controlToDockTo, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Vector2 size)
-        {
             Name = name;
-            HorizontalAlignment = horizontalAlignment;
-            VerticalAlignment = verticalAlignment;
-            if (controlToDockTo != null)
-            {
-                if (verticalAlignment == VerticalAlignment.Top)
-                {
-                    if (horizontalAlignment == HorizontalAlignment.Left)
-                    {
-                        Position = controlToDockTo.TopLeft;
-                        VerticalAlignment = VerticalAlignment.Bottom;
-                        HorizontalAlignment = HorizontalAlignment.Right;
-                    }
-                    else if (horizontalAlignment == HorizontalAlignment.Center)
-                    {
-                        Position = new Vector2(controlToDockTo.Center.X, controlToDockTo.Top);
-                        VerticalAlignment = VerticalAlignment.Bottom;
-                        HorizontalAlignment = HorizontalAlignment.Center;
-                    }
-                    else if (horizontalAlignment == HorizontalAlignment.Right)
-                    {
-                        Position = controlToDockTo.TopRight;
-                        VerticalAlignment = VerticalAlignment.Bottom;
-                        HorizontalAlignment = HorizontalAlignment.Left;
-                    }
-                    else
-                    {
-                        throw new Exception(
-                            $"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
-                    }
-                }
-                else if (verticalAlignment == VerticalAlignment.Middle)
-                {
-                    if (horizontalAlignment == HorizontalAlignment.Left)
-                    {
-                        Position = new Vector2(controlToDockTo.Left, controlToDockTo.Center.Y);
-                        VerticalAlignment = VerticalAlignment.Middle;
-                        HorizontalAlignment = HorizontalAlignment.Right;
-                    }
-                    else if (horizontalAlignment == HorizontalAlignment.Center)
-                    {
-                        Position = new Vector2(controlToDockTo.Center.X, controlToDockTo.Center.Y);
-                        VerticalAlignment = VerticalAlignment.Middle;
-                        HorizontalAlignment = HorizontalAlignment.Center;
-                    }
-                    else if (horizontalAlignment == HorizontalAlignment.Right)
-                    {
-                        Position = new Vector2(controlToDockTo.Right, controlToDockTo.Center.Y);
-                        VerticalAlignment = VerticalAlignment.Middle;
-                        HorizontalAlignment = HorizontalAlignment.Left;
-                    }
-                    else
-                    {
-                        throw new Exception(
-                            $"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
-                    }
-                }
-                else if (verticalAlignment == VerticalAlignment.Bottom)
-                {
-                    if (horizontalAlignment == HorizontalAlignment.Left)
-                    {
-                        Position = controlToDockTo.BottomLeft;
-                        VerticalAlignment = VerticalAlignment.Top;
-                        HorizontalAlignment = HorizontalAlignment.Right;
-                    }
-                    else if (horizontalAlignment == HorizontalAlignment.Center)
-                    {
-                        Position = new Vector2(controlToDockTo.Center.X, controlToDockTo.Bottom);
-                        VerticalAlignment = VerticalAlignment.Top;
-                        HorizontalAlignment = HorizontalAlignment.Center;
-                    }
-                    else if (horizontalAlignment == HorizontalAlignment.Right)
-                    {
-                        Position = controlToDockTo.BottomRight;
-                        VerticalAlignment = VerticalAlignment.Top;
-                        HorizontalAlignment = HorizontalAlignment.Left;
-                    }
-                    else
-                    {
-                        throw new Exception(
-                            $"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
-                    }
-                }
-                else
-                {
-                    throw new Exception(
-                        $"Docking to {verticalAlignment}{horizontalAlignment} of control has not been implemeneted.");
-                }
-            }
+            TextureAtlas = textureAtlas;
+            TextureName = textureName;
+            TextureId = textureId;
+            Color = Color.White;
+            LayerDepth = layerDepth;
 
-            Size = new Vector2((size.X % 2).AboutEquals(0.0f) ? size.X : size.X + 1, (size.Y % 2).AboutEquals(0.0f) ? size.Y : size.Y + 1);
-        }
-
-        private Rectangle DetermineArea(VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 position, int width, int height)
-        {
-            Vector2 topLeftPosition = DetermineTopLeftPosition(verticalAlignment, horizontalAlignment, position, width, height);
-
-            Rectangle area = new Rectangle((int)topLeftPosition.X, (int)topLeftPosition.Y, width, height);
-
-            return area;
-        }
-
-        private Vector2 DetermineTopLeftPosition(VerticalAlignment verticalAlignment, HorizontalAlignment horizontalAlignment, Vector2 position, int width, int height)
-        {
-            Vector2 offset;
-
-            if (verticalAlignment == VerticalAlignment.Top && horizontalAlignment == HorizontalAlignment.Left)
+            var topLeft = DetermineTopLeft(position * DeviceManager.Instance.SizeRatio, alignment, size * DeviceManager.Instance.SizeRatio);
+            if (Parent == null)
             {
-                offset = new Vector2(0.0f, 0.0f);
-            }
-            else if (verticalAlignment == VerticalAlignment.Top && horizontalAlignment == HorizontalAlignment.Center)
-            {
-                offset = new Vector2(width / 2.0f, 0.0f);
-            }
-            else if (verticalAlignment == VerticalAlignment.Top && horizontalAlignment == HorizontalAlignment.Right)
-            {
-                offset = new Vector2(width, 0.0f);
-            }
-            else if (verticalAlignment == VerticalAlignment.Middle && horizontalAlignment == HorizontalAlignment.Left)
-            {
-                offset = new Vector2(0.0f, height / 2.0f);
-            }
-            else if (verticalAlignment == VerticalAlignment.Middle && horizontalAlignment == HorizontalAlignment.Center)
-            {
-                offset = new Vector2(width / 2.0f, height / 2.0f);
-            }
-            else if (verticalAlignment == VerticalAlignment.Middle && horizontalAlignment == HorizontalAlignment.Right)
-            {
-                offset = new Vector2(width, height / 2.0f);
-            }
-            else if (verticalAlignment == VerticalAlignment.Bottom && horizontalAlignment == HorizontalAlignment.Left)
-            {
-                offset = new Vector2(0.0f, height);
-            }
-            else if (verticalAlignment == VerticalAlignment.Bottom && horizontalAlignment == HorizontalAlignment.Center)
-            {
-                offset = new Vector2(width / 2.0f, height);
-            }
-            else if (verticalAlignment == VerticalAlignment.Bottom && horizontalAlignment == HorizontalAlignment.Right)
-            {
-                offset = new Vector2(width, height);
+                // the same
+                ActualDestinationRectangle = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)size.X, (int)size.Y);
             }
             else
             {
-                throw new NotImplementedException($"{verticalAlignment}{horizontalAlignment} alignment has not been implemented.");
+                // offset from parent's position
+                var x = (int)(Parent.TopLeft.X + topLeft.X);
+                var y = (int)(Parent.TopLeft.Y + topLeft.Y);
+                ActualDestinationRectangle = new Rectangle(x, y, (int)size.X, (int)size.Y);
+            }
+        }
+
+        public void SetTopLeftPosition(int x, int y)
+        {
+            ActualDestinationRectangle.X = x;
+            ActualDestinationRectangle.Y = y;
+        }
+
+        public abstract void LoadContent(ContentManager content);
+
+        public abstract void Update(InputHandler input, float deltaTime, Matrix? transform = null);
+
+        public abstract void Draw(Matrix? transform = null);
+
+        private Vector2 DetermineTopLeft(Vector2 position, ContentAlignment alignment, Vector2 size)
+        {
+            Vector2 topLeft;
+            switch (alignment)
+            {
+                case ContentAlignment.TopLeft:
+                    topLeft = position;
+                    break;
+                case ContentAlignment.TopCenter:
+                    topLeft = new Vector2(position.X - size.X * 0.5f, position.Y);
+                    break;
+                case ContentAlignment.TopRight:
+                    topLeft = new Vector2(position.X - size.X, position.Y);
+                    break;
+                case ContentAlignment.MiddleLeft:
+                    topLeft = new Vector2(position.X, position.Y - size.Y * 0.5f);
+                    break;
+                case ContentAlignment.MiddleCenter:
+                    topLeft = new Vector2(position.X - size.X * 0.5f, position.Y - size.Y * 0.5f);
+                    break;
+                case ContentAlignment.MiddleRight:
+                    topLeft = new Vector2(position.X - size.X, position.Y - size.Y * 0.5f);
+                    break;
+                case ContentAlignment.BottomLeft:
+                    topLeft = new Vector2(position.X, position.Y - size.Y);
+                    break;
+                case ContentAlignment.BottomCenter:
+                    topLeft = new Vector2(position.X - size.X * 0.5f, position.Y - size.Y);
+                    break;
+                case ContentAlignment.BottomRight:
+                    topLeft = new Vector2(position.X - size.X, position.Y - size.Y);
+                    break;
+                default:
+                    throw new Exception($"Alignment [{alignment}] not implemented.");
             }
 
-            Vector2 topLeftPosition = position - offset;
-
-            return topLeftPosition;
+            return topLeft;
         }
+
+        protected SpriteBatch BeginSpriteBatch(Matrix? transform)
+        {
+            var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
+            //spriteBatch.Begin(transformMatrix: transform);
+            spriteBatch.Begin(rasterizerState: new RasterizerState { ScissorTestEnable = true }, transformMatrix: transform);
+
+            _originalScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+            spriteBatch.GraphicsDevice.ScissorRectangle = ActualDestinationRectangle;
+
+            return spriteBatch;
+        }
+
+        protected void EndSpriteBatch(SpriteBatch spriteBatch)
+        {
+            spriteBatch.End();
+            spriteBatch.GraphicsDevice.ScissorRectangle = _originalScissorRectangle;
+            DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
+        }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        protected string DebuggerDisplay => $"{{Name={Name},TopLeftPosition={TopLeft},RelativePosition={RelativePosition},Size={Size}}}";
     }
 }

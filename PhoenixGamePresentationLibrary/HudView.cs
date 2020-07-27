@@ -26,12 +26,12 @@ namespace PhoenixGamePresentationLibrary
         private SpriteFont _font;
         private Frame _frame;
 
-        private Label2 _lblCurrentDate;
-        private Label2 _lblGold;
-        private Label2 _lblMana;
-        private Label2 _lblFood;
+        private Label _lblCurrentDate;
+        private Label _lblGold;
+        private Label _lblMana;
+        private Label _lblFood;
 
-        private Button _btnEndTurn;
+        private ButtonOld _btnEndTurn;
 
         private readonly UnitsView _unitsView;
 
@@ -59,11 +59,11 @@ namespace PhoenixGamePresentationLibrary
             _imgMana.LoadContent(content);
             _imgFood = new Image("imgFood", _imgMana.RelativePosition + new Vector2(0.0f, _imgMana.Height) + new Vector2(0.0f, 10.0f), new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", 0.0f, _resourceFrame);
             _imgFood.LoadContent(content);
-            _lblGold = new Label2("lblGold", new Vector2(80.0f, 25.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 20.0f), "", "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame); //_imgGold.TopRightRelative.ToVector2()
+            _lblGold = new Label("lblGold", new Vector2(80.0f, 25.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 20.0f), "", "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame); //_imgGold.TopRightRelative.ToVector2()
             _lblGold.LoadContent(content);
-            _lblMana = new Label2("lblMana", new Vector2(80.0f, 85.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 20.0f), "", "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame); //_imgMana.TopRightRelative.ToVector2()
+            _lblMana = new Label("lblMana", new Vector2(80.0f, 85.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 20.0f), "", "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame); //_imgMana.TopRightRelative.ToVector2()
             _lblMana.LoadContent(content);
-            _lblFood = new Label2("lblFood", new Vector2(80.0f, 145.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 20.0f), "", "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame); //_imgFood.TopRightRelative.ToVector2()
+            _lblFood = new Label("lblFood", new Vector2(80.0f, 145.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 20.0f), "", "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame); //_imgFood.TopRightRelative.ToVector2()
             _lblFood.LoadContent(content);
 
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
@@ -72,14 +72,14 @@ namespace PhoenixGamePresentationLibrary
             _frame = new Frame("Frame", topLeftPosition, ContentAlignment.TopLeft, size, "GUI_Textures_1", "frame3_whole", null, 47, 47, 47, 47);
             _frame.LoadContent(content);
 
-            _lblCurrentDate = new Label2("lblCurrentDate", new Vector2(_frame.Width * 0.5f,20.0f), ContentAlignment.MiddleCenter, new Vector2(130, 23), "Date:", "Maleficio-Regular-18", Color.Aquamarine, null, null, 0.0f, _frame);
+            _lblCurrentDate = new Label("lblCurrentDate", new Vector2(_frame.Width * 0.5f,20.0f), ContentAlignment.MiddleCenter, new Vector2(130, 23), "Date:", "Maleficio-Regular-18", Color.Aquamarine, null, null, 0.0f, _frame);
             _lblCurrentDate.LoadContent(content);
 
             var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
-            _btnEndTurn = new Button("btnEndTurn", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h");
+            _btnEndTurn = new ButtonOld("btnEndTurn", pos, HorizontalAlignment.Right, VerticalAlignment.Bottom, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h");
             _btnEndTurn.Click += BtnEndTurnClick;
 
-            var label = new Label2("lblNextTurn", _btnEndTurn.Center, ContentAlignment.MiddleCenter, new Vector2(77.0f, 12.0f), "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue);
+            var label = new Label("lblNextTurn", _btnEndTurn.Center, ContentAlignment.MiddleCenter, new Vector2(77.0f, 12.0f), "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue);
             label.LoadContent(content);
             _btnEndTurn.Label = label;
         }

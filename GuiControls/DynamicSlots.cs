@@ -8,16 +8,16 @@ using Input;
 namespace GuiControls
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class DynamicSlots : ControlBase
+    public class DynamicSlots : Control
     {
         private readonly int _numberOfSlotsX;
         private readonly int _numberOfSlotsY;
         private Rectangle _slot;
         private List<Rectangle> _slots;
         private readonly float _slotPadding;
-        private readonly List<Label2> _labels;
+        private readonly List<Label> _labels;
 
-        public DynamicSlots(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, byte? textureId, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<Label2> labels = null) :
+        public DynamicSlots(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, byte? textureId, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<Label> labels = null) :
             base(name, position, alignment, size, textureAtlas, textureName, textureId, 0.0f, null)
         {
             _numberOfSlotsX = numberOfSlotsX;

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace GuiControls
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class Frame : ControlBase
+    public class Frame : Control
     {
         private readonly int _topPadding;
         private readonly int _bottomPadding;
