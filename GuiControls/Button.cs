@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Input;
+using Utilities;
 
 namespace GuiControls
 {
@@ -24,8 +25,10 @@ namespace GuiControls
         public Label Label { get; set; }
         public event EventHandler Click;
 
-        public Button(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, byte? textureId, string textureNormal, string textureActive, string textureDisabled, string textureHover, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, alignment, size, textureAtlas, textureName, textureId, layerDepth, parent)
+        public bool HasAtlas => _atlas != null;
+
+        public Button(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureNormal, string textureActive, string textureDisabled, string textureHover, float layerDepth = 0.0f, IControl parent = null) :
+            base(name, position, alignment, size, textureAtlas, null, null, layerDepth, parent)
         {
             _textureNormal = textureNormal;
             _textureActive = textureActive;
@@ -37,16 +40,14 @@ namespace GuiControls
 
         public override void LoadContent(ContentManager content)
         {
-            if (string.IsNullOrEmpty(TextureAtlas))
+            if (TextureAtlas.HasValue())
             {
-                Texture = AssetsManager.Instance.GetTexture(TextureName);
-                SourceRectangle = Texture.Bounds;
-            }
-            else
-            {
-                Texture = AssetsManager.Instance.GetTexture(TextureAtlas);
                 _atlas = AssetsManager.Instance.GetAtlas(TextureAtlas);
-                SourceRectangle = TextureId == null ? _atlas.Frames[TextureName].ToRectangle() : _atlas.Frames[(int)TextureId].ToRectangle();
+                Texture = AssetsManager.Instance.GetTexture(TextureAtlas);
+            }
+            else // no atlas
+            {
+                SetTexture(_textureNormal);
             }
         }
 
@@ -54,8 +55,7 @@ namespace GuiControls
         {
             if (!Enabled)
             {
-                var f = _atlas.Frames[_textureDisabled];
-                SourceRectangle = new Rectangle(f.X, f.Y, f.Width, f.Height);
+                SetTexture(_textureDisabled);
 
                 return;
             }
@@ -72,22 +72,19 @@ namespace GuiControls
                 }
                 return;
             }
+
+            if (ActualDestinationRectangle.Contains(input.MousePosition))
+            {
+                SetTexture(_textureHover);
+
+                if (input.IsLeftMouseButtonReleased)
+                {
+                    OnClick(new EventArgs());
+                }
+            }
             else
             {
-                if (ActualDestinationRectangle.Contains(input.MousePosition))
-                {
-                    var f = _atlas.Frames[_textureHover];
-                    SourceRectangle = new Rectangle(f.X, f.Y, f.Width, f.Height);
-                    if (input.IsLeftMouseButtonReleased)
-                    {
-                        OnClick(new EventArgs());
-                    }
-                }
-                else
-                {
-                    var f = _atlas.Frames[_textureNormal];
-                    SourceRectangle = new Rectangle(f.X, f.Y, f.Width, f.Height);
-                }
+                SetTexture(_textureNormal);
             }
 
             Label?.Update(input, deltaTime);
@@ -97,7 +94,6 @@ namespace GuiControls
         {
             var spriteBatch = BeginSpriteBatch(transform);
 
-            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, transform);
             spriteBatch.Draw(Texture, ActualDestinationRectangle, SourceRectangle, Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
 
             EndSpriteBatch(spriteBatch);
@@ -108,16 +104,31 @@ namespace GuiControls
         private void OnClick(EventArgs e)
         {
             _cooldownTimeInMilliseconds = 50.0f;
-            var f = _atlas.Frames[_textureActive];
-            SourceRectangle = new Rectangle(f.X, f.Y, f.Width, f.Height);
+
+            SetTexture(_textureActive);
+
             Click?.Invoke(this, e);
         }
 
         private void OnClickComplete()
         {
             _cooldownTimeInMilliseconds = 0.0f;
-            var f = _atlas.Frames[_textureNormal];
-            SourceRectangle = new Rectangle(f.X, f.Y, f.Width, f.Height);
+
+            SetTexture(_textureNormal);
+        }
+
+        private void SetTexture(string textureName)
+        {
+            if (HasAtlas)
+            {
+                var f = _atlas.Frames[textureName];
+                SourceRectangle = new Rectangle(f.X, f.Y, f.Width, f.Height);
+            }
+            else
+            {
+                Texture = AssetsManager.Instance.GetTexture(textureName);
+                SourceRectangle = Texture.Bounds;
+            }
         }
     }
 }

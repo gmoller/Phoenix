@@ -25,20 +25,22 @@ namespace GuiControls
         protected Rectangle SourceRectangle;
 
         public string Name { get; protected set; }
+
         public int Top => ActualDestinationRectangle.Top;
         public int Bottom => ActualDestinationRectangle.Bottom;
         public int Left => ActualDestinationRectangle.Left;
         public int Right => ActualDestinationRectangle.Right;
-        public int Width => ActualDestinationRectangle.Width;
-        public int Height => ActualDestinationRectangle.Height;
         public Point Center => ActualDestinationRectangle.Center;
         public Point TopLeft => new Point(Left, Top);
         public Point TopRight => new Point(Right, Top);
         public Point BottomLeft => new Point(Left, Bottom);
         public Point BottomRight => new Point(Right, Bottom);
-        public Point Size => ActualDestinationRectangle.Size;
 
-        public Vector2 RelativePosition => new Vector2(Left - Parent.TopLeft.X, Top - Parent.TopLeft.Y);
+        public Point RelativeTopLeft => new Point(Left - (Parent?.Left ?? 0), Top - (Parent?.Top ?? 0));
+
+        public int Width => ActualDestinationRectangle.Width;
+        public int Height => ActualDestinationRectangle.Height;
+        public Point Size => ActualDestinationRectangle.Size;
 
         protected Control(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, byte? textureId = null, float layerDepth = 0.0f, IControl parent = null)
         {
@@ -70,6 +72,12 @@ namespace GuiControls
         {
             ActualDestinationRectangle.X = x;
             ActualDestinationRectangle.Y = y;
+        }
+
+        public void MoveTopLeftPosition(int x, int y)
+        {
+            ActualDestinationRectangle.X += x;
+            ActualDestinationRectangle.Y += y;
         }
 
         public abstract void LoadContent(ContentManager content);
@@ -120,7 +128,6 @@ namespace GuiControls
         protected SpriteBatch BeginSpriteBatch(Matrix? transform)
         {
             var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
-            //spriteBatch.Begin(transformMatrix: transform);
             spriteBatch.Begin(rasterizerState: new RasterizerState { ScissorTestEnable = true }, transformMatrix: transform);
 
             _originalScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
@@ -141,6 +148,6 @@ namespace GuiControls
             return DebuggerDisplay;
         }
 
-        protected string DebuggerDisplay => $"{{Name={Name},TopLeftPosition={TopLeft},RelativePosition={RelativePosition},Size={Size}}}";
+        protected string DebuggerDisplay => $"{{Name={Name},TopLeftPosition={TopLeft},RelativeTopLeft={RelativeTopLeft},Size={Size}}}";
     }
 }

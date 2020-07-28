@@ -20,8 +20,8 @@ namespace GuiControls
         private Rectangle[] _sourcePatches;
         private Rectangle[] _destinationPatches;
 
-        public Frame(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, byte? textureId, int topPadding, int bottomPadding, int leftPadding, int rightPadding, DynamicSlots slots = null, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, alignment, size, textureAtlas, textureName, textureId, layerDepth, parent)
+        public Frame(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, int topPadding, int bottomPadding, int leftPadding, int rightPadding, DynamicSlots slots = null, float layerDepth = 0.0f, IControl parent = null) :
+            base(name, position, alignment, size, textureAtlas, textureName, null, layerDepth, parent)
         {
             _topPadding = topPadding;
             _bottomPadding = bottomPadding;
@@ -75,14 +75,14 @@ namespace GuiControls
             var patches = new[]
             {
                 new Rectangle(x,      y,        leftPadding,  topPadding),      // top left
-                new Rectangle(leftX,  y,        middleWidth,  topPadding),      // top middle
+                new Rectangle(leftX,  y,        middleWidth,  topPadding),           // top middle
                 new Rectangle(rightX, y,        rightPadding, topPadding),      // top right
-                new Rectangle(x,      topY,     leftPadding,  middleHeight),    // left middle
-                new Rectangle(leftX,  topY,     middleWidth,  middleHeight),    // middle
-                new Rectangle(rightX, topY,     rightPadding, middleHeight),    // right middle
-                new Rectangle(x,      bottomY,  leftPadding,  bottomPadding),   // bottom left
-                new Rectangle(leftX,  bottomY,  middleWidth,  bottomPadding),   // bottom middle
-                new Rectangle(rightX, bottomY,  rightPadding, bottomPadding)    // bottom right
+                new Rectangle(x,      topY,     leftPadding,  middleHeight),          // left middle
+                new Rectangle(leftX,  topY,     middleWidth,  middleHeight),              // middle
+                new Rectangle(rightX, topY,     rightPadding, middleHeight),         // right middle
+                new Rectangle(x,      bottomY,  leftPadding,  bottomPadding),  // bottom left
+                new Rectangle(leftX,  bottomY,  middleWidth,  bottomPadding),       // bottom middle
+                new Rectangle(rightX, bottomY,  rightPadding, bottomPadding)   // bottom right
             };
 
             return patches;

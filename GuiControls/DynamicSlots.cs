@@ -17,8 +17,8 @@ namespace GuiControls
         private readonly float _slotPadding;
         private readonly List<Label> _labels;
 
-        public DynamicSlots(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, byte? textureId, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<Label> labels = null) :
-            base(name, position, alignment, size, textureAtlas, textureName, textureId, 0.0f, null)
+        public DynamicSlots(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<Label> labels = null) :
+            base(name, position, alignment, size, textureAtlas, textureName, null, 0.0f, null)
         {
             _numberOfSlotsX = numberOfSlotsX;
             _numberOfSlotsY = numberOfSlotsY;

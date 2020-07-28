@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Button.cs" />
-    <Compile Include="ButtonOld.cs" />
     <Compile Include="ContentAlignment.cs" />
     <Compile Include="ControlOld.cs" />
     <Compile Include="Control.cs" />

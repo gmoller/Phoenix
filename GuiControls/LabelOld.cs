@@ -37,8 +37,7 @@ namespace GuiControls
         public Microsoft.Xna.Framework.Point BottomRight => new Microsoft.Xna.Framework.Point(Right, Bottom);
         public Microsoft.Xna.Framework.Point Size => Area.Size;
 
-        //public Vector2 RelativePosition => new Vector2(_parent.RelativePosition.X + TopLeftPosition.X, _parent.RelativePosition.Y + TopLeftPosition.Y);
-        public Vector2 RelativePosition => new Vector2(Left - _parent.TopLeft.X, Top - _parent.TopLeft.Y);
+        public Microsoft.Xna.Framework.Point RelativeTopLeft => new Vector2(Left - _parent.TopLeft.X, Top - _parent.TopLeft.Y).ToPoint();
 
         public event EventHandler Click;
 
@@ -88,6 +87,11 @@ namespace GuiControls
         {
             //_actualDestinationRectangle.X = x;
             //_actualDestinationRectangle.Y = y;
+        }
+
+        public void MoveTopLeftPosition(int x, int y)
+        {
+            throw new NotImplementedException();
         }
 
         public void LoadContent(ContentManager content)

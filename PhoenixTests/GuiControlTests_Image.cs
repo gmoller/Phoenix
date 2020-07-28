@@ -210,7 +210,7 @@ namespace PhoenixTests
             Assert.AreEqual(100, image.Height);
             Assert.AreEqual(new Point(100, 100), image.Size);
 
-            Assert.AreEqual(new Vector2(50.0f, 50.0f), image.RelativePosition);
+            Assert.AreEqual(new Point(50, 50), image.RelativeTopLeft);
         }
 
         [TestMethod]
@@ -271,6 +271,20 @@ namespace PhoenixTests
             Assert.AreEqual(100, image.Bottom);
             Assert.AreEqual(0, image.Left);
             Assert.AreEqual(100, image.Right);
+            Assert.AreEqual(100, image.Width);
+            Assert.AreEqual(100, image.Height);
+            Assert.AreEqual(new Point(100, 100), image.Size);
+
+            image.MoveTopLeftPosition(100, 100);
+            Assert.AreEqual(new Point(100, 100), image.TopLeft);
+            Assert.AreEqual(new Point(200, 100), image.TopRight);
+            Assert.AreEqual(new Point(100, 200), image.BottomLeft);
+            Assert.AreEqual(new Point(200, 200), image.BottomRight);
+            Assert.AreEqual(new Point(150, 150), image.Center);
+            Assert.AreEqual(100, image.Top);
+            Assert.AreEqual(200, image.Bottom);
+            Assert.AreEqual(100, image.Left);
+            Assert.AreEqual(200, image.Right);
             Assert.AreEqual(100, image.Width);
             Assert.AreEqual(100, image.Height);
             Assert.AreEqual(new Point(100, 100), image.Size);
