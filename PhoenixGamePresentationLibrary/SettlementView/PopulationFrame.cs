@@ -107,7 +107,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         {
             int x = (int)position.X;
             int y = (int)position.Y;
-            var image = new Image("Image", Vector2.Zero, new Vector2(20, 30), "Citizens", $"Citizen_{raceTypeName}_{citizenType}");
+            var image = new Image("Image", Vector2.Zero, ContentAlignment.TopLeft, new Vector2(20, 30), "Citizens", $"Citizen_{raceTypeName}_{citizenType}");
             image.LoadContent(_content);
             for (int i = 0; i < citizenCount; ++i)
             {

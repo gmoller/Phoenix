@@ -21,7 +21,7 @@ namespace GuiControls
         private Rectangle[] _destinationPatches;
 
         public Frame(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, int topPadding, int bottomPadding, int leftPadding, int rightPadding, DynamicSlots slots = null, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, alignment, size, textureAtlas, textureName, null, layerDepth, parent)
+            base(name, position, alignment, size, textureAtlas, textureName, layerDepth, parent)
         {
             _topPadding = topPadding;
             _bottomPadding = bottomPadding;

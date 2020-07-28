@@ -16,7 +16,6 @@ namespace GuiControls
 
         protected readonly string TextureAtlas;
         protected readonly string TextureName;
-        protected readonly byte? TextureId;
         protected readonly Color Color;
         protected readonly float LayerDepth;
 
@@ -42,14 +41,13 @@ namespace GuiControls
         public int Height => ActualDestinationRectangle.Height;
         public Point Size => ActualDestinationRectangle.Size;
 
-        protected Control(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, byte? textureId = null, float layerDepth = 0.0f, IControl parent = null)
+        protected Control(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, float layerDepth = 0.0f, IControl parent = null)
         {
             Parent = parent;
 
             Name = name;
             TextureAtlas = textureAtlas;
             TextureName = textureName;
-            TextureId = textureId;
             Color = Color.White;
             LayerDepth = layerDepth;
 

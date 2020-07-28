@@ -22,7 +22,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            var imgCursor = new Image("imgCursor", _cursor.Position, new Vector2(28.0f, 32.0f), "Cursor");
+            var imgCursor = new Image("imgCursor", _cursor.Position, ContentAlignment.TopLeft,new Vector2(28.0f, 32.0f), "Cursor");
             imgCursor.LoadContent(_content);
             spriteBatch.Begin();
             imgCursor.Draw();

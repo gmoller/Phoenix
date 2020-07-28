@@ -23,13 +23,8 @@ namespace GuiControls
 
         public event EventHandler Click;
 
-        public Label(string name, Vector2 position, Vector2 size, string text, string fontName, Color textColor, Color? textShadowColor, Color backColor, float layerDepth = 0.0f, IControl parent = null) : 
-            this(name, position, ContentAlignment.TopLeft, size, text, fontName, textColor, textShadowColor, backColor, layerDepth, parent)
-        {
-        }
-
-        public Label(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string text, string fontName, Color textColor, Color? textShadowColor = null, Color ? backColor = null, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, alignment, size, string.Empty, string.Empty, null, layerDepth, parent)
+        public Label(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string text, string fontName, Color textColor, Color? textShadowColor = null, Color? backColor = null, float layerDepth = 0.0f, IControl parent = null) :
+            base(name, position, alignment, size, string.Empty, string.Empty, layerDepth, parent)
         {
             _fontName = fontName;
             Text = text;
