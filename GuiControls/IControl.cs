@@ -19,6 +19,8 @@ namespace GuiControls
         Point BottomRight { get; }
 
         Point RelativeTopLeft { get; }
+        Point RelativeTopRight { get; }
+        Point RelativeMiddleRight { get; }
 
         int Width { get; }
         int Height { get; }

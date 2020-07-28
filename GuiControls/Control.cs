@@ -44,6 +44,8 @@ namespace GuiControls
         public Point BottomRight => new Point(Right, Bottom);
 
         public Point RelativeTopLeft => new Point(Left - (Parent?.Left ?? 0), Top - (Parent?.Top ?? 0));
+        public Point RelativeTopRight => new Point(RelativeTopLeft.X + Width, RelativeTopLeft.Y);
+        public Point RelativeMiddleRight => new Point(RelativeTopLeft.X + Width, RelativeTopLeft.Y + (int)(Height * 0.5f));
 
         public int Width => ActualDestinationRectangle.Width;
         public int Height => ActualDestinationRectangle.Height;

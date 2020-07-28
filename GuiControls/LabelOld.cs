@@ -6,6 +6,7 @@ using AssetsLibrary;
 using Input;
 using Utilities;
 using Microsoft.Xna.Framework.Content;
+using Point = Microsoft.Xna.Framework.Point;
 
 namespace GuiControls
 {
@@ -28,6 +29,7 @@ namespace GuiControls
         public int Bottom => Area.Bottom;
         public int Left => Area.Left;
         public int Right => Area.Right;
+        public Point RelativeMiddleRight { get; }
         public int Width => Area.Width;
         public int Height => Area.Height;
         public Microsoft.Xna.Framework.Point Center => Area.Center;
@@ -38,6 +40,7 @@ namespace GuiControls
         public Microsoft.Xna.Framework.Point Size => Area.Size;
 
         public Microsoft.Xna.Framework.Point RelativeTopLeft => new Vector2(Left - _parent.TopLeft.X, Top - _parent.TopLeft.Y).ToPoint();
+        public Point RelativeTopRight { get; }
 
         public event EventHandler Click;
 
@@ -85,8 +88,6 @@ namespace GuiControls
 
         public void SetTopLeftPosition(int x, int y)
         {
-            //_actualDestinationRectangle.X = x;
-            //_actualDestinationRectangle.Y = y;
         }
 
         public void MoveTopLeftPosition(int x, int y)

@@ -50,7 +50,7 @@ namespace PhoenixGamePresentationLibrary
         internal void LoadContent(ContentManager content)
         {
             var topLeftPosition = new Vector2(_area.X, _area.Y);
-            _resourceFrame = new Frame("ResourceFrame", topLeftPosition + new Vector2(10.0f, 50.0f), ContentAlignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole", 0, 0, 0, 0, null);
+            _resourceFrame = new Frame("ResourceFrame", topLeftPosition + new Vector2(10.0f, 50.0f), ContentAlignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole", 0, 0, 0, 0);
             _resourceFrame.LoadContent(content);
 
             _imgGold = new Image("imgGold", new Vector2(10.0f, 10.0f), ContentAlignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R", 0.0f, _resourceFrame);
@@ -59,11 +59,11 @@ namespace PhoenixGamePresentationLibrary
             _imgMana.LoadContent(content);
             _imgFood = new Image("imgFood", _imgMana.RelativeTopLeft.ToVector2() + new Vector2(0.0f, _imgMana.Height) + new Vector2(0.0f, 10.0f), ContentAlignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", 0.0f, _resourceFrame);
             _imgFood.LoadContent(content);
-            _lblGold = new Label("lblGold", new Vector2(80.0f, 25.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 20.0f), "", "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame); //_imgGold.TopRightRelative.ToVector2()
+            _lblGold = new Label("lblGold", _imgGold.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), ContentAlignment.MiddleLeft, new Vector2(100.0f, 20.0f), null, "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame);
             _lblGold.LoadContent(content);
-            _lblMana = new Label("lblMana", new Vector2(80.0f, 85.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 20.0f), "", "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame); //_imgMana.TopRightRelative.ToVector2()
+            _lblMana = new Label("lblMana", _imgMana.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), ContentAlignment.MiddleLeft, new Vector2(100.0f, 20.0f), null, "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame);
             _lblMana.LoadContent(content);
-            _lblFood = new Label("lblFood", new Vector2(80.0f, 145.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 20.0f), "", "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame); //_imgFood.TopRightRelative.ToVector2()
+            _lblFood = new Label("lblFood", _imgFood.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), ContentAlignment.MiddleLeft, new Vector2(100.0f, 20.0f), null, "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame);
             _lblFood.LoadContent(content);
 
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
