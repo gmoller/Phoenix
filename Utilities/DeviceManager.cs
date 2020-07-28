@@ -19,7 +19,7 @@ namespace Utilities
 
         public GraphicsDevice GraphicsDevice { get; set; }
         public GraphicsDeviceManager GraphicsDeviceManager { get; set; }
-        public Point WorldPosition { get; set; }
+        public Point WorldPositionPointedAtByMouseCursor { get; set; }
         public Point WorldHexPointedAtByMouseCursor { get; set; }
 
         public Viewport MapViewport => new Viewport(GraphicsDevice.Viewport.X + Margin.X, GraphicsDevice.Viewport.Y + Margin.Y, GraphicsDevice.Viewport.Width - Margin.X * 2, GraphicsDevice.Viewport.Height - Margin.Y * 2, 0, 1); 

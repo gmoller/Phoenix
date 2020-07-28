@@ -73,7 +73,7 @@ namespace PhoenixGamePresentationLibrary
             _lblFps2.Text = $"{_fps.UpdateFramesPerSecond}/{_fps.DrawFramesPerSecond}";
             _lblMemory2.Text = $"{GC.GetTotalMemory(false) / 1024} KB";
             _lblWorldHex2.Text = $"{device.WorldHexPointedAtByMouseCursor.X},{device.WorldHexPointedAtByMouseCursor.Y}";
-            _lblWorldPosition2.Text = $"({device.WorldPosition.X},{device.WorldPosition.Y})";
+            _lblWorldPosition2.Text = $"({device.WorldPositionPointedAtByMouseCursor.X},{device.WorldPositionPointedAtByMouseCursor.Y})";
             _lblViewportPosition2.Text = $"({mouseState.Position.X - device.MapViewport.X},{mouseState.Position.Y - device.MapViewport.Y})";
             _lblScreenPosition2.Text = $"({mouseState.Position.X},{mouseState.Position.Y})";
         }

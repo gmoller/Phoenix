@@ -1,4 +1,5 @@
 ﻿using System;
+using AssetsLibrary;
 using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -11,6 +12,12 @@ namespace GuiControls
     public abstract class Control : IControl
     {
         private Rectangle _originalScissorRectangle;
+        private float _cooldownTimeInMilliseconds;
+
+        private readonly string _textureNormal;
+        private readonly string _textureActive;
+        private readonly string _textureHover;
+        private readonly string _textureDisabled;
 
         protected readonly IControl Parent;
 
@@ -22,6 +29,7 @@ namespace GuiControls
         protected Texture2D Texture;
         protected Rectangle ActualDestinationRectangle;
         protected Rectangle SourceRectangle;
+        protected AtlasSpec2 Atlas;
 
         public string Name { get; protected set; }
 
@@ -41,7 +49,12 @@ namespace GuiControls
         public int Height => ActualDestinationRectangle.Height;
         public Point Size => ActualDestinationRectangle.Size;
 
-        protected Control(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, float layerDepth = 0.0f, IControl parent = null)
+        public bool Enabled { get; set; }
+        public bool MouseOver { get; private set; }
+
+        public event EventHandler Click;
+
+        protected Control(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, string textureNormal, string textureActive, string textureHover, string textureDisabled, float layerDepth = 0.0f, IControl parent = null)
         {
             Parent = parent;
 
@@ -50,6 +63,11 @@ namespace GuiControls
             TextureName = textureName;
             Color = Color.White;
             LayerDepth = layerDepth;
+
+            _textureNormal = textureNormal;
+            _textureActive = textureActive;
+            _textureHover = textureHover;
+            _textureDisabled = textureDisabled;
 
             var topLeft = DetermineTopLeft(position * DeviceManager.Instance.SizeRatio, alignment, size * DeviceManager.Instance.SizeRatio);
             if (Parent == null)
@@ -64,6 +82,8 @@ namespace GuiControls
                 var y = (int)(Parent.TopLeft.Y + topLeft.Y);
                 ActualDestinationRectangle = new Rectangle(x, y, (int)size.X, (int)size.Y);
             }
+
+            Enabled = true;
         }
 
         public void SetTopLeftPosition(int x, int y)
@@ -78,9 +98,73 @@ namespace GuiControls
             ActualDestinationRectangle.Y += y;
         }
 
-        public abstract void LoadContent(ContentManager content);
+        public virtual void LoadContent(ContentManager content)
+        {
+            if (TextureAtlas.HasValue())
+            {
+                Atlas = AssetsManager.Instance.GetAtlas(TextureAtlas);
+                Texture = AssetsManager.Instance.GetTexture(TextureAtlas);
+                SourceRectangle = Atlas.Frames[TextureName].ToRectangle();
+            }
+            else // no atlas
+            {
+                SetTexture(_textureNormal);
+            }
+        }
 
-        public abstract void Update(InputHandler input, float deltaTime, Matrix? transform = null);
+        public virtual void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        {
+            if (!Enabled)
+            {
+                SetTexture(_textureDisabled);
+                return;
+            }
+
+            Point mousePosition;
+            if (transform == null)
+            {
+                mousePosition = input.MousePosition;
+            }
+            else
+            {
+                var worldPosition = DeviceManager.Instance.WorldPositionPointedAtByMouseCursor;
+                mousePosition = new Point(worldPosition.X, worldPosition.Y);
+            }
+
+            MouseOver = ActualDestinationRectangle.Contains(mousePosition);
+            input.Eaten = MouseOver;
+
+            if (_cooldownTimeInMilliseconds > 0.0f)
+            {
+                _cooldownTimeInMilliseconds -= deltaTime;
+                if (_cooldownTimeInMilliseconds <= 0.0f)
+                {
+                    OnClickComplete();
+                }
+                return;
+            }
+
+            SetTexture(MouseOver ? _textureHover : _textureNormal);
+
+            if (MouseOver && input.IsLeftMouseButtonReleased)
+            {
+                OnClick(new EventArgs());
+            }
+        }
+
+        private void OnClickComplete()
+        {
+            _cooldownTimeInMilliseconds = 0.0f;
+
+            SetTexture(_textureNormal);
+        }
+
+        private void OnClick(EventArgs e)
+        {
+            _cooldownTimeInMilliseconds = 400.0f;
+            SetTexture(_textureActive);
+            Click?.Invoke(this, e);
+        }
 
         public abstract void Draw(Matrix? transform = null);
 
@@ -139,6 +223,23 @@ namespace GuiControls
             spriteBatch.End();
             spriteBatch.GraphicsDevice.ScissorRectangle = _originalScissorRectangle;
             DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
+        }
+
+        protected void SetTexture(string textureName)
+        {
+            if (Atlas != null) // HasAtlas
+            {
+                var f = Atlas.Frames[textureName];
+                SourceRectangle = new Rectangle(f.X, f.Y, f.Width, f.Height);
+            }
+            else
+            {
+                if (textureName.HasValue())
+                {
+                    Texture = AssetsManager.Instance.GetTexture(textureName);
+                    SourceRectangle = Texture.Bounds;
+                }
+            }
         }
 
         public override string ToString()

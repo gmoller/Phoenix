@@ -107,7 +107,7 @@ namespace GuiControls
             }
             else
             {
-                var worldPosition = DeviceManager.Instance.WorldPosition;
+                var worldPosition = DeviceManager.Instance.WorldPositionPointedAtByMouseCursor;
                 mousePosition = new Microsoft.Xna.Framework.Point(worldPosition.X, worldPosition.Y);
             }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,10 +20,8 @@ namespace GuiControls
         private SpriteFont _font;
         public string Text { get; set; }
 
-        public event EventHandler Click;
-
         public Label(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string text, string fontName, Color textColor, Color? textShadowColor = null, Color? backColor = null, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, alignment, size, string.Empty, string.Empty, layerDepth, parent)
+            base(name, position, alignment, size, string.Empty, string.Empty, null, null, null, null, layerDepth, parent)
         {
             _fontName = fontName;
             Text = text;
@@ -41,21 +38,7 @@ namespace GuiControls
 
         public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
-            Microsoft.Xna.Framework.Point mousePosition;
-            if (transform == null)
-            {
-                mousePosition = input.MousePosition;
-            }
-            else
-            {
-                var worldPosition = DeviceManager.Instance.WorldPosition;
-                mousePosition = new Microsoft.Xna.Framework.Point(worldPosition.X, worldPosition.Y);
-            }
-
-            if (ActualDestinationRectangle.Contains(mousePosition) && input.IsLeftMouseButtonReleased)
-            {
-                OnClick(new EventArgs());
-            }
+            base.Update(input, deltaTime, transform);
         }
 
         public override void Draw(Matrix? transform = null)
@@ -75,11 +58,6 @@ namespace GuiControls
             spriteBatch.DrawString(_font, Text, TopLeft.ToVector2(), _textColor, 0.0f, Vector2.Zero, _scale, SpriteEffects.None, LayerDepth);
 
             EndSpriteBatch(spriteBatch);
-        }
-
-        private void OnClick(EventArgs e)
-        {
-            Click?.Invoke(this, e);
         }
     }
 }

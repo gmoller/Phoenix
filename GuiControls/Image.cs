@@ -17,27 +17,29 @@ namespace GuiControls
         }
 
         public Image(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, alignment, size, textureAtlas, textureName, layerDepth, parent)
+            base(name, position, alignment, size, textureAtlas, textureName, textureName, null, null, null, layerDepth, parent)
         {
         }
 
         public override void LoadContent(ContentManager content)
         {
-            if (TextureAtlas.HasValue())
-            {
-                Texture = AssetsManager.Instance.GetTexture(TextureAtlas);
-                var atlas = AssetsManager.Instance.GetAtlas(TextureAtlas);
-                SourceRectangle = atlas.Frames[TextureName].ToRectangle();
-            }
-            else
-            {
-                Texture = AssetsManager.Instance.GetTexture(TextureName);
-                SourceRectangle = Texture.Bounds;
-            }
+            base.LoadContent(content);
+            //if (TextureAtlas.HasValue())
+            //{
+            //    var atlas = AssetsManager.Instance.GetAtlas(TextureAtlas);
+            //    Texture = AssetsManager.Instance.GetTexture(TextureAtlas);
+            //    SourceRectangle = atlas.Frames[TextureName].ToRectangle();
+            //}
+            //else
+            //{
+            //    Texture = AssetsManager.Instance.GetTexture(TextureName);
+            //    SourceRectangle = Texture.Bounds;
+            //}
         }
 
         public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
+            base.Update(input, deltaTime, transform);
         }
 
         public override void Draw(Matrix? transform = null)

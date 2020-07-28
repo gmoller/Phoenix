@@ -80,7 +80,7 @@ namespace PhoenixGamePresentationLibrary
             _btnEndTurn.LoadContent(content);
             _btnEndTurn.Click += BtnEndTurnClick;
 
-            var label = new Label("lblNextTurn", _btnEndTurn.Center.ToVector2(), ContentAlignment.MiddleCenter, new Vector2(77.0f, 12.0f), "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue);
+            var label = new Label("lblNextTurn", _btnEndTurn.Size.ToVector2() * 0.5f, ContentAlignment.MiddleCenter, new Vector2(77.0f, 12.0f), "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue, null, 0.0f, _btnEndTurn);
             label.LoadContent(content);
             _btnEndTurn.Label = label;
         }

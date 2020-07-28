@@ -18,7 +18,7 @@ namespace GuiControls
         private readonly List<Label> _labels;
 
         public DynamicSlots(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<Label> labels = null) :
-            base(name, position, alignment, size, textureAtlas, textureName)
+            base(name, position, alignment, size, textureAtlas, textureName, null, null, null, null)
         {
             _numberOfSlotsX = numberOfSlotsX;
             _numberOfSlotsY = numberOfSlotsY;
@@ -35,22 +35,23 @@ namespace GuiControls
             var frame = atlas.Frames[TextureName];
             _slot = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
-            float startX = TopLeft.X + _slotPadding;
-            float startY = TopLeft.Y + _slotPadding;
-            float slotWidth = (Size.X - _slotPadding * 2.0f) / _numberOfSlotsX;
-            float slotHeight = (Size.Y - _slotPadding * 2.0f) / _numberOfSlotsY;
+            var startX = TopLeft.X + _slotPadding;
+            var startY = TopLeft.Y + _slotPadding;
+            var slotWidth = (Size.X - _slotPadding * 2.0f) / _numberOfSlotsX;
+            var slotHeight = (Size.Y - _slotPadding * 2.0f) / _numberOfSlotsY;
             _slots = CreateSlots(startX, startY, slotWidth, slotHeight, _numberOfSlotsX, _numberOfSlotsY);
         }
 
         public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
+            base.Update(input, deltaTime, transform);
         }
 
         public override void Draw(Matrix? transform = null)
         {
             var spriteBatch = BeginSpriteBatch(transform);
 
-            int i = 0;
+            var i = 0;
             foreach (var slot in _slots)
             {
                 spriteBatch.Draw(Texture, slot, _slot, Color.White);
@@ -68,12 +69,12 @@ namespace GuiControls
         {
             var slots = new List<Rectangle>();
 
-            float x = startX;
-            float y = startY;
+            var x = startX;
+            var y = startY;
 
-            for (int j = 0; j < numberOfSlotsY; ++j)
+            for (var j = 0; j < numberOfSlotsY; ++j)
             {
-                for (int i = 0; i < numberOfSlotsX; ++i)
+                for (var i = 0; i < numberOfSlotsX; ++i)
                 {
                     var rect = new Rectangle((int)x, (int)y, (int)slotWidth, (int)slotHeight);
                     slots.Add(rect);
