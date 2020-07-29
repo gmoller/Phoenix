@@ -13,7 +13,7 @@ namespace GuiControls
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class LabelOld : ControlOld, IControl
     {
-        private readonly IControl _parent; // TODO: move into base/interface?
+        private readonly IControl _parent;
 
         private readonly HorizontalAlignment _textAlignment;
         private readonly Color _textColor;
@@ -32,14 +32,14 @@ namespace GuiControls
         public Point RelativeMiddleRight { get; }
         public int Width => Area.Width;
         public int Height => Area.Height;
-        public Microsoft.Xna.Framework.Point Center => Area.Center;
-        public Microsoft.Xna.Framework.Point TopLeft => TopLeft;
-        public Microsoft.Xna.Framework.Point TopRight => new Microsoft.Xna.Framework.Point(Right, Top);
-        public Microsoft.Xna.Framework.Point BottomLeft => new Microsoft.Xna.Framework.Point(Left, Bottom);
-        public Microsoft.Xna.Framework.Point BottomRight => new Microsoft.Xna.Framework.Point(Right, Bottom);
-        public Microsoft.Xna.Framework.Point Size => Area.Size;
+        public Point Center => Area.Center;
+        public Point TopLeft => TopLeft;
+        public Point TopRight => new Point(Right, Top);
+        public Point BottomLeft => new Point(Left, Bottom);
+        public Point BottomRight => new Point(Right, Bottom);
+        public Point Size => Area.Size;
 
-        public Microsoft.Xna.Framework.Point RelativeTopLeft => new Vector2(Left - _parent.TopLeft.X, Top - _parent.TopLeft.Y).ToPoint();
+        public Point RelativeTopLeft => new Vector2(Left - _parent.TopLeft.X, Top - _parent.TopLeft.Y).ToPoint();
         public Point RelativeTopRight { get; }
 
         public event EventHandler Click;

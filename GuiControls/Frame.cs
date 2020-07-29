@@ -20,8 +20,8 @@ namespace GuiControls
         private Rectangle[] _sourcePatches;
         private Rectangle[] _destinationPatches;
 
-        public Frame(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, int topPadding, int bottomPadding, int leftPadding, int rightPadding, DynamicSlots slots = null, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, alignment, size, textureAtlas, textureName, null, null, null, null, layerDepth, parent)
+        public Frame(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, int topPadding, int bottomPadding, int leftPadding, int rightPadding, DynamicSlots slots = null, float layerDepth = 0.0f, IControl parent = null) :
+            base(name, position, positionAlignment, size, textureAtlas, textureName, null, null, null, null, layerDepth, parent)
         {
             _topPadding = topPadding;
             _bottomPadding = bottomPadding;

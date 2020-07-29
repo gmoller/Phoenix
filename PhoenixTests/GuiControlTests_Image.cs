@@ -14,7 +14,7 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
+            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
             Assert.AreEqual(new Point(100, 100), image.TopLeft);
             Assert.AreEqual(new Point(200, 100), image.TopRight);
             Assert.AreEqual(new Point(100, 200), image.BottomLeft);
@@ -34,7 +34,7 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), ContentAlignment.TopCenter, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
+            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), Alignment.TopCenter, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
             Assert.AreEqual(new Point(50, 100), image.TopLeft);
             Assert.AreEqual(new Point(150, 100), image.TopRight);
             Assert.AreEqual(new Point(50, 200), image.BottomLeft);
@@ -54,7 +54,7 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), ContentAlignment.TopRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
+            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), Alignment.TopRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
             Assert.AreEqual(new Point(0, 100), image.TopLeft);
             Assert.AreEqual(new Point(100, 100), image.TopRight);
             Assert.AreEqual(new Point(0, 200), image.BottomLeft);
@@ -74,7 +74,7 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), ContentAlignment.MiddleLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
+            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), Alignment.MiddleLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
             Assert.AreEqual(new Point(100, 50), image.TopLeft);
             Assert.AreEqual(new Point(200, 50), image.TopRight);
             Assert.AreEqual(new Point(100, 150), image.BottomLeft);
@@ -94,7 +94,7 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), ContentAlignment.MiddleCenter, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
+            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), Alignment.MiddleCenter, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
             Assert.AreEqual(new Point(50, 50), image.TopLeft);
             Assert.AreEqual(new Point(150, 50), image.TopRight);
             Assert.AreEqual(new Point(50, 150), image.BottomLeft);
@@ -114,7 +114,7 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), ContentAlignment.MiddleRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
+            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), Alignment.MiddleRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
             Assert.AreEqual(new Point(0, 50), image.TopLeft);
             Assert.AreEqual(new Point(100, 50), image.TopRight);
             Assert.AreEqual(new Point(0, 150), image.BottomLeft);
@@ -134,7 +134,7 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), ContentAlignment.BottomLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
+            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), Alignment.BottomLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
             Assert.AreEqual(new Point(100, 0), image.TopLeft);
             Assert.AreEqual(new Point(200, 0), image.TopRight);
             Assert.AreEqual(new Point(100, 100), image.BottomLeft);
@@ -154,7 +154,7 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), ContentAlignment.BottomCenter, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
+            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), Alignment.BottomCenter, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
             Assert.AreEqual(new Point(50, 0), image.TopLeft);
             Assert.AreEqual(new Point(150, 0), image.TopRight);
             Assert.AreEqual(new Point(50, 100), image.BottomLeft);
@@ -174,7 +174,7 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), ContentAlignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
+            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), Alignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
             Assert.AreEqual(new Point(0, 0), image.TopLeft);
             Assert.AreEqual(new Point(100, 0), image.TopRight);
             Assert.AreEqual(new Point(0, 100), image.BottomLeft);
@@ -194,9 +194,9 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            var parent = new Image("ParentImage", new Vector2(100.0f, 100.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
+            var parent = new Image("ParentImage", new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
 
-            var image = new Image("ImageName", new Vector2(50.0f, 50.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0.0f, parent);
+            var image = new Image("ImageName", new Vector2(50.0f, 50.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0.0f, parent);
             Assert.AreEqual(new Point(150, 150), image.TopLeft);
             Assert.AreEqual(new Point(250, 150), image.TopRight);
             Assert.AreEqual(new Point(150, 250), image.BottomLeft);
@@ -218,9 +218,9 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            var parent = new Image("ParentImage", new Vector2(100.0f, 100.0f), ContentAlignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
+            var parent = new Image("ParentImage", new Vector2(100.0f, 100.0f), Alignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
 
-            IControl image = new Image("ImageName", new Vector2(50.0f, 50.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0.0f, parent);
+            IControl image = new Image("ImageName", new Vector2(50.0f, 50.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0.0f, parent);
             Assert.AreEqual(new Point(50, 50), image.TopLeft);
             Assert.AreEqual(new Point(150, 50), image.TopRight);
             Assert.AreEqual(new Point(50, 150), image.BottomLeft);
@@ -240,7 +240,7 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(960, 540);
 
-            IControl image = new Image("ImageName", new Vector2(960.0f, 540.0f), ContentAlignment.MiddleCenter, new Vector2(1920.0f, 1080.0f), "Icons_1", "", 0);
+            IControl image = new Image("ImageName", new Vector2(960.0f, 540.0f), Alignment.MiddleCenter, new Vector2(1920.0f, 1080.0f), "Icons_1", "", 0);
             Assert.AreEqual(new Point(0, 0), image.TopLeft);
             Assert.AreEqual(new Point(1920, 0), image.TopRight);
             Assert.AreEqual(new Point(0, 1080), image.BottomLeft);
@@ -260,7 +260,7 @@ namespace PhoenixTests
         {
             DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), ContentAlignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
+            IControl image = new Image("ImageName", new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 0);
             image.SetTopLeftPosition(image.TopLeft.X - 100, image.TopLeft.Y - 100);
             Assert.AreEqual(new Point(0, 0), image.TopLeft);
             Assert.AreEqual(new Point(100, 0), image.TopRight);

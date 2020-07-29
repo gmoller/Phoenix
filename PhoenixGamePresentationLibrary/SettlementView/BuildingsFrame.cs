@@ -17,7 +17,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private Texture2D _texture;
         private AtlasSpec2 _atlas;
 
-        private LabelOld _lblBuildings;
+        private Label _lblBuildings;
         private Frame _smallFrameBuildings;
 
         internal BuildingsFrame(SettlementView parent, Vector2 topLeftPosition)
@@ -28,11 +28,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblBuildings = new LabelOld("lblBuildings", "CrimsonText-Regular-12", _topLeftPosition, HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
+            _lblBuildings = new Label("lblBuildings", _topLeftPosition - new Vector2(0.0f, 5.0f), Alignment.TopLeft, "Buildings", "CrimsonText-Regular-12", Color.Orange, Color.Red);
+            _lblBuildings.LoadContent(content);
 
-            var slots = new DynamicSlots("slots", _topLeftPosition + new Vector2(0.0f, 10.0f), ContentAlignment.TopLeft, new Vector2(515, 450), "GUI_Textures_1", "slot", 10, 13, 10.0f);
+            var slots = new DynamicSlots("slots", _topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 450), "GUI_Textures_1", "slot", 10, 13, 10.0f);
             slots.LoadContent(content);
-            _smallFrameBuildings = new Frame("SmallFrameBuildings", _topLeftPosition + new Vector2(0.0f, 10.0f), ContentAlignment.TopLeft, new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots);
+            _smallFrameBuildings = new Frame("SmallFrameBuildings", _topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots);
             _smallFrameBuildings.LoadContent(content);
 
             _texture = AssetsManager.Instance.GetTexture("Buildings");
@@ -41,8 +42,6 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            _lblBuildings.Text = "Buildings";
-
             if (input.IsLeftMouseButtonReleased)
             {
                 // determine where mouse pointer is (is it over a slot? which slot?)

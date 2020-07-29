@@ -1,6 +1,6 @@
 ﻿namespace GuiControls
 {
-    public enum ContentAlignment
+    public enum Alignment
     {
         TopLeft = 1,
         TopCenter = 2,

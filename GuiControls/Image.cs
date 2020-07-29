@@ -2,22 +2,20 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using AssetsLibrary;
 using Input;
-using Utilities;
 
 namespace GuiControls
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Image : Control
     {
-        public Image(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureName, float layerDepth = 0.0f, IControl parent = null) : 
-            this(name, position, alignment, size, string.Empty, textureName, layerDepth, parent)
+        public Image(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureName, float layerDepth = 0.0f, IControl parent = null) : 
+            this(name, position, positionAlignment, size, string.Empty, textureName, layerDepth, parent)
         {
         }
 
-        public Image(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, alignment, size, textureAtlas, textureName, textureName, null, null, null, layerDepth, parent)
+        public Image(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, float layerDepth = 0.0f, IControl parent = null) :
+            base(name, position, positionAlignment, size, textureAtlas, textureName, textureName, textureName, textureName, textureName, layerDepth, parent)
         {
         }
 

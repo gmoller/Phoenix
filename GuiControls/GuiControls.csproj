@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Button.cs" />
-    <Compile Include="ContentAlignment.cs" />
+    <Compile Include="Alignment.cs" />
     <Compile Include="ControlOld.cs" />
     <Compile Include="Control.cs" />
     <Compile Include="DynamicSlots.cs" />

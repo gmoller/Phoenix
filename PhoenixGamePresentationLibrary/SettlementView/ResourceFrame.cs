@@ -29,7 +29,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _smallFrame = new Frame("SmallFrame", _topLeftPosition + new Vector2(0.0f, 0.0f), ContentAlignment.TopLeft, new Vector2(515, 175), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
+            _smallFrame = new Frame("SmallFrame", _topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 175), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
             _smallFrame.LoadContent(content);
 
             _lblResources = new LabelOld("lblResources", "CrimsonText-Regular-12", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), "Resources", HorizontalAlignment.Left, Color.Orange, Color.Red);
@@ -92,9 +92,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _image1 = new Image("Image1", Vector2.Zero, ContentAlignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Bread");
+            _image1 = new Image("Image1", Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Bread");
             _image1.LoadContent(content);
-            _image2 = new Image("Image2", Vector2.Zero, ContentAlignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Corn");
+            _image2 = new Image("Image2", Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Corn");
             _image2.LoadContent(content);
         }
 
@@ -103,9 +103,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             if (_area.Contains(input.MousePosition))
             {
                 _toolTip = new ToolTip(input.MousePosition.ToVector2() + new Vector2(0.0f, 30.0f));
-                _toolTip.AddControl(new Image("Test1", new Vector2(0.0f, 0.0f), ContentAlignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Bread"));
-                _toolTip.AddControl(new Image("Test2", new Vector2(0.0f, 25.0f), ContentAlignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Pickaxe"));
-                _toolTip.AddControl(new Label("Test3", new Vector2(0.0f, 50.0f), ContentAlignment.TopLeft, new Vector2(89.0f, 12.0f), "Here is some text!", "CrimsonText-Regular-12", Color.Blue, Color.Red));
+                _toolTip.AddControl(new Image("Test1", new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Bread"));
+                _toolTip.AddControl(new Image("Test2", new Vector2(0.0f, 25.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Pickaxe"));
+                _toolTip.AddControl(new Label("Test3", new Vector2(0.0f, 50.0f), Alignment.TopLeft, "Here is some text!", "CrimsonText-Regular-12", Color.Blue, Color.Red));
             }
             else
             {
@@ -171,9 +171,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _image1 = new Image("Image1", Vector2.Zero, ContentAlignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Anvil");
+            _image1 = new Image("Image1", Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Anvil");
             _image1.LoadContent(content);
-            _image2 = new Image("Image2", Vector2.Zero, ContentAlignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Pickaxe");
+            _image2 = new Image("Image2", Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Pickaxe");
             _image2.LoadContent(content);
         }
 

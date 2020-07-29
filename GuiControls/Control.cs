@@ -26,10 +26,17 @@ namespace GuiControls
         protected readonly Color Color;
         protected readonly float LayerDepth;
 
-        protected Texture2D Texture;
-        protected Rectangle ActualDestinationRectangle;
-        protected Rectangle SourceRectangle;
-        protected AtlasSpec2 Atlas;
+        protected Texture2D Texture { get; set; }
+
+        private Rectangle _actualDestinationRectangle;
+        protected Rectangle ActualDestinationRectangle
+        {
+            get => _actualDestinationRectangle;
+            private set => _actualDestinationRectangle = value;
+        }
+
+        protected Rectangle SourceRectangle { get; private set; }
+        protected AtlasSpec2 Atlas { get; private set; }
 
         public string Name { get; protected set; }
 
@@ -56,7 +63,7 @@ namespace GuiControls
 
         public event EventHandler Click;
 
-        protected Control(string name, Vector2 position, ContentAlignment alignment, Vector2 size, string textureAtlas, string textureName, string textureNormal, string textureActive, string textureHover, string textureDisabled, float layerDepth = 0.0f, IControl parent = null)
+        protected Control(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, string textureNormal, string textureActive, string textureHover, string textureDisabled, float layerDepth = 0.0f, IControl parent = null)
         {
             Parent = parent;
 
@@ -71,33 +78,21 @@ namespace GuiControls
             _textureHover = textureHover;
             _textureDisabled = textureDisabled;
 
-            var topLeft = DetermineTopLeft(position * DeviceManager.Instance.SizeRatio, alignment, size * DeviceManager.Instance.SizeRatio);
-            if (Parent == null)
-            {
-                // the same
-                ActualDestinationRectangle = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)size.X, (int)size.Y);
-            }
-            else
-            {
-                // offset from parent's position
-                var x = (int)(Parent.TopLeft.X + topLeft.X);
-                var y = (int)(Parent.TopLeft.Y + topLeft.Y);
-                ActualDestinationRectangle = new Rectangle(x, y, (int)size.X, (int)size.Y);
-            }
+            DetermineArea(position, positionAlignment, size);
 
             Enabled = true;
         }
 
         public void SetTopLeftPosition(int x, int y)
         {
-            ActualDestinationRectangle.X = x;
-            ActualDestinationRectangle.Y = y;
+            _actualDestinationRectangle.X = x;
+            _actualDestinationRectangle.Y = y;
         }
 
         public void MoveTopLeftPosition(int x, int y)
         {
-            ActualDestinationRectangle.X += x;
-            ActualDestinationRectangle.Y += y;
+            _actualDestinationRectangle.X += x;
+            _actualDestinationRectangle.Y += y;
         }
 
         public virtual void LoadContent(ContentManager content)
@@ -170,36 +165,53 @@ namespace GuiControls
 
         public abstract void Draw(Matrix? transform = null);
 
-        private Vector2 DetermineTopLeft(Vector2 position, ContentAlignment alignment, Vector2 size)
+        protected void DetermineArea(Vector2 position, Alignment alignment, Vector2 size)
+        {
+            var topLeft = DetermineTopLeft(position, alignment, size);
+            //var topLeft = DetermineTopLeft(position * DeviceManager.Instance.SizeRatio, alignment, size * DeviceManager.Instance.SizeRatio);
+            if (Parent == null)
+            {
+                ActualDestinationRectangle = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)size.X, (int)size.Y);
+            }
+            else
+            {
+                // offset from parent's position
+                var x = (int)(Parent.TopLeft.X + topLeft.X);
+                var y = (int)(Parent.TopLeft.Y + topLeft.Y);
+                ActualDestinationRectangle = new Rectangle(x, y, (int)size.X, (int)size.Y);
+            }
+        }
+
+        private Vector2 DetermineTopLeft(Vector2 position, Alignment alignment, Vector2 size)
         {
             Vector2 topLeft;
             switch (alignment)
             {
-                case ContentAlignment.TopLeft:
+                case Alignment.TopLeft:
                     topLeft = position;
                     break;
-                case ContentAlignment.TopCenter:
+                case Alignment.TopCenter:
                     topLeft = new Vector2(position.X - size.X * 0.5f, position.Y);
                     break;
-                case ContentAlignment.TopRight:
+                case Alignment.TopRight:
                     topLeft = new Vector2(position.X - size.X, position.Y);
                     break;
-                case ContentAlignment.MiddleLeft:
+                case Alignment.MiddleLeft:
                     topLeft = new Vector2(position.X, position.Y - size.Y * 0.5f);
                     break;
-                case ContentAlignment.MiddleCenter:
+                case Alignment.MiddleCenter:
                     topLeft = new Vector2(position.X - size.X * 0.5f, position.Y - size.Y * 0.5f);
                     break;
-                case ContentAlignment.MiddleRight:
+                case Alignment.MiddleRight:
                     topLeft = new Vector2(position.X - size.X, position.Y - size.Y * 0.5f);
                     break;
-                case ContentAlignment.BottomLeft:
+                case Alignment.BottomLeft:
                     topLeft = new Vector2(position.X, position.Y - size.Y);
                     break;
-                case ContentAlignment.BottomCenter:
+                case Alignment.BottomCenter:
                     topLeft = new Vector2(position.X - size.X * 0.5f, position.Y - size.Y);
                     break;
-                case ContentAlignment.BottomRight:
+                case Alignment.BottomRight:
                     topLeft = new Vector2(position.X - size.X, position.Y - size.Y);
                     break;
                 default:

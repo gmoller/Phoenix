@@ -13,8 +13,8 @@ namespace PhoenixGamePresentationLibrary
 
         private FramesPerSecondCounter _fps;
 
-        private LabelOld _lblGCCount1;
-        private LabelOld _lblGCCount2;
+        private Label _lblGCCount1;
+        private Label _lblGCCount2;
         private LabelOld _lblFps1;
         private LabelOld _lblFps2;
         private LabelOld _lblMemory1;
@@ -40,6 +40,11 @@ namespace PhoenixGamePresentationLibrary
             var size1 = new Vector2(142.0f, 20.0f);
             var size2 = new Vector2(142.0f, 20.0f);
 
+            _lblGCCount1 = new Label("lblGCCount1", Vector2.Zero, Alignment.TopLeft, "GC COUNT:", "CrimsonText-Regular-12", Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f);
+            _lblGCCount1.LoadContent(content);
+            _lblGCCount2 = new Label("lblGCCount2", new Vector2(100.0f, 0.0f), Alignment.TopLeft, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f);
+            _lblGCCount2.LoadContent(content);
+
             _lblScreenPosition1 = new LabelOld("lblScreenPosition1", "CrimsonText-Regular-12", _position, HorizontalAlignment.Left, VerticalAlignment.Bottom, size1, "SCREEN POS:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblScreenPosition2 = new LabelOld("lblScreenPosition2", "CrimsonText-Regular-12", _lblScreenPosition1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
 
@@ -57,9 +62,6 @@ namespace PhoenixGamePresentationLibrary
 
             _lblFps1 = new LabelOld("lblFps1", "CrimsonText-Regular-12", _lblMemory1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "FPS (U/D):", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblFps2 = new LabelOld("lblFps2", "CrimsonText-Regular-12", _lblFps1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
-
-            _lblGCCount1 = new LabelOld("lblGCCount1", "CrimsonText-Regular-12", _lblFps1, HorizontalAlignment.Center, VerticalAlignment.Top, size1, "GC COUNT:", HorizontalAlignment.Left, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
-            _lblGCCount2 = new LabelOld("lblGCCount2", "CrimsonText-Regular-12", _lblGCCount1, HorizontalAlignment.Right, VerticalAlignment.Middle, size2, string.Empty, HorizontalAlignment.Right, Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
         }
 
         public void Update(GameTime gameTime)

@@ -11,7 +11,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly SettlementView _parent;
         private readonly Vector2 _topLeftPosition;
 
-        private LabelOld _lblOther;
+        private Label _lblOther;
         private Frame _smallFrameOther;
 
         internal OtherFrame(SettlementView parent, Vector2 topLeftPosition)
@@ -22,17 +22,17 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblOther = new LabelOld("lblOther", "CrimsonText-Regular-12", _topLeftPosition + new Vector2(0.0f, -10.0f), HorizontalAlignment.Left, VerticalAlignment.Top, new Vector2(10, 10), string.Empty, HorizontalAlignment.Left, Color.Orange, Color.Red);
+            _lblOther = new Label("lblOther", _topLeftPosition + new Vector2(0.0f, -15.0f), Alignment.TopLeft, "Other", "CrimsonText-Regular-12", Color.Orange, Color.Red);
+            _lblOther.LoadContent(content);
 
-            var slots3 = new DynamicSlots("slots3", _topLeftPosition + new Vector2(0.0f, 0.0f), ContentAlignment.TopLeft, new Vector2(515, 65), "GUI_Textures_1", "slot", 2, 1, 10.0f);
+            var slots3 = new DynamicSlots("slots3", _topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 65), "GUI_Textures_1", "slot", 2, 1, 10.0f);
             slots3.LoadContent(content);
-            _smallFrameOther = new Frame("SmallFrameOther", _topLeftPosition + new Vector2(0.0f, 0.0f), ContentAlignment.TopLeft, new Vector2(515, 65), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots3);
+            _smallFrameOther = new Frame("SmallFrameOther", _topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 65), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots3);
             _smallFrameOther.LoadContent(content);
         }
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            _lblOther.Text = "Other";
         }
 
         internal void Draw(SpriteBatch spriteBatch)
