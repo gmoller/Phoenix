@@ -9,7 +9,7 @@ namespace GuiControls
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Button : Control
     {
-        public LabelSized Label { get; set; }
+        public Label Label { get; set; }
 
         public Button(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureNormal, string textureActive, string textureDisabled, string textureHover, float layerDepth = 0.0f, IControl parent = null) :
             base(name, position, positionAlignment, size, textureAtlas, textureNormal, textureNormal, textureActive, textureHover, textureDisabled, layerDepth, parent)

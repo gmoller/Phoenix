@@ -27,14 +27,7 @@ namespace GuiControls
         protected readonly float LayerDepth;
 
         protected Texture2D Texture { get; set; }
-
-        private Rectangle _actualDestinationRectangle;
-        protected Rectangle ActualDestinationRectangle
-        {
-            get => _actualDestinationRectangle;
-            private set => _actualDestinationRectangle = value;
-        }
-
+        protected Rectangle ActualDestinationRectangle { get; private set; }
         protected Rectangle SourceRectangle { get; private set; }
         protected AtlasSpec2 Atlas { get; private set; }
 
@@ -85,14 +78,16 @@ namespace GuiControls
 
         public void SetTopLeftPosition(int x, int y)
         {
-            _actualDestinationRectangle.X = x;
-            _actualDestinationRectangle.Y = y;
+            //ActualDestinationRectangle.X = x;
+            //ActualDestinationRectangle.Y = y;
+            ActualDestinationRectangle = new Rectangle(x, y, ActualDestinationRectangle.Width, ActualDestinationRectangle.Height);
         }
 
         public void MoveTopLeftPosition(int x, int y)
         {
-            _actualDestinationRectangle.X += x;
-            _actualDestinationRectangle.Y += y;
+            //ActualDestinationRectangle.X += x;
+            //ActualDestinationRectangle.Y += y;
+            ActualDestinationRectangle = new Rectangle(ActualDestinationRectangle.X + x, ActualDestinationRectangle.Y + y, ActualDestinationRectangle.Width, ActualDestinationRectangle.Height);
         }
 
         public virtual void LoadContent(ContentManager content)

@@ -13,20 +13,20 @@ namespace PhoenixGamePresentationLibrary
 
         private FramesPerSecondCounter _fps;
 
-        private LabelSized _lblGcCount1;
-        private LabelSized _lblGcCount2;
-        private LabelSized _lblScreenPosition1;
-        private LabelSized _lblScreenPosition2;
-        private LabelSized _lblViewportPosition1;
-        private LabelSized _lblViewportPosition2;
-        private LabelSized _lblWorldPosition1;
-        private LabelSized _lblWorldPosition2;
-        private LabelSized _lblWorldHex1;
-        private LabelSized _lblWorldHex2;
-        private LabelSized _lblMemory1;
-        private LabelSized _lblMemory2;
-        private LabelSized _lblFps1;
-        private LabelSized _lblFps2;
+        private Label _lblGcCount1;
+        private Label _lblGcCount2;
+        private Label _lblScreenPosition1;
+        private Label _lblScreenPosition2;
+        private Label _lblViewportPosition1;
+        private Label _lblViewportPosition2;
+        private Label _lblWorldPosition1;
+        private Label _lblWorldPosition2;
+        private Label _lblWorldHex1;
+        private Label _lblWorldHex2;
+        private Label _lblMemory1;
+        private Label _lblMemory2;
+        private Label _lblFps1;
+        private Label _lblFps2;
 
         public MetricsPanel(Vector2 position)
         {

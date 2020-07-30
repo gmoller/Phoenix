@@ -3,7 +3,6 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using AssetsLibrary;
 
 namespace GuiControls
 {
@@ -12,12 +11,11 @@ namespace GuiControls
     {
         private readonly int _numberOfSlotsX;
         private readonly int _numberOfSlotsY;
-        private Rectangle _slot;
-        private List<Rectangle> _slots;
+        private List<IControl> _slots;
         private readonly float _slotPadding;
-        private readonly List<LabelSized> _labels;
+        private readonly List<Label> _labels;
 
-        public DynamicSlots(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<LabelSized> labels = null) :
+        public DynamicSlots(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<Label> labels = null) :
             base(name, position, positionAlignment, size, textureAtlas, textureName, null, null, null, null)
         {
             _numberOfSlotsX = numberOfSlotsX;
@@ -29,17 +27,11 @@ namespace GuiControls
 
         public override void LoadContent(ContentManager content)
         {
-            Texture = AssetsManager.Instance.GetTexture(TextureAtlas);
-            var atlas = AssetsManager.Instance.GetAtlas(TextureAtlas);
-
-            var frame = atlas.Frames[TextureName];
-            _slot = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
-
             var startX = TopLeft.X + _slotPadding;
             var startY = TopLeft.Y + _slotPadding;
             var slotWidth = (Size.X - _slotPadding * 2.0f) / _numberOfSlotsX;
             var slotHeight = (Size.Y - _slotPadding * 2.0f) / _numberOfSlotsY;
-            _slots = CreateSlots(startX, startY, slotWidth, slotHeight, _numberOfSlotsX, _numberOfSlotsY);
+            _slots = CreateSlots(startX, startY, slotWidth, slotHeight, _numberOfSlotsX, _numberOfSlotsY, content);
         }
 
         protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
@@ -47,7 +39,7 @@ namespace GuiControls
             var i = 0;
             foreach (var slot in _slots)
             {
-                spriteBatch.Draw(Texture, slot, _slot, Color.White);
+                slot.Draw(transform);
                 if (_labels != null && i < _labels.Count)
                 {
                     _labels[i].Draw();
@@ -56,9 +48,9 @@ namespace GuiControls
             }
         }
 
-        private List<Rectangle> CreateSlots(float startX, float startY, float slotWidth, float slotHeight, int numberOfSlotsX, int numberOfSlotsY)
+        private List<IControl> CreateSlots(float startX, float startY, float slotWidth, float slotHeight, int numberOfSlotsX, int numberOfSlotsY, ContentManager content)
         {
-            var slots = new List<Rectangle>();
+            var slots = new List<IControl>();
 
             var x = startX;
             var y = startY;
@@ -67,8 +59,9 @@ namespace GuiControls
             {
                 for (var i = 0; i < numberOfSlotsX; ++i)
                 {
-                    var rect = new Rectangle((int)x, (int)y, (int)slotWidth, (int)slotHeight);
-                    slots.Add(rect);
+                    var slot = new Slot((int)x, (int)y, (int)slotWidth, (int)slotHeight, TextureAtlas, TextureName);
+                    slot.LoadContent(content);
+                    slots.Add(slot);
                     x += slotWidth;
                 }
 
@@ -77,6 +70,20 @@ namespace GuiControls
             }
 
             return slots;
+        }
+    }
+
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
+    public class Slot : Control
+    {
+        public Slot(int x, int y, int width, int height, string textureAtlas, string textureName) : 
+            base("", new Vector2(x, y), Alignment.TopLeft, new Vector2(width, height), textureAtlas, textureName, "", "", "", "", 0.0f, null)
+        {
+        }
+
+        protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
+        {
+            spriteBatch.Draw(Texture, ActualDestinationRectangle, SourceRectangle, Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
         }
     }
 }

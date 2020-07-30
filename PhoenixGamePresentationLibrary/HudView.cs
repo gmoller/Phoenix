@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection.Emit;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,13 +26,13 @@ namespace PhoenixGamePresentationLibrary
         private SpriteFont _font;
         private Frame _frame;
 
-        private LabelAutoSized _lblCurrentDate;
-        private LabelAutoSized _lblGold;
-        private LabelAutoSized _lblMana;
-        private LabelAutoSized _lblFood;
+        private Label _lblCurrentDate;
+        private Label _lblGold;
+        private Label _lblMana;
+        private Label _lblFood;
 
         private Button _btnEndTurn;
-        private LabelSized _test;
+        private IControl _test;
 
         private readonly UnitsView _unitsView;
 
@@ -87,6 +86,7 @@ namespace PhoenixGamePresentationLibrary
             _btnEndTurn.Label = label;
 
             _test = new LabelSized("Test", new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, null, null, Color.Blue);
+            _test.Click += delegate { _test.MoveTopLeftPosition(10, -10); };
             _test.LoadContent(content);
         }
 
@@ -113,6 +113,8 @@ namespace PhoenixGamePresentationLibrary
             _lblFood.Text = $"{Globals.Instance.World.PlayerFaction.FoodPerTurn} Food";
 
             _btnEndTurn.Update(input, deltaTime);
+
+            _test.Update(input, deltaTime);
         }
 
         internal void Draw(SpriteBatch spriteBatch)

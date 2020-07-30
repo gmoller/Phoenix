@@ -14,12 +14,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         private readonly Vector2 _topLeftPosition;
 
-        private LabelAutoSized _lblRace;
-        private LabelAutoSized _lblPopulationGrowth;
+        private Label _lblRace;
+        private Label _lblPopulationGrowth;
         private Frame _smallFrame;
-        private LabelAutoSized _lblFarmers;
-        private LabelAutoSized _lblWorkers;
-        private LabelAutoSized _lblRebels;
+        private Label _lblFarmers;
+        private Label _lblWorkers;
+        private Label _lblRebels;
 
         private Button _btnSubtractFarmer;
         private Button _btnAddFarmer;

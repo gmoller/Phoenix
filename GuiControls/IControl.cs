@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Input;
 using Microsoft.Xna.Framework.Content;
 
@@ -31,5 +32,7 @@ namespace GuiControls
         void LoadContent(ContentManager content);
         void Update(InputHandler input, float deltaTime, Matrix? transform = null);
         void Draw(Matrix? transform = null);
+
+        event EventHandler Click;
     }
 }

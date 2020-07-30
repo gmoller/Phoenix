@@ -12,12 +12,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         private readonly Vector2 _topLeftPosition;
         private Frame _smallFrame;
-        private LabelAutoSized _lblResources;
-        private LabelAutoSized _lblFood;
-        private LabelAutoSized _lblProduction;
-        private LabelAutoSized _lblGold;
-        private LabelAutoSized _lblPower;
-        private LabelAutoSized _lblResearch;
+        private Label _lblResources;
+        private Label _lblFood;
+        private Label _lblProduction;
+        private Label _lblGold;
+        private Label _lblPower;
+        private Label _lblResearch;
         private FoodView _foodView;
         private ProductionView _productionView;
 

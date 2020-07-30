@@ -17,7 +17,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private Texture2D _texture;
         private AtlasSpec2 _atlas;
 
-        private LabelAutoSized _lblBuildings;
+        private Label _lblBuildings;
         private Frame _smallFrameBuildings;
 
         internal BuildingsFrame(SettlementView parent, Vector2 topLeftPosition)
@@ -91,7 +91,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private void DrawBuilding(SpriteBatch spriteBatch, string buildingName, int topLeftX, int topLeftY)
         {
             var rect = new Rectangle(topLeftX, topLeftY, 40, 20);
-            var color = Color.Transparent;
+            Color color;
             if (_parent.Settlement.BuildingCanNotBeBuilt(buildingName))
             {
                 color = Color.Red;

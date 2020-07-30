@@ -18,8 +18,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         private MainFrame _mainFrame;
         private SecondaryFrame _secondaryFrame;
-        private LabelAutoSized _lblSettlementName1;
-        private LabelAutoSized _lblSettlementName2;
+        private Label _lblSettlementName1;
+        private Label _lblSettlementName2;
         private PopulationFrame _populationFrame;
         private ResourceFrame _resourceFrame;
         private BuildingsFrame _buildingsFrame;

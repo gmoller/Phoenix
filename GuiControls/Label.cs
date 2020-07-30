@@ -18,12 +18,36 @@ namespace GuiControls
         protected readonly Color? BorderColor;
 
         protected SpriteFont Font { get; set; }
+        public virtual string Text { get; set; }
 
-        protected string Text { get; set; }
-
-        protected Label(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string fontName, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color? borderColor = null, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, positionAlignment, size, string.Empty, string.Empty, null, null, null, null, layerDepth, parent)
+        protected Label(
+            string name, 
+            Vector2 position, 
+            Alignment positionAlignment, 
+            Vector2 size, 
+            string text, 
+            string fontName, 
+            Color textColor, 
+            Color? textShadowColor = null, 
+            Color? backColor = null, 
+            Color? borderColor = null, 
+            float layerDepth = 0.0f, 
+            IControl parent = null) : 
+            base(
+                name, 
+                position, 
+                positionAlignment, 
+                size, 
+                string.Empty, 
+                string.Empty, 
+                null, 
+                null, 
+                null, 
+                null, 
+                layerDepth, 
+                parent)
         {
+            Text = text;
             FontName = fontName;
             TextColor = textColor;
             TextShadowColor = textShadowColor;
@@ -31,48 +55,106 @@ namespace GuiControls
             BorderColor = borderColor;
         }
 
-        //public override void LoadContent(ContentManager content)
-        //{
-        //    _font = AssetsManager.Instance.GetSpriteFont(_fontName);
-        //}
+        public override void LoadContent(ContentManager content)
+        {
+            Font = AssetsManager.Instance.GetSpriteFont(FontName);
+        }
 
-        //protected abstract void Draw(SpriteBatch spriteBatch, Matrix? transform = null);
+        protected abstract Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text);
+
+        protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
+        {
+            if (BackColor != null)
+            {
+                spriteBatch.FillRectangle(
+                    ActualDestinationRectangle, 
+                    BackColor.Value, 
+                    LayerDepth);
+            }
+
+            var offset = DetermineOffset(Font, Size.ToVector2(), Text);
+            if (TextShadowColor != null)
+            {
+                spriteBatch.DrawString(
+                    Font, 
+                    Text, 
+                    TopLeft.ToVector2() + offset + Vector2.One, 
+                    TextShadowColor.Value, 
+                    0.0f, 
+                    Vector2.Zero, 
+                    1.0f, 
+                    SpriteEffects.None, 
+                    LayerDepth);
+            }
+
+            if (BorderColor != null)
+            {
+                spriteBatch.DrawRectangle(
+                    new Rectangle(
+                        ActualDestinationRectangle.X, 
+                        ActualDestinationRectangle.Y, 
+                        ActualDestinationRectangle.Width - 1, 
+                        ActualDestinationRectangle.Height - 1), 
+                    BorderColor.Value, 
+                    LayerDepth);
+            }
+
+            spriteBatch.DrawString(
+                Font, 
+                Text, 
+                TopLeft.ToVector2() + offset, 
+                TextColor, 
+                0.0f, 
+                Vector2.Zero, 
+                1.0f, 
+                SpriteEffects.None, 
+                LayerDepth);
+        }
     }
 
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class LabelAutoSized : Control
+    public class LabelAutoSized : Label
     {
-        private readonly string _fontName;
-        private readonly Color _textColor;
-        private readonly Color? _textShadowColor;
-        private readonly Color? _backColor;
-        private readonly Color? _borderColor;
         private readonly Vector2 _position;
         private readonly Alignment _positionAlignment;
         private readonly bool _autoSize;
 
-        private SpriteFont _font;
-
-        private string _text;
-        public string Text
+        public override string Text
         {
-            get => _text;
+            get => base.Text;
             set
             {
-                _text = value;
+                base.Text = value;
                 Resize(value);
             }
         }
 
-        public LabelAutoSized(string name, Vector2 position, Alignment positionAlignment, string text, string fontName, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color? borderColor = null, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, positionAlignment, Vector2.Zero, string.Empty, string.Empty, null, null, null, null, layerDepth, parent)
+        public LabelAutoSized(
+            string name, 
+            Vector2 position, 
+            Alignment positionAlignment, 
+            string text, 
+            string fontName, 
+            Color textColor, 
+            Color? textShadowColor = null, 
+            Color? backColor = null, 
+            Color? borderColor = null, 
+            float layerDepth = 0.0f, 
+            IControl parent = null) :
+            base(
+                name, 
+                position, 
+                positionAlignment, 
+                Vector2.Zero, 
+                text, 
+                fontName, 
+                textColor, 
+                textShadowColor, 
+                backColor, 
+                borderColor, 
+                layerDepth, 
+                parent)
         {
-            _fontName = fontName;
-            Text = text;
-            _textColor = textColor;
-            _textShadowColor = textShadowColor;
-            _backColor = backColor;
-            _borderColor = borderColor;
             _position = position;
             _positionAlignment = positionAlignment;
             _autoSize = true;
@@ -80,99 +162,67 @@ namespace GuiControls
 
         public override void LoadContent(ContentManager content)
         {
-            _font = AssetsManager.Instance.GetSpriteFont(_fontName);
+            base.LoadContent(content);
             Resize(Text);
         }
 
-        protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
+        protected override Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text)
         {
-            if (_backColor != null)
-            {
-                spriteBatch.FillRectangle(ActualDestinationRectangle, _backColor.Value, LayerDepth);
-            }
-
-            if (_textShadowColor != null)
-            {
-                spriteBatch.DrawString(_font, Text, TopLeft.ToVector2() + Vector2.One, _textShadowColor.Value, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, LayerDepth);
-            }
-
-            if (_borderColor != null)
-            {
-                spriteBatch.DrawRectangle(new Rectangle(ActualDestinationRectangle.X, ActualDestinationRectangle.Y, ActualDestinationRectangle.Width - 1, ActualDestinationRectangle.Height - 1), _borderColor.Value, LayerDepth);
-            }
-
-            spriteBatch.DrawString(_font, Text, TopLeft.ToVector2(), _textColor, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, LayerDepth);
+            return Vector2.Zero;
         }
 
         private void Resize(string text)
         {
-            if (_autoSize && _font != null && text != null)
+            if (_autoSize && Font != null && text != null)
             {
-                var size = _font.MeasureString(text);
+                var size = Font.MeasureString(text);
                 DetermineArea(_position, _positionAlignment, size);
             }
         }
     }
 
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class LabelSized : Control
+    public class LabelSized : Label
     {
-        private readonly string _fontName;
-        private readonly Color _textColor;
-        private readonly Color? _textShadowColor;
-        private readonly Color? _backColor;
-        private readonly Color? _borderColor;
         private readonly Alignment _contentAlignment;
 
-        private SpriteFont _font;
-
-        public string Text { get; set; }
-
-        public LabelSized(string name, Vector2 position, Alignment positionAlignment, Vector2 size, Alignment contentAlignment, string text, string fontName, Color textColor, Color? textShadowColor = null, Color? backColor = null, Color? borderColor = null, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, positionAlignment, size, string.Empty, string.Empty, null, null, null, null, layerDepth, parent)
+        public LabelSized(
+            string name, 
+            Vector2 position, 
+            Alignment positionAlignment, 
+            Vector2 size, 
+            Alignment contentAlignment, 
+            string text, 
+            string fontName, 
+            Color textColor, 
+            Color? textShadowColor = null, 
+            Color? backColor = null, 
+            Color? borderColor = null, 
+            float layerDepth = 0.0f, 
+            IControl parent = null) :
+            base(
+                name, 
+                position, 
+                positionAlignment, 
+                size, 
+                text, 
+                fontName, 
+                textColor, 
+                textShadowColor, 
+                backColor, 
+                borderColor, 
+                layerDepth, 
+                parent)
         {
-            _fontName = fontName;
-            Text = text;
-            _textColor = textColor;
-            _textShadowColor = textShadowColor;
-            _backColor = backColor;
-            _borderColor = borderColor;
             _contentAlignment = contentAlignment;
-
             DetermineArea(position, positionAlignment, size);
         }
 
-        public override void LoadContent(ContentManager content)
+        protected override Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text)
         {
-            _font = AssetsManager.Instance.GetSpriteFont(_fontName);
-        }
+            var textSize = font.MeasureString(text);
 
-        protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
-        {
-            if (_backColor != null)
-            {
-                spriteBatch.FillRectangle(ActualDestinationRectangle, _backColor.Value, LayerDepth);
-            }
-
-            var offset = DetermineOffset(Size.ToVector2(), _contentAlignment, Text);
-            if (_textShadowColor != null)
-            {
-                spriteBatch.DrawString(_font, Text, TopLeft.ToVector2() + offset + Vector2.One, _textShadowColor.Value, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, LayerDepth);
-            }
-
-            if (_borderColor != null)
-            {
-                spriteBatch.DrawRectangle(new Rectangle(ActualDestinationRectangle.X, ActualDestinationRectangle.Y, ActualDestinationRectangle.Width - 1, ActualDestinationRectangle.Height - 1), _borderColor.Value, LayerDepth);
-            }
-
-            spriteBatch.DrawString(_font, Text, TopLeft.ToVector2() + offset, _textColor, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, LayerDepth);
-        }
-
-        private Vector2 DetermineOffset(Vector2 size, Alignment contentAlignment, string text)
-        {
-            var textSize = _font.MeasureString(text);
-
-            switch (contentAlignment)
+            switch (_contentAlignment)
             {
                 case Alignment.TopLeft:
                     return Vector2.Zero;
@@ -196,7 +246,7 @@ namespace GuiControls
                     return new Vector2(size.X - textSize.X, size.Y - textSize.Y);
 
                 default:
-                    throw new Exception($"ContentAlignment [{contentAlignment}] is not implemented.");
+                    throw new Exception($"ContentAlignment [{_contentAlignment}] is not implemented.");
             }
         }
     }
