@@ -2,8 +2,8 @@
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
-using Input;
 
 namespace GuiControls
 {
@@ -15,9 +15,9 @@ namespace GuiControls
         private Rectangle _slot;
         private List<Rectangle> _slots;
         private readonly float _slotPadding;
-        private readonly List<Label> _labels;
+        private readonly List<LabelSized> _labels;
 
-        public DynamicSlots(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<Label> labels = null) :
+        public DynamicSlots(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<LabelSized> labels = null) :
             base(name, position, positionAlignment, size, textureAtlas, textureName, null, null, null, null)
         {
             _numberOfSlotsX = numberOfSlotsX;
@@ -42,15 +42,8 @@ namespace GuiControls
             _slots = CreateSlots(startX, startY, slotWidth, slotHeight, _numberOfSlotsX, _numberOfSlotsY);
         }
 
-        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
         {
-            base.Update(input, deltaTime, transform);
-        }
-
-        public override void Draw(Matrix? transform = null)
-        {
-            var spriteBatch = BeginSpriteBatch(transform);
-
             var i = 0;
             foreach (var slot in _slots)
             {
@@ -61,8 +54,6 @@ namespace GuiControls
                     i++;
                 }
             }
-
-            EndSpriteBatch(spriteBatch);
         }
 
         private List<Rectangle> CreateSlots(float startX, float startY, float slotWidth, float slotHeight, int numberOfSlotsX, int numberOfSlotsY)

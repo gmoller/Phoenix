@@ -14,9 +14,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly SettlementView _parent;
         private readonly Vector2 _topLeftPosition;
 
-        private Label _lblUnits;
+        private LabelAutoSized _lblUnits;
         private Frame _smallFrameUnits;
-        private List<Label> _unitLabels;
+        private List<LabelSized> _unitLabels;
 
         internal UnitsFrame(SettlementView parent, Vector2 topLeftPosition)
         {
@@ -26,7 +26,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblUnits = new Label("lblUnits", _topLeftPosition + new Vector2(0.0f, -15.0f), Alignment.TopLeft, "Units", "CrimsonText-Regular-12", Color.Orange, Color.Red);
+            _lblUnits = new LabelAutoSized("lblUnits", _topLeftPosition + new Vector2(0.0f, -15.0f), Alignment.TopLeft, "Units", "CrimsonText-Regular-12", Color.Orange, Color.Red);
             _lblUnits.LoadContent(content);
 
             _unitLabels = CreateUnitLabels(content);
@@ -53,9 +53,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             spriteBatch.End();
         }
 
-        private List<Label> CreateUnitLabels(ContentManager content)
+        private List<LabelSized> CreateUnitLabels(ContentManager content)
         {
-            var units = new List<Label>();
+            var units = new List<LabelSized>();
 
             int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
             int baseTopLeftY = (int)(_topLeftPosition.Y + 15.0f);
@@ -66,7 +66,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             {
                 if (_parent.Settlement.UnitCanBeBuilt(unit.Name))
                 {
-                    var lbl = new Label(unit.Name, new Vector2(x, y), Alignment.TopLeft, new Vector2(42.0f, 20.0f), unit.ShortName, Alignment.MiddleCenter, "CrimsonText-Regular-6", Color.Red, null, Color.PowderBlue);
+                    var lbl = new LabelSized(unit.Name, new Vector2(x, y), Alignment.TopLeft, new Vector2(42.0f, 20.0f), Alignment.MiddleCenter, unit.ShortName, "CrimsonText-Regular-6", Color.Red, null, Color.PowderBlue);
                     lbl.LoadContent(content);
                     lbl.Click += UnitClick;
                     units.Add(lbl);
@@ -80,7 +80,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         private void UnitClick(object sender, EventArgs e)
         { 
-            var unit = (Label)sender;
+            var unit = (LabelSized)sender;
             var unit2 = Globals.Instance.UnitTypes[unit.Name];
             _parent.Settlement.AddToProductionQueue(unit2);
         }

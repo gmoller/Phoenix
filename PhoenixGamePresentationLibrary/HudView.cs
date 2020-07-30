@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Emit;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,13 +27,13 @@ namespace PhoenixGamePresentationLibrary
         private SpriteFont _font;
         private Frame _frame;
 
-        private Label _lblCurrentDate;
-        private Label _lblGold;
-        private Label _lblMana;
-        private Label _lblFood;
+        private LabelAutoSized _lblCurrentDate;
+        private LabelAutoSized _lblGold;
+        private LabelAutoSized _lblMana;
+        private LabelAutoSized _lblFood;
 
         private Button _btnEndTurn;
-        private Label _test;
+        private LabelSized _test;
 
         private readonly UnitsView _unitsView;
 
@@ -60,11 +61,11 @@ namespace PhoenixGamePresentationLibrary
             _imgMana.LoadContent(content);
             _imgFood = new Image("imgFood", _imgMana.RelativeTopLeft.ToVector2() + new Vector2(0.0f, _imgMana.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", 0.0f, _resourceFrame);
             _imgFood.LoadContent(content);
-            _lblGold = new Label("lblGold", _imgGold.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame);
+            _lblGold = new LabelAutoSized("lblGold", _imgGold.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, null, null, null, 0.0f, _resourceFrame);
             _lblGold.LoadContent(content);
-            _lblMana = new Label("lblMana", _imgMana.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame);
+            _lblMana = new LabelAutoSized("lblMana", _imgMana.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, null, null, null, 0.0f, _resourceFrame);
             _lblMana.LoadContent(content);
-            _lblFood = new Label("lblFood", _imgFood.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, null, null, 0.0f, _resourceFrame);
+            _lblFood = new LabelAutoSized("lblFood", _imgFood.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, null, null, null, 0.0f, _resourceFrame);
             _lblFood.LoadContent(content);
 
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
@@ -73,7 +74,7 @@ namespace PhoenixGamePresentationLibrary
             _frame = new Frame("Frame", topLeftPosition, Alignment.TopLeft, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
             _frame.LoadContent(content);
 
-            _lblCurrentDate = new Label("lblCurrentDate", new Vector2(_frame.Width * 0.5f,20.0f), Alignment.MiddleCenter, "Date:", "Maleficio-Regular-18", Color.Aquamarine, null, null, 0.0f, _frame);
+            _lblCurrentDate = new LabelAutoSized("lblCurrentDate", new Vector2(_frame.Width * 0.5f,20.0f), Alignment.MiddleCenter, "Date:", "Maleficio-Regular-18", Color.Aquamarine, null, null, null, 0.0f, _frame);
             _lblCurrentDate.LoadContent(content);
 
             var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
@@ -81,11 +82,11 @@ namespace PhoenixGamePresentationLibrary
             _btnEndTurn.LoadContent(content);
             _btnEndTurn.Click += BtnEndTurnClick;
 
-            var label = new Label("lblNextTurn", _btnEndTurn.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, new Vector2(77.0f, 12.0f), "Next Turn", Alignment.MiddleCenter, "CrimsonText-Regular-12", Color.White, Color.Blue, null, 0.0f, _btnEndTurn);
+            var label = new LabelSized("lblNextTurn", _btnEndTurn.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, new Vector2(245.0f, 56.0f), Alignment.MiddleCenter, "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue, null, null, 0.0f, _btnEndTurn);
             label.LoadContent(content);
             _btnEndTurn.Label = label;
 
-            _test = new Label("Test", Vector2.Zero, Alignment.TopLeft, "Test", "CrimsonText-Regular-12", Color.Red);
+            _test = new LabelSized("Test", new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, null, null, Color.Blue);
             _test.LoadContent(content);
         }
 

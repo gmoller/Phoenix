@@ -1,9 +1,9 @@
-﻿namespace GuiControls
-{
-    public enum VerticalAlignment
-    {
-        Top,
-        Middle,
-        Bottom
-    }
-}
+﻿//namespace GuiControls
+//{
+//    public enum VerticalAlignment
+//    {
+//        Top,
+//        Middle,
+//        Bottom
+//    }
+//}

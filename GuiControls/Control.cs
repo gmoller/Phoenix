@@ -109,6 +109,14 @@ namespace GuiControls
             }
         }
 
+        protected virtual void BeforeUpdate(InputHandler input, float deltaTime, Matrix? transform = null)
+        {
+        }
+
+        protected virtual void AfterUpdate(InputHandler input, float deltaTime, Matrix? transform = null)
+        {
+        }
+
         public virtual void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
             if (!Enabled)
@@ -116,6 +124,8 @@ namespace GuiControls
                 SetTexture(_textureDisabled);
                 return;
             }
+
+            BeforeUpdate(input, deltaTime, transform);
 
             Point mousePosition;
             if (transform == null)
@@ -147,6 +157,8 @@ namespace GuiControls
             {
                 OnClick(new EventArgs());
             }
+
+            AfterUpdate(input, deltaTime, transform);
         }
 
         private void OnClickComplete()
@@ -158,17 +170,40 @@ namespace GuiControls
 
         private void OnClick(EventArgs e)
         {
-            _cooldownTimeInMilliseconds = 400.0f;
+            _cooldownTimeInMilliseconds = 200.0f;
             SetTexture(_textureActive);
             Click?.Invoke(this, e);
         }
 
-        public abstract void Draw(Matrix? transform = null);
+        protected virtual void BeforeDraw(Matrix? transform = null)
+        {
+        }
+
+        protected virtual void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
+        {
+        }
+
+        protected virtual void AfterDraw(Matrix? transform = null)
+        {
+        }
+
+        public virtual void Draw(Matrix? transform = null)
+        {
+            BeforeDraw(transform);
+
+            var spriteBatch = BeginSpriteBatch(transform);
+
+            Draw(spriteBatch, transform);
+
+            EndSpriteBatch(spriteBatch);
+
+            AfterDraw(transform);
+        }
 
         protected void DetermineArea(Vector2 position, Alignment alignment, Vector2 size)
         {
-            var topLeft = DetermineTopLeft(position, alignment, size);
-            //var topLeft = DetermineTopLeft(position * DeviceManager.Instance.SizeRatio, alignment, size * DeviceManager.Instance.SizeRatio);
+            //var topLeft = DetermineTopLeft(position, alignment, size);
+            var topLeft = DetermineTopLeft(position * DeviceManager.Instance.SizeRatio, alignment, size * DeviceManager.Instance.SizeRatio);
             if (Parent == null)
             {
                 ActualDestinationRectangle = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)size.X, (int)size.Y);

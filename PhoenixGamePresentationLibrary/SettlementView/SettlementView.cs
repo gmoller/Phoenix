@@ -7,7 +7,6 @@ using GuiControls;
 using Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
-using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary.SettlementView
@@ -19,8 +18,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         private MainFrame _mainFrame;
         private SecondaryFrame _secondaryFrame;
-        private LabelOld _lblSettlementName1;
-        private LabelOld _lblSettlementName2;
+        private LabelAutoSized _lblSettlementName1;
+        private LabelAutoSized _lblSettlementName2;
         private PopulationFrame _populationFrame;
         private ResourceFrame _resourceFrame;
         private BuildingsFrame _buildingsFrame;
@@ -51,8 +50,10 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _secondaryFrame = new SecondaryFrame(this, _topLeftPositionSecondary, _guiTextures, _guiAtlas);
             _secondaryFrame.LoadContent(content);
 
-            _lblSettlementName1 = new LabelOld("lblSettlementName1", "Carolingia-Regular-24", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 49.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, new Vector2(10,10), string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
-            _lblSettlementName2 = new LabelOld("lblSettlementName2", "Carolingia-Regular-24", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 24.0f), HorizontalAlignment.Center, VerticalAlignment.Middle, new Vector2(10, 10), string.Empty, HorizontalAlignment.Center, Color.Purple, Color.DarkBlue);
+            _lblSettlementName1 = new LabelAutoSized("_lblSettlementName1", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 49.0f), Alignment.MiddleCenter, string.Empty, "Carolingia-Regular-24", Color.Purple, Color.DarkBlue);
+            _lblSettlementName1.LoadContent(content);
+            _lblSettlementName2 = new LabelAutoSized("_lblSettlementName2", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 24.0f), Alignment.MiddleCenter, string.Empty, "Carolingia-Regular-24", Color.Purple, Color.DarkBlue);
+            _lblSettlementName2.LoadContent(content);
 
             _populationFrame = new PopulationFrame(this, new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 40.0f));
             _populationFrame.LoadContent(content);

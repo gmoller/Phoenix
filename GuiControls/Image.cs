@@ -40,13 +40,9 @@ namespace GuiControls
             base.Update(input, deltaTime, transform);
         }
 
-        public override void Draw(Matrix? transform = null)
+        protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
         {
-            var spriteBatch = BeginSpriteBatch(transform);
-
             spriteBatch.Draw(Texture, ActualDestinationRectangle, SourceRectangle, Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
-
-            EndSpriteBatch(spriteBatch);
         }
     }
 }

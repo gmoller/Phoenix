@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using AssetsLibrary;
-using Input;
 using Microsoft.Xna.Framework.Graphics;
+using AssetsLibrary;
 
 namespace GuiControls
 {
@@ -41,23 +40,14 @@ namespace GuiControls
             _destinationPatches = CreatePatches(new Rectangle(TopLeft.X, TopLeft.Y, (int)Size.X, (int)Size.Y), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
         }
 
-        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
         {
-            base.Update(input, deltaTime, transform);
-        }
-
-        public override void Draw(Matrix? transform = null)
-        {
-            var spriteBatch = BeginSpriteBatch(transform);
-
             for (var i = 0; i < _sourcePatches.Length; ++i)
             {
                 spriteBatch.Draw(Texture, _destinationPatches[i], _sourcePatches[i], Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
             }
 
             _slots?.Draw(transform);
-
-            EndSpriteBatch(spriteBatch);
         }
 
         private Rectangle[] CreatePatches(Rectangle rectangle, int topPadding, int bottomPadding, int leftPadding, int rightPadding)

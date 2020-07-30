@@ -11,7 +11,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly SettlementView _parent;
         private readonly Vector2 _topLeftPosition;
 
-        private Label _lblOther;
+        private LabelAutoSized _lblOther;
         private Frame _smallFrameOther;
 
         internal OtherFrame(SettlementView parent, Vector2 topLeftPosition)
@@ -22,7 +22,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblOther = new Label("lblOther", _topLeftPosition + new Vector2(0.0f, -15.0f), Alignment.TopLeft, "Other", "CrimsonText-Regular-12", Color.Orange, Color.Red);
+            _lblOther = new LabelAutoSized("lblOther", _topLeftPosition + new Vector2(0.0f, -15.0f), Alignment.TopLeft, "Other", "CrimsonText-Regular-12", Color.Orange, Color.Red);
             _lblOther.LoadContent(content);
 
             var slots3 = new DynamicSlots("slots3", _topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 65), "GUI_Textures_1", "slot", 2, 1, 10.0f);
