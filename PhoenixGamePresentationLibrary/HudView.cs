@@ -17,22 +17,25 @@ namespace PhoenixGamePresentationLibrary
 
         private readonly Rectangle _area;
 
-        private IControl _resourceFrame;
+        private Frame _hudViewFrame;
+        private Label _lblCurrentDate;
 
+        private Frame _resourceFrame;
+        private Label _lblGold;
         private Image _imgGold;
+        private Label _lblMana;
         private Image _imgMana;
+        private Label _lblFood;
         private Image _imgFood;
 
-        private SpriteFont _font;
-        private Frame _frame;
+        private Frame _unitFrame;
+        private Label _lblMoves;
+        private Image _imgMovementType; // UnitStackMovementType
 
-        private Label _lblCurrentDate;
-        private Label _lblGold;
-        private Label _lblMana;
-        private Label _lblFood;
+        private SpriteFont _font;
 
         private Button _btnEndTurn;
-        private IControl _test;
+        private Label _test;
 
         private readonly UnitsView _unitsView;
 
@@ -50,42 +53,52 @@ namespace PhoenixGamePresentationLibrary
 
         internal void LoadContent(ContentManager content)
         {
-            var topLeftPosition = new Vector2(_area.X, _area.Y);
-            _resourceFrame = new Frame("ResourceFrame", topLeftPosition + new Vector2(10.0f, 50.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole", 0, 0, 0, 0);
-            _resourceFrame.LoadContent(content);
-
-            _imgGold = new Image("imgGold", new Vector2(10.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R", 0.0f, _resourceFrame);
-            _imgGold.LoadContent(content);
-            _imgMana = new Image("imgMana", _imgGold.RelativeTopLeft.ToVector2() + new Vector2(0.0f, _imgGold.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R", 0.0f, _resourceFrame);
-            _imgMana.LoadContent(content);
-            _imgFood = new Image("imgFood", _imgMana.RelativeTopLeft.ToVector2() + new Vector2(0.0f, _imgMana.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", 0.0f, _resourceFrame);
-            _imgFood.LoadContent(content);
-            _lblGold = new LabelAutoSized("lblGold", _imgGold.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, null, null, null, 0.0f, _resourceFrame);
-            _lblGold.LoadContent(content);
-            _lblMana = new LabelAutoSized("lblMana", _imgMana.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, null, null, null, 0.0f, _resourceFrame);
-            _lblMana.LoadContent(content);
-            _lblFood = new LabelAutoSized("lblFood", _imgFood.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, null, null, null, 0.0f, _resourceFrame);
-            _lblFood.LoadContent(content);
-
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
 
-            var size = new Vector2(_area.Width, _area.Height);
-            _frame = new Frame("Frame", topLeftPosition, Alignment.TopLeft, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
-            _frame.LoadContent(content);
+            var topLeftPosition = new Vector2(_area.X, _area.Y);
 
-            _lblCurrentDate = new LabelAutoSized("lblCurrentDate", new Vector2(_frame.Width * 0.5f,20.0f), Alignment.MiddleCenter, "Date:", "Maleficio-Regular-18", Color.Aquamarine, null, null, null, 0.0f, _frame);
+            var size = new Vector2(_area.Width, _area.Height);
+            _hudViewFrame = new Frame(topLeftPosition, Alignment.TopLeft, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
+            _hudViewFrame.LoadContent(content);
+
+            _lblCurrentDate = new LabelAutoSized(new Vector2(_hudViewFrame.Width * 0.5f, 20.0f), Alignment.MiddleCenter, "Date:", "Maleficio-Regular-18", Color.Aquamarine, _hudViewFrame);
             _lblCurrentDate.LoadContent(content);
 
+            _resourceFrame = new Frame(new Vector2(10.0f, 50.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole", _hudViewFrame);
+            _resourceFrame.LoadContent(content);
+
+            _imgGold = new Image(new Vector2(10.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R", _resourceFrame);
+            _imgGold.LoadContent(content);
+            _imgMana = new Image(_imgGold.RelativeTopLeft.ToVector2() + new Vector2(0.0f, _imgGold.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R", _resourceFrame);
+            _imgMana.LoadContent(content);
+            _imgFood = new Image(_imgMana.RelativeTopLeft.ToVector2() + new Vector2(0.0f, _imgMana.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", _resourceFrame);
+            _imgFood.LoadContent(content);
+            _lblGold = new LabelAutoSized(_imgGold.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, _resourceFrame);
+            _lblGold.LoadContent(content);
+            _lblMana = new LabelAutoSized(_imgMana.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, _resourceFrame);
+            _lblMana.LoadContent(content);
+            _lblFood = new LabelAutoSized(_imgFood.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, _resourceFrame);
+            _lblFood.LoadContent(content);
+
+            _unitFrame = new Frame(new Vector2(10.0f, 500.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole", _hudViewFrame);
+            _unitFrame.LoadContent(content);
+
+            _lblMoves = new LabelAutoSized(_unitFrame.BottomLeft.ToVector2() + new Vector2(10.0f, -15.0f), Alignment.BottomLeft, string.Empty, "CrimsonText-Regular-12", Color.White); // , _unitFrame
+            _lblMoves.LoadContent(content);
+
+            _imgMovementType = new Image(_unitFrame.BottomRight.ToVector2() + new Vector2(-12.0f, -20.0f), Alignment.BottomRight, new Vector2(18.0f, 12.0f), "MovementTypes", "Move_Boot");
+            _imgMovementType.LoadContent(content);
+
             var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
-            _btnEndTurn = new Button("btnEndTurn", pos, Alignment.BottomRight, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h");
+            _btnEndTurn = new Button(pos, Alignment.BottomRight, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h");
             _btnEndTurn.LoadContent(content);
             _btnEndTurn.Click += BtnEndTurnClick;
 
-            var label = new LabelSized("lblNextTurn", _btnEndTurn.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, new Vector2(245.0f, 56.0f), Alignment.MiddleCenter, "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue, null, null, 0.0f, _btnEndTurn);
+            var label = new LabelSized(_btnEndTurn.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, new Vector2(245.0f, 56.0f), Alignment.MiddleCenter, "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue, _btnEndTurn);
             label.LoadContent(content);
             _btnEndTurn.Label = label;
 
-            _test = new LabelSized("Test", new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, null, null, Color.Blue);
+            _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, null, null, Color.Blue);
             _test.Click += delegate { _test.MoveTopLeftPosition(10, -10); };
             _test.LoadContent(content);
         }
@@ -95,11 +108,11 @@ namespace PhoenixGamePresentationLibrary
             var mouseOver = _area.Contains(input.MousePosition);
             input.Eaten = mouseOver;
 
-            _resourceFrame.Update(input, deltaTime);
-
+            _hudViewFrame.Update(input, deltaTime);
             _lblCurrentDate.Update(input, deltaTime);
             _lblCurrentDate.Text = Globals.Instance.World.CurrentDate;
 
+            _resourceFrame.Update(input, deltaTime);
             _imgGold.Update(input, deltaTime);
             _lblGold.Update(input, deltaTime);
             _lblGold.Text = $"{Globals.Instance.World.PlayerFaction.GoldInTreasury} GP (+{Globals.Instance.World.PlayerFaction.GoldPerTurn})";
@@ -112,6 +125,11 @@ namespace PhoenixGamePresentationLibrary
             _lblFood.Update(input, deltaTime);
             _lblFood.Text = $"{Globals.Instance.World.PlayerFaction.FoodPerTurn} Food";
 
+            _unitFrame.Update(input, deltaTime);
+            _lblMoves.Update(input, deltaTime);
+            _lblMoves.Text = "Moves:";
+            _imgMovementType.Update(input, deltaTime);
+
             _btnEndTurn.Update(input, deltaTime);
 
             _test.Update(input, deltaTime);
@@ -120,12 +138,12 @@ namespace PhoenixGamePresentationLibrary
         internal void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            _frame.Draw();
-            spriteBatch.End();
 
-            _resourceFrame.Draw();
+            _hudViewFrame.Draw();
 
             _lblCurrentDate.Draw();
+
+            _resourceFrame.Draw();
 
             _imgGold.Draw();
             _lblGold.Draw();
@@ -136,15 +154,19 @@ namespace PhoenixGamePresentationLibrary
             _imgFood.Draw();
             _lblFood.Draw();
 
-            spriteBatch.Begin();
+            _unitFrame.Draw();
+            _lblMoves.Draw();
+            _imgMovementType.Draw();
+
             DrawNotifications(spriteBatch);
             DrawSelectedUnits(spriteBatch);
             DrawTileInfo(spriteBatch);
-            spriteBatch.End();
 
             _btnEndTurn.Draw();
 
             _test.Draw();
+
+            spriteBatch.End();
         }
 
         private void DrawNotifications(SpriteBatch spriteBatch)

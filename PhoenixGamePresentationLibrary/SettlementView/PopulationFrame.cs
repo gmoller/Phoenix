@@ -34,31 +34,31 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblRace = new LabelAutoSized("lblRace", _topLeftPosition, Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Orange);
+            _lblRace = new LabelAutoSized(_topLeftPosition, Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Orange);
             _lblRace.LoadContent(content);
-            _lblPopulationGrowth = new LabelAutoSized("lblPopulationGrowth", new Vector2(_topLeftPosition.X + 516.0f, _topLeftPosition.Y), Alignment.MiddleRight, "Population: 0", "CrimsonText-Regular-12", Color.Orange);
+            _lblPopulationGrowth = new LabelAutoSized(new Vector2(_topLeftPosition.X + 516.0f, _topLeftPosition.Y), Alignment.MiddleRight, "Population: 0", "CrimsonText-Regular-12", Color.Orange);
             _lblPopulationGrowth.LoadContent(content);
 
-            _smallFrame = new Frame("SmallFrame", _topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 120), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
+            _smallFrame = new Frame(_topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 120), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
             _smallFrame.LoadContent(content);
 
-            _lblFarmers = new LabelAutoSized("_lblFarmers", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 25.0f), Alignment.TopLeft, "Farmers:", "CrimsonText-Regular-12", Color.Orange);
+            _lblFarmers = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 25.0f), Alignment.TopLeft, "Farmers:", "CrimsonText-Regular-12", Color.Orange);
             _lblFarmers.LoadContent(content);
-            _lblWorkers = new LabelAutoSized("lblWorkers", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 55.0f), Alignment.TopLeft, "Workers:", "CrimsonText-Regular-12", Color.Orange);
+            _lblWorkers = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 55.0f), Alignment.TopLeft, "Workers:", "CrimsonText-Regular-12", Color.Orange);
             _lblWorkers.LoadContent(content);
-            _lblRebels = new LabelAutoSized("_lblRebels", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 85.0f), Alignment.TopLeft, "Rebels:", "CrimsonText-Regular-12", Color.Orange);
+            _lblRebels = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 85.0f), Alignment.TopLeft, "Rebels:", "CrimsonText-Regular-12", Color.Orange);
             _lblRebels.LoadContent(content);
 
-            _btnSubtractFarmer = new Button("btnSubtractFarmer", new Vector2(_topLeftPosition.X + 140.0f, _topLeftPosition.Y + 25.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h");
+            _btnSubtractFarmer = new Button(new Vector2(_topLeftPosition.X + 140.0f, _topLeftPosition.Y + 25.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h");
             _btnSubtractFarmer.LoadContent(content);
             _btnSubtractFarmer.Click += btnSubtractFarmerClick;
-            _btnAddFarmer = new Button("btnAddFarmer", new Vector2(_topLeftPosition.X + 160.0f, _topLeftPosition.Y + 25.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h");
+            _btnAddFarmer = new Button(new Vector2(_topLeftPosition.X + 160.0f, _topLeftPosition.Y + 25.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h");
             _btnAddFarmer.LoadContent(content);
             _btnAddFarmer.Click += btnAddFarmerClick;
-            _btnSubtractWorker = new Button("btnSubtractWorker", new Vector2(_topLeftPosition.X + 140.0f, _topLeftPosition.Y + 55.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h");
+            _btnSubtractWorker = new Button(new Vector2(_topLeftPosition.X + 140.0f, _topLeftPosition.Y + 55.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h");
             _btnSubtractWorker.LoadContent(content);
             _btnSubtractWorker.Click += btnSubtractWorkerClick;
-            _btnAddWorker = new Button("btnAddWorker", new Vector2(_topLeftPosition.X + 160.0f, _topLeftPosition.Y + 55.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h");
+            _btnAddWorker = new Button(new Vector2(_topLeftPosition.X + 160.0f, _topLeftPosition.Y + 55.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h");
             _btnAddWorker.LoadContent(content);
             _btnAddWorker.Click += btnAddWorkerClick;
 
@@ -106,7 +106,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         {
             int x = (int)position.X;
             int y = (int)position.Y;
-            var image = new Image("Image", Vector2.Zero, Alignment.TopLeft, new Vector2(20, 30), "Citizens", $"Citizen_{raceTypeName}_{citizenType}");
+            var image = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20, 30), "Citizens", $"Citizen_{raceTypeName}_{citizenType}");
             image.LoadContent(_content);
             for (int i = 0; i < citizenCount; ++i)
             {

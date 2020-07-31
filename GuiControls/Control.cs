@@ -46,6 +46,7 @@ namespace GuiControls
         public Point RelativeTopLeft => new Point(Left - (Parent?.Left ?? 0), Top - (Parent?.Top ?? 0));
         public Point RelativeTopRight => new Point(RelativeTopLeft.X + Width, RelativeTopLeft.Y);
         public Point RelativeMiddleRight => new Point(RelativeTopLeft.X + Width, RelativeTopLeft.Y + (int)(Height * 0.5f));
+        public Point RelativeBottomLeft => new Point(RelativeTopLeft.X, RelativeTopLeft.Y + Height);
 
         public int Width => ActualDestinationRectangle.Width;
         public int Height => ActualDestinationRectangle.Height;
@@ -56,7 +57,7 @@ namespace GuiControls
 
         public event EventHandler Click;
 
-        protected Control(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, string textureNormal, string textureActive, string textureHover, string textureDisabled, float layerDepth = 0.0f, IControl parent = null)
+        protected Control(Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, string textureNormal, string textureActive, string textureHover, string textureDisabled, float layerDepth = 0.0f, IControl parent = null, string name = "")
         {
             Parent = parent;
 
@@ -78,15 +79,11 @@ namespace GuiControls
 
         public void SetTopLeftPosition(int x, int y)
         {
-            //ActualDestinationRectangle.X = x;
-            //ActualDestinationRectangle.Y = y;
             ActualDestinationRectangle = new Rectangle(x, y, ActualDestinationRectangle.Width, ActualDestinationRectangle.Height);
         }
 
         public void MoveTopLeftPosition(int x, int y)
         {
-            //ActualDestinationRectangle.X += x;
-            //ActualDestinationRectangle.Y += y;
             ActualDestinationRectangle = new Rectangle(ActualDestinationRectangle.X + x, ActualDestinationRectangle.Y + y, ActualDestinationRectangle.Width, ActualDestinationRectangle.Height);
         }
 

@@ -15,8 +15,32 @@ namespace GuiControls
         private readonly float _slotPadding;
         private readonly List<Label> _labels;
 
-        public DynamicSlots(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, int numberOfSlotsX, int numberOfSlotsY, float slotPadding, List<Label> labels = null) :
-            base(name, position, positionAlignment, size, textureAtlas, textureName, null, null, null, null)
+        public DynamicSlots(
+            Vector2 position, 
+            Alignment positionAlignment, 
+            Vector2 size, 
+            string textureAtlas, 
+            string textureName, 
+            int numberOfSlotsX, 
+            int numberOfSlotsY, 
+            float slotPadding, 
+            List<Label> labels = null,
+            float layerDepth = 0.0f,
+            IControl parent = null,
+            string name = "") :
+            base(
+                position, 
+                positionAlignment, 
+                size, 
+                textureAtlas, 
+                textureName, 
+                null, 
+                null, 
+                null, 
+                null,
+                layerDepth,
+                parent,
+                name)
         {
             _numberOfSlotsX = numberOfSlotsX;
             _numberOfSlotsY = numberOfSlotsY;
@@ -76,8 +100,23 @@ namespace GuiControls
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Slot : Control
     {
-        public Slot(int x, int y, int width, int height, string textureAtlas, string textureName) : 
-            base("", new Vector2(x, y), Alignment.TopLeft, new Vector2(width, height), textureAtlas, textureName, "", "", "", "", 0.0f, null)
+        public Slot(
+            int x, 
+            int y, 
+            int width, 
+            int height, 
+            string textureAtlas, 
+            string textureName) : 
+            base(
+                new Vector2(x, y), 
+                Alignment.TopLeft, 
+                new Vector2(width, height), 
+                textureAtlas, 
+                textureName, 
+                "", 
+                "", 
+                "", 
+                "")
         {
         }
 

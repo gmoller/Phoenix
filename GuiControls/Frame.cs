@@ -19,8 +19,57 @@ namespace GuiControls
         private Rectangle[] _sourcePatches;
         private Rectangle[] _destinationPatches;
 
-        public Frame(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, int topPadding, int bottomPadding, int leftPadding, int rightPadding, DynamicSlots slots = null, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, positionAlignment, size, textureAtlas, textureName, null, null, null, null, layerDepth, parent)
+        public Frame(
+            Vector2 position,
+            Alignment positionAlignment,
+            Vector2 size,
+            string textureAtlas,
+            string textureName,
+            IControl parent = null,
+            string name = "") :
+            this(
+                position,
+                positionAlignment,
+                size,
+                textureAtlas,
+                textureName,
+                0,
+                0,
+                0,
+                0,
+                null,
+                0.0f,
+                parent)
+        {
+        }
+
+        public Frame(
+            Vector2 position, 
+            Alignment positionAlignment, 
+            Vector2 size, 
+            string textureAtlas, 
+            string textureName, 
+            int topPadding, 
+            int bottomPadding, 
+            int leftPadding, 
+            int rightPadding, 
+            DynamicSlots slots = null, 
+            float layerDepth = 0.0f, 
+            IControl parent = null, 
+            string name = "") :
+            base(
+                position, 
+                positionAlignment, 
+                size, 
+                textureAtlas, 
+                textureName, 
+                null, 
+                null, 
+                null, 
+                null, 
+                layerDepth, 
+                parent,
+                name)
         {
             _topPadding = topPadding;
             _bottomPadding = bottomPadding;

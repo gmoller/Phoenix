@@ -21,7 +21,6 @@ namespace GuiControls
         public virtual string Text { get; set; }
 
         protected Label(
-            string name, 
             Vector2 position, 
             Alignment positionAlignment, 
             Vector2 size, 
@@ -32,9 +31,9 @@ namespace GuiControls
             Color? backColor = null, 
             Color? borderColor = null, 
             float layerDepth = 0.0f, 
-            IControl parent = null) : 
+            IControl parent = null,
+            string name = "") : 
             base(
-                name, 
                 position, 
                 positionAlignment, 
                 size, 
@@ -45,7 +44,8 @@ namespace GuiControls
                 null, 
                 null, 
                 layerDepth, 
-                parent)
+                parent,
+                name)
         {
             Text = text;
             FontName = fontName;
@@ -91,10 +91,10 @@ namespace GuiControls
             {
                 spriteBatch.DrawRectangle(
                     new Rectangle(
-                        ActualDestinationRectangle.X, 
-                        ActualDestinationRectangle.Y, 
-                        ActualDestinationRectangle.Width - 1, 
-                        ActualDestinationRectangle.Height - 1), 
+                        ActualDestinationRectangle.X,
+                        ActualDestinationRectangle.Y,
+                        ActualDestinationRectangle.Width - 1,
+                        ActualDestinationRectangle.Height - 1),
                     BorderColor.Value, 
                     LayerDepth);
             }
@@ -130,7 +130,29 @@ namespace GuiControls
         }
 
         public LabelAutoSized(
-            string name, 
+            Vector2 position,
+            Alignment positionAlignment,
+            string text,
+            string fontName,
+            Color textColor,
+            IControl parent,
+            string name = "") :
+            this(
+                position,
+                positionAlignment,
+                text,
+                fontName,
+                textColor,
+                null,
+                null,
+                null,
+                0.0f,
+                parent,
+                name)
+        {
+        }
+
+        public LabelAutoSized(
             Vector2 position, 
             Alignment positionAlignment, 
             string text, 
@@ -140,9 +162,9 @@ namespace GuiControls
             Color? backColor = null, 
             Color? borderColor = null, 
             float layerDepth = 0.0f, 
-            IControl parent = null) :
+            IControl parent = null,
+            string name = "") :
             base(
-                name, 
                 position, 
                 positionAlignment, 
                 Vector2.Zero, 
@@ -153,7 +175,8 @@ namespace GuiControls
                 backColor, 
                 borderColor, 
                 layerDepth, 
-                parent)
+                parent,
+                name)
         {
             _position = position;
             _positionAlignment = positionAlignment;
@@ -187,7 +210,33 @@ namespace GuiControls
         private readonly Alignment _contentAlignment;
 
         public LabelSized(
-            string name, 
+            Vector2 position,
+            Alignment positionAlignment,
+            Vector2 size,
+            Alignment contentAlignment,
+            string text,
+            string fontName,
+            Color textColor,
+            Color? textShadowColor = null,
+            IControl parent = null,
+            string name = "") :
+            this(
+                position,
+                positionAlignment,
+                size,
+                contentAlignment,
+                text,
+                fontName,
+                textColor,
+                textShadowColor,
+                null,
+                null,
+                0.0f,
+                parent)
+        {
+        }
+
+        public LabelSized(
             Vector2 position, 
             Alignment positionAlignment, 
             Vector2 size, 
@@ -199,9 +248,9 @@ namespace GuiControls
             Color? backColor = null, 
             Color? borderColor = null, 
             float layerDepth = 0.0f, 
-            IControl parent = null) :
+            IControl parent = null,
+            string name = "") :
             base(
-                name, 
                 position, 
                 positionAlignment, 
                 size, 
@@ -212,7 +261,8 @@ namespace GuiControls
                 backColor, 
                 borderColor, 
                 layerDepth, 
-                parent)
+                parent,
+                name)
         {
             _contentAlignment = contentAlignment;
             DetermineArea(position, positionAlignment, size);

@@ -26,14 +26,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblUnits = new LabelAutoSized("lblUnits", _topLeftPosition + new Vector2(0.0f, -15.0f), Alignment.TopLeft, "Units", "CrimsonText-Regular-12", Color.Orange, Color.Red);
+            _lblUnits = new LabelAutoSized(_topLeftPosition + new Vector2(0.0f, -15.0f), Alignment.TopLeft, "Units", "CrimsonText-Regular-12", Color.Orange, Color.Red);
             _lblUnits.LoadContent(content);
 
             _unitLabels = CreateUnitLabels(content);
 
-            var slots2 = new DynamicSlots("slots2", _topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 75), "GUI_Textures_1", "slot", 10, 2, 10.0f, _unitLabels);
+            var slots2 = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 75), "GUI_Textures_1", "slot", 10, 2, 10.0f, _unitLabels);
             slots2.LoadContent(content);
-            _smallFrameUnits = new Frame("SmallFrameUnits", _topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 75), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots2);
+            _smallFrameUnits = new Frame(_topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 75), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots2);
             _smallFrameUnits.LoadContent(content);
         }
 
@@ -66,7 +66,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             {
                 if (_parent.Settlement.UnitCanBeBuilt(unit.Name))
                 {
-                    var lbl = new LabelSized(unit.Name, new Vector2(x, y), Alignment.TopLeft, new Vector2(42.0f, 20.0f), Alignment.MiddleCenter, unit.ShortName, "CrimsonText-Regular-6", Color.Red, null, Color.PowderBlue);
+                    var lbl = new LabelSized(new Vector2(x, y), Alignment.TopLeft, new Vector2(42.0f, 20.0f), Alignment.MiddleCenter, unit.ShortName, "CrimsonText-Regular-6", Color.Red, null, Color.PowderBlue, null, 0.0f, null, unit.Name);
                     lbl.LoadContent(content);
                     lbl.Click += UnitClick;
                     units.Add(lbl);

@@ -262,6 +262,21 @@
 /processorParam:TextureFormat=Color
 /build:TextureAtlases/Icons_1.png
 
+#begin TextureAtlases/MovementTypes.atlasspec
+/copy:TextureAtlases/MovementTypes.atlasspec
+
+#begin TextureAtlases/MovementTypes.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TextureAtlases/MovementTypes.png
+
 #begin TextureAtlases/terrain_hextiles_basic_1.atlasspec
 /copy:TextureAtlases/terrain_hextiles_basic_1.atlasspec
 

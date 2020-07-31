@@ -9,13 +9,68 @@ namespace GuiControls
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Image : Control
     {
-        public Image(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureName, float layerDepth = 0.0f, IControl parent = null) : 
-            this(name, position, positionAlignment, size, string.Empty, textureName, layerDepth, parent)
+        public Image(
+            Vector2 position,
+            Alignment positionAlignment,
+            Vector2 size,
+            string textureAtlas,
+            string textureName,
+            IControl parent = null,
+            string name = "") :
+            this(
+                position,
+                positionAlignment,
+                size,
+                textureAtlas,
+                textureName,
+                0.0f,
+                parent,
+                name)
         {
         }
 
-        public Image(string name, Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, float layerDepth = 0.0f, IControl parent = null) :
-            base(name, position, positionAlignment, size, textureAtlas, textureName, textureName, textureName, textureName, textureName, layerDepth, parent)
+        public Image(
+            Vector2 position, 
+            Alignment positionAlignment, 
+            Vector2 size, 
+            string textureName, 
+            float layerDepth = 0.0f, 
+            IControl parent = null, 
+            string name = "") : 
+            this(
+                position, 
+                positionAlignment, 
+                size, 
+                string.Empty, 
+                textureName, 
+                layerDepth, 
+                parent, 
+                name)
+        {
+        }
+
+        public Image(
+            Vector2 position, 
+            Alignment positionAlignment, 
+            Vector2 size, 
+            string textureAtlas, 
+            string textureName, 
+            float layerDepth, 
+            IControl parent = null, 
+            string name = "") :
+            base(
+                position, 
+                positionAlignment, 
+                size, 
+                textureAtlas, 
+                textureName, 
+                textureName, 
+                textureName, 
+                textureName, 
+                textureName, 
+                layerDepth, 
+                parent,
+                name)
         {
         }
 

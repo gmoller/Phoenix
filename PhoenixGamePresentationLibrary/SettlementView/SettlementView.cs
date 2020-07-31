@@ -50,9 +50,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _secondaryFrame = new SecondaryFrame(this, _topLeftPositionSecondary, _guiTextures, _guiAtlas);
             _secondaryFrame.LoadContent(content);
 
-            _lblSettlementName1 = new LabelAutoSized("_lblSettlementName1", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 49.0f), Alignment.MiddleCenter, string.Empty, "Carolingia-Regular-24", Color.Purple, Color.DarkBlue);
+            _lblSettlementName1 = new LabelAutoSized(new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 49.0f), Alignment.MiddleCenter, string.Empty, "Carolingia-Regular-24", Color.Purple, Color.DarkBlue);
             _lblSettlementName1.LoadContent(content);
-            _lblSettlementName2 = new LabelAutoSized("_lblSettlementName2", new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 24.0f), Alignment.MiddleCenter, string.Empty, "Carolingia-Regular-24", Color.Purple, Color.DarkBlue);
+            _lblSettlementName2 = new LabelAutoSized(new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 24.0f), Alignment.MiddleCenter, string.Empty, "Carolingia-Regular-24", Color.Purple, Color.DarkBlue);
             _lblSettlementName2.LoadContent(content);
 
             _populationFrame = new PopulationFrame(this, new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 40.0f));

@@ -80,6 +80,9 @@ namespace PhoenixGamePresentationLibrary
             AssetsManager.Instance.AddTexture("Units", "TextureAtlases\\Units");
             AssetsManager.Instance.AddAtlas("Units", "TextureAtlases\\Units");
 
+            AssetsManager.Instance.AddTexture("MovementTypes", "TextureAtlases\\MovementTypes");
+            AssetsManager.Instance.AddAtlas("MovementTypes", "TextureAtlases\\MovementTypes");
+
             _worldView = new WorldView(_phoenixGame.World);
             _cursor = new Cursor();
             _cursorView = new CursorView(_cursor);

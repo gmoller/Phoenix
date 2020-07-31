@@ -29,21 +29,21 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _smallFrame = new Frame("SmallFrame", _topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 175), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
+            _smallFrame = new Frame(_topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 175), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
             _smallFrame.LoadContent(content);
 
-            _lblResources = new LabelAutoSized("_lblResources", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y), Alignment.TopLeft, "Resources", "CrimsonText-Regular-12", Color.Orange, Color.DarkBlue);
+            _lblResources = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y), Alignment.TopLeft, "Resources", "CrimsonText-Regular-12", Color.Orange, Color.DarkBlue);
             _lblResources.LoadContent(content);
 
-            _lblFood = new LabelAutoSized("_lblFood", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 25.0f), Alignment.TopLeft, "Food", "CrimsonText-Regular-12", Color.Orange);
+            _lblFood = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 25.0f), Alignment.TopLeft, "Food", "CrimsonText-Regular-12", Color.Orange);
             _lblFood.LoadContent(content);
-            _lblProduction = new LabelAutoSized("_lblProduction", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 55.0f), Alignment.TopLeft, "Production", "CrimsonText-Regular-12", Color.Orange);
+            _lblProduction = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 55.0f), Alignment.TopLeft, "Production", "CrimsonText-Regular-12", Color.Orange);
             _lblProduction.LoadContent(content);
-            _lblGold = new LabelAutoSized("_lblGold", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 85.0f), Alignment.TopLeft, "Gold", "CrimsonText-Regular-12", Color.Orange);
+            _lblGold = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 85.0f), Alignment.TopLeft, "Gold", "CrimsonText-Regular-12", Color.Orange);
             _lblGold.LoadContent(content);
-            _lblPower = new LabelAutoSized("_lblPower", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 115.0f), Alignment.TopLeft, "Power", "CrimsonText-Regular-12", Color.Orange);
+            _lblPower = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 115.0f), Alignment.TopLeft, "Power", "CrimsonText-Regular-12", Color.Orange);
             _lblPower.LoadContent(content);
-            _lblResearch = new LabelAutoSized("_lblResearch", new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 145.0f), Alignment.TopLeft, "Research", "CrimsonText-Regular-12", Color.Orange);
+            _lblResearch = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 145.0f), Alignment.TopLeft, "Research", "CrimsonText-Regular-12", Color.Orange);
             _lblResearch.LoadContent(content);
 
             _foodView = new FoodView(new Vector2(_topLeftPosition.X + 150.0f, _topLeftPosition.Y + 20.0f), _parent);
@@ -96,9 +96,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _image1 = new Image("Image1", Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Bread");
+            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Bread", 0.0f, null, "Image1");
             _image1.LoadContent(content);
-            _image2 = new Image("Image2", Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Corn");
+            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Corn", 0.0f, null, "Image2");
             _image2.LoadContent(content);
         }
 
@@ -107,9 +107,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             if (_area.Contains(input.MousePosition))
             {
                 _toolTip = new ToolTip(input.MousePosition.ToVector2() + new Vector2(0.0f, 30.0f));
-                _toolTip.AddControl(new Image("Test1", new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Bread"));
-                _toolTip.AddControl(new Image("Test2", new Vector2(0.0f, 25.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Pickaxe"));
-                _toolTip.AddControl(new LabelAutoSized("Test3", new Vector2(0.0f, 50.0f), Alignment.TopLeft, "Here is some text!", "CrimsonText-Regular-12", Color.Blue, Color.Red));
+                _toolTip.AddControl(new Image(new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Bread"));
+                _toolTip.AddControl(new Image(new Vector2(0.0f, 25.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Pickaxe"));
+                _toolTip.AddControl(new LabelAutoSized(new Vector2(0.0f, 50.0f), Alignment.TopLeft, "Here is some text!", "CrimsonText-Regular-12", Color.Blue, Color.Red));
             }
             else
             {
@@ -175,9 +175,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _image1 = new Image("Image1", Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Anvil");
+            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Anvil", 0.0f, null, "Image1");
             _image1.LoadContent(content);
-            _image2 = new Image("Image2", Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Pickaxe");
+            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Pickaxe", 0.0f, null, "Image2");
             _image2.LoadContent(content);
         }
 

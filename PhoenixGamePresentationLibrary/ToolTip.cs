@@ -21,7 +21,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void LoadContent(ContentManager content)
         {
-            _frame = new Frame("Frame", _topLeftPosition, Alignment.TopLeft, new Vector2(100.0f, 100.0f), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
+            _frame = new Frame(_topLeftPosition, Alignment.TopLeft, new Vector2(100.0f, 100.0f), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, null, 0.0f, null, "Frame");
             _frame.LoadContent(content);
             _controls = new List<IControl>();
         }
