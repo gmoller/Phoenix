@@ -13,7 +13,7 @@ namespace GuiControls
         private readonly int _numberOfSlotsY;
         private List<IControl> _slots;
         private readonly float _slotPadding;
-        private readonly List<Label> _labels;
+        private readonly List<LabelSized> _labels;
 
         public DynamicSlots(
             Vector2 position, 
@@ -24,7 +24,7 @@ namespace GuiControls
             int numberOfSlotsX, 
             int numberOfSlotsY, 
             float slotPadding, 
-            List<Label> labels = null,
+            List<LabelSized> labels = null,
             float layerDepth = 0.0f,
             IControl parent = null,
             string name = "") :

@@ -12,12 +12,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         private readonly Vector2 _topLeftPosition;
         private Frame _smallFrame;
-        private Label _lblResources;
-        private Label _lblFood;
-        private Label _lblProduction;
-        private Label _lblGold;
-        private Label _lblPower;
-        private Label _lblResearch;
+        private LabelAutoSized _lblResources;
+        private LabelAutoSized _lblFood;
+        private LabelAutoSized _lblProduction;
+        private LabelAutoSized _lblGold;
+        private LabelAutoSized _lblPower;
+        private LabelAutoSized _lblResearch;
         private FoodView _foodView;
         private ProductionView _productionView;
 
@@ -138,14 +138,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             var numberOfBread = food / 10;
             var numberOfCorn = food % 10;
 
-            for (int i = 0; i < numberOfBread; ++i)
+            for (var i = 0; i < numberOfBread; ++i)
             {
                 _image1.SetTopLeftPosition(x, y);
                 _image1.Draw();
                 x += 30;
             }
 
-            for (int i = 0; i < numberOfCorn; ++i)
+            for (var i = 0; i < numberOfCorn; ++i)
             {
                 _image2.SetTopLeftPosition(x, y);
                 _image2.Draw();
@@ -202,14 +202,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             var numberOfAnvils = production / 10;
             var numberOfPickaxes = production % 10;
 
-            for (int i = 0; i < numberOfAnvils; ++i)
+            for (var i = 0; i < numberOfAnvils; ++i)
             {
                 _image1.SetTopLeftPosition(x, y);
                 _image1.Draw();
                 x += 30;
             }
 
-            for (int i = 0; i < numberOfPickaxes; ++i)
+            for (var i = 0; i < numberOfPickaxes; ++i)
             {
                 _image2.SetTopLeftPosition(x, y);
                 _image2.Draw();

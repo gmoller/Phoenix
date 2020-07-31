@@ -17,7 +17,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private Texture2D _texture;
         private AtlasSpec2 _atlas;
 
-        private Label _lblBuildings;
+        private LabelAutoSized _lblBuildings;
         private Frame _smallFrameBuildings;
 
         internal BuildingsFrame(SettlementView parent, Vector2 topLeftPosition)
@@ -45,12 +45,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             if (input.IsLeftMouseButtonReleased)
             {
                 // determine where mouse pointer is (is it over a slot? which slot?)
-                int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
-                int baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
+                var baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
+                var baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
                 foreach (var building in Globals.Instance.BuildingTypes)
                 {
-                    int topLeftX = baseTopLeftX + building.Slot.X * 49;
-                    int topLeftY = baseTopLeftY + building.Slot.Y * 25;
+                    var topLeftX = baseTopLeftX + building.Slot.X * 49;
+                    var topLeftY = baseTopLeftY + building.Slot.Y * 25;
                     var slotRectangle = new Rectangle(topLeftX, topLeftY, 40, 20);
                     if (slotRectangle.Contains(input.MousePosition))
                     {
@@ -78,12 +78,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         private void DrawBuildings(SpriteBatch spriteBatch)
         {
-            int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
-            int baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
+            var baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
+            var baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
             foreach (var building in Globals.Instance.BuildingTypes)
             {
-                int topLeftX = baseTopLeftX + building.Slot.X * 49;
-                int topLeftY = baseTopLeftY + building.Slot.Y * 25;
+                var topLeftX = baseTopLeftX + building.Slot.X * 49;
+                var topLeftY = baseTopLeftY + building.Slot.Y * 25;
                 DrawBuilding(spriteBatch, building.Name, topLeftX, topLeftY);
             } 
         }

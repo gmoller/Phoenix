@@ -12,8 +12,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly Vector2 _topLeftPosition;
 
         private Frame _smallFrame;
-        private Label _lblProducing;
-        private Label _lblCurrent;
+        private LabelAutoSized _lblProducing;
+        private LabelAutoSized _lblCurrent;
 
         internal ProducingFrame(SettlementView parent, Vector2 topLeftPosition)
         {

@@ -14,12 +14,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         private readonly Vector2 _topLeftPosition;
 
-        private Label _lblRace;
-        private Label _lblPopulationGrowth;
+        private LabelAutoSized _lblRace;
+        private LabelAutoSized _lblPopulationGrowth;
         private Frame _smallFrame;
-        private Label _lblFarmers;
-        private Label _lblWorkers;
-        private Label _lblRebels;
+        private LabelAutoSized _lblFarmers;
+        private LabelAutoSized _lblWorkers;
+        private LabelAutoSized _lblRebels;
 
         private Button _btnSubtractFarmer;
         private Button _btnAddFarmer;
@@ -104,11 +104,11 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void DrawCitizens(SpriteBatch spriteBatch, Vector2 position, string raceTypeName, string citizenType, int citizenCount)
         {
-            int x = (int)position.X;
-            int y = (int)position.Y;
+            var x = (int)position.X;
+            var y = (int)position.Y;
             var image = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20, 30), "Citizens", $"Citizen_{raceTypeName}_{citizenType}");
             image.LoadContent(_content);
-            for (int i = 0; i < citizenCount; ++i)
+            for (var i = 0; i < citizenCount; ++i)
             {
                 image.SetTopLeftPosition(x, y);
                 image.Draw();

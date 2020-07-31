@@ -11,7 +11,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly SettlementView _parent;
         private readonly Vector2 _topLeftPosition;
 
-        private Label _lblOther;
+        private LabelAutoSized _lblOther;
         private Frame _smallFrameOther;
 
         internal OtherFrame(SettlementView parent, Vector2 topLeftPosition)

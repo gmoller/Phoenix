@@ -14,9 +14,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly SettlementView _parent;
         private readonly Vector2 _topLeftPosition;
 
-        private Label _lblUnits;
+        private LabelAutoSized _lblUnits;
         private Frame _smallFrameUnits;
-        private List<Label> _unitLabels;
+        private List<LabelSized> _unitLabels;
 
         internal UnitsFrame(SettlementView parent, Vector2 topLeftPosition)
         {
@@ -53,14 +53,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             spriteBatch.End();
         }
 
-        private List<Label> CreateUnitLabels(ContentManager content)
+        private List<LabelSized> CreateUnitLabels(ContentManager content)
         {
-            var units = new List<Label>();
+            var units = new List<LabelSized>();
 
-            int baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
-            int baseTopLeftY = (int)(_topLeftPosition.Y + 15.0f);
-            int x = baseTopLeftX;
-            int y = baseTopLeftY;
+            var baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
+            var baseTopLeftY = (int)(_topLeftPosition.Y + 15.0f);
+            var x = baseTopLeftX;
+            var y = baseTopLeftY;
 
             foreach (var unit in Globals.Instance.UnitTypes)
             {
