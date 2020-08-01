@@ -48,6 +48,7 @@
     <Compile Include="AssetsManager.cs" />
     <Compile Include="AnimationSpecCreator.cs" />
     <Compile Include="AtlasFrame.cs" />
+    <Compile Include="AtlasFrames.cs" />
     <Compile Include="AtlasSpec.cs" />
     <Compile Include="ContentLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

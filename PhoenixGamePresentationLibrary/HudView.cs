@@ -127,7 +127,7 @@ namespace PhoenixGamePresentationLibrary
 
             _unitFrame.Update(input, deltaTime);
             _lblMoves.Update(input, deltaTime);
-            _lblMoves.Text = "Moves:";
+            _lblMoves.Text = $"Moves: {_unitsView}";
             _imgMovementType.Update(input, deltaTime);
 
             _btnEndTurn.Update(input, deltaTime);

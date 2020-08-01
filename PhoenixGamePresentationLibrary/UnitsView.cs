@@ -13,7 +13,7 @@ namespace PhoenixGamePresentationLibrary
     public class UnitsView : IEnumerable<UnitView>
     {
         private readonly WorldView _worldView;
-        private ContentManager _content;
+        private ContentManager _content; 
 
         private Dictionary<Guid, UnitView> _unitViews;
 
