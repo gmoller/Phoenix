@@ -82,9 +82,12 @@ namespace PhoenixGameLibrary.GameData
                 UnitType.Create(8, "Barbarian Warship", "Warship", 160.0f, new Moves(new Move("Water", 4.0f)), "Unit_Icon_Warship_Transparent", new List<string> { "Barbarians" }, new List<string> { "Maritime Guild" }, new List<string> { "Done", "Patrol", "Wait" }),
                 UnitType.Create(9, "Barbarian Beserkers", "Beserkers", 120.0f, new Moves(new Move("Ground", 1.0f)), "Unit_Icon_Berserkers_Transparent", new List<string> { "Barbarians" }, new List<string> { "Armorers Guild" }, new List<string> { "Done", "Patrol", "Wait" }),
 
-                UnitType.Create(10, "Lizardmen Spearmen", "Spearmen", 10.0f, new Moves(new Move("Ground", 4.0f /* 1.0f */), new Move("Water", 2.0f /* 1.0f */)), "Unit_Icon_BarbarianBowmen_Transparent" /* this is wrong */, new List<string> { "Lizardmen" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
+                UnitType.Create(10, "Beastmen Settlers", "Settlers", 120.0f, new Moves(new Move("Ground", 1.0f)), "Unit_Icon_Settlers_Transparent", new List<string> { "Beastmen" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait", "BuildOutpost" }),
+                UnitType.Create(11, "Beastmen Spearmen", "Spearmen", 20.0f, new Moves(new Move("Ground", 1.0f)), "Unit_Icon_BeastmenSpearmen_Transparent", new List<string> { "Beastmen" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
 
-                UnitType.Create(11, "Nomad Griffins", "Griffins", 200.0f, new Moves(new Move("Air", 2.0f)), "Unit_Icon_Griffins_Transparent", new List<string> { "Nomads" }, new List<string> { "Fantastic Stable" }, new List<string> { "Done", "Patrol", "Wait" }),
+                UnitType.Create(12, "Lizardmen Spearmen", "Spearmen", 10.0f, new Moves(new Move("Ground", 4.0f /* 1.0f */), new Move("Water", 2.0f /* 1.0f */)), "Unit_Icon_BarbarianBowmen_Transparent" /* this is wrong */, new List<string> { "Lizardmen" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
+
+                UnitType.Create(13, "Nomad Griffins", "Griffins", 200.0f, new Moves(new Move("Air", 2.0f)), "Unit_Icon_Griffins_Transparent", new List<string> { "Nomads" }, new List<string> { "Fantastic Stable" }, new List<string> { "Done", "Patrol", "Wait" }),
             };
 
             return NamedDataList<UnitType>.Create(unitTypes);

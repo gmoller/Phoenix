@@ -49,6 +49,10 @@ namespace PhoenixGameLibrary
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
             var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[unitStackMovementType]; // TODO: remove hard-coding: Walking
             MovementPoints -= movementCost.Cost;
+            if (MovementPoints < 0.0f)
+            {
+                MovementPoints = 0.0f;
+            }
         }
 
         internal void EndTurn()
