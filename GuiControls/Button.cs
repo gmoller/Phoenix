@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Input;
 
@@ -39,24 +38,24 @@ namespace GuiControls
         {
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-            base.LoadContent(content);
-        }
-
         protected override void AfterUpdate(InputHandler input, float deltaTime, Matrix? transform = null)
         {
             Label?.Update(input, deltaTime);
         }
 
-        protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
+        protected override void InDraw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, ActualDestinationRectangle, SourceRectangle, Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
         }
 
+        protected override void AfterDraw(SpriteBatch spriteBatch)
+        {
+            Label?.Draw(spriteBatch);
+        }
+
         protected override void AfterDraw(Matrix? transform = null)
         {
-            Label?.Draw();
+            Label?.Draw(transform);
         }
     }
 }

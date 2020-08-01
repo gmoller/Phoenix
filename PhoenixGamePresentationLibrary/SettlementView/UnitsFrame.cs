@@ -47,10 +47,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
-            _lblUnits.Draw();
-            _smallFrameUnits.Draw();
-            spriteBatch.End();
+            _lblUnits.Draw(spriteBatch);
+            _smallFrameUnits.Draw(spriteBatch);
         }
 
         private List<LabelSized> CreateUnitLabels(ContentManager content)

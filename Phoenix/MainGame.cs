@@ -97,8 +97,13 @@ namespace Phoenix
         {
             GraphicsDevice.Clear(Color.Black);
 
-            _phoenixGameView.Draw(DeviceManager.Instance.GetCurrentSpriteBatch());
-            _metricsPanel.Draw();
+            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
+
+            _phoenixGameView.Draw(spriteBatch);
+
+            spriteBatch.Begin();
+            _metricsPanel.Draw(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -62,7 +62,7 @@ namespace GuiControls
 
         protected abstract Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text);
 
-        protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
+        protected override void InDraw(SpriteBatch spriteBatch)
         {
             if (BackColor != null)
             {

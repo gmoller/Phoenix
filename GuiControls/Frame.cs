@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using Utilities;
 
 namespace GuiControls
 {
@@ -89,14 +90,29 @@ namespace GuiControls
             _destinationPatches = CreatePatches(new Rectangle(TopLeft.X, TopLeft.Y, (int)Size.X, (int)Size.Y), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
         }
 
-        protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
+        protected override void InDraw(SpriteBatch spriteBatch)
         {
             for (var i = 0; i < _sourcePatches.Length; ++i)
             {
                 spriteBatch.Draw(Texture, _destinationPatches[i], _sourcePatches[i], Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
             }
 
-            _slots?.Draw(transform);
+            _slots?.Draw(spriteBatch);
+        }
+
+        protected override void InDraw(Matrix? transform = null)
+        {
+            var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
+            spriteBatch.Begin(transformMatrix: transform);
+
+            for (var i = 0; i < _sourcePatches.Length; ++i)
+            {
+                spriteBatch.Draw(Texture, _destinationPatches[i], _sourcePatches[i], Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
+            }
+
+            _slots?.Draw(spriteBatch);
+
+            spriteBatch.End();
         }
 
         private Rectangle[] CreatePatches(Rectangle rectangle, int topPadding, int bottomPadding, int leftPadding, int rightPadding)

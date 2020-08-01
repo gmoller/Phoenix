@@ -101,6 +101,7 @@ namespace PhoenixGamePresentationLibrary
             _input.Update(deltaTime);
             _worldView.Update(_input, deltaTime);
             _cursor.Update(_input, deltaTime);
+            _cursorView.Update(_input, deltaTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -61,18 +61,18 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, null, null, null, null, Camera.Transform);
+            // FrontToBack
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform);
             _overlandMapView.Draw(spriteBatch);
             _overlandSettlementsView.Draw(spriteBatch);
-            spriteBatch.End();
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform);
             _unitsView.Draw(spriteBatch);
             spriteBatch.End();
 
+            spriteBatch.Begin();
             _hudView.Draw(spriteBatch);
-
             _settlementsView.Draw(spriteBatch);
+            spriteBatch.End();
         }
 
         public void BeginTurn()

@@ -86,7 +86,7 @@ namespace PhoenixGamePresentationLibrary
             _lblMoves = new LabelAutoSized(_unitFrame.BottomLeft.ToVector2() + new Vector2(10.0f, -15.0f), Alignment.BottomLeft, string.Empty, "CrimsonText-Regular-12", Color.White); // , _unitFrame
             _lblMoves.LoadContent(content);
 
-            _imgMovementType = new Image(_unitFrame.BottomRight.ToVector2() + new Vector2(-12.0f, -20.0f), Alignment.BottomRight, new Vector2(18.0f, 12.0f), "MovementTypes", "Move_Boot");
+            _imgMovementType = new Image(_unitFrame.BottomRight.ToVector2() + new Vector2(-12.0f, -20.0f), Alignment.BottomRight, new Vector2(18.0f, 12.0f), "MovementTypes", "Move_Boot", "_imgMovementType");
             _imgMovementType.LoadContent(content);
 
             var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
@@ -137,36 +137,32 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+            _hudViewFrame.Draw(spriteBatch);
 
-            _hudViewFrame.Draw();
+            _lblCurrentDate.Draw(spriteBatch);
 
-            _lblCurrentDate.Draw();
+            _resourceFrame.Draw(spriteBatch);
 
-            _resourceFrame.Draw();
+            _imgGold.Draw(spriteBatch);
+            _lblGold.Draw(spriteBatch);
 
-            _imgGold.Draw();
-            _lblGold.Draw();
+            _imgMana.Draw(spriteBatch);
+            _lblMana.Draw(spriteBatch);
 
-            _imgMana.Draw();
-            _lblMana.Draw();
+            _imgFood.Draw(spriteBatch);
+            _lblFood.Draw(spriteBatch);
 
-            _imgFood.Draw();
-            _lblFood.Draw();
-
-            _unitFrame.Draw();
-            _lblMoves.Draw();
-            _imgMovementType.Draw();
+            _unitFrame.Draw(spriteBatch);
+            _lblMoves.Draw(spriteBatch);
+            _imgMovementType.Draw(spriteBatch);
 
             DrawNotifications(spriteBatch);
             DrawSelectedUnits(spriteBatch);
             DrawTileInfo(spriteBatch);
 
-            _btnEndTurn.Draw();
+            _btnEndTurn.Draw(spriteBatch);
 
-            _test.Draw();
-
-            spriteBatch.End();
+            _test.Draw(spriteBatch);
         }
 
         private void DrawNotifications(SpriteBatch spriteBatch)

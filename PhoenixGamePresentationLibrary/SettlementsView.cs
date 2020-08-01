@@ -9,40 +9,39 @@ namespace PhoenixGamePresentationLibrary
     internal class SettlementsView
     {
         private readonly Settlements _settlements;
-
-        private ContentManager _content;
-
-        private List<SettlementView.SettlementView> _settlementViews;
+        private readonly List<SettlementView.SettlementView> _settlementViews;
 
         internal SettlementsView(Settlements settlements)
         {
             _settlements = settlements;
+            _settlementViews = new List<SettlementView.SettlementView>();
         }
 
         internal void LoadContent(ContentManager content)
         {
-            _content = content;
+            foreach (var settlement in _settlements)
+            {
+                var settlementView = new SettlementView.SettlementView(settlement);
+                settlementView.LoadContent(content);
+                _settlementViews.Add(settlementView);
+            }
         }
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            _settlementViews = new List<SettlementView.SettlementView>();
-            foreach (var settlement in _settlements)
+            foreach (var settlementView in _settlementViews)
             {
-                var settlementView = new SettlementView.SettlementView(settlement);
-                settlementView.LoadContent(_content);
                 settlementView.Update(input, deltaTime);
-                _settlementViews.Add(settlementView);
             }
         }
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var settlement in _settlementViews)
+            foreach (var settlementView in _settlementViews)
             {
-                if (settlement.Settlement.IsSelected)
+                if (settlementView.Settlement.IsSelected)
                 {
-                    settlement.Draw(spriteBatch);
+                    settlementView.Draw(spriteBatch);
                 }
             }
         }

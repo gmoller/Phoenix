@@ -58,7 +58,21 @@ namespace GuiControls
             _slots = CreateSlots(startX, startY, slotWidth, slotHeight, _numberOfSlotsX, _numberOfSlotsY, content);
         }
 
-        protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
+        protected override void InDraw(SpriteBatch spriteBatch)
+        {
+            var i = 0;
+            foreach (var slot in _slots)
+            {
+                slot.Draw(spriteBatch);
+                if (_labels != null && i < _labels.Count)
+                {
+                    _labels[i].Draw(spriteBatch);
+                    i++;
+                }
+            }
+        }
+
+        protected override void InDraw(Matrix? transform = null)
         {
             var i = 0;
             foreach (var slot in _slots)
@@ -120,7 +134,7 @@ namespace GuiControls
         {
         }
 
-        protected override void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
+        protected override void InDraw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, ActualDestinationRectangle, SourceRectangle, Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
         }

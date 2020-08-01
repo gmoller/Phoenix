@@ -70,6 +70,7 @@ namespace Utilities
         public SpriteBatch GetNewSpriteBatch()
         {
             var spriteBatch = _spriteBatchesPool.HasFreeObject ? _spriteBatchesPool.Get() : new SpriteBatch(GraphicsDevice);
+            //var spriteBatch = new SpriteBatch(GraphicsDevice);
 
             return spriteBatch;
         }
@@ -77,6 +78,7 @@ namespace Utilities
         public void ReturnSpriteBatchToPool(SpriteBatch spriteBatch)
         {
             _spriteBatchesPool.Add(spriteBatch);
+            //spriteBatch.Dispose();
         }
 
         public void SetViewport(Viewport newViewport)

@@ -88,11 +88,11 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            _mainFrame.Draw();
-            _secondaryFrame.Draw();
+            _mainFrame.Draw(spriteBatch);
+            _secondaryFrame.Draw(spriteBatch);
 
-            _lblSettlementName1.Draw();
-            _lblSettlementName2.Draw();
+            _lblSettlementName1.Draw(spriteBatch);
+            _lblSettlementName2.Draw(spriteBatch);
 
             _populationFrame.Draw(spriteBatch);
             _resourceFrame.Draw(spriteBatch);

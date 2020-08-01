@@ -5,7 +5,7 @@ namespace Utilities
 {
     public class ObjectPool<T> : IDisposable
     {
-        private Stack<T> _stack;
+        private readonly Stack<T> _stack;
 
         /// <summary>
         /// Creates a new object pool.

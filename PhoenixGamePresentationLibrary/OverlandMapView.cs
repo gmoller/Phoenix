@@ -22,10 +22,6 @@ namespace PhoenixGamePresentationLibrary
             _overlandMap = overlandMap;
         }
 
-        internal void LoadContent(ContentManager content)
-        {
-        }
-
         internal void Update(InputHandler input, float deltaTime)
         {
             if (input.Eaten) return;
@@ -79,7 +75,7 @@ namespace PhoenixGamePresentationLibrary
                         DrawCell(spriteBatch, cell, Color.DarkGray);
                     }
 
-                    //DrawHexBorder(cell);
+                    //DrawHexBorder(spriteBatch, cell);
                 }
             }
         }
@@ -103,11 +99,9 @@ namespace PhoenixGamePresentationLibrary
             //imgTile.Draw(spriteBatch);
         }
 
-        private void DrawHexBorder(Cell cell)
+        private void DrawHexBorder(SpriteBatch spriteBatch, Cell cell)
         {
             var centerPosition = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row);
-
-            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
 
             var color = Color.PeachPuff;
             var point0 = GetHexCorner(5);

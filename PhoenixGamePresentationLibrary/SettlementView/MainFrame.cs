@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
 using Input;
-using Utilities;
 
 namespace PhoenixGamePresentationLibrary.SettlementView
 {
@@ -16,9 +15,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly Texture2D _texture;
         private readonly AtlasSpec2 _atlas;
 
-        private Rectangle _main;
-        private Rectangle _heading;
-        private Rectangle _bottom;
+        private Rectangle _topFrame;
+        private Rectangle _headingFrame;
+        private Rectangle _bottomFrame;
         private Button _btnClose;
 
         internal MainFrame(SettlementView parent, Vector2 topLeftPosition, Texture2D texture, AtlasSpec2 atlas)
@@ -32,11 +31,11 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         internal void LoadContent(ContentManager content)
         {
             var frame = _atlas.Frames["frame_main"];
-            _main = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
+            _topFrame = frame.ToRectangle();
             frame = _atlas.Frames["frame_big_heading"];
-            _heading = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
+            _headingFrame = frame.ToRectangle();
             frame = _atlas.Frames["frame_bottom"];
-            _bottom = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
+            _bottomFrame = frame.ToRectangle();
 
             _btnClose = new Button(new Vector2(_topLeftPosition.X + 506.0f, _topLeftPosition.Y - 92.0f), Alignment.TopLeft, new Vector2(43.0f, 44.0f), "GUI_Textures_1", "close_button_n", "close_button_a", "close_button_a", "close_button_h");
             _btnClose.LoadContent(content);
@@ -48,18 +47,13 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             _btnClose.Update(input, deltaTime);
         }
 
-        internal void Draw()
+        internal void Draw(SpriteBatch spriteBatch)
         {
-            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
-            spriteBatch.Begin();
+            spriteBatch.Draw(_texture, new Vector2(_topLeftPosition.X, _topLeftPosition.Y), _topFrame, Color.White);
+            spriteBatch.Draw(_texture, new Vector2(_topLeftPosition.X - 2.0f, _topLeftPosition.Y - 100.0f), _headingFrame, Color.White);
+            spriteBatch.Draw(_texture, new Vector2(_topLeftPosition.X - 2.0f, _topLeftPosition.Y + 680.0f), _bottomFrame, Color.White);
 
-            spriteBatch.Draw(_texture, new Vector2(_topLeftPosition.X, _topLeftPosition.Y), _main, Color.White);
-            spriteBatch.Draw(_texture, new Vector2(_topLeftPosition.X - 2.0f, _topLeftPosition.Y - 100.0f), _heading, Color.White);
-            spriteBatch.Draw(_texture, new Vector2(_topLeftPosition.X - 2.0f, _topLeftPosition.Y + 680.0f), _bottom, Color.White);
-
-            spriteBatch.End();
-
-            _btnClose.Draw();
+            _btnClose.Draw(spriteBatch);
         }
 
         private void CloseButtonClick(object sender, EventArgs e)

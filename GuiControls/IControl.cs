@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Input;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GuiControls
 {
@@ -33,6 +34,7 @@ namespace GuiControls
         void LoadContent(ContentManager content);
         void Update(InputHandler input, float deltaTime, Matrix? transform = null);
         void Draw(Matrix? transform = null);
+        void Draw(SpriteBatch spriteBatch);
 
         event EventHandler Click;
     }

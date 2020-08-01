@@ -11,7 +11,7 @@ namespace GuiControls
 {
     public abstract class Control : IControl
     {
-        private Rectangle _originalScissorRectangle;
+        //private Rectangle _originalScissorRectangle;
         private float _cooldownTimeInMilliseconds;
 
         private readonly string _textureNormal;
@@ -167,16 +167,37 @@ namespace GuiControls
             Click?.Invoke(this, e);
         }
 
+        protected virtual void BeforeDraw(SpriteBatch spriteBatch)
+        {
+        }
+
         protected virtual void BeforeDraw(Matrix? transform = null)
         {
         }
 
-        protected virtual void Draw(SpriteBatch spriteBatch, Matrix? transform = null)
+        protected virtual void InDraw(SpriteBatch spriteBatch)
+        {
+        }
+
+        protected virtual void InDraw(Matrix? transform = null)
+        {
+        }
+
+        protected virtual void AfterDraw(SpriteBatch spriteBatch)
         {
         }
 
         protected virtual void AfterDraw(Matrix? transform = null)
         {
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            BeforeDraw(spriteBatch);
+
+            InDraw(spriteBatch);
+
+            AfterDraw(spriteBatch);
         }
 
         public virtual void Draw(Matrix? transform = null)
@@ -185,7 +206,7 @@ namespace GuiControls
 
             var spriteBatch = BeginSpriteBatch(transform);
 
-            Draw(spriteBatch, transform);
+            InDraw(transform);
 
             EndSpriteBatch(spriteBatch);
 
@@ -251,10 +272,10 @@ namespace GuiControls
         protected SpriteBatch BeginSpriteBatch(Matrix? transform)
         {
             var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
-            spriteBatch.Begin(rasterizerState: new RasterizerState { ScissorTestEnable = true }, transformMatrix: transform);
+            //spriteBatch.Begin(rasterizerState: new RasterizerState { ScissorTestEnable = true }, transformMatrix: transform);
 
-            _originalScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
-            spriteBatch.GraphicsDevice.ScissorRectangle = ActualDestinationRectangle;
+            //_originalScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+            //spriteBatch.GraphicsDevice.ScissorRectangle = ActualDestinationRectangle;
 
             return spriteBatch;
         }
@@ -262,7 +283,7 @@ namespace GuiControls
         protected void EndSpriteBatch(SpriteBatch spriteBatch)
         {
             spriteBatch.End();
-            spriteBatch.GraphicsDevice.ScissorRectangle = _originalScissorRectangle;
+            //spriteBatch.GraphicsDevice.ScissorRectangle = _originalScissorRectangle;
             DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
         }
 

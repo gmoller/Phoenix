@@ -28,7 +28,6 @@ namespace PhoenixGamePresentationLibrary
         {
             foreach (var settlement in _settlements)
             {
-                //var overlandSettlementView = new OverlandSettlementView(_worldView, settlement);
                 _overlandSettlementView.Settlement = settlement;
                 _overlandSettlementView.Update(input, deltaTime);
             }
@@ -38,7 +37,6 @@ namespace PhoenixGamePresentationLibrary
         {
             foreach (var settlement in _settlements)
             {
-                //var overlandSettlementView = new OverlandSettlementView(_worldView, settlement);
                 _overlandSettlementView.Settlement = settlement;
                 _overlandSettlementView.Draw(spriteBatch);
             }

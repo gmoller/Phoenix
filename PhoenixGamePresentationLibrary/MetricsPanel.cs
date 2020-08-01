@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using GuiControls;
+using Microsoft.Xna.Framework.Graphics;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
@@ -37,7 +38,7 @@ namespace PhoenixGamePresentationLibrary
         {
             _fps = new FramesPerSecondCounter();
 
-            var size1 = new Vector2(140.0f, 20.0f);
+            var size1 = new Vector2(150.0f, 20.0f);
             var size2 = new Vector2(140.0f, 20.0f);
 
             _lblGcCount1 = new LabelSized(Vector2.Zero, Alignment.TopLeft, size1, Alignment.MiddleLeft, "GC COUNT:", "CrimsonText-Regular-12", Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
@@ -70,7 +71,7 @@ namespace PhoenixGamePresentationLibrary
             _lblMemory2 = new LabelSized(new Vector2(150.0f, 150.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblMemory2.LoadContent(content);
 
-            _lblFps1 = new LabelSized(new Vector2(0.0f, 180.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "FPS:", "CrimsonText-Regular-12", Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblFps1 = new LabelSized(new Vector2(0.0f, 180.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "FPS (Update/Draw):", "CrimsonText-Regular-12", Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblFps1.LoadContent(content);
             _lblFps2 = new LabelSized(new Vector2(150.0f, 180.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblFps2.LoadContent(content);
@@ -92,24 +93,24 @@ namespace PhoenixGamePresentationLibrary
             _lblScreenPosition2.Text = $"({mouseState.Position.X},{mouseState.Position.Y})";
         }
 
-        public void Draw()
+        public void Draw(SpriteBatch spriteBatch)
         {
             DeviceManager.Instance.SetViewport(DeviceManager.Instance.MetricsViewport);
 
-            _lblGcCount1.Draw();
-            _lblGcCount2.Draw();
-            _lblScreenPosition1.Draw();
-            _lblScreenPosition2.Draw();
-            _lblViewportPosition1.Draw();
-            _lblViewportPosition2.Draw();
-            _lblWorldPosition1.Draw();
-            _lblWorldPosition2.Draw();
-            _lblWorldHex1.Draw();
-            _lblWorldHex2.Draw();
-            _lblMemory1.Draw();
-            _lblMemory2.Draw();
-            _lblFps1.Draw();
-            _lblFps2.Draw();
+            _lblGcCount1.Draw(spriteBatch);
+            _lblGcCount2.Draw(spriteBatch);
+            _lblScreenPosition1.Draw(spriteBatch);
+            _lblScreenPosition2.Draw(spriteBatch);
+            _lblViewportPosition1.Draw(spriteBatch);
+            _lblViewportPosition2.Draw(spriteBatch);
+            _lblWorldPosition1.Draw(spriteBatch);
+            _lblWorldPosition2.Draw(spriteBatch);
+            _lblWorldHex1.Draw(spriteBatch);
+            _lblWorldHex2.Draw(spriteBatch);
+            _lblMemory1.Draw(spriteBatch);
+            _lblMemory2.Draw(spriteBatch);
+            _lblFps1.Draw(spriteBatch);
+            _lblFps2.Draw(spriteBatch);
 
             DeviceManager.Instance.ResetViewport();
 

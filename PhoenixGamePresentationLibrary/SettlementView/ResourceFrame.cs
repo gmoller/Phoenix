@@ -60,18 +60,16 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
-            _smallFrame.Draw();
-            _lblResources.Draw();
-            _lblFood.Draw();
-            _lblProduction.Draw();
-            _lblGold.Draw();
-            _lblPower.Draw();
-            _lblResearch.Draw();
+            _smallFrame.Draw(spriteBatch);
+            _lblResources.Draw(spriteBatch);
+            _lblFood.Draw(spriteBatch);
+            _lblProduction.Draw(spriteBatch);
+            _lblGold.Draw(spriteBatch);
+            _lblPower.Draw(spriteBatch);
+            _lblResearch.Draw(spriteBatch);
 
             _foodView.Draw(spriteBatch);
             _productionView.Draw(spriteBatch);
-            spriteBatch.End();
         }
     }
 
@@ -96,9 +94,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Bread", 0.0f, null, "Image1");
+            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Bread", "");
             _image1.LoadContent(content);
-            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Corn", 0.0f, null, "Image2");
+            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Corn", "");
             _image2.LoadContent(content);
         }
 
@@ -106,10 +104,11 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         {
             if (_area.Contains(input.MousePosition))
             {
-                _toolTip = new ToolTip(input.MousePosition.ToVector2() + new Vector2(0.0f, 30.0f));
-                _toolTip.AddControl(new Image(new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Bread"));
-                _toolTip.AddControl(new Image(new Vector2(0.0f, 25.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Pickaxe"));
-                _toolTip.AddControl(new LabelAutoSized(new Vector2(0.0f, 50.0f), Alignment.TopLeft, "Here is some text!", "CrimsonText-Regular-12", Color.Blue, Color.Red));
+                //_toolTip = new ToolTip(input.MousePosition.ToVector2() + new Vector2(0.0f, 30.0f));
+                //_toolTip.LoadContent(_content);
+                //_toolTip.AddControl(new Image(new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Bread"));
+                //_toolTip.AddControl(new Image(new Vector2(0.0f, 25.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Pickaxe"));
+                //_toolTip.AddControl(new LabelAutoSized(new Vector2(0.0f, 50.0f), Alignment.TopLeft, "Here is some text!", "CrimsonText-Regular-12", Color.Blue, Color.Red));
             }
             else
             {
@@ -141,14 +140,14 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             for (var i = 0; i < numberOfBread; ++i)
             {
                 _image1.SetTopLeftPosition(x, y);
-                _image1.Draw();
+                _image1.Draw(spriteBatch);
                 x += 30;
             }
 
             for (var i = 0; i < numberOfCorn; ++i)
             {
                 _image2.SetTopLeftPosition(x, y);
-                _image2.Draw();
+                _image2.Draw(spriteBatch);
                 x += 20;
             }
 
@@ -163,21 +162,17 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private  Image _image1;
         private  Image _image2;
 
-        private Rectangle _area;
-
         internal ProductionView(Vector2 topLeftPosition, SettlementView parent)
         {
             _topLeftPosition = topLeftPosition;
             _parent = parent;
-
-            _area = new Rectangle();
         }
 
         internal void LoadContent(ContentManager content)
         {
-            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Anvil", 0.0f, null, "Image1");
+            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Anvil", "Image1");
             _image1.LoadContent(content);
-            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Pickaxe", 0.0f, null, "Image2");
+            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Pickaxe", "Image2");
             _image2.LoadContent(content);
         }
 
@@ -189,15 +184,11 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         {
             var x = (int)_topLeftPosition.X;
             var y = (int)_topLeftPosition.Y;
-            var originalX = x;
-            var originalY = y;
 
-            x = Draw(spriteBatch, x, y, _parent.Settlement.SettlementProduction);
-
-            _area = new Rectangle(originalX, originalY, x, 30);
+            Draw(spriteBatch, x, y, _parent.Settlement.SettlementProduction);
         }
 
-        private int Draw(SpriteBatch spriteBatch, int x, int y, int production)
+        private void Draw(SpriteBatch spriteBatch, int x, int y, int production)
         {
             var numberOfAnvils = production / 10;
             var numberOfPickaxes = production % 10;
@@ -205,18 +196,16 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             for (var i = 0; i < numberOfAnvils; ++i)
             {
                 _image1.SetTopLeftPosition(x, y);
-                _image1.Draw();
+                _image1.Draw(spriteBatch);
                 x += 30;
             }
 
             for (var i = 0; i < numberOfPickaxes; ++i)
             {
                 _image2.SetTopLeftPosition(x, y);
-                _image2.Draw();
+                _image2.Draw(spriteBatch);
                 x += 20;
             }
-
-            return x;
         }
     }
 }

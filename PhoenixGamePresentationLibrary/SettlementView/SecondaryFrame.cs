@@ -14,8 +14,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private readonly Texture2D _texture;
         private readonly AtlasSpec2 _atlas;
 
-        private Rectangle _main;
-        private Rectangle _bottom;
+        private Rectangle _topFrame;
+        private Rectangle _bottomFrame;
 
         internal SecondaryFrame(SettlementView parent, Vector2 topLeftPosition, Texture2D texture, AtlasSpec2 atlas)
         {
@@ -28,24 +28,19 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         internal void LoadContent(ContentManager content)
         {
             var frame = _atlas.Frames["frame_main"];
-            _main = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
+            _topFrame = frame.ToRectangle();
             frame = _atlas.Frames["frame_bottom"];
-            _bottom = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
+            _bottomFrame = frame.ToRectangle();
         }
 
         internal void Update(InputHandler input, float deltaTime)
         {
         }
 
-        internal void Draw()
+        internal void Draw(SpriteBatch spriteBatch)
         {
-            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
-            spriteBatch.Begin();
-
-            spriteBatch.Draw(_texture, new Vector2(_topLeftPosition.X, _topLeftPosition.Y), _main, Color.White);
-            spriteBatch.Draw(_texture, new Vector2(_topLeftPosition.X - 2.0f, _topLeftPosition.Y + 680.0f), _bottom, Color.White);
-
-            spriteBatch.End();
+            spriteBatch.Draw(_texture, new Vector2(_topLeftPosition.X, _topLeftPosition.Y), _topFrame, Color.White);
+            spriteBatch.Draw(_texture, new Vector2(_topLeftPosition.X - 2.0f, _topLeftPosition.Y + 680.0f), _bottomFrame, Color.White);
         }
     }
 }

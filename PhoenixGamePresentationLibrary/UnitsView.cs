@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using AssetsLibrary;
 using Input;
 using PhoenixGameLibrary;
 
@@ -35,7 +34,7 @@ namespace PhoenixGamePresentationLibrary
             foreach (var unit in units)
             {
                 var unitView = new UnitView(_worldView, unit);
-                unitView.LoadContent(_content);
+                unitView.LoadContent(_content); // TODO: get rid of this
                 _unitViews.Add(unit.Id, unitView);
             }
         }
