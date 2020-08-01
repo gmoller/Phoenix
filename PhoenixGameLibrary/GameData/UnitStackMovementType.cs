@@ -44,7 +44,7 @@ namespace PhoenixGameLibrary.GameData
                 UnitStackMovementType.Create(4, "Forester"),
                 UnitStackMovementType.Create(5, "Mountaineer"),
                 UnitStackMovementType.Create(6, "Pathfinding"),
-                UnitStackMovementType.Create(7, "Plane Shift")
+                UnitStackMovementType.Create(7, "PlaneShift")
             };
 
             return NamedDataList<UnitStackMovementType>.Create(movementTypes);

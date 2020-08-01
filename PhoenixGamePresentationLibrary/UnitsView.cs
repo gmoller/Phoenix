@@ -13,9 +13,13 @@ namespace PhoenixGamePresentationLibrary
     public class UnitsView : IEnumerable<UnitView>
     {
         private readonly WorldView _worldView;
-        private ContentManager _content; 
+        private ContentManager _content;
 
+        private UnitsStack _unitsStack;
         private Dictionary<Guid, UnitView> _unitViews;
+
+        public float Moves => _unitsStack.GetMoves;
+        public string MovementType => _unitsStack.MovementTypeName;
 
         public UnitsView(WorldView worldView)
         {
@@ -30,6 +34,8 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Refresh(Units units)
         {
+            _unitsStack = new UnitsStack(units);
+
             _unitViews = new Dictionary<Guid, UnitView>();
             foreach (var unit in units)
             {

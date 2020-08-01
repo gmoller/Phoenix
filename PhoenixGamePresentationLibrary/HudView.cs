@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,6 +32,7 @@ namespace PhoenixGamePresentationLibrary
         private Frame _unitFrame;
         private Label _lblMoves;
         private Image _imgMovementType; // UnitStackMovementType
+        private Dictionary<string, Image> _movementTypeImages;
 
         private SpriteFont _font;
 
@@ -49,6 +51,8 @@ namespace PhoenixGamePresentationLibrary
 
             _worldView = worldView;
             _unitsView = unitsView;
+
+            _movementTypeImages = new Dictionary<string, Image>();
         }
 
         internal void LoadContent(ContentManager content)
@@ -86,8 +90,9 @@ namespace PhoenixGamePresentationLibrary
             _lblMoves = new LabelAutoSized(_unitFrame.BottomLeft.ToVector2() + new Vector2(10.0f, -15.0f), Alignment.BottomLeft, string.Empty, "CrimsonText-Regular-12", Color.White); // , _unitFrame
             _lblMoves.LoadContent(content);
 
-            _imgMovementType = new Image(_unitFrame.BottomRight.ToVector2() + new Vector2(-12.0f, -20.0f), Alignment.BottomRight, new Vector2(18.0f, 12.0f), "MovementTypes", "Move_Boot");
+            _imgMovementType = new Image(_unitFrame.BottomRight.ToVector2() + new Vector2(-12.0f, -20.0f), Alignment.BottomRight, new Vector2(18.0f, 12.0f), "MovementTypes", "Walking");
             _imgMovementType.LoadContent(content);
+            _movementTypeImages = LoadMovementTypeImages(content);
 
             var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
             _btnEndTurn = new Button(pos, Alignment.BottomRight, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h");
@@ -101,6 +106,21 @@ namespace PhoenixGamePresentationLibrary
             _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, null, null, Color.Blue);
             _test.Click += delegate { _test.MoveTopLeftPosition(10, -10); };
             _test.LoadContent(content);
+        }
+
+        private Dictionary<string, Image> LoadMovementTypeImages(ContentManager content)
+        {
+            var movementTypes = Globals.Instance.UnitStackMovementTypes;
+
+            var movementTypeImages = new Dictionary<string, Image>();
+            foreach (var movementType in movementTypes)
+            {
+                var image = new Image(_unitFrame.BottomRight.ToVector2() + new Vector2(-12.0f, -20.0f), Alignment.BottomRight, new Vector2(18.0f, 12.0f), "MovementTypes", movementType.Name);
+                image.LoadContent(content);
+                movementTypeImages.Add(movementType.Name, image);
+            }
+
+            return movementTypeImages;
         }
 
         public void Update(InputHandler input, float deltaTime)
@@ -127,7 +147,8 @@ namespace PhoenixGamePresentationLibrary
 
             _unitFrame.Update(input, deltaTime);
             _lblMoves.Update(input, deltaTime);
-            _lblMoves.Text = $"Moves: {_unitsView}";
+            _lblMoves.Text = $"Moves: {_unitsView.Moves}";
+            _imgMovementType = _movementTypeImages[_unitsView.MovementType];
             _imgMovementType.Update(input, deltaTime);
 
             _btnEndTurn.Update(input, deltaTime);
@@ -153,11 +174,11 @@ namespace PhoenixGamePresentationLibrary
             _lblFood.Draw(spriteBatch);
 
             _unitFrame.Draw(spriteBatch);
+            DrawSelectedUnits(spriteBatch);
             _lblMoves.Draw(spriteBatch);
             _imgMovementType.Draw(spriteBatch);
 
             DrawNotifications(spriteBatch);
-            DrawSelectedUnits(spriteBatch);
             DrawTileInfo(spriteBatch);
 
             _btnEndTurn.Draw(spriteBatch);

@@ -72,7 +72,7 @@ namespace PhoenixGameLibrary.GameData
             var unitTypes = new List<UnitType>
             {
                 UnitType.Create(0, "Barbarian Settlers", "Settlers", 60.0f, new Moves(new Move("Ground", 1.0f)), "Unit_Icon_Settlers_Transparent", new List<string> { "Barbarians" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait", "BuildOutpost" }),
-                UnitType.Create(1, "Barbarian Spearmen", "Spearmen", 15.0f, new Moves(new Move("Ground", 4.0f)), "Unit_Icon_BarbarianSpearmen_Transparent", new List<string> { "Barbarians" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
+                UnitType.Create(1, "Barbarian Spearmen", "Spearmen", 15.0f, new Moves(new Move("Ground", 1.0f)), "Unit_Icon_BarbarianSpearmen_Transparent", new List<string> { "Barbarians" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
                 UnitType.Create(2, "Barbarian Swordsmen", "Swordsmen", 30.0f, new Moves(new Move("Ground", 1.0f)), "Unit_Icon_BarbarianSwordsmen_Transparent", new List<string> { "Barbarians" }, new List<string> { "Barracks", "Smithy" }, new List<string> { "Done", "Patrol", "Wait" }),
                 UnitType.Create(3, "Barbarian Bowmen", "Bowmen", 30.0f, new Moves(new Move("Ground", 1.0f)), "Unit_Icon_BarbarianBowmen_Transparent", new List<string> { "Barbarians" }, new List<string> { "Barracks", "Sawmill" }, new List<string> { "Done", "Patrol", "Wait" }),
                 UnitType.Create(4, "Barbarian Cavalry", "Cavalry", 60.0f, new Moves(new Move("Ground", 2.0f)), "Unit_Icon_BarbarianCavalry_Transparent", new List<string> { "Barbarians" }, new List<string> { "Barracks", "Stables" }, new List<string> { "Done", "Patrol", "Wait" }),
@@ -82,7 +82,7 @@ namespace PhoenixGameLibrary.GameData
                 UnitType.Create(8, "Barbarian Warship", "Warship", 160.0f, new Moves(new Move("Water", 4.0f)), "Unit_Icon_Warship_Transparent", new List<string> { "Barbarians" }, new List<string> { "Maritime Guild" }, new List<string> { "Done", "Patrol", "Wait" }),
                 UnitType.Create(9, "Barbarian Beserkers", "Beserkers", 120.0f, new Moves(new Move("Ground", 1.0f)), "Unit_Icon_Berserkers_Transparent", new List<string> { "Barbarians" }, new List<string> { "Armorers Guild" }, new List<string> { "Done", "Patrol", "Wait" }),
 
-                UnitType.Create(10, "Lizardmen Spearmen", "Spearmen", 10.0f, new Moves(new Move("Ground", 1.0f), new Move("Water", 1.0f)), "", new List<string> { "Lizardmen" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
+                UnitType.Create(10, "Lizardmen Spearmen", "Spearmen", 10.0f, new Moves(new Move("Ground", 4.0f /* 1.0f */), new Move("Water", 2.0f /* 1.0f */)), "Unit_Icon_BarbarianBowmen_Transparent" /* this is wrong */, new List<string> { "Lizardmen" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
 
                 UnitType.Create(11, "Nomad Griffins", "Griffins", 200.0f, new Moves(new Move("Air", 2.0f)), "Unit_Icon_Griffins_Transparent", new List<string> { "Nomads" }, new List<string> { "Fantastic Stable" }, new List<string> { "Done", "Patrol", "Wait" }),
             };

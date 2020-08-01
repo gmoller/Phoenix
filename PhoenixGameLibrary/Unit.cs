@@ -21,9 +21,10 @@ namespace PhoenixGameLibrary
 
         public string Name => _unitType.Name;
         public string ShortName => _unitType.ShortName;
-        public string MovementTypeName => "Walking"; // TODO: remove hard-coding
         public Moves UnitTypeMoves => _unitType.Moves;
         public string UnitTypeTextureName => _unitType.TextureName;
+
+        public UnitsStack UnitsStack { get; set; }
 
         public List<Point> PotentialMovementPath { get; set; }
         public List<Point> MovementPath { get; set; }
@@ -33,26 +34,26 @@ namespace PhoenixGameLibrary
             Id = Guid.NewGuid();
             _unitType = unitType;
             Location = location;
-            MovementPoints = unitType.Moves["Ground"].Moves;
+            MovementPoints = unitType.Moves["Ground"].Moves; // TODO: remove hard-coding
             MovementPath = new List<Point>();
             PotentialMovementPath = new List<Point>();
 
             SetSeenCells(location);
         }
 
-        internal void MoveTo(Point locationToMoveTo)
+        internal void MoveTo(Point locationToMoveTo, string unitStackMovementType)
         {
             Location = locationToMoveTo;
             SetSeenCells(Location);
 
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
-            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[MovementTypeName];
+            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[unitStackMovementType]; // TODO: remove hard-coding: Walking
             MovementPoints -= movementCost.Cost;
         }
 
         internal void EndTurn()
         {
-            MovementPoints = _unitType.Moves["Ground"].Moves;
+            MovementPoints = _unitType.Moves["Ground"].Moves; // TODO: remove hard-coding
         }
 
         internal bool CanSeeCell(Cell cell)

@@ -119,7 +119,7 @@ namespace PhoenixGamePresentationLibrary
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.Never) return (false, new Point(0, 0));
-            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.MovementTypeName];
+            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.UnitsStack.MovementTypeName];
             if (movementCost.Cost.AboutEquals(0.0f)) return (false, new Point(0, 0));
 
             return (true, hexToMoveTo);
@@ -165,7 +165,7 @@ namespace PhoenixGamePresentationLibrary
             var hexToMoveTo = new Point(neighbor.Col, neighbor.Row);
 
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
-            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.MovementTypeName];
+            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.UnitsStack.MovementTypeName];
 
             // TODO: assumes all units are walking: checking movement type
             if (movementCost.Cost > 0.0f && _unit.MovementPoints > 0.0f)
@@ -219,7 +219,7 @@ namespace PhoenixGamePresentationLibrary
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.Never) return (false, new Point(0, 0));
-            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.MovementTypeName];
+            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[_unit.UnitsStack.MovementTypeName];
 
             // TODO: assumes all units are walking: checking movement type
             if (movementCost.Cost > 0.0f)
@@ -304,7 +304,7 @@ namespace PhoenixGamePresentationLibrary
             _movementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
 
             Command moveUnitCommand = new MoveUnitCommand();
-            moveUnitCommand.Payload = (_unit, _unit.MovementPath[0]);
+            moveUnitCommand.Payload = (_unit, _unit.MovementPath[0], "Walking");
             moveUnitCommand.Execute();
 
             // if run out of movement points

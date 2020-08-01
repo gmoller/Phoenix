@@ -1,18 +1,39 @@
-﻿namespace PhoenixGameLibrary
+﻿using System;
+
+namespace PhoenixGameLibrary
 {
     public class UnitsStack
     {
         private readonly Units _units;
 
-        internal UnitsStack(Units units)
+        public UnitsStack(Units units)
         {
             _units = units;
+
+            foreach (var unit in units)
+            {
+                unit.UnitsStack = this;
+            }
         }
 
-        internal string DetermineMovementType()
+        public float GetMoves => DetermineMoves();
+        public string MovementTypeName => DetermineMovementType();
+
+        private float DetermineMoves()
         {
-            // flying
-            bool flying = false;
+            var moves = float.MaxValue;
+            foreach (var unit in _units)
+            {
+                moves = Math.Min(moves, unit.MovementPoints);
+            }
+
+            return moves >= 0.0f ? moves : 0;
+        }
+
+        private string DetermineMovementType()
+        {
+            // either they're all flying
+            var flying = false;
             foreach (var unit in _units)
             {
                 flying = unit.UnitTypeMoves.Contains("Air");
@@ -21,6 +42,7 @@
 
             if (flying) return "Flying";
 
+            // or the stack is walking
             return "Walking";
         }
     }

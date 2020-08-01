@@ -12,7 +12,7 @@ namespace PhoenixGameLibrary
             World = new World();
 
             World.AddSettlement(new Point(12, 9), "Fairhaven", "Barbarians");
-            World.AddUnit(new Point(12, 9), Globals.Instance.UnitTypes["Barbarian Spearmen"]);
+            World.AddUnit(new Point(12, 9), Globals.Instance.UnitTypes["Lizardmen Spearmen"]);
         }
 
         public void Update(float deltaTime)

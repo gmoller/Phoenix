@@ -2,56 +2,56 @@
   "SpriteSheetName": "MovementTypes",
   "Frames": [
     {
-      "Name": "Move_Astral",
+      "Name": "PlaneShift",
       "X": 0,
       "Y": 0,
       "Width": 18,
       "Height": 12
     },
     {
-      "Name": "Move_Boot",
+      "Name": "Walking",
       "X": 18,
       "Y": 0,
       "Width": 18,
       "Height": 12
     },
     {
-      "Name": "Move_Flying",
+      "Name": "Flying",
       "X": 36,
       "Y": 0,
       "Width": 18,
       "Height": 12
     },
 	{
-      "Name": "Move_Forester",
+      "Name": "Forester",
       "X": 54,
       "Y": 0,
       "Width": 18,
       "Height": 12
     },
 	{
-      "Name": "Move_Mountaineer",
+      "Name": "Mountaineer",
       "X": 72,
       "Y": 0,
       "Width": 18,
       "Height": 12
     },
 	{
-      "Name": "Move_Pathfinding",
+      "Name": "Pathfinding",
       "X": 90,
       "Y": 0,
       "Width": 18,
       "Height": 12
     },
 	{
-      "Name": "Move_Sailing",
+      "Name": "Sailing",
       "X": 108,
       "Y": 0,
       "Width": 18,
       "Height": 12
     },
     {
-      "Name": "Move_Swimming",
+      "Name": "Swimming",
       "X": 126,
       "Y": 0,
       "Width": 18,
