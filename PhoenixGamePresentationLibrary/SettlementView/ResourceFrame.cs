@@ -94,9 +94,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Bread", "");
+            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Bread");
             _image1.LoadContent(content);
-            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Corn", "");
+            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Corn");
             _image2.LoadContent(content);
         }
 
@@ -170,9 +170,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Anvil", "Image1");
+            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", "Anvil");
             _image1.LoadContent(content);
-            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Pickaxe", "Image2");
+            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", "Pickaxe");
             _image2.LoadContent(content);
         }
 

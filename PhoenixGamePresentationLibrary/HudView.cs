@@ -86,7 +86,7 @@ namespace PhoenixGamePresentationLibrary
             _lblMoves = new LabelAutoSized(_unitFrame.BottomLeft.ToVector2() + new Vector2(10.0f, -15.0f), Alignment.BottomLeft, string.Empty, "CrimsonText-Regular-12", Color.White); // , _unitFrame
             _lblMoves.LoadContent(content);
 
-            _imgMovementType = new Image(_unitFrame.BottomRight.ToVector2() + new Vector2(-12.0f, -20.0f), Alignment.BottomRight, new Vector2(18.0f, 12.0f), "MovementTypes", "Move_Boot", "_imgMovementType");
+            _imgMovementType = new Image(_unitFrame.BottomRight.ToVector2() + new Vector2(-12.0f, -20.0f), Alignment.BottomRight, new Vector2(18.0f, 12.0f), "MovementTypes", "Move_Boot");
             _imgMovementType.LoadContent(content);
 
             var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);

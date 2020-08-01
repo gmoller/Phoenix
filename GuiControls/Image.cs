@@ -14,26 +14,6 @@ namespace GuiControls
             Vector2 size,
             string textureAtlas,
             string textureName,
-            string name = "") :
-            this(
-                position,
-                positionAlignment,
-                size,
-                textureAtlas,
-                textureName,
-                textureName,
-                0.0f,
-                null,
-                name)
-        {
-        }
-
-        public Image(
-            Vector2 position,
-            Alignment positionAlignment,
-            Vector2 size,
-            string textureAtlas,
-            string textureName,
             IControl parent = null,
             string name = "") :
             this(
