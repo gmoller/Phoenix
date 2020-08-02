@@ -54,10 +54,8 @@
     <Compile Include="GameData\DataList.cs" />
     <Compile Include="GameData\Globals.cs" />
     <Compile Include="GameData\IIdentifiedById.cs" />
-    <Compile Include="GameData\Move.cs" />
     <Compile Include="GameData\MovementCost.cs" />
-    <Compile Include="GameData\UnitStackMovementType.cs" />
-    <Compile Include="GameData\MoveType.cs" />
+    <Compile Include="GameData\MovementType.cs" />
     <Compile Include="GameData\RaceType.cs" />
     <Compile Include="GameData\TerrainCanSettleOnType.cs" />
     <Compile Include="GameData\TerrainFoodOutputType.cs" />
@@ -83,6 +81,7 @@
     <Compile Include="Unit.cs" />
     <Compile Include="Units.cs" />
     <Compile Include="UnitsStack.cs" />
+    <Compile Include="UnitsStacks.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>

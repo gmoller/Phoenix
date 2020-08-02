@@ -29,13 +29,14 @@ namespace GuiControls
         int Height { get; }
         Point Size { get; }
 
+        event EventHandler Click;
+
         void SetTopLeftPosition(int x, int y);
         void MoveTopLeftPosition(int x, int y);
         void LoadContent(ContentManager content);
         void Update(InputHandler input, float deltaTime, Matrix? transform = null);
         void Draw(Matrix? transform = null);
         void Draw(SpriteBatch spriteBatch);
-
-        event EventHandler Click;
+        IControl Clone();
     }
 }

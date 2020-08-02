@@ -257,7 +257,7 @@ namespace GuiControls
                 text, 
                 fontName, 
                 textColor, 
-                textShadowColor, 
+                textShadowColor,  
                 backColor, 
                 borderColor, 
                 layerDepth, 

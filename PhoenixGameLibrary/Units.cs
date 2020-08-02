@@ -13,6 +13,8 @@ namespace PhoenixGameLibrary
 
         public Unit this[int index] => _units[index];
 
+        internal int Count => _units.Count;
+
         internal Units()
         {
             _units = new List<Unit>();

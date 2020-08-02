@@ -21,7 +21,7 @@ namespace PhoenixGameLibrary
 
         public string Name => _unitType.Name;
         public string ShortName => _unitType.ShortName;
-        public Moves UnitTypeMoves => _unitType.Moves;
+        public List<string> UnitTypeMovementTypes => _unitType.MovementTypes;
         public string UnitTypeTextureName => _unitType.TextureName;
 
         public UnitsStack UnitsStack { get; set; }
@@ -34,21 +34,22 @@ namespace PhoenixGameLibrary
             Id = Guid.NewGuid();
             _unitType = unitType;
             Location = location;
-            MovementPoints = unitType.Moves["Ground"].Moves; // TODO: remove hard-coding
+            MovementPoints = unitType.MovementPoints;
             MovementPath = new List<Point>();
             PotentialMovementPath = new List<Point>();
 
             SetSeenCells(location);
         }
 
-        internal void MoveTo(Point locationToMoveTo, string unitStackMovementType)
+        internal void MoveTo(Point locationToMoveTo)
         {
             Location = locationToMoveTo;
             SetSeenCells(Location);
 
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
-            var movementCost = Globals.Instance.TerrainTypes[cellToMoveTo.TerrainTypeId].MovementCosts[unitStackMovementType]; // TODO: remove hard-coding: Walking
-            MovementPoints -= movementCost.Cost;
+            var movementCost = CostToMoveInto(cellToMoveTo);
+
+            MovementPoints -= movementCost;
             if (MovementPoints < 0.0f)
             {
                 MovementPoints = 0.0f;
@@ -57,7 +58,7 @@ namespace PhoenixGameLibrary
 
         internal void EndTurn()
         {
-            MovementPoints = _unitType.Moves["Ground"].Moves; // TODO: remove hard-coding
+            MovementPoints = _unitType.MovementPoints;
         }
 
         internal bool CanSeeCell(Cell cell)
@@ -72,6 +73,78 @@ namespace PhoenixGameLibrary
             }
 
             return false;
+        }
+
+        public bool CanMoveInto(Point location)
+        {
+            var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(location.X, location.Y);
+
+            return CanMoveInto(cellToMoveTo);
+        }
+
+        public bool CanMoveInto(Cell cell)
+        {
+            var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
+
+            return CanMoveInto(terrainType);
+        }
+
+        public bool CanMoveInto(TerrainType terrainType)
+        {
+            var potentialMovements = new List<MovementCost>();
+            foreach (var unitMovementType in UnitTypeMovementTypes)
+            {
+                foreach (var movementCost in terrainType.MovementCosts)
+                {
+                    if (unitMovementType != movementCost.MovementType.Name) continue;
+                    if (movementCost.Cost > 0.0)
+                    {
+                        potentialMovements.Add(movementCost);
+                    }
+                }
+            }
+
+            var canMoveInto = potentialMovements.Count > 0;
+
+            return canMoveInto;
+        }
+
+        public float CostToMoveInto(Cell cell)
+        {
+            var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
+
+            return CostToMoveInto(terrainType);
+        }
+
+        public float CostToMoveInto(TerrainType terrainType)
+        {
+            var potentialMovementCosts = new List<MovementCost>();
+            foreach (var unitMovementType in UnitTypeMovementTypes)
+            {
+                foreach (var movementCost in terrainType.MovementCosts)
+                {
+                    if (unitMovementType != movementCost.MovementType.Name) continue;
+                    if (movementCost.Cost > 0.0)
+                    {
+                        potentialMovementCosts.Add(movementCost);
+                    }
+                }
+            }
+
+            float costToMoveInto = float.MaxValue;
+            bool foundCost = false;
+            foreach (var potentialMovementCost in potentialMovementCosts)
+            {
+                if (potentialMovementCost.Cost < costToMoveInto)
+                {
+                    costToMoveInto = potentialMovementCost.Cost;
+                    foundCost = true;
+                }
+            }
+
+            if (!foundCost) throw new Exception($"No cost found for Terrain Type [{terrainType}], UnitTypeMovementTypes [{UnitTypeMovementTypes}].");
+
+            return costToMoveInto;
         }
 
         private void SetSeenCells(Point location)

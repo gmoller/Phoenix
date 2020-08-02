@@ -38,6 +38,12 @@ namespace GuiControls
         {
         }
 
+        protected Button(Button copyThis) : base(copyThis)
+        {
+        }
+
+        public override IControl Clone() { return new Button(this); }
+
         protected override void AfterUpdate(InputHandler input, float deltaTime, Matrix? transform = null)
         {
             Label?.Update(input, deltaTime);

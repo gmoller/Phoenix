@@ -11,7 +11,6 @@ namespace GuiControls
 {
     public abstract class Control : IControl
     {
-        //private Rectangle _originalScissorRectangle;
         private float _cooldownTimeInMilliseconds;
 
         private readonly string _textureNormal;
@@ -33,6 +32,11 @@ namespace GuiControls
 
         public string Name { get; protected set; }
 
+        public bool Enabled { get; set; }
+        public bool MouseOver { get; private set; }
+
+        public event EventHandler Click;
+
         public int Top => ActualDestinationRectangle.Top;
         public int Bottom => ActualDestinationRectangle.Bottom;
         public int Left => ActualDestinationRectangle.Left;
@@ -52,10 +56,9 @@ namespace GuiControls
         public int Height => ActualDestinationRectangle.Height;
         public Point Size => ActualDestinationRectangle.Size;
 
-        public bool Enabled { get; set; }
-        public bool MouseOver { get; private set; }
-
-        public event EventHandler Click;
+        private Control()
+        {
+        }
 
         protected Control(Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, string textureNormal, string textureActive, string textureHover, string textureDisabled, float layerDepth = 0.0f, IControl parent = null, string name = "")
         {
@@ -75,6 +78,33 @@ namespace GuiControls
             DetermineArea(position, positionAlignment, size);
 
             Enabled = true;
+        }
+
+        protected Control(Control copyThis) : this()
+        {
+            _cooldownTimeInMilliseconds = copyThis._cooldownTimeInMilliseconds;
+            _textureNormal = copyThis._textureNormal;
+            _textureActive = copyThis._textureActive;
+            _textureHover = copyThis._textureHover;
+            _textureDisabled = copyThis._textureDisabled;
+            Parent = copyThis.Parent;
+            TextureAtlas = copyThis.TextureAtlas;
+            TextureName = copyThis.TextureName;
+            Color = copyThis.Color;
+            LayerDepth = copyThis.LayerDepth;
+            Texture = copyThis.Texture;
+            ActualDestinationRectangle = copyThis.ActualDestinationRectangle;
+            SourceRectangle = copyThis.SourceRectangle;
+            Atlas = copyThis.Atlas;
+            Name = copyThis.Name;
+            Enabled = copyThis.Enabled;
+            MouseOver = copyThis.MouseOver;
+            Click = copyThis.Click;
+        }
+
+        public virtual IControl Clone()
+        {
+            return null;
         }
 
         public void SetTopLeftPosition(int x, int y)

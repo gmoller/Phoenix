@@ -80,6 +80,12 @@ namespace GuiControls
             _slots = slots;
         }
 
+        protected Frame(Frame copyThis) : base(copyThis)
+        {
+        }
+
+        public override IControl Clone() { return new Frame(this); }
+
         public override void LoadContent(ContentManager content)
         {
             Texture = AssetsManager.Instance.GetTexture(TextureAtlas);

@@ -1,21 +1,22 @@
 ﻿using System.Collections.Generic;
 using HexLibrary;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
 {
     public class MapSolver : AStarSearch<Point, Cost>
     {
+        private Unit _unit;
         private CellGrid _cellGrid;
         private Point _destination;
         private Dictionary<Point, Cost> _closedList;
 
         public Node? Solution { get; private set; }
 
-        public void Graph(CellGrid cellGrid, Point start, Point destination, PriorityQueue<Node> openList, Dictionary<Point, Cost> closedList)
+        public void Graph(Unit unit, CellGrid cellGrid, Point start, Point destination, PriorityQueue<Node> openList, Dictionary<Point, Cost> closedList)
         {
+            _unit = unit;
             _cellGrid = cellGrid;
             _closedList = closedList;
             _destination = destination;
@@ -39,11 +40,14 @@ namespace PhoenixGamePresentationLibrary
 
                 var cell = _cellGrid.GetCell(neighbor.Col, neighbor.Row);
                 if (cell.SeenState == SeenState.Never) continue;
-                var movementCost = Globals.Instance.TerrainTypes[cell.TerrainTypeId].MovementCosts["Walking"];
-                if (movementCost.Cost.AboutEquals(0.0f)) continue;
+
+                var canMoveInto = _unit.CanMoveInto(cell);
+                if (!canMoveInto) continue;
+
+                var movementCost = _unit.CostToMoveInto(cell);
 
                 var point = cell.ToPoint;
-                var distanceCost = node.Cost.DistanceTraveled + movementCost.Cost;
+                var distanceCost = node.Cost.DistanceTraveled + movementCost;
                 var cost = new Cost(parentIndex, (int)distanceCost, (int)distanceCost + GetDistance(point, _destination));
                 openList.Enqueue(new Node(point, cost));
             }

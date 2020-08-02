@@ -76,6 +76,12 @@ namespace GuiControls
         {
         }
 
+        protected Image(Image copyThis) : base(copyThis)
+        {
+        }
+
+        public override IControl Clone() { return new Image(this); }
+
         public override void LoadContent(ContentManager content)
         {
             base.LoadContent(content);

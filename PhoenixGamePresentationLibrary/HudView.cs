@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,7 +32,7 @@ namespace PhoenixGamePresentationLibrary
 
         private Frame _unitFrame;
         private Label _lblMoves;
-        private Image _imgMovementType; // UnitStackMovementType
+        private List<IControl> _imgMovementTypes;
         private Dictionary<string, Image> _movementTypeImages;
 
         private SpriteFont _font;
@@ -90,8 +91,6 @@ namespace PhoenixGamePresentationLibrary
             _lblMoves = new LabelAutoSized(_unitFrame.BottomLeft.ToVector2() + new Vector2(10.0f, -15.0f), Alignment.BottomLeft, string.Empty, "CrimsonText-Regular-12", Color.White); // , _unitFrame
             _lblMoves.LoadContent(content);
 
-            _imgMovementType = new Image(_unitFrame.BottomRight.ToVector2() + new Vector2(-12.0f, -20.0f), Alignment.BottomRight, new Vector2(18.0f, 12.0f), "MovementTypes", "Walking");
-            _imgMovementType.LoadContent(content);
             _movementTypeImages = LoadMovementTypeImages(content);
 
             var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
@@ -110,7 +109,7 @@ namespace PhoenixGamePresentationLibrary
 
         private Dictionary<string, Image> LoadMovementTypeImages(ContentManager content)
         {
-            var movementTypes = Globals.Instance.UnitStackMovementTypes;
+            var movementTypes = Globals.Instance.MovementTypes;
 
             var movementTypeImages = new Dictionary<string, Image>();
             foreach (var movementType in movementTypes)
@@ -148,8 +147,19 @@ namespace PhoenixGamePresentationLibrary
             _unitFrame.Update(input, deltaTime);
             _lblMoves.Update(input, deltaTime);
             _lblMoves.Text = $"Moves: {_unitsView.Moves}";
-            _imgMovementType = _movementTypeImages[_unitsView.MovementType];
-            _imgMovementType.Update(input, deltaTime);
+            _imgMovementTypes = new List<IControl>();
+            foreach (var movementType in _unitsView.First().MovementTypes)
+            {
+                var img = _movementTypeImages[movementType];
+                var imgMovementType = img.Clone();
+                imgMovementType.MoveTopLeftPosition(-19 * _imgMovementTypes.Count, 0);
+                _imgMovementTypes.Add(imgMovementType);
+            }
+
+            foreach (var imgMovementType in _imgMovementTypes)
+            {
+                imgMovementType.Update(input, deltaTime);
+            }
 
             _btnEndTurn.Update(input, deltaTime);
 
@@ -176,7 +186,10 @@ namespace PhoenixGamePresentationLibrary
             _unitFrame.Draw(spriteBatch);
             DrawSelectedUnits(spriteBatch);
             _lblMoves.Draw(spriteBatch);
-            _imgMovementType.Draw(spriteBatch);
+            foreach (var imgMovementType in _imgMovementTypes)
+            {
+                imgMovementType.Draw(spriteBatch);
+            }
 
             DrawNotifications(spriteBatch);
             DrawTileInfo(spriteBatch);

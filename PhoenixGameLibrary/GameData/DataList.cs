@@ -146,4 +146,79 @@ namespace PhoenixGameLibrary.GameData
 
         private string DebuggerDisplay => $"{{Count={_items.Count}}}";
     }
+
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
+    public class DataList2<T> : IEnumerable<T> where T : IIdentifiedById
+    {
+        private readonly List<T> _items;
+
+        private DataList2()
+        {
+            _items = new List<T>();
+        }
+
+        private DataList2(List<T> items)
+        {
+            _items = new List<T>();
+            foreach (var item in items)
+            {
+                _items.Add(item);
+            }
+        }
+
+        public static DataList2<T> Create()
+        {
+            return new DataList2<T>();
+        }
+
+        public static DataList2<T> Create(List<T> items)
+        {
+            return new DataList2<T>(items);
+        }
+
+        public static DataList2<T> Create(IEnumerable<T> items)
+        {
+            return new DataList2<T>(items.ToList());
+        }
+
+        public int Count => _items.Count;
+
+        public T this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= _items.Count)
+                {
+                    throw new IndexOutOfRangeException($"Index out of range. Item with index [{index}] not found.");
+                }
+
+                return _items[index];
+            }
+        }
+
+        public void Add(T item)
+        {
+            _items.Add(item);
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            foreach (var item in _items)
+            {
+                yield return item;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Count={_items.Count}}}";
+    }
 }

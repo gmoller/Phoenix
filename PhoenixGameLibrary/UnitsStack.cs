@@ -1,15 +1,20 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
+using System.Collections.Generic;
+using System.Diagnostics;
+using PhoenixGameLibrary.GameData;
 
 namespace PhoenixGameLibrary
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class UnitsStack
     {
         private readonly Units _units;
+        private readonly TerrainType _terrainType;
 
-        public UnitsStack(Units units)
+        public UnitsStack(Units units, TerrainType terrainType)
         {
             _units = units;
+            _terrainType = terrainType;
 
             foreach (var unit in units)
             {
@@ -18,7 +23,7 @@ namespace PhoenixGameLibrary
         }
 
         public float GetMoves => DetermineMoves();
-        public string MovementTypeName => DetermineMovementType();
+        public List<string> MovementTypeName => DetermineMovementType(_terrainType);
 
         private float DetermineMoves()
         {
@@ -31,14 +36,15 @@ namespace PhoenixGameLibrary
             return moves;
         }
 
-        private string DetermineMovementType()
+        private List<string> DetermineMovementType(TerrainType terrainType)
         {
-            if (IsSwimming(_units)) return "Swimming";
-            if (IsFlying(_units)) return "Flying"; // if every unit has flying
-            if (IsSailing(_units)) return "Sailing";
+            var movementTypes = new List<string> { "Walking" };
 
-            // or the stack is walking
-            return "Walking";
+            if (IsSwimming(_units)) movementTypes.Add("Swimming");
+            if (IsFlying(_units)) movementTypes.Add("Flying"); // if every unit has flying
+            if (IsSailing(_units)) movementTypes.Add("Sailing");
+
+            return movementTypes;
         }
 
         private bool IsSwimming(Units units)
@@ -48,7 +54,7 @@ namespace PhoenixGameLibrary
             var swimming = false;
             foreach (var unit in units)
             {
-                swimming = unit.UnitTypeMoves.Contains("Water")  || unit.UnitTypeMoves.Contains("Air");
+                swimming = unit.UnitTypeMovementTypes.Contains("Swimming")  || unit.UnitTypeMovementTypes.Contains("Flying");
                 if (!swimming) break;
             }
 
@@ -62,7 +68,7 @@ namespace PhoenixGameLibrary
             var flying = false;
             foreach (var unit in units)
             {
-                flying = unit.UnitTypeMoves.Contains("Air");
+                flying = unit.UnitTypeMovementTypes.Contains("Flying");
                 if (!flying) break;
             }
 
@@ -79,5 +85,12 @@ namespace PhoenixGameLibrary
 
             return sailing;
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Count={_units.Count}}}";
     }
 }

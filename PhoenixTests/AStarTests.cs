@@ -17,7 +17,7 @@ namespace PhoenixTests
             var closedList = new Dictionary<Point, Cost>();
 
             var cellGrid = new CellGrid(60, 40);
-            mapSolver.Graph(cellGrid, new Point(0, 0), new Point(1, 2), openList, closedList);
+            mapSolver.Graph(null, cellGrid, new Point(0, 0), new Point(1, 2), openList, closedList);
 
             if (mapSolver.Solution.HasValue)
             {
@@ -49,7 +49,7 @@ namespace PhoenixTests
             var closedList = new Dictionary<Point, Cost>();
 
             var cellGrid = new CellGrid(60, 40);
-            mapSolver.Graph(cellGrid, new Point(0, 0), new Point(6, 0), openList, closedList);
+            mapSolver.Graph(null, cellGrid, new Point(0, 0), new Point(6, 0), openList, closedList);
 
             if (mapSolver.Solution.HasValue)
             {
@@ -85,7 +85,7 @@ namespace PhoenixTests
             var closedList = new Dictionary<Point, Cost>();
 
             var cellGrid = new CellGrid(60, 40);
-            mapSolver.Graph(cellGrid, new Point(12, 9), new Point(13, 7), openList, closedList);
+            mapSolver.Graph(null, cellGrid, new Point(12, 9), new Point(13, 7), openList, closedList);
 
             if (mapSolver.Solution.HasValue)
             {

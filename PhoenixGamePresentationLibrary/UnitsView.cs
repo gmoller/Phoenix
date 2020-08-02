@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Input;
 using PhoenixGameLibrary;
+using PhoenixGameLibrary.GameData;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -19,7 +20,7 @@ namespace PhoenixGamePresentationLibrary
         private Dictionary<Guid, UnitView> _unitViews;
 
         public float Moves => _unitsStack.GetMoves;
-        public string MovementType => _unitsStack.MovementTypeName;
+        public List<string> MovementType => _unitsStack.MovementTypeName;
 
         public UnitsView(WorldView worldView)
         {
@@ -34,7 +35,10 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Refresh(Units units)
         {
-            _unitsStack = new UnitsStack(units);
+            var u = units[0]; // TODO: fix this
+            var cell = Globals.Instance.World.OverlandMap.CellGrid.GetCell(u.Location);
+            var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
+            _unitsStack = new UnitsStack(units, terrainType);
 
             _unitViews = new Dictionary<Guid, UnitView>();
             foreach (var unit in units)

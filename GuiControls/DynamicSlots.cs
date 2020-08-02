@@ -49,6 +49,12 @@ namespace GuiControls
             _labels = labels;
         }
 
+        protected DynamicSlots(DynamicSlots copyThis) : base(copyThis)
+        {
+        }
+
+        public override IControl Clone() { return new DynamicSlots(this); }
+
         public override void LoadContent(ContentManager content)
         {
             var startX = TopLeft.X + _slotPadding;
@@ -133,6 +139,12 @@ namespace GuiControls
                 "")
         {
         }
+
+        protected Slot(Slot copyThis) : base(copyThis)
+        {
+        }
+
+        public override IControl Clone() { return new Slot(this); }
 
         protected override void InDraw(SpriteBatch spriteBatch)
         {

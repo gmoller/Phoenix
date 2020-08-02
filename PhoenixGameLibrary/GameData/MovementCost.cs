@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -7,14 +8,14 @@ namespace PhoenixGameLibrary.GameData
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct MovementCost
     {
-        private readonly string _unitStackMovementType;
+        private readonly string _movementType;
 
-        public UnitStackMovementType UnitStackMovementType => Globals.Instance.UnitStackMovementTypes[_unitStackMovementType];
+        public MovementType MovementType => Globals.Instance.MovementTypes[_movementType];
         public float Cost { get; set; }
 
-        public MovementCost(string unitStackMovementType, float cost)
+        public MovementCost(string movementType, float cost)
         {
-            _unitStackMovementType = unitStackMovementType;
+            _movementType = movementType;
             Cost = cost;
         }
 
@@ -23,11 +24,11 @@ namespace PhoenixGameLibrary.GameData
             return DebuggerDisplay;
         }
 
-        private string DebuggerDisplay => $"{{UnitStackMovementType={_unitStackMovementType},Cost={Cost}}}";
+        private string DebuggerDisplay => $"{{MovementType={_movementType},Cost={Cost}}}";
     }
 
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class MovementCosts
+    public class MovementCosts : IEnumerable<MovementCost>
     {
         private readonly List<MovementCost> _movementCosts;
 
@@ -40,19 +41,19 @@ namespace PhoenixGameLibrary.GameData
             }
         }
 
-        public MovementCost this[string unitStackMovementTypeName]
+        public MovementCost this[string movementTypeName]
         {
             get
             {
                 foreach (var item in _movementCosts)
                 {
-                    if (item.UnitStackMovementType.Name == unitStackMovementTypeName)
+                    if (item.MovementType.Name == movementTypeName)
                     {
                         return item;
                     }
                 }
 
-                throw new Exception($"Item {unitStackMovementTypeName} not found in _movementCosts");
+                throw new Exception($"Item {movementTypeName} not found in _movementCosts");
             }
         }
 
@@ -62,5 +63,18 @@ namespace PhoenixGameLibrary.GameData
         }
 
         private string DebuggerDisplay => $"{{Count={_movementCosts.Count}}}";
+
+        public IEnumerator<MovementCost> GetEnumerator()
+        {
+            foreach (var item in _movementCosts)
+            {
+                yield return item;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

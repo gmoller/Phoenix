@@ -20,8 +20,7 @@ namespace PhoenixGameLibrary.GameData
         public DataList<BuildingMaximumPopulationIncreaseType> BuildingMaximumPopulationIncreaseTypes { get; }
         public DataList<BuildingFoodOutputIncreaseType> BuildingFoodOutputIncreaseTypes { get; }
 
-        public NamedDataList<MoveType> MoveTypes { get; }
-        public NamedDataList<UnitStackMovementType> UnitStackMovementTypes { get; }
+        public NamedDataList<MovementType> MovementTypes { get; }
         //public MineralTypes MineralTypes { get; }
         public NamedDataList<UnitType> UnitTypes { get; }
         public NamedDataList<ActionType> ActionTypes { get; }
@@ -42,8 +41,7 @@ namespace PhoenixGameLibrary.GameData
             BuildingMaximumPopulationIncreaseTypes = DataList<BuildingMaximumPopulationIncreaseType>.Create(BuildingMaximumPopulationIncreaseTypesLoader.Load());
             BuildingFoodOutputIncreaseTypes = DataList<BuildingFoodOutputIncreaseType>.Create(BuildingFoodOutputIncreaseTypesLoader.Load());
 
-            MoveTypes = NamedDataList<MoveType>.Create(MoveTypesLoader.Load());
-            UnitStackMovementTypes = NamedDataList<UnitStackMovementType>.Create(MovementTypesLoader.Load());
+            MovementTypes = NamedDataList<MovementType>.Create(MovementTypesLoader.Load());
             //MineralTypes = MineralTypes.Create(MineralTypesLoader.GetMineralTypes());
             UnitTypes = NamedDataList<UnitType>.Create(UnitTypesLoader.Load());
             ActionTypes = NamedDataList<ActionType>.Create(ActionTypesLoader.Load());

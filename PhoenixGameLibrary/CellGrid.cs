@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using HexLibrary;
+using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -19,13 +20,18 @@ namespace PhoenixGameLibrary
             NumberOfColumns = numberOfColumns;
             NumberOfRows = numberOfRows;
             _cellGrid = new Cell[numberOfColumns, numberOfRows];
-            for (int r = 0; r < numberOfRows; ++r)
+            for (var r = 0; r < numberOfRows; ++r)
             {
-                for (int q = 0; q < numberOfColumns; ++q)
+                for (var q = 0; q < numberOfColumns; ++q)
                 {
                     _cellGrid[q, r] = new Cell(q, r, map[q, r]);
                 }
             }
+        }
+
+        public Cell GetCell(Point location)
+        {
+            return GetCell(location.X, location.Y);
         }
 
         public Cell GetCell(int column, int row)
