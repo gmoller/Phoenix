@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -33,7 +34,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class BuildingFoodOutputIncreaseTypesLoader
     {
-        public static DataList<BuildingFoodOutputIncreaseType> Load()
+        public static DataDictionary<BuildingFoodOutputIncreaseType> Load()
         {
             var buildingFoodOutputIncreaseTypes = new List<BuildingFoodOutputIncreaseType>
             {
@@ -42,7 +43,7 @@ namespace PhoenixGameLibrary.GameData
                 BuildingFoodOutputIncreaseType.Create(28, 2.0f)
             };
 
-            return DataList<BuildingFoodOutputIncreaseType>.Create(buildingFoodOutputIncreaseTypes);
+            return DataDictionary<BuildingFoodOutputIncreaseType>.Create(buildingFoodOutputIncreaseTypes);
         }
     }
 }

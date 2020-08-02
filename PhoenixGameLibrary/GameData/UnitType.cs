@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -70,7 +71,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class UnitTypesLoader
     {
-        public static NamedDataList<UnitType> Load()
+        public static NamedDataDictionary<UnitType> Load()
         {
             var unitTypes = new List<UnitType>
             {
@@ -95,7 +96,7 @@ namespace PhoenixGameLibrary.GameData
                 UnitType.Create(100, "Test Dude", "Test", 1.0f, 4.0f, new List<string> { "Walking", "Swimming", "Flying", "Sailing", "Forester", "Mountaineer", "Pathfinding" }, "Unit_Icon_Griffins_Transparent", new List<string> { "Barbarians" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
             };
 
-            return NamedDataList<UnitType>.Create(unitTypes);
+            return NamedDataDictionary<UnitType>.Create(unitTypes);
         }
     }
 }

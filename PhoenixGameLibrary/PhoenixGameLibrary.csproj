@@ -51,9 +51,7 @@
     <Compile Include="GameData\BuildingMaximumPopulationIncreaseType.cs" />
     <Compile Include="GameData\BuildingPopulationGrowthType.cs" />
     <Compile Include="GameData\BuildingType.cs" />
-    <Compile Include="GameData\DataList.cs" />
     <Compile Include="GameData\Globals.cs" />
-    <Compile Include="GameData\IIdentifiedById.cs" />
     <Compile Include="GameData\MovementCost.cs" />
     <Compile Include="GameData\MovementType.cs" />
     <Compile Include="GameData\RaceType.cs" />

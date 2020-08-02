@@ -17,8 +17,8 @@ namespace PhoenixGameLibrary.GameData
         public float UpkeepGold { get; }
         public float UpkeepMana { get; }
 
-        private List<string> _whichRacesCanNotBuild;
-        private List<string> _dependsOnBuildings;
+        private readonly List<string> _whichRacesCanNotBuild;
+        private readonly List<string> _dependsOnBuildings;
 
         private BuildingType(int id, string name, float constructionCost, float upkeepGold, float upkeepMana, List<string> whichRacesCanNotBuild, List<string> dependsOnBuildings, Point slot)
         {
@@ -75,7 +75,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class BuildingTypesLoader
     {
-        public static NamedDataList<BuildingType> Load()
+        public static NamedDataDictionary<BuildingType> Load()
         {
             var buildingTypes = new List<BuildingType>
             {
@@ -114,7 +114,7 @@ namespace PhoenixGameLibrary.GameData
                 BuildingType.Create(32, "City Walls", 150.0f, 2.0f, 0.0f, new List<string>(), new List<string> { "Builders Hall" }, new Point(4, 4)), // sight range 3
             };
 
-            return NamedDataList<BuildingType>.Create(buildingTypes);
+            return NamedDataDictionary<BuildingType>.Create(buildingTypes);
         }
     }
 }

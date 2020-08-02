@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -43,7 +44,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class RaceTypesLoader
     {
-        public static NamedDataList<RaceType> Load()
+        public static NamedDataDictionary<RaceType> Load()
         {
             var raceTypes = new List<RaceType>
             {
@@ -63,7 +64,7 @@ namespace PhoenixGameLibrary.GameData
                 RaceType.Create(13, "Trolls", 2.0f, -20, 2.0f, 0.5f)
             };
 
-            return NamedDataList<RaceType>.Create(raceTypes);
+            return NamedDataDictionary<RaceType>.Create(raceTypes);
         }
     }
 }

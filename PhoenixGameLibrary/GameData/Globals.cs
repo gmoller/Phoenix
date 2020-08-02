@@ -1,4 +1,5 @@
 ﻿using System;
+using Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -8,43 +9,43 @@ namespace PhoenixGameLibrary.GameData
 
         public World World { get; set; }
 
-        public NamedDataList<TerrainType> TerrainTypes { get; }
-        public DataList<TerrainFoodOutputType> TerrainFoodOutputTypes { get; }
-        public DataList<TerrainProductionPercentageType> TerrainProductionPercentageTypes { get; }
-        public DataList<TerrainCanSettleOnType> TerrainCanSettleOnTypes { get; }
+        public NamedDataDictionary<TerrainType> TerrainTypes { get; }
+        public DataDictionary<TerrainFoodOutputType> TerrainFoodOutputTypes { get; }
+        public DataDictionary<TerrainProductionPercentageType> TerrainProductionPercentageTypes { get; }
+        public DataDictionary<TerrainCanSettleOnType> TerrainCanSettleOnTypes { get; }
 
-        public NamedDataList<RaceType> RaceTypes { get; }
+        public NamedDataDictionary<RaceType> RaceTypes { get; }
 
-        public NamedDataList<BuildingType> BuildingTypes { get; }
-        public DataList<BuildingPopulationGrowthType> BuildingPopulationGrowthTypes { get; }
-        public DataList<BuildingMaximumPopulationIncreaseType> BuildingMaximumPopulationIncreaseTypes { get; }
-        public DataList<BuildingFoodOutputIncreaseType> BuildingFoodOutputIncreaseTypes { get; }
+        public NamedDataDictionary<BuildingType> BuildingTypes { get; }
+        public DataDictionary<BuildingPopulationGrowthType> BuildingPopulationGrowthTypes { get; }
+        public DataDictionary<BuildingMaximumPopulationIncreaseType> BuildingMaximumPopulationIncreaseTypes { get; }
+        public DataDictionary<BuildingFoodOutputIncreaseType> BuildingFoodOutputIncreaseTypes { get; }
 
-        public NamedDataList<MovementType> MovementTypes { get; }
+        public NamedDataDictionary<MovementType> MovementTypes { get; }
         //public MineralTypes MineralTypes { get; }
-        public NamedDataList<UnitType> UnitTypes { get; }
-        public NamedDataList<ActionType> ActionTypes { get; }
+        public NamedDataDictionary<UnitType> UnitTypes { get; }
+        public NamedDataDictionary<ActionType> ActionTypes { get; }
 
         public static Globals Instance => Lazy.Value;
 
         private Globals()
         {
-            TerrainTypes = NamedDataList<TerrainType>.Create(TerrainTypesLoader.Load());
-            TerrainFoodOutputTypes = DataList<TerrainFoodOutputType>.Create(TerrainFoodOutputTypesLoader.Load());
-            TerrainProductionPercentageTypes = DataList<TerrainProductionPercentageType>.Create(TerrainProductionPercentageTypesLoader.Load());
-            TerrainCanSettleOnTypes = DataList<TerrainCanSettleOnType>.Create(TerrainCanSettleOnTypesLoader.Load());
+            TerrainTypes = NamedDataDictionary<TerrainType>.Create(TerrainTypesLoader.Load());
+            TerrainFoodOutputTypes = DataDictionary<TerrainFoodOutputType>.Create(TerrainFoodOutputTypesLoader.Load());
+            TerrainProductionPercentageTypes = DataDictionary<TerrainProductionPercentageType>.Create(TerrainProductionPercentageTypesLoader.Load());
+            TerrainCanSettleOnTypes = DataDictionary<TerrainCanSettleOnType>.Create(TerrainCanSettleOnTypesLoader.Load());
 
-            RaceTypes = NamedDataList<RaceType>.Create(RaceTypesLoader.Load());
+            RaceTypes = NamedDataDictionary<RaceType>.Create(RaceTypesLoader.Load());
 
-            BuildingTypes = NamedDataList<BuildingType>.Create(BuildingTypesLoader.Load());
-            BuildingPopulationGrowthTypes = DataList<BuildingPopulationGrowthType>.Create(BuildingPopulationGrowthTypesLoader.Load());
-            BuildingMaximumPopulationIncreaseTypes = DataList<BuildingMaximumPopulationIncreaseType>.Create(BuildingMaximumPopulationIncreaseTypesLoader.Load());
-            BuildingFoodOutputIncreaseTypes = DataList<BuildingFoodOutputIncreaseType>.Create(BuildingFoodOutputIncreaseTypesLoader.Load());
+            BuildingTypes = NamedDataDictionary<BuildingType>.Create(BuildingTypesLoader.Load());
+            BuildingPopulationGrowthTypes = DataDictionary<BuildingPopulationGrowthType>.Create(BuildingPopulationGrowthTypesLoader.Load());
+            BuildingMaximumPopulationIncreaseTypes = DataDictionary<BuildingMaximumPopulationIncreaseType>.Create(BuildingMaximumPopulationIncreaseTypesLoader.Load());
+            BuildingFoodOutputIncreaseTypes = DataDictionary<BuildingFoodOutputIncreaseType>.Create(BuildingFoodOutputIncreaseTypesLoader.Load());
 
-            MovementTypes = NamedDataList<MovementType>.Create(MovementTypesLoader.Load());
+            MovementTypes = NamedDataDictionary<MovementType>.Create(MovementTypesLoader.Load());
             //MineralTypes = MineralTypes.Create(MineralTypesLoader.GetMineralTypes());
-            UnitTypes = NamedDataList<UnitType>.Create(UnitTypesLoader.Load());
-            ActionTypes = NamedDataList<ActionType>.Create(ActionTypesLoader.Load());
+            UnitTypes = NamedDataDictionary<UnitType>.Create(UnitTypesLoader.Load());
+            ActionTypes = NamedDataDictionary<ActionType>.Create(ActionTypesLoader.Load());
         }
     }
 }

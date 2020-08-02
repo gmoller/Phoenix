@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -33,7 +34,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class MovementTypesLoader
     {
-        public static NamedDataList<MovementType> Load()
+        public static NamedDataDictionary<MovementType> Load()
         {
             var movementTypes = new List<MovementType>
             {
@@ -47,7 +48,7 @@ namespace PhoenixGameLibrary.GameData
                 MovementType.Create(7, "PlaneShift")
             };
 
-            return NamedDataList<MovementType>.Create(movementTypes);
+            return NamedDataDictionary<MovementType>.Create(movementTypes);
         }
     }
 }

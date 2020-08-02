@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -33,7 +34,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class TerrainProductionPercentageTypesLoader
     {
-        public static DataList<TerrainProductionPercentageType> Load()
+        public static DataDictionary<TerrainProductionPercentageType> Load()
         {
             var terrainProductionPercentageTypes = new List<TerrainProductionPercentageType>
             {
@@ -43,7 +44,7 @@ namespace PhoenixGameLibrary.GameData
                 TerrainProductionPercentageType.Create(7, 5.0f)
             };
 
-            return DataList<TerrainProductionPercentageType>.Create(terrainProductionPercentageTypes);
+            return DataDictionary<TerrainProductionPercentageType>.Create(terrainProductionPercentageTypes);
         }
     }
 }

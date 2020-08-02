@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -33,7 +34,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class BuildingMaximumPopulationIncreaseTypesLoader
     {
-        public static DataList<BuildingMaximumPopulationIncreaseType> Load()
+        public static DataDictionary<BuildingMaximumPopulationIncreaseType> Load()
         {
             var buildingMaximumPopulationIncreaseTypes = new List<BuildingMaximumPopulationIncreaseType>
             {
@@ -41,7 +42,7 @@ namespace PhoenixGameLibrary.GameData
                 BuildingMaximumPopulationIncreaseType.Create(27, 3)
             };
 
-            return DataList<BuildingMaximumPopulationIncreaseType>.Create(buildingMaximumPopulationIncreaseTypes);
+            return DataDictionary<BuildingMaximumPopulationIncreaseType>.Create(buildingMaximumPopulationIncreaseTypes);
         }
     }
 }

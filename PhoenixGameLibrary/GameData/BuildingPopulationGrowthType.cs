@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -33,7 +34,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class BuildingPopulationGrowthTypesLoader
     {
-        public static DataList<BuildingPopulationGrowthType> Load()
+        public static DataDictionary<BuildingPopulationGrowthType> Load()
         {
             var buildingPopulationGrowthTypes = new List<BuildingPopulationGrowthType>
             {
@@ -41,7 +42,7 @@ namespace PhoenixGameLibrary.GameData
                 BuildingPopulationGrowthType.Create(27, 30)
             };
 
-            return DataList<BuildingPopulationGrowthType>.Create(buildingPopulationGrowthTypes);
+            return DataDictionary<BuildingPopulationGrowthType>.Create(buildingPopulationGrowthTypes);
         }
     }
 }

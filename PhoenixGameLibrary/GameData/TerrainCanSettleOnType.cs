@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -31,7 +32,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class TerrainCanSettleOnTypesLoader
     {
-        public static DataList<TerrainCanSettleOnType> Load()
+        public static DataDictionary<TerrainCanSettleOnType> Load()
         {
             var terrainCanSettleOnTypes = new List<TerrainCanSettleOnType>
             {
@@ -44,7 +45,7 @@ namespace PhoenixGameLibrary.GameData
                 TerrainCanSettleOnType.Create(9)
             };
 
-            return DataList<TerrainCanSettleOnType>.Create(terrainCanSettleOnTypes);
+            return DataDictionary<TerrainCanSettleOnType>.Create(terrainCanSettleOnTypes);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -35,7 +36,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class ActionTypesLoader
     {
-        public static NamedDataList<ActionType> Load()
+        public static NamedDataDictionary<ActionType> Load()
         {
             var actionTypes = new List<ActionType>
             {
@@ -46,7 +47,7 @@ namespace PhoenixGameLibrary.GameData
                 ActionType.Create(4, "Purify", "Purify"),
             };
 
-            return NamedDataList<ActionType>.Create(actionTypes);
+            return NamedDataDictionary<ActionType>.Create(actionTypes);
         }
     }
 }

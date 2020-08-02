@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -33,7 +34,7 @@ namespace PhoenixGameLibrary.GameData
 
     public static class TerrainFoodOutputTypesLoader
     {
-        public static DataList<TerrainFoodOutputType> Load()
+        public static DataDictionary<TerrainFoodOutputType> Load()
         {
             var terrainFoodOutputTypes = new List<TerrainFoodOutputType>
             {
@@ -42,7 +43,7 @@ namespace PhoenixGameLibrary.GameData
                 TerrainFoodOutputType.Create(6, 0.5f)
             };
 
-            return DataList<TerrainFoodOutputType>.Create(terrainFoodOutputTypes);
+            return DataDictionary<TerrainFoodOutputType>.Create(terrainFoodOutputTypes);
         }
     }
 }
