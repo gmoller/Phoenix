@@ -87,6 +87,8 @@ namespace PhoenixGameLibrary
 
         public (bool canMoveInto, float costToMoveInto) CostToMoveInto(Cell cell)
         {
+            if (cell.SeenState == SeenState.Never) return (false, 0.0f);
+
             var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
 
             return CostToMoveInto(terrainType);

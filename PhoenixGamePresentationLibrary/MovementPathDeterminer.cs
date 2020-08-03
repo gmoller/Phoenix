@@ -14,7 +14,8 @@ namespace PhoenixGamePresentationLibrary
             var mapSolver = new MapSolver();
             var openList = new PriorityQueue<AStarSearch<Point, Cost>.Node>();
             var closedList = new Dictionary<Point, Cost>();
-            mapSolver.Graph(unit, Globals.Instance.World.OverlandMap.CellGrid, from, to, openList, closedList);
+            var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
+            mapSolver.Graph(unit, new Point(cellGrid.NumberOfColumns, cellGrid.NumberOfRows), from, to, openList, closedList);
             if (mapSolver.Solution.HasValue)
             {
                 var pos = mapSolver.Solution.Value.Position;
