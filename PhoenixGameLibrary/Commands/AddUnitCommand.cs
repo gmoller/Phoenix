@@ -14,7 +14,7 @@ namespace PhoenixGameLibrary.Commands
             var stacks = payload.stacks;
 
             var units = new Units();
-            units.AddUnit(unitType, position);
+            units.AddUnit(Globals.Instance.World, unitType, position);
             var cell = Globals.Instance.World.OverlandMap.CellGrid.GetCell(position.X, position.Y);
             var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
             var newStack = new UnitsStack(units, terrainType);

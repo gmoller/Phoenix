@@ -38,9 +38,9 @@ namespace PhoenixGamePresentationLibrary
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
             var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.Never) return (false, new Point(0, 0));
-            var canMoveInto = unit.CanMoveInto(cellToMoveTo);
+            var canMoveInto = unit.CostToMoveInto(cellToMoveTo);
 
-            return (canMoveInto, hexToMoveTo);
+            return (canMoveInto.canMoveInto, hexToMoveTo);
         }
     }
 }

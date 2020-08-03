@@ -41,13 +41,11 @@ namespace PhoenixGamePresentationLibrary
                 var cell = _cellGrid.GetCell(neighbor.Col, neighbor.Row);
                 if (cell.SeenState == SeenState.Never) continue;
 
-                var canMoveInto = _unit.CanMoveInto(cell);
-                if (!canMoveInto) continue;
-
-                var movementCost = _unit.CostToMoveInto(cell);
+                var canMoveInto = _unit.CostToMoveInto(cell);
+                if (!canMoveInto.canMoveInto) continue;
 
                 var point = cell.ToPoint;
-                var distanceCost = node.Cost.DistanceTraveled + movementCost;
+                var distanceCost = node.Cost.DistanceTraveled + canMoveInto.costToMoveInto;
                 var cost = new Cost(parentIndex, (int)distanceCost, (int)distanceCost + GetDistance(point, _destination));
                 openList.Enqueue(new Node(point, cost));
             }

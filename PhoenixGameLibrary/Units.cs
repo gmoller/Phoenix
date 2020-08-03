@@ -20,9 +20,9 @@ namespace PhoenixGameLibrary
             _units = new List<Unit>();
         }
 
-        internal void AddUnit(UnitType unitType, Point point)
+        internal void AddUnit(World world, UnitType unitType, Point point)
         {
-            var unit = new Unit(unitType, point);
+            var unit = new Unit(world, unitType, point);
             _units.Add(unit);
         }
 

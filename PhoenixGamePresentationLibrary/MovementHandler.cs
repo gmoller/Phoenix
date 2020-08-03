@@ -71,9 +71,9 @@ namespace PhoenixGamePresentationLibrary
             var neighbor = HexOffsetCoordinates.GetNeighbor(unitsStackView.Location.X, unitsStackView.Location.Y, direction);
             var hexToMoveTo = new Point(neighbor.Col, neighbor.Row);
 
-            var canMoveInto = unitsStackView.FirstUnit.CanMoveInto(hexToMoveTo); // TODO: fix this, make work on stack
+            var canMoveInto = unitsStackView.FirstUnit.CostToMoveInto(hexToMoveTo); // TODO: fix this, make work on stack
 
-            return canMoveInto ? (true, hexToMoveTo) : (false, new Point(0, 0));
+            return canMoveInto.canMoveInto ? (true, hexToMoveTo) : (false, new Point(0, 0));
         }
 
         private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input, UnitsStackView unitsStackView)
@@ -85,9 +85,9 @@ namespace PhoenixGamePresentationLibrary
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.Never) return (false, new Point(0, 0));
 
-            var canMoveInto = unitsStackView.FirstUnit.CanMoveInto(cellToMoveTo);
+            var canMoveInto = unitsStackView.FirstUnit.CostToMoveInto(cellToMoveTo);
 
-            return canMoveInto ? (true, hexToMoveTo) : (false, new Point(0, 0));
+            return canMoveInto.canMoveInto ? (true, hexToMoveTo) : (false, new Point(0, 0));
         }
 
         private Direction DetermineDirection(InputHandler input)
