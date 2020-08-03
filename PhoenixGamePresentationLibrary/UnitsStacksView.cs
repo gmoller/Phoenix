@@ -13,7 +13,22 @@ namespace PhoenixGamePresentationLibrary
         private readonly UnitsStacks _unitsStacks;
         private readonly List<UnitsStackView> _unitsStackViews;
 
-        internal UnitsStacksView(UnitsStacks unitsStacks, WorldView worldView)
+        public UnitsStackView Selected
+        {
+            get
+            {
+                foreach (var unitsStackView in _unitsStackViews)
+                {
+                    if (unitsStackView.IsSelected) return unitsStackView;
+                }
+
+                return null;
+            }
+        }
+
+        public UnitsStackView this[int index] => _unitsStackViews[index];
+
+        internal UnitsStacksView(WorldView worldView, UnitsStacks unitsStacks)
         {
             _worldView = worldView;
             _unitsStacks = unitsStacks;

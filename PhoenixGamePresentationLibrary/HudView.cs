@@ -39,9 +39,9 @@ namespace PhoenixGamePresentationLibrary
         private Button _btnEndTurn;
         private Label _test;
 
-        private readonly UnitsStackView _unitsStackView;
+        private readonly UnitsStacksView _unitsStacksView;
 
-        internal HudView(WorldView worldView, UnitsStackView unitsStackView)
+        internal HudView(WorldView worldView, UnitsStacksView unitsStacksView)
         {
             var width = (int)(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.1305f); // 13.05% of screen width
             var height = (int)(DeviceManager.Instance.GraphicsDevice.Viewport.Height * 0.945f); // 94.5% of screen height
@@ -50,7 +50,7 @@ namespace PhoenixGamePresentationLibrary
             _area = new Rectangle(x, y, width, height); // 250x1020
 
             _worldView = worldView;
-            _unitsStackView = unitsStackView;
+            _unitsStacksView = unitsStacksView;
 
             _movementTypeImages = new Dictionary<string, Image>();
         }
@@ -145,9 +145,9 @@ namespace PhoenixGamePresentationLibrary
 
             _unitFrame.Update(input, deltaTime);
             _lblMoves.Update(input, deltaTime);
-            _lblMoves.Text = $"Moves: {_unitsStackView.MovementPoints}";
+            _lblMoves.Text = $"Moves: {_unitsStacksView.Selected.MovementPoints}";
             _imgMovementTypes = new List<IControl>();
-            foreach (var movementType in _unitsStackView.MovementTypes)
+            foreach (var movementType in _unitsStacksView.Selected.MovementTypes)
             {
                 var img = _movementTypeImages[movementType];
                 var imgMovementType = img.Clone();
@@ -215,25 +215,10 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawSelectedUnits(SpriteBatch spriteBatch)
         {
-            var startX = _area.X + 10.0f;
-            var startY = _area.Y + _area.Height / 2.0f;
-            var x = startX;
-            var y = startY;
+            var x = _area.X + 10.0f;
+            var y = _area.Y + _area.Height / 2.0f;
 
-            _unitsStackView.DrawBadge(spriteBatch, new Vector2(x, y));
-            //foreach (var unitView in _unitsStackView)
-            //{
-            //    if (unitView.IsSelected)
-            //    {
-            //        unitView.DrawBadge(spriteBatch, new Vector2(x, y));
-            //        x += 75.0f;
-            //        if (x > startX + 150.0f)
-            //        {
-            //            x = startX;
-            //            y += 75.0f;
-            //        }
-            //    }
-            //}
+            _unitsStacksView.Selected.DrawBadges(spriteBatch, new Vector2(x, y));
         }
 
         private void DrawTileInfo(SpriteBatch spriteBatch)

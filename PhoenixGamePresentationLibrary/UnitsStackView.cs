@@ -159,9 +159,9 @@ namespace PhoenixGamePresentationLibrary
             spriteBatch.Draw(_guiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
 
             // draw unit icon
+            destinationRectangle = new Rectangle((int)position.X, (int)position.Y, 36, 32);
             var frame = _unitAtlas.Frames[FirstUnit.UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
-            destinationRectangle = new Rectangle((int)position.X, (int)position.Y, 36, 32);
             spriteBatch.Draw(_unitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
 
@@ -174,16 +174,34 @@ namespace PhoenixGamePresentationLibrary
             }
         }
 
-        internal void DrawBadge(SpriteBatch spriteBatch, Vector2 topLeftPosition)
+        internal void DrawBadges(SpriteBatch spriteBatch, Vector2 topLeftPosition)
         {
-            var firstUnit = FirstUnit;
+            var x = topLeftPosition.X;
+            var y = topLeftPosition.Y;
 
-            var destinationRectangle = new Rectangle((int)topLeftPosition.X, (int)topLeftPosition.Y, 70, 70);
+            var firstUnit = FirstUnit;
+            foreach (var unit in _unitsStack)
+            {
+                DrawBadge(spriteBatch, new Vector2(x, y), unit);
+                x += 75.0f;
+                if (x > topLeftPosition.X + 150.0f)
+                {
+                    x = topLeftPosition.X;
+                    y += 75.0f;
+                }
+            }
+        }
+
+        private void DrawBadge(SpriteBatch spriteBatch, Vector2 topLeftPosition, Unit unit)
+        {
+            // draw background
+            var destinationRectangle = new Rectangle((int)topLeftPosition.X, (int)topLeftPosition.Y, 60, 60);
             var sourceRectangle = _slotFrame.ToRectangle();
             spriteBatch.Draw(_guiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.0f);
 
-            destinationRectangle = new Rectangle((int)topLeftPosition.X + 10, (int)topLeftPosition.Y + 10, 50, 50);
-            var frame = _unitAtlas.Frames[firstUnit.UnitTypeTextureName];
+            // draw unit icon
+            destinationRectangle = new Rectangle((int)topLeftPosition.X + 10, (int)topLeftPosition.Y + 10, 36, 32);
+            var frame = _unitAtlas.Frames[unit.UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
             spriteBatch.Draw(_unitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.0f);
         }

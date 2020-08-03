@@ -13,7 +13,7 @@ namespace PhoenixGamePresentationLibrary
     {
         private OverlandMapView _overlandMapView;
         private OverlandSettlementsView _overlandSettlementsView;
-        private UnitsStackView _unitsStackView;
+        private UnitsStacksView _unitsStacksView;
         private SettlementsView _settlementsView;
         private HudView _hudView;
 
@@ -29,15 +29,15 @@ namespace PhoenixGamePresentationLibrary
         {
             _overlandMapView = new OverlandMapView(this, World.OverlandMap);
             _overlandSettlementsView = new OverlandSettlementsView(this, World.Settlements);
-            _unitsStackView = new UnitsStackView(this, World.UnitsStacks[0]);
+            _unitsStacksView = new UnitsStacksView(this, World.UnitsStacks);
             _settlementsView = new SettlementsView(World.Settlements);
-            _hudView = new HudView(this, _unitsStackView);
+            _hudView = new HudView(this, _unitsStacksView);
 
             Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
             Camera.LoadContent(content);
 
             _overlandSettlementsView.LoadContent(content);
-            _unitsStackView.LoadContent(content);
+            _unitsStacksView.LoadContent(content);
             _settlementsView.LoadContent(content);
             _hudView.LoadContent(content);
         }
@@ -53,7 +53,7 @@ namespace PhoenixGamePresentationLibrary
 
             _overlandMapView.Update(input, deltaTime);
             _overlandSettlementsView.Update(input, deltaTime);
-            _unitsStackView.Update(input, deltaTime);
+            _unitsStacksView.Update(input, deltaTime);
             _settlementsView.Update(input, deltaTime);
             _hudView.Update(input, deltaTime);
         }
@@ -64,7 +64,7 @@ namespace PhoenixGamePresentationLibrary
             _overlandMapView.Draw(spriteBatch);
             _overlandSettlementsView.Draw(spriteBatch);
 
-            _unitsStackView.Draw(spriteBatch);
+            _unitsStacksView.Draw(spriteBatch);
             spriteBatch.End();
 
             spriteBatch.Begin();
@@ -81,7 +81,7 @@ namespace PhoenixGamePresentationLibrary
             };
             beginTurnCommand.Execute();
 
-            _unitsStackView.SelectStack();
+            _unitsStacksView[0].SelectStack();
         }
 
         public void EndTurn()
