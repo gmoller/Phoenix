@@ -26,14 +26,6 @@ namespace PhoenixGameLibrary
             _units.Add(unit);
         }
 
-        internal void EndTurn()
-        {
-            foreach (var unit in _units)
-            {
-                unit.EndTurn();
-            }
-        }
-
         public override string ToString()
         {
             return DebuggerDisplay;
