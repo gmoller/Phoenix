@@ -23,7 +23,7 @@ namespace Utilities
         }
 
         public override string ToString()
-        {
+        { 
             return DebuggerDisplay;
         }
 

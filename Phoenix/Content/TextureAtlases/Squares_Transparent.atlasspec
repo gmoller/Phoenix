@@ -1,0 +1,61 @@
+{
+  "SpriteSheetName": "Squares",
+  "Frames": [
+    {
+      "Name": "White",
+      "X": 660,
+      "Y": 384,
+      "Width": 100,
+      "Height": 100
+    },
+    {
+      "Name": "Orange",
+      "X": 150,
+      "Y": 20,
+      "Width": 100,
+      "Height": 100
+    },
+    {
+      "Name": "SquareBrown",
+      "X": 266,
+      "Y": 20,
+      "Width": 100,
+      "Height": 100
+    },
+    {
+      "Name": "SquareLightBlue",
+      "X": 382,
+      "Y": 20,
+      "Width": 100,
+      "Height": 100
+    },
+    {
+      "Name": "SquareGray",
+      "X": 34,
+      "Y": 136,
+      "Width": 100,
+      "Height": 100
+    },
+    {
+      "Name": "SquareGreen",
+      "X": 150,
+      "Y": 136,
+      "Width": 100,
+      "Height": 100
+    },
+    {
+      "Name": "SquareOrange",
+      "X": 266,
+      "Y": 136,
+      "Width": 100,
+      "Height": 100
+    },
+    {
+      "Name": "SquareRed",
+      "X": 382,
+      "Y": 136,
+      "Width": 100,
+      "Height": 100
+    }
+  ]
+}

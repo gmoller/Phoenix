@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using PhoenixGameLibrary.GameData;
+using Utilities;
 
 namespace PhoenixGameLibrary
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class UnitsStack
+    public class UnitsStack : IEnumerable<Unit>
     {
         private readonly Units _units;
         private readonly TerrainType _terrainType;
@@ -22,21 +24,48 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public float GetMoves => DetermineMoves();
-        public List<string> MovementTypeName => DetermineMovementType(_terrainType);
+        public Unit this[int index] => _units[index];
 
-        private float DetermineMoves()
+        public Point Location => _units[0].Location;
+
+        public float MovementPoints => DetermineMovementPoints();
+        public List<string> MovementTypes => DetermineMovementTypes(_terrainType);
+
+        public int Count => _units.Count;
+
+        internal void EndTurn()
         {
-            var moves = float.MaxValue;
             foreach (var unit in _units)
             {
-                moves = Math.Min(moves, unit.MovementPoints);
+                unit.EndTurn();
             }
-
-            return moves;
         }
 
-        private List<string> DetermineMovementType(TerrainType terrainType)
+        private float DetermineMovementPoints()
+        {
+            var movementPoints = float.MaxValue;
+            foreach (var unit in _units)
+            {
+                movementPoints = Math.Min(movementPoints, unit.MovementPoints);
+            }
+
+            return movementPoints;
+        }
+
+        internal bool CanSeeCell(Cell cell)
+        {
+            foreach (var unit in _units)
+            {
+                if (unit.CanSeeCell(cell))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private List<string> DetermineMovementTypes(TerrainType terrainType)
         {
             var movementTypes = new List<string> { "Walking" };
 
@@ -84,6 +113,19 @@ namespace PhoenixGameLibrary
             }
 
             return sailing;
+        }
+
+        public IEnumerator<Unit> GetEnumerator()
+        {
+            foreach (var item in _units)
+            {
+                yield return item;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         public override string ToString()

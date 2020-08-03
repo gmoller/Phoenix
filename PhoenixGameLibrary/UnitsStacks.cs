@@ -23,12 +23,13 @@ namespace PhoenixGameLibrary
             _unitsStacks.Add(unitsStack);
         }
 
-        public override string ToString()
+        internal void EndTurn()
         {
-            return DebuggerDisplay;
+            foreach (var unitsStack in _unitsStacks)
+            {
+                unitsStack.EndTurn();
+            }
         }
-
-        private string DebuggerDisplay => $"{{Count={_unitsStacks.Count}}}";
 
         public IEnumerator<UnitsStack> GetEnumerator()
         {
@@ -42,5 +43,12 @@ namespace PhoenixGameLibrary
         {
             return GetEnumerator();
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Count={Count}}}";
     }
 }

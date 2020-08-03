@@ -46,6 +46,9 @@
     <Compile Include="HudView.cs" />
     <Compile Include="MapSolver.cs" />
     <Compile Include="MetricsPanel.cs" />
+    <Compile Include="MovementHandler.cs" />
+    <Compile Include="MovementPathDeterminer.cs" />
+    <Compile Include="PotentialMovementHandler.cs" />
     <Compile Include="OverlandMapView.cs" />
     <Compile Include="OverlandSettlementsView.cs" />
     <Compile Include="OverlandSettlementView.cs" />
@@ -62,8 +65,7 @@
     <Compile Include="SettlementView\SettlementView.cs" />
     <Compile Include="SettlementView\UnitsFrame.cs" />
     <Compile Include="ToolTip.cs" />
-    <Compile Include="UnitsView.cs" />
-    <Compile Include="UnitView.cs" />
+    <Compile Include="UnitsStackView.cs" />
     <Compile Include="WorldView.cs" />
   </ItemGroup>
   <ItemGroup>

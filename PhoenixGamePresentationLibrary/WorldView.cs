@@ -11,34 +11,33 @@ namespace PhoenixGamePresentationLibrary
 {
     public class WorldView
     {
-        private readonly World _world;
-
         private OverlandMapView _overlandMapView;
         private OverlandSettlementsView _overlandSettlementsView;
-        private UnitsView _unitsView;
+        private UnitsStackView _unitsStackView;
         private SettlementsView _settlementsView;
         private HudView _hudView;
 
         public Camera Camera { get; private set; }
+        public World World { get; }
 
         internal WorldView(World world)
         {
-            _world = world;
+            World = world;
         }
 
         internal void LoadContent(ContentManager content)
         {
-            _overlandMapView = new OverlandMapView(this, _world.OverlandMap);
-            _overlandSettlementsView = new OverlandSettlementsView(this, _world.Settlements);
-            _unitsView = new UnitsView(this);
-            _settlementsView = new SettlementsView(_world.Settlements);
-            _hudView = new HudView(this, _unitsView);
+            _overlandMapView = new OverlandMapView(this, World.OverlandMap);
+            _overlandSettlementsView = new OverlandSettlementsView(this, World.Settlements);
+            _unitsStackView = new UnitsStackView(this, World.UnitsStacks[0]);
+            _settlementsView = new SettlementsView(World.Settlements);
+            _hudView = new HudView(this, _unitsStackView);
 
             Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
             Camera.LoadContent(content);
 
             _overlandSettlementsView.LoadContent(content);
-            _unitsView.LoadContent(content);
+            _unitsStackView.LoadContent(content);
             _settlementsView.LoadContent(content);
             _hudView.LoadContent(content);
         }
@@ -54,19 +53,18 @@ namespace PhoenixGamePresentationLibrary
 
             _overlandMapView.Update(input, deltaTime);
             _overlandSettlementsView.Update(input, deltaTime);
-            _unitsView.Update(input, deltaTime);
+            _unitsStackView.Update(input, deltaTime);
             _settlementsView.Update(input, deltaTime);
             _hudView.Update(input, deltaTime);
         }
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            // FrontToBack
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform); // FrontToBack
             _overlandMapView.Draw(spriteBatch);
             _overlandSettlementsView.Draw(spriteBatch);
 
-            _unitsView.Draw(spriteBatch);
+            _unitsStackView.Draw(spriteBatch);
             spriteBatch.End();
 
             spriteBatch.Begin();
@@ -77,21 +75,21 @@ namespace PhoenixGamePresentationLibrary
 
         public void BeginTurn()
         {
-            Command beginTurnCommand = new BeginTurnCommand();
-            beginTurnCommand.Payload = _world;
+            Command beginTurnCommand = new BeginTurnCommand
+            {
+                Payload = World
+            };
             beginTurnCommand.Execute();
 
-            _unitsView.Refresh(_world.Units);
-            foreach (var unitView in _unitsView)
-            {
-                unitView.SelectUnit();
-            }
+            _unitsStackView.SelectStack();
         }
 
         public void EndTurn()
         {
-            Command endTurnCommand = new EndTurnCommand();
-            endTurnCommand.Payload = _world;
+            Command endTurnCommand = new EndTurnCommand
+            {
+                Payload = World
+            };
             endTurnCommand.Execute();
 
             BeginTurn();
