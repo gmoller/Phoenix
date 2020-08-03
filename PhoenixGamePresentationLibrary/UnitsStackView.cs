@@ -59,22 +59,6 @@ namespace PhoenixGamePresentationLibrary
             _unitTextures = AssetsManager.Instance.GetTexture("Units");
         }
 
-        //internal void Refresh(UnitsStacks unitsStacks)
-        //{
-        //    var u =  units[0]; // TODO: fix this
-        //    var cell = Globals.Instance.World.OverlandMap.CellGrid.GetCell(u.Location);
-        //    var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
-        //    _unitsStack = new UnitsStack(units, terrainType);
-
-        //    _unitViews = new Dictionary<Guid, UnitView>();
-        //    foreach (var unit in units)
-        //    {
-        //        var unitView = new UnitView(_worldView, unit);
-        //        unitView.LoadContent(_content); // TODO: get rid of this
-        //        _unitViews.Add(unit.Id, unitView);
-        //    }
-        //}
-
         internal void Update(InputHandler input, float deltaTime)
         {
             // check for blink
@@ -162,7 +146,7 @@ namespace PhoenixGamePresentationLibrary
                 DrawUnit(spriteBatch);
             }
 
-            DrawMovementPath(spriteBatch, PotentialMovementPath, Color.Black, 5.0f, 5.0f);
+            DrawMovementPath(spriteBatch, MovementPath, Color.Black, 5.0f, 5.0f);
             DrawMovementPath(spriteBatch, PotentialMovementPath, Color.White, 3.0f, 1.0f);
         }
 
@@ -181,7 +165,7 @@ namespace PhoenixGamePresentationLibrary
             spriteBatch.Draw(_unitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
 
-        private void DrawMovementPath(SpriteBatch spriteBatch, List<Utilities.Point> movementPath, Color color, float radius, float thickness)
+        private void DrawMovementPath(SpriteBatch spriteBatch, List<Point> movementPath, Color color, float radius, float thickness)
         {
             foreach (var item in movementPath)
             {

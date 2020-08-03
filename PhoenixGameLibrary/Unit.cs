@@ -31,7 +31,7 @@ namespace PhoenixGameLibrary
         public List<Point> PotentialMovementPath { get; set; }
         public List<Point> MovementPath { get; set; }
 
-        internal Unit(World world, UnitType unitType, Point location)
+        public Unit(World world, UnitType unitType, Point location)
         {
             _world = world;
             Id = Guid.NewGuid();
@@ -52,7 +52,7 @@ namespace PhoenixGameLibrary
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
             var movementCost = CostToMoveInto(cellToMoveTo);
 
-            MovementPoints -= movementCost.costToMoveInto;
+            MovementPoints -= movementCost.CostToMoveInto;
             if (MovementPoints < 0.0f)
             {
                 MovementPoints = 0.0f;
@@ -78,28 +78,28 @@ namespace PhoenixGameLibrary
             return false;
         }
 
-        public (bool canMoveInto, float costToMoveInto) CostToMoveInto(Point location)
+        public CostToMoveIntoResult CostToMoveInto(Point location)
         {
             var cellToMoveTo = _world.OverlandMap.CellGrid.GetCell(location.X, location.Y);
 
             return CostToMoveInto(cellToMoveTo);
         }
 
-        public (bool canMoveInto, float costToMoveInto) CostToMoveInto(Cell cell)
+        public CostToMoveIntoResult CostToMoveInto(Cell cell)
         {
-            if (cell.SeenState == SeenState.Never) return (false, 0.0f);
+            if (cell.SeenState == SeenState.Never) return new CostToMoveIntoResult(false);
 
             var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
 
             return CostToMoveInto(terrainType);
         }
 
-        public (bool canMoveInto, float costToMoveInto) CostToMoveInto(TerrainType terrainType)
+        public CostToMoveIntoResult CostToMoveInto(TerrainType terrainType)
         {
             var potentialMovementCosts = GetPotentialMovementCosts(terrainType);
             var canMoveInto = potentialMovementCosts.Count > 0;
 
-            if (!canMoveInto) return (false, 0.0f);
+            if (!canMoveInto) return new CostToMoveIntoResult(false);
 
             float costToMoveInto = float.MaxValue;
             bool foundCost = false;
@@ -114,7 +114,7 @@ namespace PhoenixGameLibrary
 
             if (!foundCost) throw new Exception($"No cost found for Terrain Type [{terrainType}], UnitTypeMovementTypes [{UnitTypeMovementTypes}].");
 
-            return (true, costToMoveInto);
+            return new CostToMoveIntoResult(true, costToMoveInto);
         }
 
         private List<MovementCost> GetPotentialMovementCosts(TerrainType terrainType)

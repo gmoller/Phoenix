@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.GameData;
 using Utilities;
@@ -14,28 +15,13 @@ namespace PhoenixGamePresentationLibrary
             var mapSolver = new MapSolver();
             var openList = new PriorityQueue<AStarSearch<Point, Cost>.Node>();
             var closedList = new Dictionary<Point, Cost>();
+            Func<Point, CostToMoveIntoResult> getCostToMoveIntoFunc = delegate(Point point) { return unit.CostToMoveInto(point); };
             var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
-            mapSolver.Graph(unit, new Point(cellGrid.NumberOfColumns, cellGrid.NumberOfRows), from, to, openList, closedList);
-            if (mapSolver.Solution.HasValue)
-            {
-                var pos = mapSolver.Solution.Value.Position;
-                var cost = mapSolver.Solution.Value.Cost;
+            mapSolver.Graph(getCostToMoveIntoFunc, new Point(cellGrid.NumberOfColumns, cellGrid.NumberOfRows), from, to, openList, closedList);
 
-                var result = new List<Point> { pos };
-                do
-                {
-                    pos = mapSolver.ToPosition(cost.ParentIndex);
-                    cost = closedList[pos];
-                    result.Add(pos);
-                } while (cost.ParentIndex >= 0);
+            var path = mapSolver.Solution;
 
-                result.RemoveAt(result.Count - 1);
-                result.Reverse();
-
-                return result;
-            }
-
-            return new List<Point>();
+            return path;
         }
     }
 }
