@@ -189,6 +189,7 @@ namespace PhoenixGamePresentationLibrary
             {
                 _unitFrame.Draw(spriteBatch);
                 DrawSelectedUnits(spriteBatch);
+                DrawUnselectedUnits(spriteBatch);
                 _lblMoves.Draw(spriteBatch);
                 foreach (var imgMovementType in _imgMovementTypes)
                 {
@@ -225,6 +226,16 @@ namespace PhoenixGamePresentationLibrary
             var y = _area.Y + _area.Height * 0.5f + 10.0f;
 
             _unitsStacksView.Selected.DrawBadges(spriteBatch, new Vector2(x, y));
+        }
+
+        private void DrawUnselectedUnits(SpriteBatch spriteBatch)
+        {
+            // find other stacks on this location:_unitsStacksView.Selected.Location
+            var otherUnitStacks = _unitsStacksView.Selected.GetUnitStacksSharingSameLocation();
+            foreach (var unitStack in otherUnitStacks)
+            {
+                unitStack.DrawBadges(spriteBatch, Vector2.Zero);
+            }
         }
 
         private void DrawTileInfo(SpriteBatch spriteBatch)

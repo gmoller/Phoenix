@@ -47,13 +47,6 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public override string ToString()
-        {
-            return DebuggerDisplay;
-        }
-
-        private string DebuggerDisplay => $"{{Count={_settlements.Count}}}";
-
         public IEnumerator<Settlement> GetEnumerator()
         {
             foreach (var item in _settlements)
@@ -66,5 +59,12 @@ namespace PhoenixGameLibrary
         {
             return GetEnumerator();
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Count={_settlements.Count}}}";
     }
 }

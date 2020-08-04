@@ -88,10 +88,6 @@ namespace PhoenixGamePresentationLibrary
                 Payload = World
             };
             endTurnCommand.Execute();
-            if (World.UnitsStacks.Count != _unitsStacksView.Count)
-            {
-                //_unitsStacksView.Realign();
-            }
 
             BeginTurn();
         }

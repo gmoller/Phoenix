@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using AssetsLibrary;
 using HexLibrary;
 using Input;
 using Microsoft.Xna.Framework;
@@ -13,20 +11,16 @@ using Point = Utilities.Point;
 namespace PhoenixGamePresentationLibrary
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class UnitsStackView
+    internal class UnitsStackView
     {
         private const float BLINK_TIME_IN_MILLISECONDS = 500.0f;
 
         private readonly WorldView _worldView;
+        private readonly UnitsStacksView _unitsStacksView;
         private readonly UnitsStack _unitsStack;
 
         private float _blinkCooldownInMilliseconds;
         private bool _blink;
-
-        private Texture2D _guiTextures;
-        private AtlasFrame _slotFrame; 
-        private Texture2D _unitTextures;
-        private AtlasSpec2 _unitAtlas;
 
         public List<Point> MovementPath { get; set; }
         public List<Point> PotentialMovementPath { get; set; }
@@ -40,23 +34,14 @@ namespace PhoenixGamePresentationLibrary
         public List<string> MovementTypes => _unitsStack.MovementTypes;
         public Unit FirstUnit => _unitsStack[0];
 
-        public UnitsStackView(WorldView worldView, UnitsStack unitsStack)
+        public UnitsStackView(WorldView worldView, UnitsStacksView unitsStacksView, UnitsStack unitsStack)
         {
             _worldView = worldView;
+            _unitsStacksView = unitsStacksView;
             _unitsStack = unitsStack;
             MovementPath = new List<Point>();
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             CurrentPositionOnScreen = HexOffsetCoordinates.ToPixel(unitsStack.Location.X, unitsStack.Location.Y);
-        }
-
-        internal void LoadContent(ContentManager content)
-        {
-            var atlas = AssetsManager.Instance.GetAtlas("Squares");
-            _guiTextures = AssetsManager.Instance.GetTexture("Squares");
-            _slotFrame = atlas.Frames["SquareGreen"];
-
-            _unitAtlas = AssetsManager.Instance.GetAtlas("Units");
-            _unitTextures = AssetsManager.Instance.GetTexture("Units");
         }
 
         internal void Update(InputHandler input, float deltaTime)
@@ -155,14 +140,14 @@ namespace PhoenixGamePresentationLibrary
             // draw background
             var position = CurrentPositionOnScreen;
             var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, 60, 60); ;
-            var sourceRectangle = _slotFrame.ToRectangle();
-            spriteBatch.Draw(_guiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
+            var sourceRectangle = _unitsStacksView.SlotFrame.ToRectangle();
+            spriteBatch.Draw(_unitsStacksView.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
 
             // draw unit icon
             destinationRectangle = new Rectangle((int)position.X, (int)position.Y, 36, 32);
-            var frame = _unitAtlas.Frames[FirstUnit.UnitTypeTextureName];
+            var frame = _unitsStacksView.UnitAtlas.Frames[FirstUnit.UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
-            spriteBatch.Draw(_unitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(_unitsStacksView.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
 
         private void DrawMovementPath(SpriteBatch spriteBatch, List<Point> movementPath, Color color, float radius, float thickness)
@@ -174,12 +159,25 @@ namespace PhoenixGamePresentationLibrary
             }
         }
 
+        internal List<UnitsStackView> GetUnitStacksSharingSameLocation()
+        {
+            var unitsStacksView = new List<UnitsStackView>();
+            foreach (var unitsStackView in _unitsStacksView)
+            {
+                if (unitsStackView.Location == Location)
+                {
+                    unitsStacksView.Add(unitsStackView);
+                }
+            }
+
+            return unitsStacksView;
+        }
+
         internal void DrawBadges(SpriteBatch spriteBatch, Vector2 topLeftPosition)
         {
             var x = topLeftPosition.X;
             var y = topLeftPosition.Y;
 
-            var firstUnit = FirstUnit;
             foreach (var unit in _unitsStack)
             {
                 DrawBadge(spriteBatch, new Vector2(x, y), unit);
@@ -196,14 +194,14 @@ namespace PhoenixGamePresentationLibrary
         {
             // draw background
             var destinationRectangle = new Rectangle((int)topLeftPosition.X, (int)topLeftPosition.Y, 60, 60);
-            var sourceRectangle = _slotFrame.ToRectangle();
-            spriteBatch.Draw(_guiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.0f);
+            var sourceRectangle = _unitsStacksView.SlotFrame.ToRectangle();
+            spriteBatch.Draw(_unitsStacksView.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.0f);
 
             // draw unit icon
             destinationRectangle = new Rectangle((int)topLeftPosition.X + 10, (int)topLeftPosition.Y + 10, 36, 32);
-            var frame = _unitAtlas.Frames[unit.UnitTypeTextureName];
+            var frame = _unitsStacksView.UnitAtlas.Frames[unit.UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
-            spriteBatch.Draw(_unitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(_unitsStacksView.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.0f);
         }
 
         public override string ToString()
