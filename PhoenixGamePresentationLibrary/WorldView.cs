@@ -75,10 +75,7 @@ namespace PhoenixGamePresentationLibrary
 
         public void BeginTurn()
         {
-            Command beginTurnCommand = new BeginTurnCommand
-            {
-                Payload = World
-            };
+            Command beginTurnCommand = new BeginTurnCommand { Payload = World };
             beginTurnCommand.Execute();
 
             _unitsStacksView[0].SelectStack();
@@ -91,6 +88,10 @@ namespace PhoenixGamePresentationLibrary
                 Payload = World
             };
             endTurnCommand.Execute();
+            if (World.UnitsStacks.Count != _unitsStacksView.Count)
+            {
+                //_unitsStacksView.Realign();
+            }
 
             BeginTurn();
         }

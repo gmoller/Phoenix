@@ -75,8 +75,8 @@ namespace PhoenixGamePresentationLibrary
             // handle selection/deselection
             var selectUnit = CheckForUnitSelection(input);
             if (selectUnit) SelectStack();
-            var deselectUit = CheckForStackDeselection(_unitsStack);
-            if (deselectUit) DeselectStack();
+            var deselectUnit = CheckForStackDeselection(_unitsStack);
+            if (deselectUnit) DeselectStack();
         }
 
         private bool DetermineBlinkState(bool blink, float deltaTime)

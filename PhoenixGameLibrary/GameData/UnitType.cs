@@ -93,7 +93,7 @@ namespace PhoenixGameLibrary.GameData
 
                 UnitType.Create(13, "Nomad Griffins", "Griffins", 200.0f, 2.0f, new List<string> { "Flying" }, "Unit_Icon_Griffins_Transparent", new List<string> { "Nomads" }, new List<string> { "Fantastic Stable" }, new List<string> { "Done", "Patrol", "Wait" }),
 
-                UnitType.Create(100, "Test Dude", "Test", 1.0f, 4.0f, new List<string> { "Walking", "Swimming", "Flying", "Sailing", "Forester", "Mountaineer", "Pathfinding" }, "Unit_Icon_Griffins_Transparent", new List<string> { "Barbarians" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
+                UnitType.Create(100, "Test Dude", "Test", 1.0f, 4.0f, new List<string> { "Walking", "Mountaineer", "Pathfinding", "PlaneShift" }, "Unit_Icon_Griffins_Transparent", new List<string> { "Barbarians" }, new List<string>(), new List<string> { "Done", "Patrol", "Wait" }),
             };
 
             return NamedDataDictionary<UnitType>.Create(unitTypes);

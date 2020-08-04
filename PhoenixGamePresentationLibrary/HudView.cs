@@ -143,21 +143,24 @@ namespace PhoenixGamePresentationLibrary
             _lblFood.Update(input, deltaTime);
             _lblFood.Text = $"{Globals.Instance.World.PlayerFaction.FoodPerTurn} Food";
 
-            _unitFrame.Update(input, deltaTime);
-            _lblMoves.Update(input, deltaTime);
-            _lblMoves.Text = $"Moves: {_unitsStacksView.Selected.MovementPoints}";
-            _imgMovementTypes = new List<IControl>();
-            foreach (var movementType in _unitsStacksView.Selected.MovementTypes)
+            if (_unitsStacksView.Selected != null)
             {
-                var img = _movementTypeImages[movementType];
-                var imgMovementType = img.Clone();
-                imgMovementType.MoveTopLeftPosition(-19 * _imgMovementTypes.Count, 0);
-                _imgMovementTypes.Add(imgMovementType);
-            }
+                _unitFrame.Update(input, deltaTime);
+                _lblMoves.Update(input, deltaTime);
+                _lblMoves.Text = $"Moves: {_unitsStacksView.Selected.MovementPoints}";
+                _imgMovementTypes = new List<IControl>();
+                foreach (var movementType in _unitsStacksView.Selected.MovementTypes)
+                {
+                    var img = _movementTypeImages[movementType];
+                    var imgMovementType = img.Clone();
+                    imgMovementType.MoveTopLeftPosition(-19 * _imgMovementTypes.Count, 0);
+                    _imgMovementTypes.Add(imgMovementType);
+                }
 
-            foreach (var imgMovementType in _imgMovementTypes)
-            {
-                imgMovementType.Update(input, deltaTime);
+                foreach (var imgMovementType in _imgMovementTypes)
+                {
+                    imgMovementType.Update(input, deltaTime);
+                }
             }
 
             _btnEndTurn.Update(input, deltaTime);
@@ -182,12 +185,15 @@ namespace PhoenixGamePresentationLibrary
             _imgFood.Draw(spriteBatch);
             _lblFood.Draw(spriteBatch);
 
-            _unitFrame.Draw(spriteBatch);
-            DrawSelectedUnits(spriteBatch);
-            _lblMoves.Draw(spriteBatch);
-            foreach (var imgMovementType in _imgMovementTypes)
+            if (_unitsStacksView.Selected != null)
             {
-                imgMovementType.Draw(spriteBatch);
+                _unitFrame.Draw(spriteBatch);
+                DrawSelectedUnits(spriteBatch);
+                _lblMoves.Draw(spriteBatch);
+                foreach (var imgMovementType in _imgMovementTypes)
+                {
+                    imgMovementType.Draw(spriteBatch);
+                }
             }
 
             DrawNotifications(spriteBatch);
@@ -215,8 +221,8 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawSelectedUnits(SpriteBatch spriteBatch)
         {
-            var x = _area.X + 10.0f;
-            var y = _area.Y + _area.Height / 2.0f;
+            var x = _area.X + 20.0f;
+            var y = _area.Y + _area.Height * 0.5f + 10.0f;
 
             _unitsStacksView.Selected.DrawBadges(spriteBatch, new Vector2(x, y));
         }
