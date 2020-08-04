@@ -34,6 +34,8 @@ namespace PhoenixGamePresentationLibrary
         public List<string> MovementTypes => _unitsStack.MovementTypes;
         public Unit FirstUnit => _unitsStack[0];
 
+        public int Count => _unitsStack.Count;
+
         public UnitsStackView(WorldView worldView, UnitsStacksView unitsStacksView, UnitsStack unitsStack)
         {
             _worldView = worldView;
@@ -140,7 +142,7 @@ namespace PhoenixGamePresentationLibrary
             // draw background
             var position = CurrentPositionOnScreen;
             var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, 60, 60); ;
-            var sourceRectangle = _unitsStacksView.SlotFrame.ToRectangle();
+            var sourceRectangle = _unitsStacksView.SquareGreenFrame.ToRectangle();
             spriteBatch.Draw(_unitsStacksView.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
 
             // draw unit icon
@@ -164,7 +166,7 @@ namespace PhoenixGamePresentationLibrary
             var unitsStacksView = new List<UnitsStackView>();
             foreach (var unitsStackView in _unitsStacksView)
             {
-                if (unitsStackView.Location == Location)
+                if (unitsStackView.Location == Location && unitsStackView != this) // same location and not itself
                 {
                     unitsStacksView.Add(unitsStackView);
                 }
@@ -173,35 +175,29 @@ namespace PhoenixGamePresentationLibrary
             return unitsStacksView;
         }
 
-        internal void DrawBadges(SpriteBatch spriteBatch, Vector2 topLeftPosition)
+        internal void DrawBadges(SpriteBatch spriteBatch, Vector2 topLeftPosition, int index = 0, bool isSelected = true)
         {
-            var x = topLeftPosition.X;
-            var y = topLeftPosition.Y;
-
             foreach (var unit in _unitsStack)
             {
-                DrawBadge(spriteBatch, new Vector2(x, y), unit);
-                x += 75.0f;
-                if (x > topLeftPosition.X + 150.0f)
-                {
-                    x = topLeftPosition.X;
-                    y += 75.0f;
-                }
+                var xOffset = 75.0f * (index % 3);
+                var yOffset = 75.0f * (index / 3); // math.Floor
+                DrawBadge(spriteBatch, new Vector2(topLeftPosition.X + 60.0f * 0.5f + xOffset, topLeftPosition.Y + 60.0f * 0.5f + yOffset), unit, isSelected);
+                index++;
             }
         }
 
-        private void DrawBadge(SpriteBatch spriteBatch, Vector2 topLeftPosition, Unit unit)
+        private void DrawBadge(SpriteBatch spriteBatch, Vector2 centerPosition, Unit unit, bool isSelected)
         {
             // draw background
-            var destinationRectangle = new Rectangle((int)topLeftPosition.X, (int)topLeftPosition.Y, 60, 60);
-            var sourceRectangle = _unitsStacksView.SlotFrame.ToRectangle();
-            spriteBatch.Draw(_unitsStacksView.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.0f);
+            var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 60, 60);
+            var sourceRectangle = isSelected ? _unitsStacksView.SquareGreenFrame.ToRectangle() : _unitsStacksView.SquareGrayFrame.ToRectangle();
+            spriteBatch.Draw(_unitsStacksView.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
 
             // draw unit icon
-            destinationRectangle = new Rectangle((int)topLeftPosition.X + 10, (int)topLeftPosition.Y + 10, 36, 32);
+            destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 36, 32);
             var frame = _unitsStacksView.UnitAtlas.Frames[unit.UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
-            spriteBatch.Draw(_unitsStacksView.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(_unitsStacksView.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
 
         public override string ToString()

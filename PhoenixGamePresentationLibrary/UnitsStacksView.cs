@@ -18,7 +18,8 @@ namespace PhoenixGamePresentationLibrary
         private readonly List<UnitsStackView> _unitsStackViews;
 
         internal Texture2D GuiTextures { get; private set; }
-        internal AtlasFrame SlotFrame { get; private set; }
+        internal AtlasFrame SquareGreenFrame { get; private set; }
+        internal AtlasFrame SquareGrayFrame { get; private set; }
         internal Texture2D UnitTextures { get; private set; }
         internal AtlasSpec2 UnitAtlas { get; private set; }
 
@@ -50,9 +51,10 @@ namespace PhoenixGamePresentationLibrary
         {
                 var atlas = AssetsManager.Instance.GetAtlas("Squares");
                 GuiTextures = AssetsManager.Instance.GetTexture("Squares");
-                SlotFrame = atlas.Frames["SquareGreen"];
+                SquareGreenFrame = atlas.Frames["SquareGreen"];
+                SquareGrayFrame = atlas.Frames["SquareGray"];
 
-                UnitAtlas = AssetsManager.Instance.GetAtlas("Units");
+            UnitAtlas = AssetsManager.Instance.GetAtlas("Units");
                 UnitTextures = AssetsManager.Instance.GetTexture("Units");
 
             foreach (var unitsStack in _unitsStacks)

@@ -230,11 +230,16 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawUnselectedUnits(SpriteBatch spriteBatch)
         {
+            var i = _unitsStacksView.Selected.Count;
+            var x = _area.X + 20.0f;
+            var y = _area.Y + _area.Height * 0.5f + 10.0f;
+
             // find other stacks on this location:_unitsStacksView.Selected.Location
             var otherUnitStacks = _unitsStacksView.Selected.GetUnitStacksSharingSameLocation();
             foreach (var unitStack in otherUnitStacks)
             {
-                unitStack.DrawBadges(spriteBatch, Vector2.Zero);
+                unitStack.DrawBadges(spriteBatch, new Vector2(x, y), i, false);
+                i += unitStack.Count;
             }
         }
 
