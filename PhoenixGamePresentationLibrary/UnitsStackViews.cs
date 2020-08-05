@@ -71,13 +71,13 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            var d = new Dictionary<Point, bool>();
+            var locationsAlreadyDrawnTo = new Dictionary<Point, bool>();
             foreach (var unitsStackView in _unitsStackViews)
             {
-                if (!d.ContainsKey(unitsStackView.Location))
+                if (!locationsAlreadyDrawnTo.ContainsKey(unitsStackView.Location))
                 {
                     unitsStackView.Draw(spriteBatch);
-                    d.Add(unitsStackView.Location, true);
+                    locationsAlreadyDrawnTo.Add(unitsStackView.Location, true);
                 }
             }
         }

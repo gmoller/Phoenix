@@ -182,6 +182,27 @@
       "Y": 688,
       "Width": 71,
       "Height": 71
+    }, 
+    {
+      "Name": "simpleb_n",
+      "X": 0,
+      "Y": 741,
+      "Width": 155,
+      "Height": 41
+    },
+    {
+      "Name": "simpleb_a",
+      "X": 155,
+      "Y": 741,
+      "Width": 155,
+      "Height": 41
+    },
+    {
+      "Name": "simpleb_h",
+      "X": 310,
+      "Y": 741,
+      "Width": 160,
+      "Height": 46
     }
   ]
 }
