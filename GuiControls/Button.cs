@@ -8,8 +8,6 @@ namespace GuiControls
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Button : Control
     {
-        public Label Label { get; set; }
-
         public Button(
             Vector2 position, 
             Alignment positionAlignment,
@@ -44,24 +42,9 @@ namespace GuiControls
 
         public override IControl Clone() { return new Button(this); }
 
-        protected override void AfterUpdate(InputHandler input, float deltaTime, Matrix? transform = null)
-        {
-            Label?.Update(input, deltaTime);
-        }
-
         protected override void InDraw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, ActualDestinationRectangle, SourceRectangle, Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
-        }
-
-        protected override void AfterDraw(SpriteBatch spriteBatch)
-        {
-            Label?.Draw(spriteBatch);
-        }
-
-        protected override void AfterDraw(Matrix? transform = null)
-        {
-            Label?.Draw(transform);
         }
     }
 }

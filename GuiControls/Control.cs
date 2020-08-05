@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AssetsLibrary;
 using Input;
 using Microsoft.Xna.Framework;
@@ -17,6 +18,8 @@ namespace GuiControls
         private readonly string _textureActive;
         private readonly string _textureHover;
         private readonly string _textureDisabled;
+
+        private readonly List<IControl> _childControls;
 
         protected readonly IControl Parent;
 
@@ -78,6 +81,8 @@ namespace GuiControls
             DetermineArea(position, positionAlignment, size);
 
             Enabled = true;
+
+            _childControls = new List<IControl>();
         }
 
         protected Control(Control copyThis) : this()
@@ -100,11 +105,25 @@ namespace GuiControls
             Enabled = copyThis.Enabled;
             MouseOver = copyThis.MouseOver;
             Click = copyThis.Click;
+            _childControls = copyThis._childControls;
         }
 
         public virtual IControl Clone()
         {
             return null;
+        }
+
+        public void AddControl(IControl control)
+        {
+            _childControls.Add(control);
+        }
+
+        public void AddControls(params IControl[] controls)
+        {
+            foreach (var control in controls)
+            {
+                AddControl(control);
+            }
         }
 
         public void SetTopLeftPosition(int x, int y)
@@ -181,6 +200,11 @@ namespace GuiControls
             }
 
             AfterUpdate(input, deltaTime, transform);
+
+            foreach (var childControl in _childControls)
+            {
+                childControl.Update(input, deltaTime, transform);
+            }
         }
 
         private void OnClickComplete()
@@ -228,6 +252,11 @@ namespace GuiControls
             InDraw(spriteBatch);
 
             AfterDraw(spriteBatch);
+
+            foreach (var childControl in _childControls)
+            {
+                childControl.Draw(spriteBatch);
+            }
         }
 
         public virtual void Draw(Matrix? transform = null)
@@ -241,6 +270,11 @@ namespace GuiControls
             EndSpriteBatch(spriteBatch);
 
             AfterDraw(transform);
+
+            foreach (var childControl in _childControls)
+            {
+                childControl.Draw(transform);
+            }
         }
 
         protected void DetermineArea(Vector2 position, Alignment alignment, Vector2 size)

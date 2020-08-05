@@ -31,6 +31,8 @@ namespace GuiControls
 
         event EventHandler Click;
 
+        void AddControl(IControl control);
+        void AddControls(params IControl[] controls);
         void SetTopLeftPosition(int x, int y);
         void MoveTopLeftPosition(int x, int y);
         void LoadContent(ContentManager content);

@@ -107,7 +107,7 @@ namespace PhoenixGamePresentationLibrary
 
             var label = new LabelSized(_btnEndTurn.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, new Vector2(245.0f, 56.0f), Alignment.MiddleCenter, "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue, _btnEndTurn);
             label.LoadContent(content);
-            _btnEndTurn.Label = label;
+            _btnEndTurn.AddControl(label);
 
             _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, null, null, Color.Blue);
             _test.Click += delegate { _test.MoveTopLeftPosition(10, -10); };
