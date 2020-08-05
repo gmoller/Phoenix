@@ -49,11 +49,11 @@
     <Compile Include="MovementPathDeterminer.cs" />
     <Compile Include="PotentialMovementHandler.cs" />
     <Compile Include="OverlandMapView.cs" />
-    <Compile Include="OverlandSettlementsView.cs" />
+    <Compile Include="OverlandSettlementViews.cs" />
     <Compile Include="OverlandSettlementView.cs" />
     <Compile Include="PhoenixGameView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SettlementsView.cs" />
+    <Compile Include="SettlementViews.cs" />
     <Compile Include="SettlementView\BuildingsFrame.cs" />
     <Compile Include="SettlementView\MainFrame.cs" />
     <Compile Include="SettlementView\OtherFrame.cs" />
@@ -64,7 +64,7 @@
     <Compile Include="SettlementView\SettlementView.cs" />
     <Compile Include="SettlementView\UnitsFrame.cs" />
     <Compile Include="ToolTip.cs" />
-    <Compile Include="UnitsStacksView.cs" />
+    <Compile Include="UnitsStackViews.cs" />
     <Compile Include="UnitsStackView.cs" />
     <Compile Include="WorldView.cs" />
   </ItemGroup>

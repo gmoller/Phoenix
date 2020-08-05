@@ -16,7 +16,7 @@ namespace PhoenixGamePresentationLibrary
         private const float BLINK_TIME_IN_MILLISECONDS = 500.0f;
 
         private readonly WorldView _worldView;
-        private readonly UnitsStacksView _unitsStacksView;
+        private readonly UnitsStackViews _unitsStacksView;
         private readonly UnitsStack _unitsStack;
 
         private float _blinkCooldownInMilliseconds;
@@ -36,7 +36,7 @@ namespace PhoenixGamePresentationLibrary
 
         public int Count => _unitsStack.Count;
 
-        public UnitsStackView(WorldView worldView, UnitsStacksView unitsStacksView, UnitsStack unitsStack)
+        public UnitsStackView(WorldView worldView, UnitsStackViews unitsStacksView, UnitsStack unitsStack)
         {
             _worldView = worldView;
             _unitsStacksView = unitsStacksView;
@@ -189,7 +189,7 @@ namespace PhoenixGamePresentationLibrary
             // draw background
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 60, 60);
             var sourceRectangle = isSelected ? _unitsStacksView.SquareGreenFrame.ToRectangle() : _unitsStacksView.SquareGrayFrame.ToRectangle();
-            spriteBatch.Draw(_unitsStacksView.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(_unitsStacksView.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.FlipVertically, 0.0f);
 
             // draw unit icon
             destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 36, 32);

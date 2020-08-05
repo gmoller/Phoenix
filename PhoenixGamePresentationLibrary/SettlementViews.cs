@@ -6,12 +6,12 @@ using PhoenixGameLibrary;
 
 namespace PhoenixGamePresentationLibrary
 {
-    internal class SettlementsView
+    internal class SettlementViews
     {
         private readonly Settlements _settlements;
         private readonly List<SettlementView.SettlementView> _settlementViews;
 
-        internal SettlementsView(Settlements settlements)
+        internal SettlementViews(Settlements settlements)
         {
             _settlements = settlements;
             _settlementViews = new List<SettlementView.SettlementView>();

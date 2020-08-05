@@ -5,14 +5,14 @@ using PhoenixGameLibrary;
 
 namespace PhoenixGamePresentationLibrary
 {
-    public class OverlandSettlementsView
+    public class OverlandSettlementViews
     {
         private readonly WorldView _worldView;
         private readonly Settlements _settlements;
 
         private OverlandSettlementView _overlandSettlementView;
 
-        public OverlandSettlementsView(WorldView worldView, Settlements settlements)
+        public OverlandSettlementViews(WorldView worldView, Settlements settlements)
         {
             _worldView = worldView;
             _settlements = settlements;

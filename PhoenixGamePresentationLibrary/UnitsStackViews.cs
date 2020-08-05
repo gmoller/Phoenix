@@ -7,11 +7,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Input;
 using PhoenixGameLibrary;
 using System;
+using Utilities;
 
 namespace PhoenixGamePresentationLibrary
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    internal class UnitsStacksView : IEnumerable<UnitsStackView>
+    internal class UnitsStackViews : IEnumerable<UnitsStackView>
     {
         private readonly WorldView _worldView;
 
@@ -31,7 +32,7 @@ namespace PhoenixGamePresentationLibrary
 
         public UnitsStackView this[int index] => _unitsStackViews[index];
 
-        internal UnitsStacksView(WorldView worldView, UnitsStacks unitsStacks)
+        internal UnitsStackViews(WorldView worldView, UnitsStacks unitsStacks)
         {
             _worldView = worldView;
             _unitsStacks = unitsStacks;
@@ -70,9 +71,14 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Draw(SpriteBatch spriteBatch)
         {
+            var d = new Dictionary<Point, bool>();
             foreach (var unitsStackView in _unitsStackViews)
             {
-                unitsStackView.Draw(spriteBatch);
+                if (!d.ContainsKey(unitsStackView.Location))
+                {
+                    unitsStackView.Draw(spriteBatch);
+                    d.Add(unitsStackView.Location, true);
+                }
             }
         }
 

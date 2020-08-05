@@ -39,9 +39,9 @@ namespace PhoenixGamePresentationLibrary
         private Button _btnEndTurn;
         private Label _test;
 
-        private readonly UnitsStacksView _unitsStacksView;
+        private readonly UnitsStackViews _unitsStacksView;
 
-        internal HudView(WorldView worldView, UnitsStacksView unitsStacksView)
+        internal HudView(WorldView worldView, UnitsStackViews unitsStacksView)
         {
             var width = (int)(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.1305f); // 13.05% of screen width
             var height = (int)(DeviceManager.Instance.GraphicsDevice.Viewport.Height * 0.945f); // 94.5% of screen height

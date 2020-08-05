@@ -12,9 +12,9 @@ namespace PhoenixGamePresentationLibrary
     public class WorldView
     {
         private OverlandMapView _overlandMapView;
-        private OverlandSettlementsView _overlandSettlementsView;
-        private UnitsStacksView _unitsStacksView;
-        private SettlementsView _settlementsView;
+        private OverlandSettlementViews _overlandSettlementsView;
+        private UnitsStackViews _unitsStacksView;
+        private SettlementViews _settlementsView;
         private HudView _hudView;
 
         public Camera Camera { get; private set; }
@@ -28,9 +28,9 @@ namespace PhoenixGamePresentationLibrary
         internal void LoadContent(ContentManager content)
         {
             _overlandMapView = new OverlandMapView(this, World.OverlandMap);
-            _overlandSettlementsView = new OverlandSettlementsView(this, World.Settlements);
-            _unitsStacksView = new UnitsStacksView(this, World.UnitsStacks);
-            _settlementsView = new SettlementsView(World.Settlements);
+            _overlandSettlementsView = new OverlandSettlementViews(this, World.Settlements);
+            _unitsStacksView = new UnitsStackViews(this, World.UnitsStacks);
+            _settlementsView = new SettlementViews(World.Settlements);
             _hudView = new HudView(this, _unitsStacksView);
 
             Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
