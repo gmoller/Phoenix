@@ -39,6 +39,9 @@ namespace GuiControls
         void Update(InputHandler input, float deltaTime, Matrix? transform = null);
         void Draw(Matrix? transform = null);
         void Draw(SpriteBatch spriteBatch);
+
         IControl Clone();
+        string Serialize();
+        void Deserialize(string json);
     }
 }

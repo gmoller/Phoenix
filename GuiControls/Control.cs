@@ -5,28 +5,33 @@ using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using Utilities;
 using Point = Microsoft.Xna.Framework.Point;
 
 namespace GuiControls
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public abstract class Control : IControl
     {
+        private const float CLICK_COOLDOWN_TIME_IN_MILLISECONDS = 100.0f;
+
+        #region State
         private float _cooldownTimeInMilliseconds;
 
-        private readonly string _textureNormal;
-        private readonly string _textureActive;
-        private readonly string _textureHover;
-        private readonly string _textureDisabled;
+        private string _textureNormal;
+        private string _textureActive;
+        private string _textureHover;
+        private string _textureDisabled;
 
-        private readonly List<IControl> _childControls;
+        private List<IControl> _childControls;
 
-        protected readonly IControl Parent;
+        protected IControl Parent;
 
-        protected readonly string TextureAtlas;
-        protected readonly string TextureName;
-        protected readonly Color Color;
-        protected readonly float LayerDepth;
+        protected string TextureAtlas { get; private set; }
+        protected string TextureName { get; private set; }
+        protected Color Color { get; private set; }
+        protected float LayerDepth { get; private set; }
 
         protected Texture2D Texture { get; set; }
         protected Rectangle ActualDestinationRectangle { get; private set; }
@@ -39,6 +44,7 @@ namespace GuiControls
         public bool MouseOver { get; private set; }
 
         public event EventHandler Click;
+        #endregion
 
         public int Top => ActualDestinationRectangle.Top;
         public int Bottom => ActualDestinationRectangle.Bottom;
@@ -87,25 +93,7 @@ namespace GuiControls
 
         protected Control(Control copyThis) : this()
         {
-            _cooldownTimeInMilliseconds = copyThis._cooldownTimeInMilliseconds;
-            _textureNormal = copyThis._textureNormal;
-            _textureActive = copyThis._textureActive;
-            _textureHover = copyThis._textureHover;
-            _textureDisabled = copyThis._textureDisabled;
-            Parent = copyThis.Parent;
-            TextureAtlas = copyThis.TextureAtlas;
-            TextureName = copyThis.TextureName;
-            Color = copyThis.Color;
-            LayerDepth = copyThis.LayerDepth;
-            Texture = copyThis.Texture;
-            ActualDestinationRectangle = copyThis.ActualDestinationRectangle;
-            SourceRectangle = copyThis.SourceRectangle;
-            Atlas = copyThis.Atlas;
-            Name = copyThis.Name;
-            Enabled = copyThis.Enabled;
-            MouseOver = copyThis.MouseOver;
-            Click = copyThis.Click;
-            _childControls = copyThis._childControls;
+            Copy(copyThis);
         }
 
         public virtual IControl Clone()
@@ -216,7 +204,7 @@ namespace GuiControls
 
         private void OnClick(EventArgs e)
         {
-            _cooldownTimeInMilliseconds = 200.0f;
+            _cooldownTimeInMilliseconds = CLICK_COOLDOWN_TIME_IN_MILLISECONDS;
             SetTexture(_textureActive);
             Click?.Invoke(this, e);
         }
@@ -366,6 +354,42 @@ namespace GuiControls
                     SourceRectangle = Texture.Bounds;
                 }
             }
+        }
+
+        public string Serialize()
+        {
+            var json = JsonConvert.SerializeObject(this);
+
+            return json;
+        }
+
+        public void Deserialize(string json)
+        {
+            var o = JsonConvert.DeserializeObject<Control>(json);
+            Copy(o);
+        }
+
+        private void Copy(Control copyThis)
+        {
+            _cooldownTimeInMilliseconds = copyThis._cooldownTimeInMilliseconds;
+            _textureNormal = copyThis._textureNormal;
+            _textureActive = copyThis._textureActive;
+            _textureHover = copyThis._textureHover;
+            _textureDisabled = copyThis._textureDisabled;
+            Parent = copyThis.Parent;
+            TextureAtlas = copyThis.TextureAtlas;
+            TextureName = copyThis.TextureName;
+            Color = copyThis.Color;
+            LayerDepth = copyThis.LayerDepth;
+            Texture = copyThis.Texture;
+            ActualDestinationRectangle = copyThis.ActualDestinationRectangle;
+            SourceRectangle = copyThis.SourceRectangle;
+            Atlas = copyThis.Atlas;
+            Name = copyThis.Name;
+            Enabled = copyThis.Enabled;
+            MouseOver = copyThis.MouseOver;
+            Click = copyThis.Click;
+            _childControls = copyThis._childControls;
         }
 
         public override string ToString()

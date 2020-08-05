@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using GuiControls;
 using Microsoft.Xna.Framework.Graphics;
 using HexLibrary;
 using Input;
@@ -32,6 +33,7 @@ namespace PhoenixGamePresentationLibrary
         public Point Location => _unitsStack.Location;
         public float MovementPoints => _unitsStack.MovementPoints;
         public List<string> MovementTypes => _unitsStack.MovementTypes;
+        public List<string> Actions => _unitsStack.Actions;
         public Unit FirstUnit => _unitsStack[0];
 
         public int Count => _unitsStack.Count;
@@ -44,6 +46,20 @@ namespace PhoenixGamePresentationLibrary
             MovementPath = new List<Point>();
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             CurrentPositionOnScreen = HexOffsetCoordinates.ToPixel(unitsStack.Location.X, unitsStack.Location.Y);
+        }
+
+        internal List<IControl> GetMovementTypeImages(Dictionary<string, Image> movementTypeImages)
+        {
+            // TODO: update will not be called on these
+            var imgMovementTypes = new List<IControl>();
+            foreach (var movementType in MovementTypes)
+            {
+                var img = movementTypeImages[movementType];
+                var imgMovementType = img.Clone();
+                imgMovementTypes.Add(imgMovementType);
+            }
+
+            return imgMovementTypes;
         }
 
         internal void Update(InputHandler input, float deltaTime)

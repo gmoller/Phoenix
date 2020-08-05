@@ -16,22 +16,18 @@ namespace PhoenixGamePresentationLibrary
     {
         private readonly WorldView _worldView;
 
+        private SpriteFont _font;
         private readonly Rectangle _area;
 
         private Frame _hudViewFrame;
 
-        //private Frame _unitFrame;
-        private List<IControl> _imgMovementTypes;
         private Dictionary<string, Image> _movementTypeImages;
 
-        private SpriteFont _font;
-
-        private Button _btnEndTurn;
         private Label _test;
 
-        private readonly UnitsStackViews _unitsStacksView;
+        private readonly UnitsStackView _selectedUnitsStackView;
 
-        internal HudView(WorldView worldView, UnitsStackViews unitsStacksView)
+        internal HudView(WorldView worldView, UnitsStackViews unitsStackViews)
         {
             var width = (int)(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.1305f); // 13.05% of screen width
             var height = (int)(DeviceManager.Instance.GraphicsDevice.Viewport.Height * 0.945f); // 94.5% of screen height
@@ -40,7 +36,7 @@ namespace PhoenixGamePresentationLibrary
             _area = new Rectangle(x, y, width, height); // 250x1020
 
             _worldView = worldView;
-            _unitsStacksView = unitsStacksView;
+            _selectedUnitsStackView = unitsStackViews.Selected;
         }
 
         internal void LoadContent(ContentManager content)
@@ -49,6 +45,7 @@ namespace PhoenixGamePresentationLibrary
 
             var topLeftPosition = new Vector2(_area.X, _area.Y);
 
+            #region HudViewFrame
             var size = new Vector2(_area.Width, _area.Height);
             _hudViewFrame = new Frame(topLeftPosition, Alignment.TopLeft, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
             _hudViewFrame.LoadContent(content);
@@ -89,25 +86,59 @@ namespace PhoenixGamePresentationLibrary
             var unitFrame = new Frame(new Vector2(10.0f, 500.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole", _hudViewFrame);
             unitFrame.LoadContent(content);
 
-            string GetTextFuncForMoves() => _unitsStacksView.Selected == null ? string.Empty : $"Moves: {_unitsStacksView.Selected.MovementPoints}";
+            string GetTextFuncForMoves() => _selectedUnitsStackView == null ? string.Empty : $"Moves: {_selectedUnitsStackView.MovementPoints}";
             var lblMoves = new LabelAutoSized(unitFrame.BottomLeft.ToVector2() + new Vector2(10.0f, -15.0f), Alignment.BottomLeft, GetTextFuncForMoves, "CrimsonText-Regular-12", Color.White); // , _unitFrame
             lblMoves.LoadContent(content);
 
-            _movementTypeImages = LoadMovementTypeImages(unitFrame, content);
+            var button1 = new Button(unitFrame.BottomLeft.ToVector2(), Alignment.TopLeft, new Vector2(unitFrame.Width * 0.5f, 30.0f), "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_n", "simpleb_h");
+            button1.LoadContent(content);
+            //button1.Click += BtnDoneClick;
+            var label1 = new LabelSized(button1.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button1.Size.ToVector2(), Alignment.MiddleCenter, "DONE", "Carolingia-Regular-12", Color.Black, null, button1);
+            label1.LoadContent(content);
+            button1.AddControl(label1);
 
-            unitFrame.AddControl(lblMoves);
+            var button2 = new Button(button1.TopRight.ToVector2(), Alignment.TopLeft, new Vector2(unitFrame.Width * 0.5f, 30.0f), "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_n", "simpleb_h");
+            button2.LoadContent(content);
+            //button2.Click += BtnPatrolClick;
+            var label2 = new LabelSized(button2.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button2.Size.ToVector2(), Alignment.MiddleCenter, "PATROL", "Carolingia-Regular-12", Color.Black, null, button2);
+            label2.LoadContent(content);
+            button2.AddControl(label2);
+
+            var button3 = new Button(button1.BottomLeft.ToVector2(), Alignment.TopLeft, new Vector2(unitFrame.Width * 0.5f, 30.0f), "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_n", "simpleb_h");
+            button3.LoadContent(content);
+            //button3.Click += BtnWaitClick;
+            var label3 = new LabelSized(button3.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button3.Size.ToVector2(), Alignment.MiddleCenter, "WAIT", "Carolingia-Regular-12", Color.Black, null, button3);
+            label3.LoadContent(content);
+            button3.AddControl(label3);
+
+            var button4 = new Button(button3.TopRight.ToVector2(), Alignment.TopLeft, new Vector2(unitFrame.Width * 0.5f, 30.0f), "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_n", "simpleb_h");
+            button4.LoadContent(content);
+            //button4.Click += BtnBuildClick;
+            var label4 = new LabelSized(button4.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button4.Size.ToVector2(), Alignment.MiddleCenter, "BUILD", "Carolingia-Regular-12", Color.Black, null, button4);
+            label4.LoadContent(content);
+            button4.AddControl(label4);
+
+            unitFrame.AddControls(lblMoves, button1, button2, button3, button4);
             #endregion
 
-            _hudViewFrame.AddControls(lblCurrentDate, resourceFrame, unitFrame);
+            //var json = _hudViewFrame.Serialize();
+            //_hudViewFrame.Deserialize(json);
+            //var newFrame = new Frame(json);
 
             var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
-            _btnEndTurn = new Button(pos, Alignment.BottomRight, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h");
-            _btnEndTurn.LoadContent(content);
-            _btnEndTurn.Click += BtnEndTurnClick;
+            var btnEndTurn = new Button(pos, Alignment.BottomRight, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h");
+            btnEndTurn.LoadContent(content);
+            btnEndTurn.Click += BtnEndTurnClick;
 
-            var label = new LabelSized(_btnEndTurn.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, new Vector2(245.0f, 56.0f), Alignment.MiddleCenter, "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue, _btnEndTurn);
+            var label = new LabelSized(btnEndTurn.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, btnEndTurn.Size.ToVector2(), Alignment.MiddleCenter, "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue, btnEndTurn);
             label.LoadContent(content);
-            _btnEndTurn.AddControl(label);
+            btnEndTurn.AddControl(label);
+
+            _hudViewFrame.AddControls(lblCurrentDate, resourceFrame, unitFrame, btnEndTurn);
+
+            #endregion
+
+            _movementTypeImages = LoadMovementTypeImages(unitFrame, content);
 
             _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, null, null, Color.Blue);
             _test.Click += delegate { _test.MoveTopLeftPosition(10, -10); };
@@ -136,25 +167,6 @@ namespace PhoenixGamePresentationLibrary
 
             _hudViewFrame.Update(input, deltaTime);
 
-            if (_unitsStacksView.Selected != null)
-            {
-                _imgMovementTypes = new List<IControl>();
-                foreach (var movementType in _unitsStacksView.Selected.MovementTypes)
-                {
-                    var img = _movementTypeImages[movementType];
-                    var imgMovementType = img.Clone();
-                    imgMovementType.MoveTopLeftPosition(-19 * _imgMovementTypes.Count, 0);
-                    _imgMovementTypes.Add(imgMovementType);
-                }
-
-                foreach (var imgMovementType in _imgMovementTypes)
-                {
-                    imgMovementType.Update(input, deltaTime);
-                }
-            }
-
-            _btnEndTurn.Update(input, deltaTime);
-
             _test.Update(input, deltaTime);
         }
 
@@ -162,22 +174,50 @@ namespace PhoenixGamePresentationLibrary
         {
             _hudViewFrame.Draw(spriteBatch);
 
-            if (_unitsStacksView.Selected != null)
-            {
-                DrawSelectedUnits(spriteBatch);
-                DrawUnselectedUnits(spriteBatch);
-                foreach (var imgMovementType in _imgMovementTypes)
-                {
-                    imgMovementType.Draw(spriteBatch);
-                }
-            }
-
+            DrawUnits(spriteBatch);
             DrawNotifications(spriteBatch);
             DrawTileInfo(spriteBatch);
 
-            _btnEndTurn.Draw(spriteBatch);
-
             _test.Draw(spriteBatch);
+        }
+
+        private void DrawUnits(SpriteBatch spriteBatch)
+        {
+            if (_selectedUnitsStackView == null) return;
+
+            DrawSelectedUnits(spriteBatch);
+            DrawUnselectedUnits(spriteBatch);
+
+            var imgMovementTypes = _selectedUnitsStackView.GetMovementTypeImages(_movementTypeImages);
+            int i = 0;
+            foreach (var imgMovementType in imgMovementTypes)
+            {
+                imgMovementType.MoveTopLeftPosition(-19 * i++, 0);
+                imgMovementType.Draw(spriteBatch);
+            }
+        }
+
+        private void DrawSelectedUnits(SpriteBatch spriteBatch)
+        {
+            var x = _area.X + 20.0f;
+            var y = _area.Y + _area.Height * 0.5f + 10.0f;
+
+            _selectedUnitsStackView.DrawBadges(spriteBatch, new Vector2(x, y));
+        }
+
+        private void DrawUnselectedUnits(SpriteBatch spriteBatch)
+        {
+            var i = _selectedUnitsStackView.Count;
+            var x = _area.X + 20.0f;
+            var y = _area.Y + _area.Height * 0.5f + 10.0f;
+
+            // find other stacks on this location:_unitsStacksView.Selected.Location
+            var otherUnitStacks = _selectedUnitsStackView.GetUnitStacksSharingSameLocation();
+            foreach (var unitStack in otherUnitStacks)
+            {
+                unitStack.DrawBadges(spriteBatch, new Vector2(x, y), i, false);
+                i += unitStack.Count;
+            }
         }
 
         private void DrawNotifications(SpriteBatch spriteBatch)
@@ -192,29 +232,6 @@ namespace PhoenixGamePresentationLibrary
                     spriteBatch.DrawString(_font, line, new Vector2(x, y), Color.Pink);
                     y += 20.0f;
                 }
-            }
-        }
-
-        private void DrawSelectedUnits(SpriteBatch spriteBatch)
-        {
-            var x = _area.X + 20.0f;
-            var y = _area.Y + _area.Height * 0.5f + 10.0f;
-
-            _unitsStacksView.Selected.DrawBadges(spriteBatch, new Vector2(x, y));
-        }
-
-        private void DrawUnselectedUnits(SpriteBatch spriteBatch)
-        {
-            var i = _unitsStacksView.Selected.Count;
-            var x = _area.X + 20.0f;
-            var y = _area.Y + _area.Height * 0.5f + 10.0f;
-
-            // find other stacks on this location:_unitsStacksView.Selected.Location
-            var otherUnitStacks = _unitsStacksView.Selected.GetUnitStacksSharingSameLocation();
-            foreach (var unitStack in otherUnitStacks)
-            {
-                unitStack.DrawBadges(spriteBatch, new Vector2(x, y), i, false);
-                i += unitStack.Count;
             }
         }
 

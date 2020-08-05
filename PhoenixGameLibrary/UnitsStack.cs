@@ -28,6 +28,7 @@ namespace PhoenixGameLibrary
 
         public float MovementPoints => DetermineMovementPoints();
         public List<string> MovementTypes => DetermineMovementTypes();
+        public List<string> Actions => DetermineActions();
 
         public int Count => _units.Count;
 
@@ -79,6 +80,13 @@ namespace PhoenixGameLibrary
             if (!(IsSwimming(_units) || IsFlying(_units) || IsSailing(_units) || IsForester(_units) || IsMountaineer(_units) || IsPathfinding(_units))) movementTypes.Add("Walking");
 
             return movementTypes;
+        }
+
+        private List<string> DetermineActions()
+        {
+            var movementActions = new List<string>();
+
+            return movementActions;
         }
 
         private bool IsSwimming(Units units)
