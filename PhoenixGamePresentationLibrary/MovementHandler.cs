@@ -82,6 +82,7 @@ namespace PhoenixGamePresentationLibrary
 
             // unit is selected, left mouse button released and unit is not already moving
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
+            if (hexToMoveTo == unitsStackView.FirstUnit.Location) return (false, new Point(0, 0));
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.Never) return (false, new Point(0, 0));
 

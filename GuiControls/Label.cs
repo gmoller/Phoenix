@@ -150,7 +150,7 @@ namespace GuiControls
             Func<string> getTextFunc,
             string fontName,
             Color textColor,
-            IControl parent,
+            IControl parent = null,
             string name = "") :
             this(
                 position,
