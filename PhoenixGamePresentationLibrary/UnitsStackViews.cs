@@ -94,6 +94,11 @@ namespace PhoenixGamePresentationLibrary
                 {
                     SelectNext();
                 }
+                else
+                {
+                    var unitsStackView = _unitsStackViews[_selectedUnitStack];
+                    _worldView.Camera.LookAtCell(unitsStackView.Location);
+                }
             }
         }
 
@@ -102,7 +107,6 @@ namespace PhoenixGamePresentationLibrary
             if (_selectedUnitStack < 0 || _selectedUnitStack > _unitsStackViews.Count - 1) return null;
 
             var unitsStackView = _unitsStackViews[_selectedUnitStack];
-            _worldView.Camera.LookAtCell(unitsStackView.Location);
 
             return unitsStackView;
         }

@@ -19,11 +19,8 @@ namespace PhoenixGamePresentationLibrary
         private readonly Rectangle _area;
 
         private Frame _hudViewFrame;
-        private Label _lblCurrentDate;
 
-        private Frame _resourceFrame;
-
-        private Frame _unitFrame;
+        //private Frame _unitFrame;
         private List<IControl> _imgMovementTypes;
         private Dictionary<string, Image> _movementTypeImages;
 
@@ -56,49 +53,52 @@ namespace PhoenixGamePresentationLibrary
             _hudViewFrame = new Frame(topLeftPosition, Alignment.TopLeft, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47);
             _hudViewFrame.LoadContent(content);
 
-            _lblCurrentDate = new LabelAutoSized(new Vector2(_hudViewFrame.Width * 0.5f, 20.0f), Alignment.MiddleCenter, "Date:", "Maleficio-Regular-18", Color.Aquamarine, _hudViewFrame);
-            _lblCurrentDate.LoadContent(content);
+            string GetTextFuncForDate() => Globals.Instance.World.CurrentDate;
+            var lblCurrentDate = new LabelAutoSized(new Vector2(_hudViewFrame.Width * 0.5f, 20.0f), Alignment.MiddleCenter, GetTextFuncForDate, "Maleficio-Regular-18", Color.Aquamarine, _hudViewFrame);
+            lblCurrentDate.LoadContent(content);
 
             #region ResourceFrame
-            _resourceFrame = new Frame(new Vector2(10.0f, 50.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole", _hudViewFrame);
-            _resourceFrame.LoadContent(content);
+            var resourceFrame = new Frame(new Vector2(10.0f, 50.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole", _hudViewFrame);
+            resourceFrame.LoadContent(content);
 
-            var imgGold = new Image(new Vector2(10.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R", _resourceFrame);
+            var imgGold = new Image(new Vector2(10.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R", resourceFrame);
             imgGold.LoadContent(content);
 
-            var imgMana = new Image(imgGold.RelativeTopLeft.ToVector2() + new Vector2(0.0f, imgGold.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R", _resourceFrame);
+            var imgMana = new Image(imgGold.RelativeTopLeft.ToVector2() + new Vector2(0.0f, imgGold.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R", resourceFrame);
             imgMana.LoadContent(content);
 
-            var imgFood = new Image(imgMana.RelativeTopLeft.ToVector2() + new Vector2(0.0f, imgMana.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", _resourceFrame);
+            var imgFood = new Image(imgMana.RelativeTopLeft.ToVector2() + new Vector2(0.0f, imgMana.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", resourceFrame);
             imgFood.LoadContent(content);
 
             string GetTextFuncForGold() => $"{Globals.Instance.World.PlayerFaction.GoldInTreasury} GP (+{Globals.Instance.World.PlayerFaction.GoldPerTurn})";
-            var lblGold = new LabelAutoSized(imgGold.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, GetTextFuncForGold, "CrimsonText-Regular-12", Color.Yellow, _resourceFrame);
+            var lblGold = new LabelAutoSized(imgGold.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, GetTextFuncForGold, "CrimsonText-Regular-12", Color.Yellow, resourceFrame);
             lblGold.LoadContent(content);
 
             string GetTextFuncForMana() => "5 MP (+1)";
-            var lblMana = new LabelAutoSized(imgMana.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, GetTextFuncForMana, "CrimsonText-Regular-12", Color.Yellow, _resourceFrame);
+            var lblMana = new LabelAutoSized(imgMana.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, GetTextFuncForMana, "CrimsonText-Regular-12", Color.Yellow, resourceFrame);
             lblMana.LoadContent(content);
 
             string GetTextFuncForFood() => $"{Globals.Instance.World.PlayerFaction.FoodPerTurn} Food";
-            var lblFood = new LabelAutoSized(imgFood.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, GetTextFuncForFood, "CrimsonText-Regular-12", Color.Yellow, _resourceFrame);
+            var lblFood = new LabelAutoSized(imgFood.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, GetTextFuncForFood, "CrimsonText-Regular-12", Color.Yellow, resourceFrame);
             lblFood.LoadContent(content);
 
-            _resourceFrame.AddControls(imgGold, lblGold, imgMana, lblMana, imgFood, lblFood);
+            resourceFrame.AddControls(imgGold, lblGold, imgMana, lblMana, imgFood, lblFood);
             #endregion
 
             #region UnitFrame
-            _unitFrame = new Frame(new Vector2(10.0f, 500.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole", _hudViewFrame);
-            _unitFrame.LoadContent(content);
+            var unitFrame = new Frame(new Vector2(10.0f, 500.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole", _hudViewFrame);
+            unitFrame.LoadContent(content);
 
-            string GetTextFuncForMoves() => $"Moves: {_unitsStacksView.Selected.MovementPoints}";
-            var lblMoves = new LabelAutoSized(_unitFrame.BottomLeft.ToVector2() + new Vector2(10.0f, -15.0f), Alignment.BottomLeft, GetTextFuncForMoves, "CrimsonText-Regular-12", Color.White); // , _unitFrame
+            string GetTextFuncForMoves() => _unitsStacksView.Selected == null ? string.Empty : $"Moves: {_unitsStacksView.Selected.MovementPoints}";
+            var lblMoves = new LabelAutoSized(unitFrame.BottomLeft.ToVector2() + new Vector2(10.0f, -15.0f), Alignment.BottomLeft, GetTextFuncForMoves, "CrimsonText-Regular-12", Color.White); // , _unitFrame
             lblMoves.LoadContent(content);
 
-            _movementTypeImages = LoadMovementTypeImages(content);
+            _movementTypeImages = LoadMovementTypeImages(unitFrame, content);
 
-            _unitFrame.AddControl(lblMoves);
+            unitFrame.AddControl(lblMoves);
             #endregion
+
+            _hudViewFrame.AddControls(lblCurrentDate, resourceFrame, unitFrame);
 
             var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
             _btnEndTurn = new Button(pos, Alignment.BottomRight, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h");
@@ -114,14 +114,14 @@ namespace PhoenixGamePresentationLibrary
             _test.LoadContent(content);
         }
 
-        private Dictionary<string, Image> LoadMovementTypeImages(ContentManager content)
+        private Dictionary<string, Image> LoadMovementTypeImages(Frame unitFrame, ContentManager content)
         {
             var movementTypes = Globals.Instance.MovementTypes;
 
             var movementTypeImages = new Dictionary<string, Image>();
             foreach (var movementType in movementTypes)
             {
-                var image = new Image(_unitFrame.BottomRight.ToVector2() + new Vector2(-12.0f, -20.0f), Alignment.BottomRight, new Vector2(18.0f, 12.0f), "MovementTypes", movementType.Name);
+                var image = new Image(unitFrame.BottomRight.ToVector2() + new Vector2(-12.0f, -20.0f), Alignment.BottomRight, new Vector2(18.0f, 12.0f), "MovementTypes", movementType.Name);
                 image.LoadContent(content);
                 movementTypeImages.Add(movementType.Name, image);
             }
@@ -135,14 +135,9 @@ namespace PhoenixGamePresentationLibrary
             input.Eaten = mouseOver;
 
             _hudViewFrame.Update(input, deltaTime);
-            _lblCurrentDate.Update(input, deltaTime);
-            _lblCurrentDate.Text = Globals.Instance.World.CurrentDate;
-
-            _resourceFrame.Update(input, deltaTime);
 
             if (_unitsStacksView.Selected != null)
             {
-                _unitFrame.Update(input, deltaTime);
                 _imgMovementTypes = new List<IControl>();
                 foreach (var movementType in _unitsStacksView.Selected.MovementTypes)
                 {
@@ -167,13 +162,8 @@ namespace PhoenixGamePresentationLibrary
         {
             _hudViewFrame.Draw(spriteBatch);
 
-            _lblCurrentDate.Draw(spriteBatch);
-
-            _resourceFrame.Draw(spriteBatch);
-
             if (_unitsStacksView.Selected != null)
             {
-                _unitFrame.Draw(spriteBatch);
                 DrawSelectedUnits(spriteBatch);
                 DrawUnselectedUnits(spriteBatch);
                 foreach (var imgMovementType in _imgMovementTypes)
