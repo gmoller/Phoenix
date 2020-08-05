@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using Input;
 using Utilities;
 
 namespace GuiControls
@@ -11,6 +12,8 @@ namespace GuiControls
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public abstract class Label : Control
     {
+        private readonly Func<string> _getTextFunc;
+
         protected readonly string FontName;
         protected readonly Color TextColor;
         protected readonly Color? TextShadowColor;
@@ -24,7 +27,8 @@ namespace GuiControls
             Vector2 position, 
             Alignment positionAlignment, 
             Vector2 size, 
-            string text, 
+            string text,
+            Func<string> getTextFunc,
             string fontName, 
             Color textColor, 
             Color? textShadowColor = null, 
@@ -48,6 +52,7 @@ namespace GuiControls
                 name)
         {
             Text = text;
+            _getTextFunc = getTextFunc;
             FontName = fontName;
             TextColor = textColor;
             TextShadowColor = textShadowColor;
@@ -61,6 +66,16 @@ namespace GuiControls
         }
 
         protected abstract Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text);
+
+        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        {
+            if (_getTextFunc != null)
+            {
+                Text = _getTextFunc.Invoke();
+            }
+
+            base.Update(input, deltaTime, transform);
+        }
 
         protected override void InDraw(SpriteBatch spriteBatch)
         {
@@ -132,7 +147,7 @@ namespace GuiControls
         public LabelAutoSized(
             Vector2 position,
             Alignment positionAlignment,
-            string text,
+            Func<string> getTextFunc,
             string fontName,
             Color textColor,
             IControl parent,
@@ -140,7 +155,8 @@ namespace GuiControls
             this(
                 position,
                 positionAlignment,
-                text,
+                null,
+                getTextFunc,
                 fontName,
                 textColor,
                 null,
@@ -153,28 +169,72 @@ namespace GuiControls
         }
 
         public LabelAutoSized(
-            Vector2 position, 
-            Alignment positionAlignment, 
-            string text, 
-            string fontName, 
-            Color textColor, 
-            Color? textShadowColor = null, 
-            Color? backColor = null, 
-            Color? borderColor = null, 
-            float layerDepth = 0.0f, 
+            Vector2 position,
+            Alignment positionAlignment,
+            string text,
+            string fontName,
+            Color textColor,
+            IControl parent,
+            string name = "") :
+            this(
+                position,
+                positionAlignment,
+                text,
+                null,
+                fontName,
+                textColor,
+                null,
+                null,
+                null,
+                0.0f,
+                parent,
+                name)
+        {
+        }
+
+        public LabelAutoSized(
+            Vector2 position,
+            Alignment positionAlignment,
+            string text,
+            string fontName,
+            Color textColor,
+            Color? textShadowColor = null) :
+            this(
+                position,
+                positionAlignment,
+                text,
+                null,
+                fontName,
+                textColor,
+                textShadowColor)
+        {
+        }
+
+        private LabelAutoSized(
+            Vector2 position,
+            Alignment positionAlignment,
+            string text,
+            Func<string> getTextFunc,
+            string fontName,
+            Color textColor,
+            Color? textShadowColor = null,
+            Color? backColor = null,
+            Color? borderColor = null,
+            float layerDepth = 0.0f,
             IControl parent = null,
             string name = "") :
             base(
-                position, 
-                positionAlignment, 
-                Vector2.Zero, 
-                text, 
-                fontName, 
-                textColor, 
-                textShadowColor, 
-                backColor, 
-                borderColor, 
-                layerDepth, 
+                position,
+                positionAlignment,
+                Vector2.Zero,
+                text,
+                getTextFunc,
+                fontName,
+                textColor,
+                textShadowColor,
+                backColor,
+                borderColor,
+                layerDepth,
                 parent,
                 name)
         {
@@ -218,7 +278,8 @@ namespace GuiControls
             string fontName,
             Color textColor,
             Color? textShadowColor = null,
-            IControl parent = null,
+            Color? backColor = null,
+            Color? borderColor = null,
             string name = "") :
             this(
                 position,
@@ -226,6 +287,61 @@ namespace GuiControls
                 size,
                 contentAlignment,
                 text,
+                null,
+                fontName,
+                textColor,
+                textShadowColor,
+                backColor,
+                borderColor,
+                0.0f,
+                null,
+                name)
+        {
+        }
+
+        public LabelSized(
+            Vector2 position,
+            Alignment positionAlignment,
+            Vector2 size,
+            Alignment contentAlignment,
+            string text,
+            string fontName,
+            Color textColor,
+            Color? textShadowColor = null,
+            Color? backColor = null,
+            Color? borderColor = null) :
+            this(
+                position,
+                positionAlignment,
+                size,
+                contentAlignment,
+                text,
+                null,
+                fontName,
+                textColor,
+                textShadowColor,
+                backColor,
+                borderColor)
+        {
+        }
+
+        public LabelSized(
+            Vector2 position,
+            Alignment positionAlignment,
+            Vector2 size,
+            Alignment contentAlignment,
+            string text,
+            string fontName,
+            Color textColor,
+            Color? textShadowColor = null,
+            IControl parent = null) :
+            this(
+                position,
+                positionAlignment,
+                size,
+                contentAlignment,
+                text,
+                null,
                 fontName,
                 textColor,
                 textShadowColor,
@@ -236,31 +352,33 @@ namespace GuiControls
         {
         }
 
-        public LabelSized(
-            Vector2 position, 
-            Alignment positionAlignment, 
-            Vector2 size, 
-            Alignment contentAlignment, 
-            string text, 
-            string fontName, 
-            Color textColor, 
-            Color? textShadowColor = null, 
-            Color? backColor = null, 
-            Color? borderColor = null, 
-            float layerDepth = 0.0f, 
+        private LabelSized(
+            Vector2 position,
+            Alignment positionAlignment,
+            Vector2 size,
+            Alignment contentAlignment,
+            string text,
+            Func<string> getTextFunc,
+            string fontName,
+            Color textColor,
+            Color? textShadowColor = null,
+            Color? backColor = null,
+            Color? borderColor = null,
+            float layerDepth = 0.0f,
             IControl parent = null,
             string name = "") :
             base(
-                position, 
-                positionAlignment, 
-                size, 
-                text, 
-                fontName, 
-                textColor, 
-                textShadowColor,  
-                backColor, 
-                borderColor, 
-                layerDepth, 
+                position,
+                positionAlignment,
+                size,
+                text,
+                getTextFunc,
+                fontName,
+                textColor,
+                textShadowColor,
+                backColor,
+                borderColor,
+                layerDepth,
                 parent,
                 name)
         {

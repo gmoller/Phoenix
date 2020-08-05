@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using Input;
 using Utilities;
 
 namespace GuiControls
@@ -19,6 +21,8 @@ namespace GuiControls
 
         private Rectangle[] _sourcePatches;
         private Rectangle[] _destinationPatches;
+
+        private List<IControl> _childControls;
 
         public Frame(
             Vector2 position,
@@ -78,6 +82,8 @@ namespace GuiControls
             _rightPadding = rightPadding;
 
             _slots = slots;
+
+            _childControls=new List<IControl>();
         }
 
         protected Frame(Frame copyThis) : base(copyThis)
@@ -85,6 +91,19 @@ namespace GuiControls
         }
 
         public override IControl Clone() { return new Frame(this); }
+
+        public void AddControl(IControl control)
+        {
+            _childControls.Add(control);
+        }
+
+        public void AddControls(params IControl[] controls)
+        {
+            foreach (var control in controls)
+            {
+                AddControl(control);
+            }
+        }
 
         public override void LoadContent(ContentManager content)
         {
@@ -94,6 +113,36 @@ namespace GuiControls
             var frame = atlas.Frames[TextureName];
             _sourcePatches = CreatePatches(frame.ToRectangle(), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
             _destinationPatches = CreatePatches(new Rectangle(TopLeft.X, TopLeft.Y, (int)Size.X, (int)Size.Y), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
+        }
+
+        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        {
+            base.Update(input, deltaTime, transform);
+
+            foreach (var childControl in _childControls)
+            {
+                childControl.Update(input, deltaTime, transform);
+            }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+
+            foreach (var childControl in _childControls)
+            {
+                childControl.Draw(spriteBatch);
+            }
+        }
+
+        public override void Draw(Matrix? transform = null)
+        {
+            base.Draw(transform);
+
+            foreach (var childControl in _childControls)
+            {
+                childControl.Draw(transform);
+            }
         }
 
         protected override void InDraw(SpriteBatch spriteBatch)

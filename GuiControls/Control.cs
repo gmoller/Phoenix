@@ -221,7 +221,7 @@ namespace GuiControls
         {
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             BeforeDraw(spriteBatch);
 

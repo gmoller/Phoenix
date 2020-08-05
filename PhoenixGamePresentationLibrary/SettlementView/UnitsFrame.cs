@@ -64,7 +64,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             {
                 if (_parent.Settlement.UnitCanBeBuilt(unit.Name))
                 {
-                    var lbl = new LabelSized(new Vector2(x, y), Alignment.TopLeft, new Vector2(42.0f, 20.0f), Alignment.MiddleCenter, unit.ShortName, "CrimsonText-Regular-6", Color.Red, null, Color.PowderBlue, null, 0.0f, null, unit.Name);
+                    var lbl = new LabelSized(new Vector2(x, y), Alignment.TopLeft, new Vector2(42.0f, 20.0f), Alignment.MiddleCenter, unit.ShortName, "CrimsonText-Regular-6", Color.Red, null, Color.PowderBlue, null, unit.Name);
                     lbl.LoadContent(content);
                     lbl.Click += UnitClick;
                     units.Add(lbl);

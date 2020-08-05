@@ -23,11 +23,8 @@ namespace PhoenixGamePresentationLibrary
 
         private Frame _resourceFrame;
         private Label _lblGold;
-        private Image _imgGold;
-        private Label _lblMana;
-        private Image _imgMana;
+        //private Label _lblMana;
         private Label _lblFood;
-        private Image _imgFood;
 
         private Frame _unitFrame;
         private Label _lblMoves;
@@ -71,18 +68,26 @@ namespace PhoenixGamePresentationLibrary
             _resourceFrame = new Frame(new Vector2(10.0f, 50.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole", _hudViewFrame);
             _resourceFrame.LoadContent(content);
 
-            _imgGold = new Image(new Vector2(10.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R", _resourceFrame);
-            _imgGold.LoadContent(content);
-            _imgMana = new Image(_imgGold.RelativeTopLeft.ToVector2() + new Vector2(0.0f, _imgGold.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R", _resourceFrame);
-            _imgMana.LoadContent(content);
-            _imgFood = new Image(_imgMana.RelativeTopLeft.ToVector2() + new Vector2(0.0f, _imgMana.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", _resourceFrame);
-            _imgFood.LoadContent(content);
-            _lblGold = new LabelAutoSized(_imgGold.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, _resourceFrame);
+            var imgGold = new Image(new Vector2(10.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R", _resourceFrame);
+            imgGold.LoadContent(content);
+
+            var imgMana = new Image(imgGold.RelativeTopLeft.ToVector2() + new Vector2(0.0f, imgGold.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R", _resourceFrame);
+            imgMana.LoadContent(content);
+
+            var imgFood = new Image(imgMana.RelativeTopLeft.ToVector2() + new Vector2(0.0f, imgMana.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", _resourceFrame);
+            imgFood.LoadContent(content);
+
+            _lblGold = new LabelAutoSized(imgGold.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, _resourceFrame);
             _lblGold.LoadContent(content);
-            _lblMana = new LabelAutoSized(_imgMana.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, _resourceFrame);
-            _lblMana.LoadContent(content);
-            _lblFood = new LabelAutoSized(_imgFood.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, _resourceFrame);
+
+            Func<string> getTextFunc = () => "5 MP (+1)";
+            var lblMana = new LabelAutoSized(imgMana.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, getTextFunc, "CrimsonText-Regular-12", Color.Yellow, _resourceFrame);
+            lblMana.LoadContent(content);
+
+            _lblFood = new LabelAutoSized(imgFood.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, string.Empty, "CrimsonText-Regular-12", Color.Yellow, _resourceFrame);
             _lblFood.LoadContent(content);
+
+            _resourceFrame.AddControls(imgGold, imgMana, lblMana, imgFood);
 
             _unitFrame = new Frame(new Vector2(10.0f, 500.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole", _hudViewFrame);
             _unitFrame.LoadContent(content);
@@ -131,15 +136,12 @@ namespace PhoenixGamePresentationLibrary
             _lblCurrentDate.Text = Globals.Instance.World.CurrentDate;
 
             _resourceFrame.Update(input, deltaTime);
-            _imgGold.Update(input, deltaTime);
             _lblGold.Update(input, deltaTime);
             _lblGold.Text = $"{Globals.Instance.World.PlayerFaction.GoldInTreasury} GP (+{Globals.Instance.World.PlayerFaction.GoldPerTurn})";
 
-            _imgMana.Update(input, deltaTime);
-            _lblMana.Update(input, deltaTime);
-            _lblMana.Text = "5 MP (+1)";
+            //_resourceFrame["lblMana"].Text = "5 MP (+1)";
+            //_lblMana.Text = "5 MP (+1)";
 
-            _imgFood.Update(input, deltaTime);
             _lblFood.Update(input, deltaTime);
             _lblFood.Text = $"{Globals.Instance.World.PlayerFaction.FoodPerTurn} Food";
 
@@ -176,13 +178,7 @@ namespace PhoenixGamePresentationLibrary
 
             _resourceFrame.Draw(spriteBatch);
 
-            _imgGold.Draw(spriteBatch);
             _lblGold.Draw(spriteBatch);
-
-            _imgMana.Draw(spriteBatch);
-            _lblMana.Draw(spriteBatch);
-
-            _imgFood.Draw(spriteBatch);
             _lblFood.Draw(spriteBatch);
 
             if (_unitsStacksView.Selected != null)
