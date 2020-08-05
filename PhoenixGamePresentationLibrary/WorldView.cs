@@ -78,7 +78,8 @@ namespace PhoenixGamePresentationLibrary
             Command beginTurnCommand = new BeginTurnCommand { Payload = World };
             beginTurnCommand.Execute();
 
-            _unitsStacksView[0].SelectStack();
+            _unitsStacksView.SelectNext();
+            //_unitsStacksView[0].SelectStack();
         }
 
         public void EndTurn()

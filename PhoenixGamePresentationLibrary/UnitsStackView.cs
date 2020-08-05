@@ -24,7 +24,7 @@ namespace PhoenixGamePresentationLibrary
 
         public List<Point> MovementPath { get; set; }
         public List<Point> PotentialMovementPath { get; set; }
-        public bool IsSelected { get; set; }
+        public bool IsSelected => _unitsStacksView.Selected == this;
         public bool IsMovingState { get; set; }
         public float MovementCountdownTime { get; set; }
         public Vector2 CurrentPositionOnScreen { get; set; }
@@ -102,9 +102,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void SelectStack()
         {
-            IsSelected = true;
             _blink = true;
-            _worldView.Camera.LookAtCell(_unitsStack.Location);
         }
 
         private bool CheckForStackDeselection(UnitsStack unitsStack)
@@ -116,7 +114,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void DeselectStack()
         {
-            IsSelected = false;
+            _unitsStacksView.SelectNext();
         }
 
         public void Draw(SpriteBatch spriteBatch)

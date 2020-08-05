@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Input;
 using PhoenixGameLibrary;
+using System;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -16,6 +17,7 @@ namespace PhoenixGamePresentationLibrary
 
         private readonly UnitsStacks _unitsStacks;
         private readonly List<UnitsStackView> _unitsStackViews;
+        private int _selectedUnitStack;
 
         internal Texture2D GuiTextures { get; private set; }
         internal AtlasFrame SquareGreenFrame { get; private set; }
@@ -23,18 +25,7 @@ namespace PhoenixGamePresentationLibrary
         internal Texture2D UnitTextures { get; private set; }
         internal AtlasSpec2 UnitAtlas { get; private set; }
 
-        public UnitsStackView Selected
-        {
-            get
-            {
-                foreach (var unitsStackView in _unitsStackViews)
-                {
-                    if (unitsStackView.IsSelected) return unitsStackView;
-                }
-
-                return null;
-            }
-        }
+        public UnitsStackView Selected => GetSelected();
 
         public int Count => _unitsStackViews.Count;
 
@@ -45,17 +36,18 @@ namespace PhoenixGamePresentationLibrary
             _worldView = worldView;
             _unitsStacks = unitsStacks;
             _unitsStackViews = new List<UnitsStackView>();
+            _selectedUnitStack = -1;
         }
 
         internal void LoadContent(ContentManager content)
         {
-                var atlas = AssetsManager.Instance.GetAtlas("Squares");
-                GuiTextures = AssetsManager.Instance.GetTexture("Squares");
-                SquareGreenFrame = atlas.Frames["SquareGreen"];
-                SquareGrayFrame = atlas.Frames["SquareGray"];
+            var atlas = AssetsManager.Instance.GetAtlas("Squares");
+            GuiTextures = AssetsManager.Instance.GetTexture("Squares");
+            SquareGreenFrame = atlas.Frames["SquareGreen"];
+            SquareGrayFrame = atlas.Frames["SquareGray"];
 
             UnitAtlas = AssetsManager.Instance.GetAtlas("Units");
-                UnitTextures = AssetsManager.Instance.GetTexture("Units");
+            UnitTextures = AssetsManager.Instance.GetTexture("Units");
 
             foreach (var unitsStack in _unitsStacks)
             {
@@ -82,6 +74,32 @@ namespace PhoenixGamePresentationLibrary
             {
                 unitsStackView.Draw(spriteBatch);
             }
+        }
+
+        internal void SelectNext()
+        {
+            _selectedUnitStack++;
+            if (_unitsStackViews.Count <= _selectedUnitStack)
+            {
+                _selectedUnitStack = -1;
+            }
+            else
+            {
+                if (_unitsStackViews[_selectedUnitStack].MovementPoints <= 0.0f)
+                {
+                    SelectNext();
+                }
+            }
+        }
+
+        private UnitsStackView GetSelected()
+        {
+            if (_selectedUnitStack < 0 || _selectedUnitStack > _unitsStackViews.Count - 1) return null;
+
+            var unitsStackView = _unitsStackViews[_selectedUnitStack];
+            _worldView.Camera.LookAtCell(unitsStackView.Location);
+
+            return unitsStackView;
         }
 
         private void CreateNewUnitsStackView(WorldView worldView, UnitsStack unitsStack)
