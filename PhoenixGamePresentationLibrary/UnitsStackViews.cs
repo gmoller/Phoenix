@@ -97,6 +97,7 @@ namespace PhoenixGamePresentationLibrary
                 else
                 {
                     var unitsStackView = _unitsStackViews[_selectedUnitStack];
+                    unitsStackView.SetButtons();
                     _worldView.Camera.LookAtCell(unitsStackView.Location);
                 }
             }

@@ -12,7 +12,7 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Unit
     {
-        private World _world;
+        private readonly World _world;
 
         public Guid Id { get; }
         public Point Location { get; set; } // hex cell the unit is in
@@ -23,6 +23,7 @@ namespace PhoenixGameLibrary
 
         public string Name => _unitType.Name;
         public string ShortName => _unitType.ShortName;
+        public List<string> Actions => _unitType.Actions;
         public List<string> UnitTypeMovementTypes => _unitType.MovementTypes;
         public string UnitTypeTextureName => _unitType.TextureName;
 

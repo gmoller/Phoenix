@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Input;
 using Microsoft.Xna.Framework.Content;
@@ -8,6 +9,9 @@ namespace GuiControls
 {
     public interface IControl
     {
+        IControl Parent { get; }
+        List<IControl> ChildControls { get; }
+
         string Name { get; }
 
         int Top { get; }

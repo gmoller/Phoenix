@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary
@@ -28,7 +27,7 @@ namespace PhoenixGameLibrary
 
         public float MovementPoints => DetermineMovementPoints();
         public List<string> MovementTypes => DetermineMovementTypes();
-        public List<string> Actions => DetermineActions();
+        public List<string> Actions => DetermineActions(_units);
 
         public int Count => _units.Count;
 
@@ -38,17 +37,6 @@ namespace PhoenixGameLibrary
             {
                 unit.EndTurn();
             }
-        }
-
-        private float DetermineMovementPoints()
-        {
-            var movementPoints = float.MaxValue;
-            foreach (var unit in _units)
-            {
-                movementPoints = Math.Min(movementPoints, unit.MovementPoints);
-            }
-
-            return movementPoints;
         }
 
         internal bool CanSeeCell(Cell cell)
@@ -62,6 +50,17 @@ namespace PhoenixGameLibrary
             }
 
             return false;
+        }
+
+        private float DetermineMovementPoints()
+        {
+            var movementPoints = float.MaxValue;
+            foreach (var unit in _units)
+            {
+                movementPoints = Math.Min(movementPoints, unit.MovementPoints);
+            }
+
+            return movementPoints;
         }
 
         private List<string> DetermineMovementTypes()
@@ -82,9 +81,20 @@ namespace PhoenixGameLibrary
             return movementTypes;
         }
 
-        private List<string> DetermineActions()
+        private List<string> DetermineActions(Units units)
         {
-            var movementActions = new List<string>();
+            var movementActions = new List<string> {"Done", "Patrol", "Wait"};
+
+            foreach (var unit in units)
+            {
+                foreach (var action in unit.Actions)
+                {
+                    if (!movementActions.Contains(action))
+                    {
+                        movementActions.Add(action);
+                    }
+                }
+            }
 
             return movementActions;
         }

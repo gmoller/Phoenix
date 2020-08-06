@@ -38,6 +38,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ButtonClickEventArgs.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Cursor.cs" />

@@ -8,11 +8,14 @@ namespace PhoenixGamePresentationLibrary
 {
     internal class SettlementViews
     {
+        private readonly WorldView _worldView;
+
         private readonly Settlements _settlements;
         private readonly List<SettlementView.SettlementView> _settlementViews;
 
-        internal SettlementViews(Settlements settlements)
+        internal SettlementViews(WorldView worldView, Settlements settlements)
         {
+            _worldView = worldView;
             _settlements = settlements;
             _settlementViews = new List<SettlementView.SettlementView>();
         }

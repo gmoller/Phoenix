@@ -24,9 +24,9 @@ namespace GuiControls
         private string _textureHover;
         private string _textureDisabled;
 
-        private List<IControl> _childControls;
+        public List<IControl> ChildControls { get; private set; }
 
-        protected IControl Parent;
+        public IControl Parent { get; private set; }
 
         protected string TextureAtlas { get; private set; }
         protected string TextureName { get; private set; }
@@ -88,7 +88,7 @@ namespace GuiControls
 
             Enabled = true;
 
-            _childControls = new List<IControl>();
+            ChildControls = new List<IControl>();
         }
 
         protected Control(Control copyThis) : this()
@@ -103,7 +103,7 @@ namespace GuiControls
 
         public void AddControl(IControl control)
         {
-            _childControls.Add(control);
+            ChildControls.Add(control);
         }
 
         public void AddControls(params IControl[] controls)
@@ -116,11 +116,21 @@ namespace GuiControls
 
         public void SetTopLeftPosition(int x, int y)
         {
+            foreach (var child in ChildControls)
+            {
+                child.SetTopLeftPosition(x + child.RelativeTopLeft.X, y + child.RelativeTopLeft.Y);
+            }
+
             ActualDestinationRectangle = new Rectangle(x, y, ActualDestinationRectangle.Width, ActualDestinationRectangle.Height);
         }
 
         public void MoveTopLeftPosition(int x, int y)
         {
+            foreach (var child in ChildControls)
+            {
+                child.MoveTopLeftPosition(x, y);
+            }
+
             ActualDestinationRectangle = new Rectangle(ActualDestinationRectangle.X + x, ActualDestinationRectangle.Y + y, ActualDestinationRectangle.Width, ActualDestinationRectangle.Height);
         }
 
@@ -189,7 +199,7 @@ namespace GuiControls
 
             AfterUpdate(input, deltaTime, transform);
 
-            foreach (var childControl in _childControls)
+            foreach (var childControl in ChildControls)
             {
                 childControl.Update(input, deltaTime, transform);
             }
@@ -241,7 +251,7 @@ namespace GuiControls
 
             AfterDraw(spriteBatch);
 
-            foreach (var childControl in _childControls)
+            foreach (var childControl in ChildControls)
             {
                 childControl.Draw(spriteBatch);
             }
@@ -259,7 +269,7 @@ namespace GuiControls
 
             AfterDraw(transform);
 
-            foreach (var childControl in _childControls)
+            foreach (var childControl in ChildControls)
             {
                 childControl.Draw(transform);
             }
@@ -389,7 +399,7 @@ namespace GuiControls
             Enabled = copyThis.Enabled;
             MouseOver = copyThis.MouseOver;
             Click = copyThis.Click;
-            _childControls = copyThis._childControls;
+            ChildControls = copyThis.ChildControls;
         }
 
         public override string ToString()
