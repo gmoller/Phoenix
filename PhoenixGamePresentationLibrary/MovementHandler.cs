@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using HexLibrary;
 using Input;
@@ -128,7 +127,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void StartUnitMovement(UnitsStackView unitsStackView, Point hexToMoveTo)
         {
-            unitsStackView.MovementPath = MovementPathDeterminer.DetermineMovementPath(unitsStackView.FirstUnit, unitsStackView.Location, hexToMoveTo);
+            unitsStackView.SetMovementPath(MovementPathDeterminer.DetermineMovementPath(unitsStackView.FirstUnit, unitsStackView.Location, hexToMoveTo));
 
             unitsStackView.IsMovingState = true;
             unitsStackView.MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
@@ -179,15 +178,15 @@ namespace PhoenixGamePresentationLibrary
             if (unitsStackView.MovementPath.Count == 0)
             {
                 unitsStackView.IsMovingState = false;
-                unitsStackView.MovementPath = new List<Point>();
+                unitsStackView.ResetMovementPath();
             }
             else
             {
-                unitsStackView.MovementPath.RemoveAt(0);
+                unitsStackView.RemoveFirstItemFromMovementPath();
                 if (unitsStackView.MovementPath.Count == 0)
                 {
                     unitsStackView.IsMovingState = false;
-                    unitsStackView.MovementPath = new List<Point>();
+                    unitsStackView.ResetMovementPath();
                 }
             }
         }

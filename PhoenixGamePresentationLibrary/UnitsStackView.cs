@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using GuiControls;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,7 +9,6 @@ using Microsoft.Xna.Framework;
 using PhoenixGameLibrary;
 using Utilities;
 using Point = Utilities.Point;
-using System;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -21,21 +21,24 @@ namespace PhoenixGamePresentationLibrary
         private readonly UnitsStackViews _unitsStackViews;
         private readonly UnitsStack _unitsStack;
 
+        private List<Point> _movementPath;
+        private List<Point> _potentialMovementPath;
+        private List<IControl> _actionButtons;
+
         private float _blinkCooldownInMilliseconds;
         private bool _blink;
 
-        public List<Point> MovementPath { get; set; }
-        public List<Point> PotentialMovementPath { get; set; }
+        public EnumerableList<Point> MovementPath => new EnumerableList<Point>(_movementPath);
+        public EnumerableList<Point> PotentialMovementPath => new EnumerableList<Point>(_potentialMovementPath);
         public bool IsSelected => _unitsStackViews.Selected == this;
         public bool IsMovingState { get; set; }
         public float MovementCountdownTime { get; set; }
         public Vector2 CurrentPositionOnScreen { get; set; }
-        public List<IControl> ActionButtons { get; private set; }
+        public EnumerableList<IControl> ActionButtons => new EnumerableList<IControl>(_actionButtons);
 
         public Point Location => _unitsStack.Location;
         public float MovementPoints => _unitsStack.MovementPoints;
-        public List<string> MovementTypes => _unitsStack.MovementTypes;
-        public List<string> Actions => _unitsStack.Actions;
+        public EnumerableList<string> Actions => _unitsStack.Actions;
         public Unit FirstUnit => _unitsStack[0];
 
         public int Count => _unitsStack.Count;
@@ -45,17 +48,18 @@ namespace PhoenixGamePresentationLibrary
             _worldView = worldView;
             _unitsStackViews = unitsStacksView;
             _unitsStack = unitsStack;
-            MovementPath = new List<Point>();
+            _movementPath = new List<Point>();
+            _potentialMovementPath = new List<Point>();
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             CurrentPositionOnScreen = HexOffsetCoordinates.ToPixel(unitsStack.Location.X, unitsStack.Location.Y);
-            ActionButtons = new List<IControl>();
+            _actionButtons = new List<IControl>();
         }
 
         internal List<IControl> GetMovementTypeImages()
         {
             // TODO: update will not be called on these
             var imgMovementTypes = new List<IControl>();
-            foreach (var movementType in MovementTypes)
+            foreach (var movementType in _unitsStack.MovementTypes)
             {
                 var img = _worldView.MovementTypeImages[movementType];
                 imgMovementTypes.Add(img);
@@ -74,7 +78,7 @@ namespace PhoenixGamePresentationLibrary
                 actionButtons.Add(btn);
             }
 
-            ActionButtons = actionButtons;
+            _actionButtons = actionButtons;
         }
 
         private void BtnClick(object sender, ButtonClickEventArgs e)
@@ -185,8 +189,8 @@ namespace PhoenixGamePresentationLibrary
                 DrawUnit(spriteBatch);
             }
 
-            DrawMovementPath(spriteBatch, MovementPath, Color.Black, 5.0f, 5.0f);
-            DrawMovementPath(spriteBatch, PotentialMovementPath, Color.White, 3.0f, 1.0f);
+            DrawMovementPath(spriteBatch, _movementPath, Color.Black, 5.0f, 5.0f);
+            DrawMovementPath(spriteBatch, _potentialMovementPath, Color.White, 3.0f, 1.0f);
         }
 
         private void DrawUnit(SpriteBatch spriteBatch)
@@ -260,5 +264,30 @@ namespace PhoenixGamePresentationLibrary
         }
 
         private string DebuggerDisplay => $"{{Count={_unitsStack.Count}}}";
+
+        public void ResetPotentialMovementPath()
+        {
+            _potentialMovementPath = new List<Point>();
+        }
+
+        internal void SetPotentialMovementPath(List<Point> path)
+        {
+            _potentialMovementPath = path;
+        }
+
+        public void ResetMovementPath()
+        {
+            _movementPath = new List<Point>();
+        }
+
+        internal void SetMovementPath(List<Point> path)
+        {
+            _movementPath = path;
+        }
+
+        internal void RemoveFirstItemFromMovementPath()
+        {
+            _movementPath.RemoveAt(0);
+        }
     }
 }

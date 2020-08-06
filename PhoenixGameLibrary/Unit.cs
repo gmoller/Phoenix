@@ -14,23 +14,20 @@ namespace PhoenixGameLibrary
     {
         private readonly World _world;
 
+        private readonly UnitType _unitType;
+        private List<Cell> _seenCells;
+
         public Guid Id { get; }
         public Point Location { get; set; } // hex cell the unit is in
         public float MovementPoints { get; set; }
 
-        private readonly UnitType _unitType;
-        private List<Cell> _seenCells;
-
         public string Name => _unitType.Name;
         public string ShortName => _unitType.ShortName;
-        public List<string> Actions => _unitType.Actions;
-        public List<string> UnitTypeMovementTypes => _unitType.MovementTypes;
+        public EnumerableList<string> Actions => new EnumerableList<string>(_unitType.Actions);
+        public EnumerableList<string> UnitTypeMovementTypes => new EnumerableList<string>(_unitType.MovementTypes);
         public string UnitTypeTextureName => _unitType.TextureName;
 
         public UnitsStack UnitsStack { get; set; }
-
-        public List<Point> PotentialMovementPath { get; set; }
-        public List<Point> MovementPath { get; set; }
 
         public Unit(World world, UnitType unitType, Point location)
         {
@@ -39,8 +36,6 @@ namespace PhoenixGameLibrary
             _unitType = unitType;
             Location = location;
             MovementPoints = unitType.MovementPoints;
-            MovementPath = new List<Point>();
-            PotentialMovementPath = new List<Point>();
 
             SetSeenCells(location);
         }

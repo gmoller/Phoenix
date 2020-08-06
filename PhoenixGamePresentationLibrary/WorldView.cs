@@ -19,11 +19,13 @@ namespace PhoenixGamePresentationLibrary
         private UnitsStackViews _unitsStacksView;
         private SettlementViews _settlementsView;
         private HudView _hudView;
+        private Dictionary<string, Image> _movementTypeImages;
+        private Dictionary<string, Button> _actionButtons;
 
         public Camera Camera { get; private set; }
         public World World { get; }
-        public Dictionary<string, Image> MovementTypeImages { get; private set; }
-        public Dictionary<string, Button> ActionButtons { get; private set; }
+        public EnumerableDictionary<Image> MovementTypeImages => new EnumerableDictionary<Image>(_movementTypeImages);
+        public EnumerableDictionary<Button> ActionButtons => new EnumerableDictionary<Button>(_actionButtons);
 
         internal WorldView(World world)
         {
@@ -46,8 +48,8 @@ namespace PhoenixGamePresentationLibrary
             _settlementsView.LoadContent(content);
             _hudView.LoadContent(content);
 
-            MovementTypeImages = LoadMovementTypeImages(content);
-            ActionButtons = LoadActionButtons(content);
+            _movementTypeImages = LoadMovementTypeImages(content);
+            _actionButtons = LoadActionButtons(content);
         }
 
         internal void Update(InputHandler input, float deltaTime)

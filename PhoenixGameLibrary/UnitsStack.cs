@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Utilities;
 
 namespace PhoenixGameLibrary
@@ -10,6 +11,16 @@ namespace PhoenixGameLibrary
     public class UnitsStack : IEnumerable<Unit>
     {
         private readonly Units _units;
+
+        public Unit this[int index] => _units[index];
+
+        public Point Location => _units[0].Location;
+
+        public float MovementPoints => DetermineMovementPoints();
+        public EnumerableList<string> MovementTypes => new EnumerableList<string>(DetermineMovementTypes());
+        public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(_units));
+
+        public int Count => _units.Count;
 
         public UnitsStack(Units units)
         {
@@ -20,16 +31,6 @@ namespace PhoenixGameLibrary
                 unit.UnitsStack = this;
             }
         }
-
-        public Unit this[int index] => _units[index];
-
-        public Point Location => _units[0].Location;
-
-        public float MovementPoints => DetermineMovementPoints();
-        public List<string> MovementTypes => DetermineMovementTypes();
-        public List<string> Actions => DetermineActions(_units);
-
-        public int Count => _units.Count;
 
         internal void EndTurn()
         {
@@ -87,7 +88,8 @@ namespace PhoenixGameLibrary
 
             foreach (var unit in units)
             {
-                foreach (var action in unit.Actions)
+                var unitActions = unit.Actions;
+                foreach (var action in unitActions)
                 {
                     if (!movementActions.Contains(action))
                     {

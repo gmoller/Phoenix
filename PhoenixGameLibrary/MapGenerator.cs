@@ -74,10 +74,10 @@ namespace PhoenixGameLibrary
             {
                 terrainType = terrainTypes[0];
             }
-            //else if (IsForest(val))
-            //{
-            //    terrainType = terrainTypes[1];
-            //}
+            else if (IsForest(val))
+            {
+                terrainType = terrainTypes[1];
+            }
             else if (IsHill(val))
             {
                 terrainType = terrainTypes[6];
@@ -104,14 +104,14 @@ namespace PhoenixGameLibrary
             return val >= -0.3f && val < 0.4f;
         }
 
-        //private static bool IsForest(float val)
-        //{
-        //    return val >= 0.4f && val < 0.6f;
-        //}
+        private static bool IsForest(float val)
+        {
+            return val >= 0.4f && val < 0.5f;
+        }
 
         private static bool IsHill(float val)
         {
-            return val >= 0.4f && val < 0.7f;
+            return val >= 0.5f && val < 0.7f;
         }
 
         private static bool IsMountain(float val)

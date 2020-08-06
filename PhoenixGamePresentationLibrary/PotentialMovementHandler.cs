@@ -11,13 +11,13 @@ namespace PhoenixGamePresentationLibrary
         {
             if (!unitsStackView.IsSelected || unitsStackView.IsMovingState || !input.MouseIsWithinScreen || input.Eaten)
             {
-                unitsStackView.PotentialMovementPath = new List<Point>();
+                unitsStackView.ResetPotentialMovementPath();
             }
             else
             {
                 var potentialMovementHandler = new PotentialMovementHandler();
                 var path = potentialMovementHandler.GetPotentialMovementPath(unitsStackView, world);
-                unitsStackView.PotentialMovementPath = path;
+                unitsStackView.SetPotentialMovementPath(path);
             }
         }
 
