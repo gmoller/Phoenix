@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using GuiControls;
-using HexLibrary;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using GuiControls;
+using HexLibrary;
 using Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
@@ -16,7 +17,7 @@ namespace PhoenixGamePresentationLibrary
     {
         private OverlandMapView _overlandMapView;
         private OverlandSettlementViews _overlandSettlementsView;
-        private UnitsStackViews _unitsStacksView;
+        private UnitsStackViews _unitsStackViews;
         private SettlementViews _settlementsView;
         private HudView _hudView;
         private Dictionary<string, Image> _movementTypeImages;
@@ -36,15 +37,15 @@ namespace PhoenixGamePresentationLibrary
         {
             _overlandMapView = new OverlandMapView(this, World.OverlandMap);
             _overlandSettlementsView = new OverlandSettlementViews(this, World.Settlements);
-            _unitsStacksView = new UnitsStackViews(this, World.UnitsStacks);
+            _unitsStackViews = new UnitsStackViews(this, World.UnitsStacks);
             _settlementsView = new SettlementViews(this, World.Settlements);
-            _hudView = new HudView(this, _unitsStacksView);
+            _hudView = new HudView(this, _unitsStackViews);
 
             Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
             Camera.LoadContent(content);
 
             _overlandSettlementsView.LoadContent(content);
-            _unitsStacksView.LoadContent(content);
+            _unitsStackViews.LoadContent(content);
             _settlementsView.LoadContent(content);
             _hudView.LoadContent(content);
 
@@ -63,7 +64,7 @@ namespace PhoenixGamePresentationLibrary
 
             _overlandMapView.Update(input, deltaTime);
             _overlandSettlementsView.Update(input, deltaTime);
-            _unitsStacksView.Update(input, deltaTime);
+            _unitsStackViews.Update(input, deltaTime);
             _settlementsView.Update(input, deltaTime);
             _hudView.Update(input, deltaTime);
         }
@@ -74,7 +75,7 @@ namespace PhoenixGamePresentationLibrary
             _overlandMapView.Draw(spriteBatch);
             _overlandSettlementsView.Draw(spriteBatch);
 
-            _unitsStacksView.Draw(spriteBatch);
+            _unitsStackViews.Draw(spriteBatch);
             spriteBatch.End();
 
             spriteBatch.Begin();
@@ -88,7 +89,7 @@ namespace PhoenixGamePresentationLibrary
             Command beginTurnCommand = new BeginTurnCommand { Payload = World };
             beginTurnCommand.Execute();
 
-            _unitsStacksView.SelectNext();
+            _unitsStackViews.SelectNext();
             //_unitsStacksView[0].SelectStack();
         }
 
@@ -127,6 +128,7 @@ namespace PhoenixGamePresentationLibrary
             {
                 var button = new Button(Vector2.Zero, Alignment.TopLeft, new Vector2(115.0f, 30.0f), "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_n", "simpleb_h");
                 button.LoadContent(content);
+                button.Click += (o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.ButtonName));
                 var label = new LabelSized(button.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black, null, button);
                 label.LoadContent(content);
                 button.AddControl(label);
@@ -136,6 +138,24 @@ namespace PhoenixGamePresentationLibrary
             }
 
             return actionButtons;
+        }
+
+        private void BtnClick(object sender, ButtonClickEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case "Done":
+                    break;
+                case "Patrol":
+                    break;
+                case "Wait":
+                    _unitsStackViews.SelectNext();
+                    break;
+                case "BuildOutpost":
+                    break;
+                default:
+                    throw new Exception($"Action [{e.Action}] is not implemented.");
+            }
         }
     }
 }

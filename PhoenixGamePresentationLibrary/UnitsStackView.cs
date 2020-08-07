@@ -74,29 +74,10 @@ namespace PhoenixGamePresentationLibrary
             foreach (var action in Actions)
             {
                 var btn = _worldView.ActionButtons[action];
-                btn.Click += (o, args) => BtnClick(o, new ButtonClickEventArgs(action));
                 actionButtons.Add(btn);
             }
 
             _actionButtons = actionButtons;
-        }
-
-        private void BtnClick(object sender, ButtonClickEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case "Done":
-                    break;
-                case "Patrol":
-                    break;
-                case "Wait":
-                    _unitsStackViews.SelectNext();
-                    break;
-                case "BuildOutpost":
-                    break;
-                default:
-                    throw new Exception($"Action [{e.Action}] is not implemented.");
-            }
         }
 
         internal void Update(InputHandler input, float deltaTime)

@@ -81,25 +81,48 @@ namespace PhoenixGamePresentationLibrary
             }
         }
 
+        // 0 of 3 (0..2)
         internal void SelectNext()
         {
-            _selectedUnitStack++;
-            if (_unitsStackViews.Count <= _selectedUnitStack)
+            int counter = 0;
+            bool leaveLoop = false;
+            bool stackFound =  false;
+            do
             {
-                _selectedUnitStack = -1;
-            }
-            else
-            {
-                if (_unitsStackViews[_selectedUnitStack].MovementPoints <= 0.0f)
+                _selectedUnitStack++;
+                if (_selectedUnitStack < _unitsStackViews.Count)
                 {
-                    SelectNext();
+                    if (_unitsStackViews[_selectedUnitStack].MovementPoints > 0.0f) // and state is not busy
+                    {
+                        // stack found
+                        stackFound = true;
+                        leaveLoop = true;
+                    }
                 }
                 else
                 {
-                    var unitsStackView = _unitsStackViews[_selectedUnitStack];
-                    unitsStackView.SetButtons();
-                    _worldView.Camera.LookAtCell(unitsStackView.Location);
+                    _selectedUnitStack = -1;
                 }
+
+                counter++;
+                if (counter > _unitsStackViews.Count)
+                {
+                    // no stack found - all busy
+                    stackFound = false;
+                    leaveLoop = true;
+                }
+            } while (!leaveLoop);
+
+
+            if (stackFound)
+            {
+                var unitsStackView = _unitsStackViews[_selectedUnitStack];
+                unitsStackView.SetButtons();
+                _worldView.Camera.LookAtCell(unitsStackView.Location);
+            }
+            else
+            {
+                _selectedUnitStack = -1;
             }
         }
 
