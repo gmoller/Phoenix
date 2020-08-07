@@ -128,7 +128,7 @@ namespace PhoenixGamePresentationLibrary
             {
                 var button = new Button(Vector2.Zero, Alignment.TopLeft, new Vector2(115.0f, 30.0f), "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_n", "simpleb_h");
                 button.LoadContent(content);
-                button.Click += (o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.ButtonName));
+                button.Click += (o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name));
                 var label = new LabelSized(button.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black, null, button);
                 label.LoadContent(content);
                 button.AddControl(label);

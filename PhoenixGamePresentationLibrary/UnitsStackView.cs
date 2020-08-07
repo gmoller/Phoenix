@@ -29,7 +29,6 @@ namespace PhoenixGamePresentationLibrary
         private bool _blink;
 
         public EnumerableList<Point> MovementPath => new EnumerableList<Point>(_movementPath);
-        public EnumerableList<Point> PotentialMovementPath => new EnumerableList<Point>(_potentialMovementPath);
         public bool IsSelected => _unitsStackViews.Selected == this;
         public bool IsMovingState { get; set; }
         public float MovementCountdownTime { get; set; }
@@ -167,7 +166,33 @@ namespace PhoenixGamePresentationLibrary
             }
             else
             {
-                DrawUnit(spriteBatch);
+                if (_unitsStackViews.Selected != null)
+                {
+                    var selectedStacksPosition = _unitsStackViews.Selected.Location;
+                    var thisStacksPosition = Location; // _worldView.Camera.WorldToScreen(new Vector2(Location.X, Location.Y));
+                    if (selectedStacksPosition == thisStacksPosition)
+                    {
+                        // don't draw if there's a selected stack on same location
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        DrawUnit(spriteBatch);
+                    }
+                }
+                else
+                {
+                    DrawUnit(spriteBatch);
+                }
+            
+                //if (_unitsStackViews.Selected != null && _unitsStackViews.Selected.CurrentPositionOnScreen == Location)
+                //{
+                //    // don't draw if there's a selected stack on same location
+                //}
+                //else
+                //{
+                //    DrawUnit(spriteBatch);
+                //}
             }
 
             DrawMovementPath(spriteBatch, _movementPath, Color.Black, 5.0f, 5.0f);
