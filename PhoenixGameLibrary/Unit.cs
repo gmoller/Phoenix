@@ -16,6 +16,7 @@ namespace PhoenixGameLibrary
 
         private readonly UnitType _unitType;
         private List<Cell> _seenCells;
+        private UnitStatus _status;
 
         public Guid Id { get; }
         public Point Location { get; set; } // hex cell the unit is in
@@ -38,6 +39,18 @@ namespace PhoenixGameLibrary
             MovementPoints = unitType.MovementPoints;
 
             SetSeenCells(location);
+        }
+
+        internal void DoPatrolAction()
+        {
+            _status = UnitStatus.Patrol;
+            SetSeenCells(Location);
+        }
+
+        internal void SetStatusToNone()
+        {
+            _status = UnitStatus.None;
+            SetSeenCells(Location);
         }
 
         internal void MoveTo(Point locationToMoveTo)
@@ -134,13 +147,37 @@ namespace PhoenixGameLibrary
         private void SetSeenCells(Point location)
         {
             var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
-            _seenCells = cellGrid.GetCatchment(location.X, location.Y, 2);
+            _seenCells = cellGrid.GetCatchment(location.X, location.Y, GetScoutingRange());
             foreach (var item in _seenCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
                 cell.SeenState = SeenState.Current;
                 cellGrid.SetCell(item.Column, item.Row, cell);
             }
+        }
+
+        private int GetScoutingRange()
+        {
+            var scoutingRange = 1;
+
+            var incrementByForMovementType = 0;
+            foreach (var movementTypeKey in _unitType.MovementTypes)
+            {
+                var movementType = Globals.Instance.MovementTypes[movementTypeKey];
+                var incrementSightBy = movementType.IncrementSightBy;
+                if (incrementSightBy > incrementByForMovementType)
+                {
+                    incrementByForMovementType = incrementSightBy;
+                }
+            }
+            scoutingRange += incrementByForMovementType;
+
+            if (_status == UnitStatus.Patrol)
+            {
+                scoutingRange += 1;
+            }
+
+            return scoutingRange;
         }
 
         public override string ToString()

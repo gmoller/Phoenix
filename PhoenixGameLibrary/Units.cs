@@ -26,6 +26,22 @@ namespace PhoenixGameLibrary
             _units.Add(unit);
         }
 
+        internal void DoPatrolAction()
+        {
+            foreach (var unit in _units)
+            {
+                unit.DoPatrolAction();
+            }
+        }
+
+        internal void SetStatusToNone()
+        {
+            foreach (var unit in _units)
+            {
+                unit.SetStatusToNone();
+            }
+        }
+
         public override string ToString()
         {
             return DebuggerDisplay;

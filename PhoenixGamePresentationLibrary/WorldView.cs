@@ -144,7 +144,7 @@ namespace PhoenixGamePresentationLibrary
             switch (e.Action)
             {
                 case "Done":
-                    _unitsStackViews.DoDoneAction();
+                    _unitsStackViews.DoDoneAction(); 
                     break;
                 case "Patrol":
                     _unitsStackViews.DoPatrolAction();

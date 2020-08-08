@@ -12,16 +12,18 @@ namespace PhoenixGameLibrary.GameData
     {
         public int Id { get; }
         public string Name { get; }
+        public int IncrementSightBy { get; }
 
-        private MovementType(int id, string name)
+        private MovementType(int id, string name, int incrementSightBy)
         {
             Id = id;
             Name = name;
+            IncrementSightBy = incrementSightBy;
         }
 
-        public static MovementType Create(int id, string name)
+        public static MovementType Create(int id, string name, int incrementSightBy)
         {
-            return new MovementType(id, name);
+            return new MovementType(id, name, incrementSightBy);
         }
 
         public override string ToString()
@@ -38,14 +40,14 @@ namespace PhoenixGameLibrary.GameData
         {
             var movementTypes = new List<MovementType>
             {
-                MovementType.Create(0, "Walking"),
-                MovementType.Create(1, "Swimming"),
-                MovementType.Create(2, "Flying"),
-                MovementType.Create(3, "Sailing"),
-                MovementType.Create(4, "Forester"),
-                MovementType.Create(5, "Mountaineer"),
-                MovementType.Create(6, "Pathfinding"),
-                MovementType.Create(7, "PlaneShift")
+                MovementType.Create(0, "Walking", 0),
+                MovementType.Create(1, "Swimming", 0),
+                MovementType.Create(2, "Flying", 1),
+                MovementType.Create(3, "Sailing", 0),
+                MovementType.Create(4, "Forester", 0),
+                MovementType.Create(5, "Mountaineer", 0),
+                MovementType.Create(6, "Pathfinding", 0),
+                MovementType.Create(7, "PlaneShift", 0)
             };
 
             return NamedDataDictionary<MovementType>.Create(movementTypes);
