@@ -178,7 +178,10 @@ namespace PhoenixGamePresentationLibrary
             if (unitsStackView.MovementPath.Count == 0)
             {
                 unitsStackView.IsMovingState = false;
-                unitsStackView.ResetMovementPath();
+                if (unitsStackView.MovementPoints <= 0.0f)
+                {
+                    unitsStackView.ResetMovementPath();
+                }
             }
             else
             {
@@ -186,7 +189,10 @@ namespace PhoenixGamePresentationLibrary
                 if (unitsStackView.MovementPath.Count == 0)
                 {
                     unitsStackView.IsMovingState = false;
-                    unitsStackView.ResetMovementPath();
+                    if (unitsStackView.MovementPoints <= 0.0f)
+                    {
+                        unitsStackView.ResetMovementPath();
+                    }
                 }
             }
         }

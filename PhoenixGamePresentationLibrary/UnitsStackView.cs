@@ -28,6 +28,8 @@ namespace PhoenixGamePresentationLibrary
         private float _blinkCooldownInMilliseconds;
         private bool _blink;
 
+        public int Id { get; }
+
         public EnumerableList<Point> MovementPath => new EnumerableList<Point>(_movementPath);
         public bool IsSelected => _unitsStackViews.Selected == this;
         public bool IsMovingState { get; set; }
@@ -42,8 +44,9 @@ namespace PhoenixGamePresentationLibrary
 
         public int Count => _unitsStack.Count;
 
-        public UnitsStackView(WorldView worldView, UnitsStackViews unitsStacksView, UnitsStack unitsStack)
+        public UnitsStackView(WorldView worldView, UnitsStackViews unitsStacksView, UnitsStack unitsStack, int index)
         {
+            Id = index;
             _worldView = worldView;
             _unitsStackViews = unitsStacksView;
             _unitsStack = unitsStack;
@@ -94,9 +97,10 @@ namespace PhoenixGamePresentationLibrary
 
             // handle selection/deselection
             var selectUnit = CheckForUnitSelection(input);
-            if (selectUnit) SelectStack();
-            var deselectUnit = CheckForStackDeselection(_unitsStack);
-            if (deselectUnit) DeselectStack();
+            if (selectUnit)
+            {
+                SelectStack();
+            }
 
             foreach (var button in ActionButtons)
             {
@@ -141,18 +145,7 @@ namespace PhoenixGamePresentationLibrary
         internal void SelectStack()
         {
             _blink = true;
-        }
-
-        private bool CheckForStackDeselection(UnitsStack unitsStack)
-        {
-            if (IsSelected) return unitsStack.MovementPoints <= 0.0f;
-
-            return false;
-        }
-
-        private void DeselectStack()
-        {
-            _unitsStackViews.SelectNext();
+            _unitsStackViews.Selected = this;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -166,14 +159,21 @@ namespace PhoenixGamePresentationLibrary
             }
             else
             {
-                if (_unitsStackViews.Selected != null)
+                if (_unitsStackViews.Selected != null) // if another unitstack is selected
                 {
                     var selectedStacksPosition = _unitsStackViews.Selected.Location;
-                    var thisStacksPosition = Location; // _worldView.Camera.WorldToScreen(new Vector2(Location.X, Location.Y));
-                    if (selectedStacksPosition == thisStacksPosition)
+                    var thisStacksPosition = Location;
+                    if (selectedStacksPosition == thisStacksPosition) // and it's in the same hex as this one
                     {
-                        // don't draw if there's a selected stack on same location
-                        Console.WriteLine();
+                        if (_unitsStackViews.Selected.IsMovingState) // and selected unitstack is moving
+                        {
+                            DrawUnit(spriteBatch);
+                        }
+                        else
+                        {
+                            // don't draw if there's a selected stack on same location and it's not moving
+                            Console.WriteLine();
+                        }
                     }
                     else
                     {
@@ -184,15 +184,6 @@ namespace PhoenixGamePresentationLibrary
                 {
                     DrawUnit(spriteBatch);
                 }
-            
-                //if (_unitsStackViews.Selected != null && _unitsStackViews.Selected.CurrentPositionOnScreen == Location)
-                //{
-                //    // don't draw if there's a selected stack on same location
-                //}
-                //else
-                //{
-                //    DrawUnit(spriteBatch);
-                //}
             }
 
             DrawMovementPath(spriteBatch, _movementPath, Color.Black, 5.0f, 5.0f);
@@ -228,7 +219,7 @@ namespace PhoenixGamePresentationLibrary
             var unitsStacksView = new List<UnitsStackView>();
             foreach (var unitsStackView in _unitsStackViews)
             {
-                if (unitsStackView.Location == Location && unitsStackView != this) // same location and not itself
+                if (unitsStackView.Location == Location) // same location and not itself ( && unitsStackView != this)
                 {
                     unitsStacksView.Add(unitsStackView);
                 }
@@ -284,6 +275,12 @@ namespace PhoenixGamePresentationLibrary
         public void ResetMovementPath()
         {
             _movementPath = new List<Point>();
+            DeselectStack();
+        }
+
+        private void DeselectStack()
+        {
+            _unitsStackViews.SelectNext();
         }
 
         internal void SetMovementPath(List<Point> path)

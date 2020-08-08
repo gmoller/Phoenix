@@ -138,31 +138,21 @@ namespace PhoenixGamePresentationLibrary
         {
             if (SelectedUnitsStackView == null) return;
 
-            DrawSelectedUnits(spriteBatch);
-            DrawUnselectedUnits(spriteBatch);
+            DrawUnitBadges(spriteBatch);
             DrawMovementTypeImages(spriteBatch);
             DrawActionButtons(spriteBatch);
         }
 
-        private void DrawSelectedUnits(SpriteBatch spriteBatch)
+        private void DrawUnitBadges(SpriteBatch spriteBatch)
         {
+            var unitStacks = SelectedUnitsStackView.GetUnitStacksSharingSameLocation();
+
             var x = _area.X + 20.0f;
             var y = _area.Y + _area.Height * 0.5f + 10.0f;
-
-            SelectedUnitsStackView.DrawBadges(spriteBatch, new Vector2(x, y));
-        }
-
-        private void DrawUnselectedUnits(SpriteBatch spriteBatch)
-        {
-            var i = SelectedUnitsStackView.Count;
-            var x = _area.X + 20.0f;
-            var y = _area.Y + _area.Height * 0.5f + 10.0f;
-
-            // find other stacks on this location:_unitsStacksView.Selected.Location
-            var otherUnitStacks = SelectedUnitsStackView.GetUnitStacksSharingSameLocation();
-            foreach (var unitStack in otherUnitStacks)
+            int i = 0;
+            foreach (var unitStack in unitStacks)
             {
-                unitStack.DrawBadges(spriteBatch, new Vector2(x, y), i, false);
+                unitStack.DrawBadges(spriteBatch, new Vector2(x, y), i, unitStack.IsSelected);
                 i += unitStack.Count;
             }
         }

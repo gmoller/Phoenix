@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Input;
 using PhoenixGameLibrary;
-using Utilities;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -25,9 +24,13 @@ namespace PhoenixGamePresentationLibrary
         internal Texture2D UnitTextures { get; private set; }
         internal AtlasSpec2 UnitAtlas { get; private set; }
 
-        public UnitsStackView Selected => GetSelected();
+        public UnitsStackView Selected
+        {
+            get => GetSelected();
+            set => _selectedUnitStack = value.Id;
+        }
 
-        public int Count => _unitsStackViews.Count;
+    public int Count => _unitsStackViews.Count;
 
         public UnitsStackView this[int index] => _unitsStackViews[index];
 
@@ -81,7 +84,6 @@ namespace PhoenixGamePresentationLibrary
             }
         }
 
-        // 0 of 3 (0..2)
         internal void SelectNext()
         {
             int counter = 0;
@@ -137,7 +139,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void CreateNewUnitsStackView(WorldView worldView, UnitsStack unitsStack)
         {
-            var unitsStackView = new UnitsStackView(worldView, this, unitsStack);
+            var unitsStackView = new UnitsStackView(worldView, this, unitsStack, _unitsStackViews.Count);
             _unitsStackViews.Add(unitsStackView);
         }
 
