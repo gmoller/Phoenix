@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using PhoenixGameLibrary.Properties;
 using Utilities;
 
 namespace PhoenixGameLibrary
@@ -11,6 +12,8 @@ namespace PhoenixGameLibrary
     public class UnitsStack : IEnumerable<Unit>
     {
         private readonly Units _units;
+
+        private UnitStackStatus _status;
 
         public Unit this[int index] => _units[index];
 
@@ -21,15 +24,27 @@ namespace PhoenixGameLibrary
         public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(_units));
 
         public int Count => _units.Count;
+        public bool IsBusy => _status == UnitStackStatus.Done || _status == UnitStackStatus.Patrol || _status == UnitStackStatus.Fortify;
 
         public UnitsStack(Units units)
         {
             _units = units;
+            _status = UnitStackStatus.None;
 
             foreach (var unit in units)
             {
                 unit.UnitsStack = this;
             }
+        }
+
+        public void MarkAsDone()
+        {
+            _status = UnitStackStatus.Done;
+        }
+
+        internal void BeginTurn()
+        {
+            _status = UnitStackStatus.None;
         }
 
         internal void EndTurn()

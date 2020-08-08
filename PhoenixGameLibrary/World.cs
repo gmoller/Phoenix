@@ -59,6 +59,7 @@ namespace PhoenixGameLibrary
 
         internal void BeginTurn()
         {
+            UnitsStacks.BeginTurn();
         }
 
         internal void EndTurn()

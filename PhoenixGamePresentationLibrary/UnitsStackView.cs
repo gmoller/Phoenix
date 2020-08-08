@@ -30,6 +30,8 @@ namespace PhoenixGamePresentationLibrary
 
         public int Id { get; }
 
+        public bool IsBusy => _unitsStack.IsBusy;
+
         public EnumerableList<Point> MovementPath => new EnumerableList<Point>(_movementPath);
         public bool IsSelected => _unitsStackViews.Selected == this;
         public bool IsMovingState { get; set; }
@@ -188,6 +190,11 @@ namespace PhoenixGamePresentationLibrary
 
             DrawMovementPath(spriteBatch, _movementPath, Color.Black, 5.0f, 5.0f);
             DrawMovementPath(spriteBatch, _potentialMovementPath, Color.White, 3.0f, 1.0f);
+        }
+
+        internal void MarkAsDone()
+        {
+            _unitsStack.MarkAsDone();
         }
 
         private void DrawUnit(SpriteBatch spriteBatch)

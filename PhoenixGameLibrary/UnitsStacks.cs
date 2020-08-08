@@ -23,6 +23,14 @@ namespace PhoenixGameLibrary
             _unitsStacks.Add(unitsStack);
         }
 
+        internal void BeginTurn()
+        {
+            foreach (var unitsStack in _unitsStacks)
+            {
+                unitsStack.BeginTurn();
+            }
+        }
+
         internal void EndTurn()
         {
             foreach (var unitsStack in _unitsStacks)

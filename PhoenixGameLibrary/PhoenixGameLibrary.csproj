@@ -60,6 +60,7 @@
     <Compile Include="Helpers\SettlementFoodProduction.cs" />
     <Compile Include="Helpers\SettlementProduction.cs" />
     <Compile Include="NotificationList.cs" />
+    <Compile Include="Properties\UnitStackStatus.cs" />
     <Compile Include="SettlementCitizens.cs" />
     <Compile Include="GameData\TerrainType.cs" />
     <Compile Include="GameData\Texture.cs" />

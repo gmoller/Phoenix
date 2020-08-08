@@ -94,7 +94,8 @@ namespace PhoenixGamePresentationLibrary
                 _selectedUnitStack++;
                 if (_selectedUnitStack < _unitsStackViews.Count)
                 {
-                    if (_unitsStackViews[_selectedUnitStack].MovementPoints > 0.0f) // and state is not busy
+                    var selectedUnitStack = _unitsStackViews[_selectedUnitStack];
+                    if (selectedUnitStack.MovementPoints > 0.0f && !selectedUnitStack.IsBusy)
                     {
                         // stack found
                         stackFound = true;
