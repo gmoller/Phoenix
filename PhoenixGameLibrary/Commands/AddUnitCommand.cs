@@ -7,7 +7,7 @@ namespace PhoenixGameLibrary.Commands
     {
         public override void Execute()
         {
-            var payload = ((Point position, UnitType unitType, UnitsStacks stacks))Payload;
+            var payload = ((Point position, UnitType unitType, Stacks stacks))Payload;
 
             var position = payload.position;
             var unitType = payload.unitType;
@@ -15,7 +15,7 @@ namespace PhoenixGameLibrary.Commands
 
             var units = new Units();
             units.AddUnit(Globals.Instance.World, unitType, position);
-            var newStack = new UnitsStack(units);
+            var newStack = new Stack(units);
 
             stacks.Add(newStack);
         }

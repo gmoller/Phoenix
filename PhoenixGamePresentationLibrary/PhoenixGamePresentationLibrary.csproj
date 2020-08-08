@@ -65,8 +65,8 @@
     <Compile Include="SettlementView\SettlementView.cs" />
     <Compile Include="SettlementView\UnitsFrame.cs" />
     <Compile Include="ToolTip.cs" />
-    <Compile Include="UnitsStackViews.cs" />
-    <Compile Include="UnitsStackView.cs" />
+    <Compile Include="StackViews.cs" />
+    <Compile Include="StackView.cs" />
     <Compile Include="WorldView.cs" />
   </ItemGroup>
   <ItemGroup>

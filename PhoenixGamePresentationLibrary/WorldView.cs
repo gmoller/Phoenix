@@ -17,8 +17,8 @@ namespace PhoenixGamePresentationLibrary
     {
         private OverlandMapView _overlandMapView;
         private OverlandSettlementViews _overlandSettlementsView;
-        private UnitsStackViews _unitsStackViews;
-        private SettlementViews _settlementsView;
+        private StackViews _stackViews;
+        private SettlementViews _settlementViews;
         private HudView _hudView;
         private Dictionary<string, Image> _movementTypeImages;
         private Dictionary<string, Button> _actionButtons;
@@ -37,16 +37,16 @@ namespace PhoenixGamePresentationLibrary
         {
             _overlandMapView = new OverlandMapView(this, World.OverlandMap);
             _overlandSettlementsView = new OverlandSettlementViews(this, World.Settlements);
-            _unitsStackViews = new UnitsStackViews(this, World.UnitsStacks);
-            _settlementsView = new SettlementViews(this, World.Settlements);
-            _hudView = new HudView(this, _unitsStackViews);
+            _stackViews = new StackViews(this, World.Stacks);
+            _settlementViews = new SettlementViews(this, World.Settlements);
+            _hudView = new HudView(this, _stackViews);
 
             Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
             Camera.LoadContent(content);
 
             _overlandSettlementsView.LoadContent(content);
-            _unitsStackViews.LoadContent(content);
-            _settlementsView.LoadContent(content);
+            _stackViews.LoadContent(content);
+            _settlementViews.LoadContent(content);
             _hudView.LoadContent(content);
 
             _movementTypeImages = LoadMovementTypeImages(content);
@@ -64,8 +64,8 @@ namespace PhoenixGamePresentationLibrary
 
             _overlandMapView.Update(input, deltaTime);
             _overlandSettlementsView.Update(input, deltaTime);
-            _unitsStackViews.Update(input, deltaTime);
-            _settlementsView.Update(input, deltaTime);
+            _stackViews.Update(input, deltaTime);
+            _settlementViews.Update(input, deltaTime);
             _hudView.Update(input, deltaTime);
         }
 
@@ -75,12 +75,12 @@ namespace PhoenixGamePresentationLibrary
             _overlandMapView.Draw(spriteBatch);
             _overlandSettlementsView.Draw(spriteBatch);
 
-            _unitsStackViews.Draw(spriteBatch);
+            _stackViews.Draw(spriteBatch);
             spriteBatch.End();
 
             spriteBatch.Begin();
             _hudView.Draw(spriteBatch);
-            _settlementsView.Draw(spriteBatch);
+            _settlementViews.Draw(spriteBatch);
             spriteBatch.End();
         }
 
@@ -89,7 +89,7 @@ namespace PhoenixGamePresentationLibrary
             Command beginTurnCommand = new BeginTurnCommand { Payload = World };
             beginTurnCommand.Execute();
 
-            _unitsStackViews.BeginTurn();
+            _stackViews.BeginTurn();
         }
 
         public void EndTurn()
@@ -144,15 +144,21 @@ namespace PhoenixGamePresentationLibrary
             switch (e.Action)
             {
                 case "Done":
-                    _unitsStackViews.DoDoneAction(); 
+                    _stackViews.DoDoneAction(); 
                     break;
                 case "Patrol":
-                    _unitsStackViews.DoPatrolAction();
+                    _stackViews.DoPatrolAction();
                     break;
                 case "Wait":
-                    _unitsStackViews.DoWaitAction();
+                    _stackViews.DoWaitAction();
                     break;
                 case "BuildOutpost":
+                    break;
+                case "Fortify":
+                    _stackViews.DoFortifyAction();
+                    break;
+                case "Explore":
+                    _stackViews.DoExploreAction();
                     break;
                 default:
                     throw new Exception($"Action [{e.Action}] is not implemented.");

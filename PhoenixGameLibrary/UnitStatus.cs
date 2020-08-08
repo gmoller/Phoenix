@@ -4,6 +4,7 @@
     {
         None,
         Patrol,
-        Fortify
+        Fortify,
+        Explore
     }
 }

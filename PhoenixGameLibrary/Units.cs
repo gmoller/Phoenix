@@ -34,6 +34,22 @@ namespace PhoenixGameLibrary
             }
         }
 
+        internal void DoFortifyAction()
+        {
+            foreach (var unit in _units)
+            {
+                unit.DoFortifyAction();
+            }
+        }
+
+        internal void DoExploreAction()
+        {
+            foreach (var unit in _units)
+            {
+                unit.DoExploreAction();
+            }
+        }
+
         internal void SetStatusToNone()
         {
             foreach (var unit in _units)

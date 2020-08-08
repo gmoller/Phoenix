@@ -12,41 +12,41 @@ namespace PhoenixGamePresentationLibrary
 {
     internal class MovementHandler
     {
-        private const float MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS = 500.0f;
+        private const float MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS = 250.0f;
 
-        internal void HandleMovement(InputHandler input, UnitsStackView unitsStackView, float deltaTime)
+        internal void HandleMovement(InputHandler input, StackView stackView, float deltaTime)
         {
-            var restartMovement = CheckForRestartOfMovement(unitsStackView);
+            var restartMovement = CheckForRestartOfMovement(stackView);
             if (restartMovement)
             {
-                RestartUnitMovement(unitsStackView);
+                RestartUnitMovement(stackView);
             }
 
-            var startUnitMovement = CheckForUnitMovementFromKeyboardInitiation(input, unitsStackView);
+            var startUnitMovement = CheckForUnitMovementFromKeyboardInitiation(input, stackView);
             if (startUnitMovement.startMovement)
             {
-                StartUnitMovement(unitsStackView, startUnitMovement.hexToMoveTo);
+                StartUnitMovement(stackView, startUnitMovement.hexToMoveTo);
             }
             else
             {
-                startUnitMovement = CheckForUnitMovementFromMouseInitiation(input, unitsStackView);
+                startUnitMovement = CheckForUnitMovementFromMouseInitiation(input, stackView);
                 if (startUnitMovement.startMovement)
                 {
-                    StartUnitMovement(unitsStackView, startUnitMovement.hexToMoveTo);
+                    StartUnitMovement(stackView, startUnitMovement.hexToMoveTo);
                 }
             }
 
-            if (UnitIsMoving(unitsStackView))
+            if (UnitIsMoving(stackView))
             {
-                MoveUnit(unitsStackView, deltaTime);
-                var unitHasReachedNextCell = CheckIfUnitHasReachedNextCell(unitsStackView);
-                if (unitHasReachedNextCell) MoveUnitToCell(unitsStackView);
+                MoveUnit(stackView, deltaTime);
+                var unitHasReachedNextCell = CheckIfUnitHasReachedNextCell(stackView);
+                if (unitHasReachedNextCell) MoveUnitToCell(stackView);
             }
         }
 
-        private bool CheckForRestartOfMovement(UnitsStackView unitsStackView)
+        private bool CheckForRestartOfMovement(StackView stackView)
         {
-            if (unitsStackView.IsMovingState == false && unitsStackView.MovementPath.Count > 0 && unitsStackView.MovementPoints > 0.0f)
+            if (stackView.IsMovingState == false && stackView.MovementPath.Count > 0 && stackView.MovementPoints > 0.0f)
             {
                 return true;
             }
@@ -54,38 +54,38 @@ namespace PhoenixGamePresentationLibrary
             return false;
         }
 
-        private void RestartUnitMovement(UnitsStackView unitsStackView)
+        private void RestartUnitMovement(StackView stackView)
         {
-            unitsStackView.IsMovingState = true;
-            unitsStackView.MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
+            stackView.IsMovingState = true;
+            stackView.MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
         }
 
-        private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromKeyboardInitiation(InputHandler input, UnitsStackView unitsStackView)
+        private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromKeyboardInitiation(InputHandler input, StackView stackView)
         {
-            if (!unitsStackView.IsSelected || unitsStackView.IsMovingState || unitsStackView.MovementPoints.AboutEquals(0.0f) || !input.AreAnyNumPadKeysDown) return (false, new Point(0, 0));
+            if (!stackView.IsSelected || stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.AreAnyNumPadKeysDown) return (false, new Point(0, 0));
 
             var direction = DetermineDirection(input);
             if (direction == Direction.None) return (false, new Point(0, 0));
 
-            var neighbor = HexOffsetCoordinates.GetNeighbor(unitsStackView.Location.X, unitsStackView.Location.Y, direction);
+            var neighbor = HexOffsetCoordinates.GetNeighbor(stackView.Location.X, stackView.Location.Y, direction);
             var hexToMoveTo = new Point(neighbor.Col, neighbor.Row);
 
-            var costToMoveIntoResult = unitsStackView.FirstUnit.CostToMoveInto(hexToMoveTo); // TODO: fix this, make work on stack
+            var costToMoveIntoResult = stackView.FirstUnit.CostToMoveInto(hexToMoveTo); // TODO: fix this, make work on stack
 
             return costToMoveIntoResult.CanMoveInto ? (true, hexToMoveTo) : (false, new Point(0, 0));
         }
 
-        private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input, UnitsStackView unitsStackView)
+        private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input, StackView stackView)
         {
-            if (!unitsStackView.IsSelected || unitsStackView.IsMovingState || unitsStackView.MovementPoints.AboutEquals(0.0f) || !input.IsLeftMouseButtonReleased || input.Eaten) return (false, new Point(0, 0));
+            if (!stackView.IsSelected || stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.IsLeftMouseButtonReleased || input.Eaten) return (false, new Point(0, 0));
 
             // unit is selected, left mouse button released and unit is not already moving
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
-            if (hexToMoveTo == unitsStackView.FirstUnit.Location) return (false, new Point(0, 0));
+            if (hexToMoveTo == stackView.FirstUnit.Location) return (false, new Point(0, 0));
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.Never) return (false, new Point(0, 0));
 
-            var costToMoveIntoResult = unitsStackView.FirstUnit.CostToMoveInto(cellToMoveTo);
+            var costToMoveIntoResult = stackView.FirstUnit.CostToMoveInto(cellToMoveTo);
 
             return costToMoveIntoResult.CanMoveInto ? (true, hexToMoveTo) : (false, new Point(0, 0));
         }
@@ -125,69 +125,62 @@ namespace PhoenixGamePresentationLibrary
             return Direction.None;
         }
 
-        private void StartUnitMovement(UnitsStackView unitsStackView, Point hexToMoveTo)
+        private void StartUnitMovement(StackView stackView, Point hexToMoveTo)
         {
-            unitsStackView.SetMovementPath(MovementPathDeterminer.DetermineMovementPath(unitsStackView.FirstUnit, unitsStackView.Location, hexToMoveTo));
+            stackView.SetMovementPath(MovementPathDeterminer.DetermineMovementPath(stackView.FirstUnit, stackView.Location, hexToMoveTo));
 
-            unitsStackView.IsMovingState = true;
-            unitsStackView.MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
+            stackView.IsMovingState = true;
+            stackView.MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
         }
 
-        private bool UnitIsMoving(UnitsStackView unitsStackView)
+        private bool UnitIsMoving(StackView stackView)
         {
-            return unitsStackView.IsMovingState;
+            return stackView.IsMovingState;
         }
 
-        private void MoveUnit(UnitsStackView unitsStackView, float deltaTime)
+        private void MoveUnit(StackView stackView, float deltaTime)
         {
-            unitsStackView.MovementCountdownTime -= deltaTime;
+            stackView.MovementCountdownTime -= deltaTime;
 
             // determine start cell screen position
-            var startPosition = HexOffsetCoordinates.ToPixel(unitsStackView.Location.X, unitsStackView.Location.Y);
+            var startPosition = HexOffsetCoordinates.ToPixel(stackView.Location.X, stackView.Location.Y);
             // determine end cell screen position
-            var hexToMoveTo = unitsStackView.MovementPath[0];
+            var hexToMoveTo = stackView.MovementPath[0];
             var endPosition = HexOffsetCoordinates.ToPixel(hexToMoveTo.X, hexToMoveTo.Y);
             // lerp between the two positions
-            var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - unitsStackView.MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
+            var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - stackView.MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
 
-            unitsStackView.CurrentPositionOnScreen = newPosition;
+            stackView.CurrentPositionOnScreen = newPosition;
         }
 
-        private bool CheckIfUnitHasReachedNextCell(UnitsStackView unitsStackView)
+        private bool CheckIfUnitHasReachedNextCell(StackView stackView)
         {
-            return unitsStackView.MovementCountdownTime <= 0;
+            return stackView.MovementCountdownTime <= 0;
         }
 
-        private void MoveUnitToCell(UnitsStackView unitsStackView)
+        private void MoveUnitToCell(StackView stackView)
         {
-            unitsStackView.MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
+            stackView.MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
 
             Command moveUnitCommand = new MoveUnitCommand
             {
-                Payload = (unitsStackView.FirstUnit, unitsStackView.MovementPath[0])
+                Payload = (stackView.FirstUnit, stackView.MovementPath[0])
             };
             moveUnitCommand.Execute();
 
             // if run out of movement points
-            if (unitsStackView.MovementPoints <= 0.0f)
+            if (stackView.MovementPoints <= 0.0f)
             {
-                unitsStackView.IsMovingState = false;
-                unitsStackView.DeselectStack();
+                stackView.IsMovingState = false;
+                stackView.DeselectStack();
             }
 
             // if reached final destination
-            //if (unitsStackView.MovementPath.Count == 0)
-            //{
-            //    unitsStackView.IsMovingState = false;
-            //}
-            //else
-            //{
-                unitsStackView.RemoveFirstItemFromMovementPath();
-                if (unitsStackView.MovementPath.Count == 0)
-                {
-                    unitsStackView.IsMovingState = false;
-                }
-            //}
+            stackView.RemoveFirstItemFromMovementPath();
+            if (stackView.MovementPath.Count == 0)
+            {
+                stackView.IsMovingState = false;
+            }
         }
     }
 }

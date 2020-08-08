@@ -7,26 +7,26 @@ namespace PhoenixGamePresentationLibrary
 {
     internal class PotentialMovementHandler
     {
-        internal void HandleMovement(InputHandler input, UnitsStackView unitsStackView, World world)
+        internal void HandleMovement(InputHandler input, StackView stackView, World world)
         {
-            if (!unitsStackView.IsSelected || unitsStackView.IsMovingState || !input.MouseIsWithinScreen || input.Eaten)
+            if (!stackView.IsSelected || stackView.IsMovingState || !input.MouseIsWithinScreen || input.Eaten)
             {
-                unitsStackView.ResetPotentialMovementPath();
+                stackView.ResetPotentialMovementPath();
             }
             else
             {
                 var potentialMovementHandler = new PotentialMovementHandler();
-                var path = potentialMovementHandler.GetPotentialMovementPath(unitsStackView, world);
-                unitsStackView.SetPotentialMovementPath(path);
+                var path = potentialMovementHandler.GetPotentialMovementPath(stackView, world);
+                stackView.SetPotentialMovementPath(path);
             }
         }
 
-        private List<Point> GetPotentialMovementPath(UnitsStackView unitsStackView, World world)
+        private List<Point> GetPotentialMovementPath(StackView stackView, World world)
         {
-            var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(unitsStackView.FirstUnit, world); // TODO: first unit always used, need to check all units (assumes only 1 unit right now)
+            var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(stackView.FirstUnit, world); // TODO: first unit always used, need to check all units (assumes only 1 unit right now)
             if (potentialMovement)
             {
-                var path = MovementPathDeterminer.DetermineMovementPath(unitsStackView.FirstUnit, unitsStackView.Location, hexToMoveTo);
+                var path = MovementPathDeterminer.DetermineMovementPath(stackView.FirstUnit, stackView.Location, hexToMoveTo);
                 return path;
             }
 

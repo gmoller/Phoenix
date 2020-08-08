@@ -18,17 +18,15 @@ namespace PhoenixGameLibrary
         private List<Cell> _seenCells;
         private UnitStatus _status;
 
-        public Guid Id { get; }
-        public Point Location { get; set; } // hex cell the unit is in
-        public float MovementPoints { get; set; }
+        private Guid Id { get; }
+        public Point Location { get; private set; } // hex cell the unit is in
+        public float MovementPoints { get; private set; }
 
-        public string Name => _unitType.Name;
+        private string Name => _unitType.Name;
         public string ShortName => _unitType.ShortName;
         public EnumerableList<string> Actions => new EnumerableList<string>(_unitType.Actions);
         public EnumerableList<string> UnitTypeMovementTypes => new EnumerableList<string>(_unitType.MovementTypes);
         public string UnitTypeTextureName => _unitType.TextureName;
-
-        public UnitsStack UnitsStack { get; set; }
 
         public Unit(World world, UnitType unitType, Point location)
         {
@@ -44,6 +42,19 @@ namespace PhoenixGameLibrary
         internal void DoPatrolAction()
         {
             _status = UnitStatus.Patrol;
+            SetSeenCells(Location);
+        }
+
+        internal void DoFortifyAction()
+        {
+            // TODO: increment defense by 1
+            _status = UnitStatus.Fortify;
+            SetSeenCells(Location);
+        }
+
+        internal void DoExploreAction()
+        {
+            _status = UnitStatus.Explore;
             SetSeenCells(Location);
         }
 

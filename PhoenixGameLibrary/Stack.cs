@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGameLibrary
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class UnitsStack : IEnumerable<Unit>
+    public class Stack : IEnumerable<Unit>
     {
         private readonly Units _units;
 
@@ -23,23 +24,30 @@ namespace PhoenixGameLibrary
         public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(_units));
 
         public int Count => _units.Count;
-        public bool IsBusy => _status == UnitStatus.Patrol || _status == UnitStatus.Fortify;
+        public bool IsBusy => _status == UnitStatus.Patrol || _status == UnitStatus.Fortify || _status == UnitStatus.Explore;
 
-        public UnitsStack(Units units)
+        public Stack(Units units)
         {
             _units = units;
             _status = UnitStatus.None;
-
-            foreach (var unit in units)
-            {
-                unit.UnitsStack = this;
-            }
         }
 
         public void DoPatrolAction()
         {
             _status = UnitStatus.Patrol;
             _units.DoPatrolAction();
+        }
+
+        public void DoFortifyAction()
+        {
+            _status = UnitStatus.Fortify;
+            _units.DoFortifyAction();
+        }
+
+        public void DoExploreAction()
+        {
+            _status = UnitStatus.Explore;
+            _units.DoExploreAction();
         }
 
         public void SetStatusToNone()
@@ -104,7 +112,17 @@ namespace PhoenixGameLibrary
 
         private List<string> DetermineActions(Units units)
         {
-            var movementActions = new List<string> {"Done", "Patrol", "Wait"};
+            var movementActions = new List<string>();
+            foreach (var actionType in Globals.Instance.ActionTypes)
+            {
+                if (actionType.AppliesToAll)
+                {
+                    if (actionType.AppliesToAll)
+                    {
+                        movementActions.Add(actionType.ButtonName);
+                    }
+                }
+            }
 
             foreach (var unit in units)
             {

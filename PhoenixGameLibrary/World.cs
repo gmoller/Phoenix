@@ -11,7 +11,7 @@ namespace PhoenixGameLibrary
 
         public OverlandMap OverlandMap { get; }
         public Settlements Settlements { get; }
-        public UnitsStacks UnitsStacks { get; set; }
+        public Stacks Stacks { get; }
         public Faction PlayerFaction { get; }
         public string CurrentDate
         {
@@ -34,7 +34,7 @@ namespace PhoenixGameLibrary
             PlayerFaction = new Faction();
             OverlandMap = new OverlandMap(this);
             Settlements = new Settlements(this);
-            UnitsStacks = new UnitsStacks();
+            Stacks = new Stacks();
             _turnNumber = 0;
             NotificationList = new NotificationList();
         }
@@ -46,7 +46,7 @@ namespace PhoenixGameLibrary
 
         internal void AddUnit(Point location, UnitType unitType)
         {
-            var addUnitCommand = new AddUnitCommand { Payload = (location, unitType, UnitsStacks) };
+            var addUnitCommand = new AddUnitCommand { Payload = (location, unitType, Stacks) };
             addUnitCommand.Execute();
         }
 
@@ -59,14 +59,14 @@ namespace PhoenixGameLibrary
 
         internal void BeginTurn()
         {
-            UnitsStacks.BeginTurn();
+            Stacks.BeginTurn();
         }
 
         internal void EndTurn()
         {
             NotificationList.Clear();
             Settlements.EndTurn();
-            UnitsStacks.EndTurn();
+            Stacks.EndTurn();
             _turnNumber++;
         }
     }

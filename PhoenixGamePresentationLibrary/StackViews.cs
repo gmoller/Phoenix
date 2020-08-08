@@ -11,14 +11,14 @@ using PhoenixGameLibrary;
 namespace PhoenixGamePresentationLibrary
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    internal class UnitsStackViews : IEnumerable<UnitsStackView>
+    internal class StackViews : IEnumerable<StackView>
     {
         private readonly WorldView _worldView;
 
-        private readonly UnitsStacks _unitsStacks;
-        private readonly List<UnitsStackView> _unitsStackViews;
+        private readonly Stacks _stacks;
+        private readonly List<StackView> _stackViews;
 
-        private Queue<UnitsStackView> _ordersQueue;
+        private Queue<StackView> _ordersQueue;
         private readonly List<Guid> _selectedThisTurn;
 
         internal Texture2D GuiTextures { get; private set; }
@@ -27,19 +27,19 @@ namespace PhoenixGamePresentationLibrary
         internal Texture2D UnitTextures { get; private set; }
         internal AtlasSpec2 UnitAtlas { get; private set; }
 
-        internal UnitsStackView Current { get; private set; }
+        internal StackView Current { get; private set; }
 
-        public int Count => _unitsStackViews.Count;
+        public int Count => _stackViews.Count;
 
-        public UnitsStackView this[int index] => _unitsStackViews[index];
+        public StackView this[int index] => _stackViews[index];
 
-        internal UnitsStackViews(WorldView worldView, UnitsStacks unitsStacks)
+        internal StackViews(WorldView worldView, Stacks stacks)
         {
             _worldView = worldView;
-            _unitsStacks = unitsStacks;
-            _unitsStackViews = new List<UnitsStackView>();
+            _stacks = stacks;
+            _stackViews = new List<StackView>();
             Current = null;
-            _ordersQueue = new Queue<UnitsStackView>();
+            _ordersQueue = new Queue<StackView>();
             _selectedThisTurn = new List<Guid>();
         }
 
@@ -53,42 +53,42 @@ namespace PhoenixGamePresentationLibrary
             UnitAtlas = AssetsManager.Instance.GetAtlas("Units");
             UnitTextures = AssetsManager.Instance.GetTexture("Units");
 
-            foreach (var unitsStack in _unitsStacks)
+            foreach (var stack in _stacks)
             {
-                CreateNewUnitsStackView(_worldView, unitsStack);
+                CreateNewStackView(_worldView, stack);
             }
         }
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            while (_unitsStackViews.Count < _unitsStacks.Count)
+            while (_stackViews.Count < _stacks.Count)
             {
-                CreateNewUnitsStackView(_worldView, _unitsStacks[_unitsStackViews.Count]);
+                CreateNewStackView(_worldView, _stacks[_stackViews.Count]);
             }
 
-            foreach (var unitsStackView in _unitsStackViews)
+            foreach (var stackView in _stackViews)
             {
-                unitsStackView.Update(input, deltaTime);
+                stackView.Update(input, deltaTime);
             }
         }
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var unitsStackView in _unitsStackViews)
+            foreach (var stackView in _stackViews)
             {
-                unitsStackView.Draw(spriteBatch);
+                stackView.Draw(spriteBatch);
             }
         }
 
         internal void BeginTurn()
         {
             // create a queue of stacks that need orders
-            var queue = new Queue<UnitsStackView>();
-            foreach (var unitStackView in _unitsStackViews)
+            var queue = new Queue<StackView>();
+            foreach (var stackView in _stackViews)
             {
-                if (!unitStackView.IsBusy) // not patrol, or fortify
+                if (!stackView.IsBusy) // not patrol, fortify, or explore
                 {
-                    queue.Enqueue(unitStackView);
+                    queue.Enqueue(stackView);
                 }
             }
 
@@ -115,15 +115,27 @@ namespace PhoenixGamePresentationLibrary
             SelectNext();
         }
 
-        internal void SetCurrent(UnitsStackView unitsStackView)
+        internal void DoFortifyAction()
         {
-            _selectedThisTurn.Add(unitsStackView.Id);
+            Current.DoFortifyAction();
+            SelectNext();
+        }
+
+        internal void DoExploreAction()
+        {
+            Current.DoExploreAction();
+            SelectNext();
+        }
+
+        internal void SetCurrent(StackView stackView)
+        {
+            _selectedThisTurn.Add(stackView.Id);
             if (Current != null)
             {
                 _ordersQueue.Enqueue(Current);
             }
 
-            Current = unitsStackView;
+            Current = stackView;
             Current.SetStatusToNone();
         }
 
@@ -148,15 +160,15 @@ namespace PhoenixGamePresentationLibrary
             }
         }
 
-        private void CreateNewUnitsStackView(WorldView worldView, UnitsStack unitsStack)
+        private void CreateNewStackView(WorldView worldView, PhoenixGameLibrary.Stack stack)
         {
-            var unitsStackView = new UnitsStackView(worldView, this, unitsStack);
-            _unitsStackViews.Add(unitsStackView);
+            var stackView = new StackView(worldView, this, stack);
+            _stackViews.Add(stackView);
         }
 
-        public IEnumerator<UnitsStackView> GetEnumerator()
+        public IEnumerator<StackView> GetEnumerator()
         {
-            foreach (var item in _unitsStackViews)
+            foreach (var item in _stackViews)
             {
                 yield return item;
             }
@@ -172,6 +184,6 @@ namespace PhoenixGamePresentationLibrary
             return DebuggerDisplay;
         }
 
-        private string DebuggerDisplay => $"{{Count={_unitsStackViews.Count}}}";
+        private string DebuggerDisplay => $"{{Count={_stackViews.Count}}}";
     }
 }

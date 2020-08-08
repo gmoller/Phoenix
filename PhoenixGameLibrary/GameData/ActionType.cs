@@ -13,17 +13,19 @@ namespace PhoenixGameLibrary.GameData
         public int Id { get; }
         public string Name { get; }
         public string ButtonName { get; }
+        public bool AppliesToAll { get; }
 
-        private ActionType(int id, string name, string buttonName)
+        private ActionType(int id, string name, string buttonName, bool appliesToAll)
         {
             Id = id;
             Name = name;
             ButtonName = buttonName;
+            AppliesToAll = appliesToAll;
         }
 
-        public static ActionType Create(int id, string name, string buttonName)
+        public static ActionType Create(int id, string name, string buttonName, bool appliesToAll)
         {
-            return new ActionType(id, name, buttonName);
+            return new ActionType(id, name, buttonName, appliesToAll);
         }
 
         public override string ToString()
@@ -40,11 +42,13 @@ namespace PhoenixGameLibrary.GameData
         {
             var actionTypes = new List<ActionType>
             {
-                ActionType.Create(0, "Done", "Done"),
-                ActionType.Create(1, "Patrol", "Patrol"),
-                ActionType.Create(2, "Wait", "Wait"),
-                ActionType.Create(3, "BuildOutpost", "Build"),
-                ActionType.Create(4, "Purify", "Purify"),
+                ActionType.Create(0, "Done", "Done", true),
+                ActionType.Create(1, "Patrol", "Patrol", true),
+                ActionType.Create(2, "Wait", "Wait", true),
+                ActionType.Create(3, "BuildOutpost", "Build", false),
+                ActionType.Create(4, "Purify", "Purify", false),
+                ActionType.Create(5, "Fortify", "Fortify", true),
+                ActionType.Create(6, "Explore", "Explore", true)
             };
 
             return NamedDataDictionary<ActionType>.Create(actionTypes);

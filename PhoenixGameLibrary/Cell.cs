@@ -26,9 +26,9 @@ namespace PhoenixGameLibrary
                 }
             }
 
-            foreach (var unitsStacks in world.UnitsStacks)
+            foreach (var stacks in world.Stacks)
             {
-                if (unitsStacks.CanSeeCell(this))
+                if (stacks.CanSeeCell(this))
                 {
                     return true;
                 }

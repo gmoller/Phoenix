@@ -5,43 +5,43 @@ using System.Diagnostics;
 namespace PhoenixGameLibrary
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class UnitsStacks : IEnumerable<UnitsStack>
+    public class Stacks : IEnumerable<Stack>
     {
-        private readonly List<UnitsStack> _unitsStacks;
+        private readonly List<Stack> _stacks;
 
-        public UnitsStack this[int index] => _unitsStacks[index];
+        public Stack this[int index] => _stacks[index];
 
-        public int Count => _unitsStacks.Count;
+        public int Count => _stacks.Count;
 
-        internal UnitsStacks()
+        internal Stacks()
         {
-            _unitsStacks = new List<UnitsStack>();
+            _stacks = new List<Stack>();
         }
 
-        internal void Add(UnitsStack unitsStack)
+        internal void Add(Stack stack)
         {
-            _unitsStacks.Add(unitsStack);
+            _stacks.Add(stack);
         }
 
         internal void BeginTurn()
         {
-            foreach (var unitsStack in _unitsStacks)
+            foreach (var stack in _stacks)
             {
-                unitsStack.BeginTurn();
+                stack.BeginTurn();
             }
         }
 
         internal void EndTurn()
         {
-            foreach (var unitsStack in _unitsStacks)
+            foreach (var stack in _stacks)
             {
-                unitsStack.EndTurn();
+                stack.EndTurn();
             }
         }
 
-        public IEnumerator<UnitsStack> GetEnumerator()
+        public IEnumerator<Stack> GetEnumerator()
         {
-            foreach (var item in _unitsStacks)
+            foreach (var item in _stacks)
             {
                 yield return item;
             }

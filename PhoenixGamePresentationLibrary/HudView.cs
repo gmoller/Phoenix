@@ -22,10 +22,10 @@ namespace PhoenixGamePresentationLibrary
 
         private Label _test;
 
-        private readonly UnitsStackViews _unitsStackViews;
-        private UnitsStackView SelectedUnitsStackView => _unitsStackViews.Current;
+        private readonly StackViews _stackViews;
+        private StackView SelectedStackView => _stackViews.Current;
 
-        internal HudView(WorldView worldView, UnitsStackViews unitsStackViews)
+        internal HudView(WorldView worldView, StackViews stackViews)
         {
             var width = (int)(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.1305f); // 13.05% of screen width
             var height = (int)(DeviceManager.Instance.GraphicsDevice.Viewport.Height * 0.945f); // 94.5% of screen height
@@ -34,7 +34,7 @@ namespace PhoenixGamePresentationLibrary
             _area = new Rectangle(x, y, width, height); // 250x1020
 
             _worldView = worldView;
-            _unitsStackViews = unitsStackViews;
+            _stackViews = stackViews;
         }
 
         internal void LoadContent(ContentManager content)
@@ -84,7 +84,7 @@ namespace PhoenixGamePresentationLibrary
             var unitFrame = new Frame(new Vector2(10.0f, 500.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole", _hudViewFrame);
             unitFrame.LoadContent(content);
 
-            string GetTextFuncForMoves() => SelectedUnitsStackView == null ? string.Empty : $"Moves: {SelectedUnitsStackView.MovementPoints}";
+            string GetTextFuncForMoves() => SelectedStackView == null ? string.Empty : $"Moves: {SelectedStackView.MovementPoints}";
             var lblMoves = new LabelAutoSized(unitFrame.BottomLeft.ToVector2() + new Vector2(10.0f, -15.0f), Alignment.BottomLeft, GetTextFuncForMoves, "CrimsonText-Regular-12", Color.White); // , _unitFrame
             lblMoves.LoadContent(content);
 
@@ -136,7 +136,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawUnits(SpriteBatch spriteBatch)
         {
-            if (SelectedUnitsStackView == null) return;
+            if (SelectedStackView == null) return;
 
             DrawUnitBadges(spriteBatch);
             DrawMovementTypeImages(spriteBatch);
@@ -145,21 +145,21 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawUnitBadges(SpriteBatch spriteBatch)
         {
-            var unitStacks = SelectedUnitsStackView.GetUnitStacksSharingSameLocation();
+            var stackViews = SelectedStackView.GetStackViewsSharingSameLocation();
 
             var x = _area.X + 20.0f;
             var y = _area.Y + _area.Height * 0.5f + 10.0f;
             int i = 0;
-            foreach (var unitStack in unitStacks)
+            foreach (var stackView in stackViews)
             {
-                unitStack.DrawBadges(spriteBatch, new Vector2(x, y), i, unitStack.IsSelected);
-                i += unitStack.Count;
+                stackView.DrawBadges(spriteBatch, new Vector2(x, y), i, stackView.IsSelected);
+                i += stackView.Count;
             }
         }
 
         private void DrawMovementTypeImages(SpriteBatch spriteBatch)
         {
-            var imgMovementTypes = SelectedUnitsStackView.GetMovementTypeImages();
+            var imgMovementTypes = SelectedStackView.GetMovementTypeImages();
             var i = 0;
             var x = 1910 - 18 - 12; // position of unitFrame BottomRight: (1910;806) : size: (18;12)
             var y = 806 - 12 - 20;
@@ -173,7 +173,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawActionButtons(SpriteBatch spriteBatch)
         {
-            var actionButtons = SelectedUnitsStackView.ActionButtons;
+            var actionButtons = SelectedStackView.ActionButtons;
             var i = 0;
             var x = 1680; // position of unitFrame BottomRight: (1680;806)
             var y = 806;

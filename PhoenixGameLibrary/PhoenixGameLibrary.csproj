@@ -75,8 +75,8 @@
     <Compile Include="Settlements.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="Units.cs" />
-    <Compile Include="UnitsStack.cs" />
-    <Compile Include="UnitsStacks.cs" />
+    <Compile Include="Stack.cs" />
+    <Compile Include="Stacks.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>

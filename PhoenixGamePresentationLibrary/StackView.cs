@@ -13,13 +13,13 @@ using Point = Utilities.Point;
 namespace PhoenixGamePresentationLibrary
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    internal class UnitsStackView
+    internal class StackView
     {
         private const float BLINK_TIME_IN_MILLISECONDS = 500.0f;
 
         private readonly WorldView _worldView;
-        private readonly UnitsStackViews _unitsStackViews;
-        private readonly UnitsStack _unitsStack;
+        private readonly StackViews _stackViews;
+        private readonly Stack _stack;
 
         private List<Point> _movementPath;
         private List<Point> _potentialMovementPath;
@@ -30,32 +30,32 @@ namespace PhoenixGamePresentationLibrary
 
         public Guid Id { get; }
 
-        public bool IsBusy => _unitsStack.IsBusy;
+        public bool IsBusy => _stack.IsBusy;
 
         public EnumerableList<Point> MovementPath => new EnumerableList<Point>(_movementPath);
-        public bool IsSelected => _unitsStackViews.Current == this;
+        public bool IsSelected => _stackViews.Current == this;
         public bool IsMovingState { get; set; }
         public float MovementCountdownTime { get; set; }
         public Vector2 CurrentPositionOnScreen { get; set; }
         public EnumerableList<IControl> ActionButtons => new EnumerableList<IControl>(_actionButtons);
 
-        public Point Location => _unitsStack.Location;
-        public float MovementPoints => _unitsStack.MovementPoints;
-        public EnumerableList<string> Actions => _unitsStack.Actions;
-        public Unit FirstUnit => _unitsStack[0];
+        public Point Location => _stack.Location;
+        public float MovementPoints => _stack.MovementPoints;
+        public EnumerableList<string> Actions => _stack.Actions;
+        public Unit FirstUnit => _stack[0];
 
-        public int Count => _unitsStack.Count;
+        public int Count => _stack.Count;
 
-        public UnitsStackView(WorldView worldView, UnitsStackViews unitsStacksView, UnitsStack unitsStack)
+        public StackView(WorldView worldView, StackViews stackViews, Stack stack)
         {
             Id = Guid.NewGuid();
             _worldView = worldView;
-            _unitsStackViews = unitsStacksView;
-            _unitsStack = unitsStack;
+            _stackViews = stackViews;
+            _stack = stack;
             _movementPath = new List<Point>();
             _potentialMovementPath = new List<Point>();
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
-            CurrentPositionOnScreen = HexOffsetCoordinates.ToPixel(unitsStack.Location.X, unitsStack.Location.Y);
+            CurrentPositionOnScreen = HexOffsetCoordinates.ToPixel(stack.Location.X, stack.Location.Y);
             _actionButtons = new List<IControl>();
         }
 
@@ -63,7 +63,7 @@ namespace PhoenixGamePresentationLibrary
         {
             // TODO: update will not be called on these
             var imgMovementTypes = new List<IControl>();
-            foreach (var movementType in _unitsStack.MovementTypes)
+            foreach (var movementType in _stack.MovementTypes)
             {
                 var img = _worldView.MovementTypeImages[movementType];
                 imgMovementTypes.Add(img);
@@ -112,12 +112,22 @@ namespace PhoenixGamePresentationLibrary
 
         internal void DoPatrolAction()
         {
-            _unitsStack.DoPatrolAction();
+            _stack.DoPatrolAction();
+        }
+
+        internal void DoFortifyAction()
+        {
+            _stack.DoFortifyAction();
+        }
+
+        internal void DoExploreAction()
+        {
+            _stack.DoExploreAction();
         }
 
         internal void SetStatusToNone()
         {
-            _unitsStack.SetStatusToNone();
+            _stack.SetStatusToNone();
         }
 
         private bool DetermineBlinkState(bool blink, float deltaTime)
@@ -151,13 +161,13 @@ namespace PhoenixGamePresentationLibrary
         {
             var hexPoint = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
 
-            return _unitsStack.Location == hexPoint;
+            return _stack.Location == hexPoint;
         }
 
         internal void SelectStack()
         {
             _blink = true;
-            _unitsStackViews.SetCurrent(this);
+            _stackViews.SetCurrent(this);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -171,13 +181,13 @@ namespace PhoenixGamePresentationLibrary
             }
             else
             {
-                if (_unitsStackViews.Current != null) // if another unitstack is selected
+                if (_stackViews.Current != null) // if another stack is selected
                 {
-                    var selectedStacksPosition = _unitsStackViews.Current.Location;
+                    var selectedStacksPosition = _stackViews.Current.Location;
                     var thisStacksPosition = Location;
                     if (selectedStacksPosition == thisStacksPosition) // and it's in the same hex as this one
                     {
-                        if (_unitsStackViews.Current.IsMovingState) // and selected unitstack is moving
+                        if (_stackViews.Current.IsMovingState) // and selected stack is moving
                         {
                             DrawUnit(spriteBatch);
                         }
@@ -207,14 +217,14 @@ namespace PhoenixGamePresentationLibrary
             // draw background
             var position = CurrentPositionOnScreen;
             var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, 60, 60); ;
-            var sourceRectangle = _unitsStackViews.SquareGreenFrame.ToRectangle();
-            spriteBatch.Draw(_unitsStackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
+            var sourceRectangle = _stackViews.SquareGreenFrame.ToRectangle();
+            spriteBatch.Draw(_stackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
 
             // draw unit icon
             destinationRectangle = new Rectangle((int)position.X, (int)position.Y, 36, 32);
-            var frame = _unitsStackViews.UnitAtlas.Frames[FirstUnit.UnitTypeTextureName];
+            var frame = _stackViews.UnitAtlas.Frames[FirstUnit.UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
-            spriteBatch.Draw(_unitsStackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
 
         private void DrawMovementPath(SpriteBatch spriteBatch, List<Point> movementPath, Color color, float radius, float thickness)
@@ -226,25 +236,25 @@ namespace PhoenixGamePresentationLibrary
             }
         }
 
-        internal List<UnitsStackView> GetUnitStacksSharingSameLocation()
+        internal List<StackView> GetStackViewsSharingSameLocation()
         {
-            var unitsStacksView = new List<UnitsStackView>();
-            foreach (var unitsStackView in _unitsStackViews)
+            var stackViews = new List<StackView>();
+            foreach (var stackView in _stackViews)
             {
-                if (unitsStackView.Location == Location) // same location and not itself ( && unitsStackView != this)
+                if (stackView.Location == Location) // same location
                 {
-                    unitsStacksView.Add(unitsStackView);
+                    stackViews.Add(stackView);
                 }
             }
 
-            return unitsStacksView;
+            return stackViews;
         }
 
         internal void DrawBadges(SpriteBatch spriteBatch, Vector2 topLeftPosition, int index = 0, bool isSelected = true)
         {
             var x = topLeftPosition.X + 60.0f * 0.5f;
             var y = topLeftPosition.Y + 60.0f * 0.5f;
-            foreach (var unit in _unitsStack)
+            foreach (var unit in _stack)
             {
                 var xOffset = 75.0f * (index % 3);
                 var yOffset = 75.0f * (index / 3); // math.Floor
@@ -257,14 +267,14 @@ namespace PhoenixGamePresentationLibrary
         {
             // draw background
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 60, 60);
-            var sourceRectangle = isSelected ? _unitsStackViews.SquareGreenFrame.ToRectangle() : _unitsStackViews.SquareGrayFrame.ToRectangle();
-            spriteBatch.Draw(_unitsStackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.FlipVertically, 0.0f);
+            var sourceRectangle = isSelected ? _stackViews.SquareGreenFrame.ToRectangle() : _stackViews.SquareGrayFrame.ToRectangle();
+            spriteBatch.Draw(_stackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.FlipVertically, 0.0f);
 
             // draw unit icon
             destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 36, 32);
-            var frame = _unitsStackViews.UnitAtlas.Frames[unit.UnitTypeTextureName];
+            var frame = _stackViews.UnitAtlas.Frames[unit.UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
-            spriteBatch.Draw(_unitsStackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
 
         public override string ToString()
@@ -272,7 +282,7 @@ namespace PhoenixGamePresentationLibrary
             return DebuggerDisplay;
         }
 
-        private string DebuggerDisplay => $"{{Count={_unitsStack.Count}}}";
+        private string DebuggerDisplay => $"{{Count={_stack.Count}}}";
 
         public void ResetPotentialMovementPath()
         {
@@ -292,7 +302,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void DeselectStack()
         {
-            _unitsStackViews.SelectNext();
+            _stackViews.SelectNext();
         }
 
         internal void SetMovementPath(List<Point> path)
