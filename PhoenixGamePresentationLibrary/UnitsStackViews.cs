@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using AssetsLibrary;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using AssetsLibrary;
 using Input;
 using PhoenixGameLibrary;
 
@@ -109,6 +109,12 @@ namespace PhoenixGamePresentationLibrary
             SelectNext();
         }
 
+        internal void DoPatrolAction()
+        {
+            Current.DoPatrolAction();
+            SelectNext();
+        }
+
         internal void SetCurrent(UnitsStackView unitsStackView)
         {
             _selectedThisTurn.Add(unitsStackView.Id);
@@ -118,6 +124,7 @@ namespace PhoenixGamePresentationLibrary
             }
 
             Current = unitsStackView;
+            Current.SetStatusToNone();
         }
 
         internal void SelectNext()

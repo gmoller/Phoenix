@@ -37,9 +37,19 @@ namespace PhoenixGameLibrary
             }
         }
 
-        internal void BeginTurn()
+        public void DoPatrolAction()
+        {
+            _status = UnitStackStatus.Patrol;
+            // TODO: increase scouting by one
+        }
+
+        public void SetStatusToNone()
         {
             _status = UnitStackStatus.None;
+        }
+
+        internal void BeginTurn()
+        {
         }
 
         internal void EndTurn()

@@ -172,29 +172,22 @@ namespace PhoenixGamePresentationLibrary
             if (unitsStackView.MovementPoints <= 0.0f)
             {
                 unitsStackView.IsMovingState = false;
+                unitsStackView.DeselectStack();
             }
 
             // if reached final destination
-            if (unitsStackView.MovementPath.Count == 0)
-            {
-                unitsStackView.IsMovingState = false;
-                if (unitsStackView.MovementPoints <= 0.0f)
-                {
-                    unitsStackView.ResetMovementPath();
-                }
-            }
-            else
-            {
+            //if (unitsStackView.MovementPath.Count == 0)
+            //{
+            //    unitsStackView.IsMovingState = false;
+            //}
+            //else
+            //{
                 unitsStackView.RemoveFirstItemFromMovementPath();
                 if (unitsStackView.MovementPath.Count == 0)
                 {
                     unitsStackView.IsMovingState = false;
-                    if (unitsStackView.MovementPoints <= 0.0f)
-                    {
-                        unitsStackView.ResetMovementPath();
-                    }
                 }
-            }
+            //}
         }
     }
 }

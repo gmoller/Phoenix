@@ -110,6 +110,16 @@ namespace PhoenixGamePresentationLibrary
             }
         }
 
+        internal void DoPatrolAction()
+        {
+            _unitsStack.DoPatrolAction();
+        }
+
+        internal void SetStatusToNone()
+        {
+            _unitsStack.SetStatusToNone();
+        }
+
         private bool DetermineBlinkState(bool blink, float deltaTime)
         {
             if (IsSelected && !IsMovingState)
@@ -280,7 +290,7 @@ namespace PhoenixGamePresentationLibrary
             DeselectStack();
         }
 
-        private void DeselectStack()
+        internal void DeselectStack()
         {
             _unitsStackViews.SelectNext();
         }

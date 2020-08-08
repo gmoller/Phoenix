@@ -147,6 +147,7 @@ namespace PhoenixGamePresentationLibrary
                     _unitsStackViews.DoDoneAction();
                     break;
                 case "Patrol":
+                    _unitsStackViews.DoPatrolAction();
                     break;
                 case "Wait":
                     _unitsStackViews.DoWaitAction();
