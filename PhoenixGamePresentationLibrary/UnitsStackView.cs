@@ -28,12 +28,12 @@ namespace PhoenixGamePresentationLibrary
         private float _blinkCooldownInMilliseconds;
         private bool _blink;
 
-        public int Id { get; }
+        public Guid Id { get; }
 
         public bool IsBusy => _unitsStack.IsBusy;
 
         public EnumerableList<Point> MovementPath => new EnumerableList<Point>(_movementPath);
-        public bool IsSelected => _unitsStackViews.Selected == this;
+        public bool IsSelected => _unitsStackViews.Current == this;
         public bool IsMovingState { get; set; }
         public float MovementCountdownTime { get; set; }
         public Vector2 CurrentPositionOnScreen { get; set; }
@@ -46,9 +46,9 @@ namespace PhoenixGamePresentationLibrary
 
         public int Count => _unitsStack.Count;
 
-        public UnitsStackView(WorldView worldView, UnitsStackViews unitsStacksView, UnitsStack unitsStack, int index)
+        public UnitsStackView(WorldView worldView, UnitsStackViews unitsStacksView, UnitsStack unitsStack)
         {
-            Id = index;
+            Id = Guid.NewGuid();
             _worldView = worldView;
             _unitsStackViews = unitsStacksView;
             _unitsStack = unitsStack;
@@ -147,7 +147,7 @@ namespace PhoenixGamePresentationLibrary
         internal void SelectStack()
         {
             _blink = true;
-            _unitsStackViews.Selected = this;
+            _unitsStackViews.SetCurrent(this);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -161,13 +161,13 @@ namespace PhoenixGamePresentationLibrary
             }
             else
             {
-                if (_unitsStackViews.Selected != null) // if another unitstack is selected
+                if (_unitsStackViews.Current != null) // if another unitstack is selected
                 {
-                    var selectedStacksPosition = _unitsStackViews.Selected.Location;
+                    var selectedStacksPosition = _unitsStackViews.Current.Location;
                     var thisStacksPosition = Location;
                     if (selectedStacksPosition == thisStacksPosition) // and it's in the same hex as this one
                     {
-                        if (_unitsStackViews.Selected.IsMovingState) // and selected unitstack is moving
+                        if (_unitsStackViews.Current.IsMovingState) // and selected unitstack is moving
                         {
                             DrawUnit(spriteBatch);
                         }
@@ -190,11 +190,6 @@ namespace PhoenixGamePresentationLibrary
 
             DrawMovementPath(spriteBatch, _movementPath, Color.Black, 5.0f, 5.0f);
             DrawMovementPath(spriteBatch, _potentialMovementPath, Color.White, 3.0f, 1.0f);
-        }
-
-        internal void MarkAsDone()
-        {
-            _unitsStack.MarkAsDone();
         }
 
         private void DrawUnit(SpriteBatch spriteBatch)

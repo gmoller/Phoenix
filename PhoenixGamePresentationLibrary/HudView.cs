@@ -23,7 +23,7 @@ namespace PhoenixGamePresentationLibrary
         private Label _test;
 
         private readonly UnitsStackViews _unitsStackViews;
-        private UnitsStackView SelectedUnitsStackView => _unitsStackViews.Selected;
+        private UnitsStackView SelectedUnitsStackView => _unitsStackViews.Current;
 
         internal HudView(WorldView worldView, UnitsStackViews unitsStackViews)
         {

@@ -24,7 +24,7 @@ namespace PhoenixGameLibrary
         public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(_units));
 
         public int Count => _units.Count;
-        public bool IsBusy => _status == UnitStackStatus.Done || _status == UnitStackStatus.Patrol || _status == UnitStackStatus.Fortify;
+        public bool IsBusy => _status == UnitStackStatus.Patrol || _status == UnitStackStatus.Fortify;
 
         public UnitsStack(Units units)
         {
@@ -35,11 +35,6 @@ namespace PhoenixGameLibrary
             {
                 unit.UnitsStack = this;
             }
-        }
-
-        public void MarkAsDone()
-        {
-            _status = UnitStackStatus.Done;
         }
 
         internal void BeginTurn()

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using AssetsLibrary;
@@ -16,7 +17,9 @@ namespace PhoenixGamePresentationLibrary
 
         private readonly UnitsStacks _unitsStacks;
         private readonly List<UnitsStackView> _unitsStackViews;
-        private int _selectedUnitStack;
+
+        private Queue<UnitsStackView> _ordersQueue;
+        private readonly List<Guid> _selectedThisTurn;
 
         internal Texture2D GuiTextures { get; private set; }
         internal AtlasFrame SquareGreenFrame { get; private set; }
@@ -24,13 +27,9 @@ namespace PhoenixGamePresentationLibrary
         internal Texture2D UnitTextures { get; private set; }
         internal AtlasSpec2 UnitAtlas { get; private set; }
 
-        public UnitsStackView Selected
-        {
-            get => GetSelected();
-            set => _selectedUnitStack = value.Id;
-        }
+        internal UnitsStackView Current { get; private set; }
 
-    public int Count => _unitsStackViews.Count;
+        public int Count => _unitsStackViews.Count;
 
         public UnitsStackView this[int index] => _unitsStackViews[index];
 
@@ -39,7 +38,9 @@ namespace PhoenixGamePresentationLibrary
             _worldView = worldView;
             _unitsStacks = unitsStacks;
             _unitsStackViews = new List<UnitsStackView>();
-            _selectedUnitStack = -1;
+            Current = null;
+            _ordersQueue = new Queue<UnitsStackView>();
+            _selectedThisTurn = new List<Guid>();
         }
 
         internal void LoadContent(ContentManager content)
@@ -73,74 +74,76 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            //var locationsAlreadyDrawnTo = new Dictionary<Point, bool>();
             foreach (var unitsStackView in _unitsStackViews)
             {
-                //if (!locationsAlreadyDrawnTo.ContainsKey(unitsStackView.Location))
+                unitsStackView.Draw(spriteBatch);
+            }
+        }
+
+        internal void BeginTurn()
+        {
+            // create a queue of stacks that need orders
+            var queue = new Queue<UnitsStackView>();
+            foreach (var unitStackView in _unitsStackViews)
+            {
+                if (!unitStackView.IsBusy) // not patrol, or fortify
                 {
-                    unitsStackView.Draw(spriteBatch);
-                    //locationsAlreadyDrawnTo.Add(unitsStackView.Location, true);
+                    queue.Enqueue(unitStackView);
                 }
             }
+
+            _ordersQueue = queue;
+            _selectedThisTurn.Clear();
+
+            SelectNext();
+        }
+
+        internal void DoWaitAction()
+        {
+            _ordersQueue.Enqueue(Current);
+            SelectNext();
+        }
+
+        internal void DoDoneAction()
+        {
+            SelectNext();
+        }
+
+        internal void SetCurrent(UnitsStackView unitsStackView)
+        {
+            _selectedThisTurn.Add(unitsStackView.Id);
+            if (Current != null)
+            {
+                _ordersQueue.Enqueue(Current);
+            }
+
+            Current = unitsStackView;
         }
 
         internal void SelectNext()
         {
-            int counter = 0;
-            bool leaveLoop = false;
-            bool stackFound =  false;
-            do
+            if (_ordersQueue.Count > 0)
             {
-                _selectedUnitStack++;
-                if (_selectedUnitStack < _unitsStackViews.Count)
+                Current = _ordersQueue.Dequeue();
+                if (_selectedThisTurn.Contains(Current.Id))
                 {
-                    var selectedUnitStack = _unitsStackViews[_selectedUnitStack];
-                    if (selectedUnitStack.MovementPoints > 0.0f && !selectedUnitStack.IsBusy)
-                    {
-                        // stack found
-                        stackFound = true;
-                        leaveLoop = true;
-                    }
+                    SelectNext();
                 }
                 else
                 {
-                    _selectedUnitStack = -1;
+                    Current.SetButtons();
+                    _worldView.Camera.LookAtCell(Current.Location);
                 }
-
-                counter++;
-                if (counter > _unitsStackViews.Count)
-                {
-                    // no stack found - all busy
-                    stackFound = false;
-                    leaveLoop = true;
-                }
-            } while (!leaveLoop);
-
-
-            if (stackFound)
-            {
-                var unitsStackView = _unitsStackViews[_selectedUnitStack];
-                unitsStackView.SetButtons();
-                _worldView.Camera.LookAtCell(unitsStackView.Location);
             }
             else
             {
-                _selectedUnitStack = -1;
+                Current = null;
             }
-        }
-
-        private UnitsStackView GetSelected()
-        {
-            if (_selectedUnitStack < 0 || _selectedUnitStack > _unitsStackViews.Count - 1) return null;
-
-            var unitsStackView = _unitsStackViews[_selectedUnitStack];
-
-            return unitsStackView;
         }
 
         private void CreateNewUnitsStackView(WorldView worldView, UnitsStack unitsStack)
         {
-            var unitsStackView = new UnitsStackView(worldView, this, unitsStack, _unitsStackViews.Count);
+            var unitsStackView = new UnitsStackView(worldView, this, unitsStack);
             _unitsStackViews.Add(unitsStackView);
         }
 

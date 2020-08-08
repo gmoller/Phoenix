@@ -62,7 +62,7 @@ namespace PhoenixGamePresentationLibrary
 
         private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromKeyboardInitiation(InputHandler input, UnitsStackView unitsStackView)
         {
-            if (!unitsStackView.IsSelected || unitsStackView.IsMovingState || !input.AreAnyNumPadKeysDown) return (false, new Point(0, 0));
+            if (!unitsStackView.IsSelected || unitsStackView.IsMovingState || unitsStackView.MovementPoints.AboutEquals(0.0f) || !input.AreAnyNumPadKeysDown) return (false, new Point(0, 0));
 
             var direction = DetermineDirection(input);
             if (direction == Direction.None) return (false, new Point(0, 0));
@@ -77,7 +77,7 @@ namespace PhoenixGamePresentationLibrary
 
         private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input, UnitsStackView unitsStackView)
         {
-            if (!unitsStackView.IsSelected || unitsStackView.IsMovingState || !input.IsLeftMouseButtonReleased || input.Eaten) return (false, new Point(0, 0));
+            if (!unitsStackView.IsSelected || unitsStackView.IsMovingState || unitsStackView.MovementPoints.AboutEquals(0.0f) || !input.IsLeftMouseButtonReleased || input.Eaten) return (false, new Point(0, 0));
 
             // unit is selected, left mouse button released and unit is not already moving
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;

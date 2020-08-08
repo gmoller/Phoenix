@@ -89,8 +89,7 @@ namespace PhoenixGamePresentationLibrary
             Command beginTurnCommand = new BeginTurnCommand { Payload = World };
             beginTurnCommand.Execute();
 
-            _unitsStackViews.SelectNext();
-            //_unitsStacksView[0].SelectStack();
+            _unitsStackViews.BeginTurn();
         }
 
         public void EndTurn()
@@ -145,13 +144,12 @@ namespace PhoenixGamePresentationLibrary
             switch (e.Action)
             {
                 case "Done":
-                    _unitsStackViews.Selected.MarkAsDone();
-                    _unitsStackViews.SelectNext();
+                    _unitsStackViews.DoDoneAction();
                     break;
                 case "Patrol":
                     break;
                 case "Wait":
-                    _unitsStackViews.SelectNext();
+                    _unitsStackViews.DoWaitAction();
                     break;
                 case "BuildOutpost":
                     break;
