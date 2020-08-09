@@ -43,6 +43,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="CursorView.cs" />
+    <Compile Include="ExploreHandler.cs" />
     <Compile Include="FramesPerSecondCounter.cs" />
     <Compile Include="HudView.cs" />
     <Compile Include="MetricsPanel.cs" />

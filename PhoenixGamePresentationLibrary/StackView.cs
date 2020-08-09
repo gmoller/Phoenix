@@ -31,6 +31,7 @@ namespace PhoenixGamePresentationLibrary
         public Guid Id { get; }
 
         public bool IsBusy => _stack.IsBusy;
+        public UnitStatus Status => _stack.Status;
 
         public EnumerableList<Point> MovementPath => new EnumerableList<Point>(_movementPath);
         public bool IsSelected => _stackViews.Current == this;
@@ -41,7 +42,6 @@ namespace PhoenixGamePresentationLibrary
 
         public Point Location => _stack.Location;
         public float MovementPoints => _stack.MovementPoints;
-        public EnumerableList<string> Actions => _stack.Actions;
         public Unit FirstUnit => _stack[0];
 
         public int Count => _stack.Count;
@@ -75,7 +75,7 @@ namespace PhoenixGamePresentationLibrary
         internal void SetButtons()
         {
             var actionButtons = new List<IControl>();
-            foreach (var action in Actions)
+            foreach (var action in _stack.Actions)
             {
                 var btn = _worldView.ActionButtons[action];
                 actionButtons.Add(btn);
@@ -88,6 +88,10 @@ namespace PhoenixGamePresentationLibrary
         {
             // check for blink
             _blink = DetermineBlinkState(_blink, deltaTime);
+
+            // handle exploring
+            var exploreHandler = new ExploreHandler();
+            exploreHandler.HandleExplore(this);
 
             // handle potential movement
             var potentialMovementHandler = new PotentialMovementHandler();
@@ -164,7 +168,7 @@ namespace PhoenixGamePresentationLibrary
             return _stack.Location == hexPoint;
         }
 
-        internal void SelectStack()
+        private void SelectStack()
         {
             _blink = true;
             _stackViews.SetCurrent(this);
@@ -216,7 +220,7 @@ namespace PhoenixGamePresentationLibrary
         {
             // draw background
             var position = CurrentPositionOnScreen;
-            var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, 60, 60); ;
+            var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, 60, 60);
             var sourceRectangle = _stackViews.SquareGreenFrame.ToRectangle();
             spriteBatch.Draw(_stackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
 
@@ -256,8 +260,10 @@ namespace PhoenixGamePresentationLibrary
             var y = topLeftPosition.Y + 60.0f * 0.5f;
             foreach (var unit in _stack)
             {
-                var xOffset = 75.0f * (index % 3);
-                var yOffset = 75.0f * (index / 3); // math.Floor
+                var indexMod3 = index % 3;
+                var indexDividedBy3 = index / 3; // Floor
+                var xOffset = 75.0f * indexMod3;
+                var yOffset = 75.0f * indexDividedBy3;
                 DrawBadge(spriteBatch, new Vector2(x + xOffset, y + yOffset), unit, isSelected);
                 index++;
             }

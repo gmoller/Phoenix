@@ -99,16 +99,14 @@ namespace PhoenixGameLibrary
             foreach (var item in _catchmentCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
-                cell.BelongsToSettlement = _id;
-                cellGrid.SetCell(item.Column, item.Row, cell);
+                cellGrid.SetCell(cell, cell.SeenState);
             }
 
             _seenCells = cellGrid.GetCatchment(location.X, location.Y, 3);
             foreach (var item in _seenCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
-                cell.SeenState = SeenState.Current;
-                cellGrid.SetCell(item.Column, item.Row, cell);
+                cellGrid.SetCell(cell, SeenState.CurrentlySeen);
             }
         }
 
@@ -180,8 +178,7 @@ namespace PhoenixGameLibrary
                     _buildingsBuilt.Add(_currentlyBuilding.BuildingId);
                     Globals.Instance.World.NotificationList.Add($"- {Name} has produced a {Globals.Instance.BuildingTypes[_currentlyBuilding.BuildingId].Name}");
                     _currentlyBuilding = new CurrentlyBuilding(-1, -1, 0);
-                    Command openSettlementCommand = new OpenSettlementCommand();
-                    openSettlementCommand.Payload = this;
+                    Command openSettlementCommand = new OpenSettlementCommand { Payload = this };
                     openSettlementCommand.Execute();
                     // TODO: look at settlement
                 }

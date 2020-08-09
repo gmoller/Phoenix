@@ -23,7 +23,6 @@ namespace PhoenixGameLibrary
         public float MovementPoints { get; private set; }
 
         private string Name => _unitType.Name;
-        public string ShortName => _unitType.ShortName;
         public EnumerableList<string> Actions => new EnumerableList<string>(_unitType.Actions);
         public EnumerableList<string> UnitTypeMovementTypes => new EnumerableList<string>(_unitType.MovementTypes);
         public string UnitTypeTextureName => _unitType.TextureName;
@@ -107,14 +106,15 @@ namespace PhoenixGameLibrary
 
         public CostToMoveIntoResult CostToMoveInto(Cell cell)
         {
-            if (cell.SeenState == SeenState.Never) return new CostToMoveIntoResult(false);
+            if (cell == Cell.Empty) return new CostToMoveIntoResult(false);
+            if (cell.SeenState == SeenState.NeverSeen) return new CostToMoveIntoResult(true, 9999999.9f);
 
             var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
 
             return CostToMoveInto(terrainType);
         }
 
-        public CostToMoveIntoResult CostToMoveInto(TerrainType terrainType)
+        private CostToMoveIntoResult CostToMoveInto(TerrainType terrainType)
         {
             var potentialMovementCosts = GetPotentialMovementCosts(terrainType);
             var canMoveInto = potentialMovementCosts.Count > 0;
@@ -162,8 +162,7 @@ namespace PhoenixGameLibrary
             foreach (var item in _seenCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
-                cell.SeenState = SeenState.Current;
-                cellGrid.SetCell(item.Column, item.Row, cell);
+                cellGrid.SetCell(cell, SeenState.CurrentlySeen);
             }
         }
 

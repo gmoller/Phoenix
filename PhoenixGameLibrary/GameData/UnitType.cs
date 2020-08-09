@@ -61,12 +61,36 @@ namespace PhoenixGameLibrary.GameData
             return true;
         }
 
+        #region Overrides and Overloads
+
+        public override bool Equals(object obj)
+        {
+            return obj is UnitType unitType && this == unitType;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode() ^ Name.GetHashCode() ^ ShortName.GetHashCode() ^ ConstructionCost.GetHashCode() ^ MovementPoints.GetHashCode() ^ TextureName.GetHashCode() ^ MovementTypes.GetHashCode() ^ Actions.GetHashCode() ^ _whichRacesCanBuild.GetHashCode() ^ _dependsOnBuildings.GetHashCode();
+        }
+
+        public static bool operator == (UnitType a, UnitType b)
+        {
+            return a.Id == b.Id && a.Name == b.Name && a.ShortName == b.ShortName && a.ConstructionCost.AboutEquals(b.ConstructionCost) && a.MovementPoints.AboutEquals(b.MovementPoints) && a.TextureName == b.TextureName && a.MovementTypes == b.MovementTypes && a.Actions == b.Actions && a._whichRacesCanBuild == b._whichRacesCanBuild && a._dependsOnBuildings == b._dependsOnBuildings;
+        }
+
+        public static bool operator != (UnitType a, UnitType b)
+        {
+            return !(a == b);
+        }
+
         public override string ToString()
         {
             return DebuggerDisplay;
         }
 
         private string DebuggerDisplay => $"{{Id={Id},Name={Name}}}";
+
+        #endregion
     }
 
     public static class UnitTypesLoader

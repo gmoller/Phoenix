@@ -213,7 +213,7 @@ namespace PhoenixGamePresentationLibrary
             if (hexPoint.X >= 0 && hexPoint.Y >= 0 && hexPoint.X < PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS && hexPoint.Y < PhoenixGameLibrary.Constants.WORLD_MAP_ROWS)
             {
                 var cell = cellGrid.GetCell(hexPoint.X, hexPoint.Y);
-                if (cell.SeenState != SeenState.Never)
+                if (cell.SeenState != SeenState.NeverSeen)
                 {
                     var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
                     var text1 = $"{terrainType.Name} - {terrainType.FoodOutput} food";

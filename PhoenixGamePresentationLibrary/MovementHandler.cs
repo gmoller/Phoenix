@@ -83,7 +83,7 @@ namespace PhoenixGamePresentationLibrary
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
             if (hexToMoveTo == stackView.FirstUnit.Location) return (false, new Point(0, 0));
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
-            if (cellToMoveTo.SeenState == SeenState.Never) return (false, new Point(0, 0));
+            if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new Point(0, 0));
 
             var costToMoveIntoResult = stackView.FirstUnit.CostToMoveInto(cellToMoveTo);
 
@@ -127,7 +127,8 @@ namespace PhoenixGamePresentationLibrary
 
         private void StartUnitMovement(StackView stackView, Point hexToMoveTo)
         {
-            stackView.SetMovementPath(MovementPathDeterminer.DetermineMovementPath(stackView.FirstUnit, stackView.Location, hexToMoveTo));
+            var path = MovementPathDeterminer.DetermineMovementPath(stackView.FirstUnit, stackView.Location, hexToMoveTo);
+            stackView.SetMovementPath(path);
 
             stackView.IsMovingState = true;
             stackView.MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;

@@ -25,6 +25,7 @@ namespace PhoenixGameLibrary
 
         public int Count => _units.Count;
         public bool IsBusy => _status == UnitStatus.Patrol || _status == UnitStatus.Fortify || _status == UnitStatus.Explore;
+        public UnitStatus Status => _status;
 
         public Stack(Units units)
         {

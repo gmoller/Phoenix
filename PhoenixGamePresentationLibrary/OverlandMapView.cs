@@ -61,7 +61,7 @@ namespace PhoenixGamePresentationLibrary
                     //{
                     //    DrawCell(spriteBatch, cell, Color.LightSlateGray);
                     //}
-                    if (cell.SeenState == SeenState.Never)
+                    if (cell.SeenState == SeenState.NeverSeen)
                     {
                         DrawCell(spriteBatch, cell, Color.White);
                     }
@@ -82,7 +82,7 @@ namespace PhoenixGamePresentationLibrary
         private void DrawCell(SpriteBatch spriteBatch, Cell cell, Color color)
         {
             //var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
-            bool neverSeen = cell.SeenState == SeenState.Never;
+            bool neverSeen = cell.SeenState == SeenState.NeverSeen;
             var texture = AssetsManager.Instance.GetTexture(neverSeen ? cell.TextureFogOfWar.TexturePalette  : cell.Texture.TexturePalette);
             var spec = AssetsManager.Instance.GetAtlas(neverSeen ? cell.TextureFogOfWar.TexturePalette : cell.Texture.TexturePalette);
             var frame = spec.Frames[neverSeen ? cell.TextureFogOfWar.TextureId : cell.Texture.TextureId];

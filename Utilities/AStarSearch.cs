@@ -6,18 +6,24 @@ namespace Utilities
 {
     public abstract class AStarSearch<TKey, TValue> where TValue : IComparable<TValue>
     {
-        protected void Graph(Node start, PriorityQueue<Node> openList, Dictionary<TKey, TValue> closedList)
+        protected void Solve(Node start, PriorityQueue<Node> openList, Dictionary<TKey, TValue> closedList)
         {
             openList.Enqueue(start);
             while (openList.Count > 0)
             {
                 var node = openList.RemoveRoot();
 
-                if (closedList.ContainsKey(node.Position)) continue;
+                if (closedList.ContainsKey(node.Position))
+                {
+                    continue;
+                }
 
                 closedList.Add(node.Position, node.Cost);
 
-                if (IsDestination(node.Position)) return;
+                if (IsDestination(node.Position))
+                {
+                    return;
+                }
 
                 AddNeighbors(node, openList);
             }
@@ -55,7 +61,7 @@ namespace Utilities
     {
         public int ParentIndex { get; }
         public int DistanceTraveled { get; } /*g(x)*/
-        public int TotalCost { get; } /*f(x)*/
+        private int TotalCost { get; } /*f(x)*/
 
         public Cost(int parentIndex, int distanceTraveled, int totalCost)
         {
