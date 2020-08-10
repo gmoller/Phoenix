@@ -24,7 +24,6 @@ namespace PhoenixGamePresentationLibrary
         private readonly Stack _stack;
 
         private Vector2 _currentPositionOnScreen;
-        private Point _destination;
         private List<Point> _movementPath;
         private List<Point> _potentialMovementPath;
         private List<IControl> _actionButtons;
@@ -145,8 +144,6 @@ namespace PhoenixGamePresentationLibrary
 
         private void StartUnitMovement(Point hexToMoveTo)
         {
-            _destination = hexToMoveTo;
-
             var path = MovementPathDeterminer.DetermineMovementPath(FirstUnit, Location, hexToMoveTo);
             SetMovementPath(path);
 
