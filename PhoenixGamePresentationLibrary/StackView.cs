@@ -7,6 +7,7 @@ using HexLibrary;
 using Input;
 using Microsoft.Xna.Framework;
 using PhoenixGameLibrary;
+using PhoenixGameLibrary.Commands;
 using Utilities;
 using Point = Utilities.Point;
 
@@ -16,10 +17,14 @@ namespace PhoenixGamePresentationLibrary
     internal class StackView
     {
         private const float BLINK_TIME_IN_MILLISECONDS = 250.0f;
+        private const float MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS = 250.0f;
 
+        private readonly WorldView _worldView;
         private readonly StackViews _stackViews;
         private readonly Stack _stack;
 
+        private Vector2 _currentPositionOnScreen;
+        private Point _destination;
         private List<Point> _movementPath;
         private List<Point> _potentialMovementPath;
         private List<IControl> _actionButtons;
@@ -28,10 +33,8 @@ namespace PhoenixGamePresentationLibrary
         private bool _blink;
 
         public Guid Id { get; }
-        public WorldView WorldView { get; }
-        public bool IsMovingState { get; set; }
-        public float MovementCountdownTime { get; set; }
-        public Vector2 CurrentPositionOnScreen { get; set; }
+        public bool IsMovingState { get; private set; }
+        public float MovementCountdownTime { get; private set; }
 
         public bool IsBusy => _stack.IsBusy;
         public UnitStatus Status => _stack.Status;
@@ -49,13 +52,13 @@ namespace PhoenixGamePresentationLibrary
         public StackView(WorldView worldView, StackViews stackViews, Stack stack)
         {
             Id = Guid.NewGuid();
-            WorldView = worldView;
+            _worldView = worldView;
             _stackViews = stackViews;
             _stack = stack;
             _movementPath = new List<Point>();
             _potentialMovementPath = new List<Point>();
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
-            CurrentPositionOnScreen = HexOffsetCoordinates.ToPixel(stack.Location.X, stack.Location.Y);
+            _currentPositionOnScreen = HexOffsetCoordinates.ToPixel(stack.Location.X, stack.Location.Y);
             _actionButtons = new List<IControl>();
         }
 
@@ -65,7 +68,7 @@ namespace PhoenixGamePresentationLibrary
             var imgMovementTypes = new List<IControl>();
             foreach (var movementType in _stack.MovementTypes)
             {
-                var img = WorldView.MovementTypeImages[movementType];
+                var img = _worldView.MovementTypeImages[movementType];
                 imgMovementTypes.Add(img);
             }
 
@@ -77,7 +80,7 @@ namespace PhoenixGamePresentationLibrary
             var actionButtons = new List<IControl>();
             foreach (var action in _stack.Actions)
             {
-                var btn = WorldView.ActionButtons[action];
+                var btn = _worldView.ActionButtons[action];
                 actionButtons.Add(btn);
             }
 
@@ -90,29 +93,109 @@ namespace PhoenixGamePresentationLibrary
 
             if (!IsSelected) return;
 
-            // check for blink
             _blink = DetermineBlinkState(_blink, deltaTime);
-
-            // handle exploring
+             
             ExploreHandler.HandleExplore(this, SetMovementPath);
+            PotentialMovementHandler.HandlePotentialMovement(input, this, _worldView.World, SetPotentialMovementPath);
+            MovementHandler.HandleMovement(input, this, deltaTime, RestartUnitMovement, StartUnitMovement, MoveUnit, MoveUnitToCell);
 
-            // handle potential movement
-            PotentialMovementHandler.HandleMovement(input, this, WorldView.World, SetPotentialMovementPath);
-
-            // handle movement
-            MovementHandler.HandleMovement(input, this, deltaTime);
-
-            //ActionButtons.Update(input, deltaTime); // could do with extension method
-            foreach (var button in ActionButtons)
-            {
-                button.Update(input, deltaTime);
-            }
+            ActionButtons.Update(input, deltaTime);
         }
 
         private void SelectStack()
         {
             _blink = true;
             _stackViews.SetCurrent(this);
+        }
+
+        private bool DetermineBlinkState(bool blink, float deltaTime)
+        {
+            if (!IsMovingState)
+            {
+                _blinkCooldownInMilliseconds -= deltaTime;
+                if (_blinkCooldownInMilliseconds > 0.0f) return blink;
+
+                // flip blink state
+                blink = !blink;
+                _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
+            }
+            else
+            {
+                return false;
+            }
+
+            return blink;
+        }
+
+        private void SetMovementPath(List<Point> path)
+        {
+            _movementPath = path;
+        }
+
+        private void SetPotentialMovementPath(List<Point> path)
+        {
+            _potentialMovementPath = path;
+        }
+
+        private void RestartUnitMovement()
+        {
+            IsMovingState = true;
+            MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
+        }
+
+        private void StartUnitMovement(Point hexToMoveTo)
+        {
+            _destination = hexToMoveTo;
+
+            var path = MovementPathDeterminer.DetermineMovementPath(FirstUnit, Location, hexToMoveTo);
+            SetMovementPath(path);
+
+            IsMovingState = true;
+            MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
+        }
+
+        private void MoveUnit(float deltaTime)
+        {
+            MovementCountdownTime -= deltaTime;
+
+            // determine start cell screen position
+            var startPosition = HexOffsetCoordinates.ToPixel(Location.X, Location.Y);
+            // determine end cell screen position
+            var hexToMoveTo = MovementPath[0];
+            var endPosition = HexOffsetCoordinates.ToPixel(hexToMoveTo.X, hexToMoveTo.Y);
+            // lerp between the two positions
+            var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
+
+            _currentPositionOnScreen = newPosition;
+            _worldView.Camera.LookAtPixel(newPosition);
+        }
+
+        private void MoveUnitToCell()
+        {
+            MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
+
+            Command moveUnitCommand = new MoveUnitCommand { Payload = (FirstUnit, MovementPath[0]) };
+            moveUnitCommand.Execute();
+
+            //if (Location == _destination)
+            //{
+            //    var path = MovementPathDeterminer.DetermineMovementPath(FirstUnit, Location, Destination);
+            //    SetMovementPath(path);
+            //}
+
+            // if run out of movement points
+            if (MovementPoints <= 0.0f)
+            {
+                IsMovingState = false;
+                DeselectStack();
+            }
+
+            // if reached final destination
+            RemoveFirstItemFromMovementPath();
+            if (MovementPath.Count == 0)
+            {
+                IsMovingState = false;
+            }
         }
 
         internal void DoPatrolAction()
@@ -133,25 +216,6 @@ namespace PhoenixGamePresentationLibrary
         internal void SetStatusToNone()
         {
             _stack.SetStatusToNone();
-        }
-
-        private bool DetermineBlinkState(bool blink, float deltaTime)
-        {
-            if (!IsMovingState)
-            {
-                _blinkCooldownInMilliseconds -= deltaTime;
-                if (_blinkCooldownInMilliseconds > 0.0f) return blink;
-
-                // flip blink state
-                blink = !blink;
-                _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
-            }
-            else
-            {
-                return false;
-            }
-
-            return blink;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -199,13 +263,12 @@ namespace PhoenixGamePresentationLibrary
         private void DrawUnit(SpriteBatch spriteBatch)
         {
             // draw background
-            var position = CurrentPositionOnScreen;
-            var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, 60, 60);
+            var destinationRectangle = new Rectangle((int)_currentPositionOnScreen.X, (int)_currentPositionOnScreen.Y, 60, 60);
             var sourceRectangle = _stackViews.SquareGreenFrame.ToRectangle();
             spriteBatch.Draw(_stackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
 
             // draw unit icon
-            destinationRectangle = new Rectangle((int)position.X, (int)position.Y, 36, 32);
+            destinationRectangle = new Rectangle((int)_currentPositionOnScreen.X, (int)_currentPositionOnScreen.Y, 36, 32);
             var frame = _stackViews.UnitAtlas.Frames[FirstUnit.UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
             spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
@@ -263,18 +326,7 @@ namespace PhoenixGamePresentationLibrary
             spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
 
-        private void SetPotentialMovementPath(List<Point> path)
-        {
-            _potentialMovementPath = path;
-        }
-
-        public void ResetMovementPath()
-        {
-            _movementPath = new List<Point>();
-            DeselectStack();
-        }
-
-        internal void DeselectStack()
+        private void DeselectStack()
         {
             if (_stackViews.Current == null || Id == _stackViews.Current.Id)
             {
@@ -282,12 +334,7 @@ namespace PhoenixGamePresentationLibrary
             }
         }
 
-        internal void SetMovementPath(List<Point> path)
-        {
-            _movementPath = path;
-        }
-
-        internal void RemoveFirstItemFromMovementPath()
+        private void RemoveFirstItemFromMovementPath()
         {
             _movementPath.RemoveAt(0);
         }
@@ -298,5 +345,16 @@ namespace PhoenixGamePresentationLibrary
         }
 
         private string DebuggerDisplay => $"{{Id={Id},UnitsInStack={_stack.Count}}}";
+    }
+
+    public static class EnumerableListExtensions
+    {
+        public static void Update(this EnumerableList<IControl> list, InputHandler input, float deltaTime)
+        {
+            foreach (var item in list)
+            {
+                item.Update(input, deltaTime);
+            }
+        }
     }
 }

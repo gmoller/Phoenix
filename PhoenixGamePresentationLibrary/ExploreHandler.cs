@@ -24,6 +24,10 @@ namespace PhoenixGamePresentationLibrary
             {
                 action(path);
             }
+            else
+            {
+                stackView.SetStatusToNone();
+            }
         }
     }
 }

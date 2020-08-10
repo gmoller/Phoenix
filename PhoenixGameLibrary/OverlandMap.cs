@@ -6,10 +6,10 @@
 
         public CellGrid CellGrid { get; }
 
-        internal OverlandMap(World world)
+        internal OverlandMap(World world, int numberOfColumns, int numberOfRows)
         {
             _world = world;
-            CellGrid = new CellGrid(Constants.WORLD_MAP_COLUMNS, Constants.WORLD_MAP_ROWS);
+            CellGrid = new CellGrid(numberOfColumns, numberOfRows);
         }
     }
 }

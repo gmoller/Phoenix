@@ -8,9 +8,9 @@ namespace PhoenixGamePresentationLibrary
 {
     internal static class PotentialMovementHandler
     {
-        internal static void HandleMovement(InputHandler input, StackView stackView, World world, Action<List<Point>> action)
+        internal static void HandlePotentialMovement(InputHandler input, StackView stackView, World world, Action<List<Point>> action)
         {
-            if (stackView.IsMovingState || !input.MouseIsWithinScreen || input.Eaten) return;
+            if (stackView.Status == UnitStatus.Explore || stackView.IsMovingState || !input.MouseIsWithinScreen || input.Eaten) return;
 
             var path = GetPotentialMovementPath(stackView, world);
 

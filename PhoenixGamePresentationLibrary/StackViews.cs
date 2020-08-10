@@ -140,7 +140,7 @@ namespace PhoenixGamePresentationLibrary
             Current.SetStatusToNone();
         }
 
-        internal void SelectNext()
+        internal void  SelectNext()
         {
             if (_ordersQueue.Count > 0)
             {
@@ -157,6 +157,7 @@ namespace PhoenixGamePresentationLibrary
             }
             else
             {
+                //_worldView.EndTurn(); // auto end turn when no stacks have actions
                 Current = null;
             }
         }

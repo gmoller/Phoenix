@@ -27,12 +27,12 @@ namespace PhoenixGameLibrary
 
         public NotificationList NotificationList { get; }
 
-        internal World()
+        internal World(int numberOfColumns, int numberOfRows)
         {
             Globals.Instance.World = this;
 
             PlayerFaction = new Faction();
-            OverlandMap = new OverlandMap(this);
+            OverlandMap = new OverlandMap(this, numberOfColumns, numberOfRows);
             Settlements = new Settlements(this);
             Stacks = new Stacks();
             _turnNumber = 0;

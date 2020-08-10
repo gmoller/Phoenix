@@ -9,8 +9,8 @@ namespace Utilities
 
         private static readonly Lazy<Logger> Lazy = new Lazy<Logger>(() => new Logger());
 
-        private StreamWriter _fileStream;
-
+        private readonly StreamWriter _fileStream;
+        
         public static Logger Instance => Lazy.Value;
 
         private Logger()
@@ -25,7 +25,7 @@ namespace Utilities
 
         public void Log(string message)
         {
-            _fileStream.Write($"{DateTime.Now.ToString("s")} - {message}");
+            _fileStream.Write($"{DateTime.Now:s} - {message}");
             _fileStream.Flush();
         }
 
@@ -37,7 +37,7 @@ namespace Utilities
 
         public void LogError(Exception ex)
         {
-            _fileStream.Write($"{DateTime.Now.ToString("s")} - {ex.Message}");
+            _fileStream.Write($"{DateTime.Now:s} - {ex.Message}");
             _fileStream.Flush();
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using HexLibrary;
 using Utilities;
@@ -76,7 +77,9 @@ namespace PhoenixGameLibrary
 
         public Cell GetClosestUnexploredCell(Point location)
         {
-            for (int i = 1; i < 11; i++)
+            var closestCells = new List<Cell>();
+            var max = Math.Max(NumberOfColumns, NumberOfRows);
+            for (int i = 1; i < max; i++)
             {
                 var ring = HexOffsetCoordinates.GetSingleRing(location.X, location.Y, i);
                 foreach (var coordinates in ring)
@@ -84,12 +87,24 @@ namespace PhoenixGameLibrary
                     var cell = GetCell(coordinates.Col, coordinates.Row);
                     if (!cell.Equals(Cell.Empty) && cell.SeenState == SeenState.NeverSeen)
                     {
-                        return cell;
+                        closestCells.Add(cell);
                     }
+                }
+
+                if (closestCells.Count > 0)
+                {
+                    break;
                 }
             }
 
-            return Cell.Empty;
+            if (closestCells.Count == 0)
+            {
+                return Cell.Empty;
+            }
+
+            var random = RandomNumberGenerator.Instance.GetRandomInt(0, closestCells.Count - 1);
+
+            return closestCells[random];
         }
 
         public override string ToString()

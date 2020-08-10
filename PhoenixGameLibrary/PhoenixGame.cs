@@ -9,7 +9,7 @@ namespace PhoenixGameLibrary
 
         public PhoenixGame()
         {
-            World = new World();
+            World = new World(Constants.WORLD_MAP_COLUMNS, Constants.WORLD_MAP_ROWS);
 
             World.AddSettlement(new Point(12, 9), "Fairhaven", "Barbarians");
             World.AddUnit(new Point(12, 9), Globals.Instance.UnitTypes["Test Dude"]);
