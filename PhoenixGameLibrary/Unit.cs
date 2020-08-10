@@ -19,8 +19,8 @@ namespace PhoenixGameLibrary
         private UnitStatus _status;
 
         private Guid Id { get; }
-        public Point Location { get; private set; } // hex cell the unit is in
-        public float MovementPoints { get; private set; }
+        public Point Location { get; internal set; } // hex cell the unit is in
+        public float MovementPoints { get; internal set; }
 
         private string Name => _unitType.Name;
         public EnumerableList<string> Actions => new EnumerableList<string>(_unitType.Actions);
@@ -63,21 +63,6 @@ namespace PhoenixGameLibrary
             SetSeenCells(Location);
         }
 
-        internal void MoveTo(Point locationToMoveTo)
-        {
-            Location = locationToMoveTo;
-            SetSeenCells(Location);
-
-            var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
-            var movementCost = CostToMoveInto(cellToMoveTo);
-
-            MovementPoints -= movementCost.CostToMoveInto;
-            if (MovementPoints < 0.0f)
-            {
-                MovementPoints = 0.0f;
-            }
-        }
-
         internal void EndTurn()
         {
             MovementPoints = _unitType.MovementPoints;
@@ -97,29 +82,29 @@ namespace PhoenixGameLibrary
             return false;
         }
 
-        public CostToMoveIntoResult CostToMoveInto(Point location)
+        public GetCostToMoveIntoResult CostToMoveInto(Point location)
         {
             var cellToMoveTo = _world.OverlandMap.CellGrid.GetCell(location.X, location.Y);
 
             return CostToMoveInto(cellToMoveTo);
         }
 
-        public CostToMoveIntoResult CostToMoveInto(Cell cell)
+        private GetCostToMoveIntoResult CostToMoveInto(Cell cell)
         {
-            if (cell == Cell.Empty) return new CostToMoveIntoResult(false);
-            if (cell.SeenState == SeenState.NeverSeen) return new CostToMoveIntoResult(true, 9999999.9f);
+            if (cell == Cell.Empty) return new GetCostToMoveIntoResult(false);
+            if (cell.SeenState == SeenState.NeverSeen) return new GetCostToMoveIntoResult(true, 9999999.9f);
 
             var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
 
             return CostToMoveInto(terrainType);
         }
 
-        private CostToMoveIntoResult CostToMoveInto(TerrainType terrainType)
+        private GetCostToMoveIntoResult CostToMoveInto(TerrainType terrainType)
         {
             var potentialMovementCosts = GetPotentialMovementCosts(terrainType);
             var canMoveInto = potentialMovementCosts.Count > 0;
 
-            if (!canMoveInto) return new CostToMoveIntoResult(false);
+            if (!canMoveInto) return new GetCostToMoveIntoResult(false);
 
             float costToMoveInto = float.MaxValue;
             bool foundCost = false;
@@ -134,7 +119,7 @@ namespace PhoenixGameLibrary
 
             if (!foundCost) throw new Exception($"No cost found for Terrain Type [{terrainType}], UnitTypeMovementTypes [{UnitTypeMovementTypes}].");
 
-            return new CostToMoveIntoResult(true, costToMoveInto);
+            return new GetCostToMoveIntoResult(true, costToMoveInto);
         }
 
         private List<MovementCost> GetPotentialMovementCosts(TerrainType terrainType)
@@ -155,7 +140,7 @@ namespace PhoenixGameLibrary
             return potentialMovementCosts;
         }
 
-        private void SetSeenCells(Point location)
+        internal void SetSeenCells(Point location)
         {
             var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
             _seenCells = cellGrid.GetCatchment(location.X, location.Y, GetScoutingRange());

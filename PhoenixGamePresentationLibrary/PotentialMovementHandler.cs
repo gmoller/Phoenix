@@ -19,21 +19,21 @@ namespace PhoenixGamePresentationLibrary
 
         private static List<Point> GetPotentialMovementPath(StackView stackView, World world)
         {
-            var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(stackView.FirstUnit, world); // TODO: first unit always used, need to check all units (assumes only 1 unit right now)
+            var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(stackView, world);
             if (!potentialMovement) return new List<Point>();
 
-            var path = MovementPathDeterminer.DetermineMovementPath(stackView.FirstUnit, stackView.Location, hexToMoveTo);
+            var path = MovementPathDeterminer.DetermineMovementPath(stackView, stackView.Location, hexToMoveTo);
 
             return path;
 
         }
 
-        private static (bool potentialMovement, Point hexToMoveTo) CheckForPotentialUnitMovement(Unit unit, World world)
+        private static (bool potentialMovement, Point hexToMoveTo) CheckForPotentialUnitMovement(StackView stackView, World world)
         {
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
             var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new Point(0, 0));
-            var costToMoveIntoResult = unit.CostToMoveInto(cellToMoveTo);
+            var costToMoveIntoResult = stackView.GetCostToMoveInto(cellToMoveTo);
 
             return (costToMoveIntoResult.CanMoveInto, hexToMoveTo);
         }

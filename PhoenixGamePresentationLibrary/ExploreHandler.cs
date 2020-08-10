@@ -18,7 +18,7 @@ namespace PhoenixGamePresentationLibrary
             var cell = Globals.Instance.World.OverlandMap.CellGrid.GetClosestUnexploredCell(stackView.Location);
 
             // find best path to unexplored cell
-            var path = MovementPathDeterminer.DetermineMovementPath(stackView.FirstUnit, stackView.Location, cell.ToPoint); // TODO: don't use first unit, use stack as a whole
+            var path = MovementPathDeterminer.DetermineMovementPath(stackView, stackView.Location, cell.ToPoint);
 
             if (path.Count > 0)
             {

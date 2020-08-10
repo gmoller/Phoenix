@@ -58,7 +58,7 @@ namespace PhoenixGamePresentationLibrary
             var neighbor = HexOffsetCoordinates.GetNeighbor(stackView.Location.X, stackView.Location.Y, direction);
             var hexToMoveTo = new Point(neighbor.Col, neighbor.Row);
 
-            var costToMoveIntoResult = stackView.FirstUnit.CostToMoveInto(hexToMoveTo); // TODO: fix this, make work on stack
+            var costToMoveIntoResult = stackView.GetCostToMoveInto(hexToMoveTo);
 
             return costToMoveIntoResult.CanMoveInto ? (true, hexToMoveTo) : (false, new Point(0, 0));
         }
@@ -69,11 +69,11 @@ namespace PhoenixGamePresentationLibrary
 
             // unit is selected, left mouse button released and unit is not already moving
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
-            if (hexToMoveTo == stackView.FirstUnit.Location) return (false, new Point(0, 0));
+            if (hexToMoveTo == stackView.Location) return (false, new Point(0, 0));
             var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new Point(0, 0));
 
-            var costToMoveIntoResult = stackView.FirstUnit.CostToMoveInto(cellToMoveTo);
+            var costToMoveIntoResult = stackView.GetCostToMoveInto(cellToMoveTo);
 
             return costToMoveIntoResult.CanMoveInto ? (true, hexToMoveTo) : (false, new Point(0, 0));
         }

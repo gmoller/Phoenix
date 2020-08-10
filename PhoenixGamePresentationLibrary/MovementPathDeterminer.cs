@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PhoenixGameLibrary;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -7,7 +6,7 @@ namespace PhoenixGamePresentationLibrary
 {
     internal static class MovementPathDeterminer
     {
-        internal static List<Point> DetermineMovementPath(Unit unit, Point from, Point to)
+        internal static List<Point> DetermineMovementPath(StackView stackView, Point from, Point to)
         {
             if (from.Equals(to)) return new List<Point>();
 
@@ -22,9 +21,9 @@ namespace PhoenixGamePresentationLibrary
 
             return path;
 
-            CostToMoveIntoResult GetCostToMoveIntoFunc(Point point)
+            GetCostToMoveIntoResult GetCostToMoveIntoFunc(Point point)
             {
-                return unit.CostToMoveInto(point);
+                return stackView.GetCostToMoveInto(point);
             }
         }
     }

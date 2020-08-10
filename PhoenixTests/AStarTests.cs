@@ -18,7 +18,7 @@ namespace PhoenixTests
             var closedList = new Dictionary<Point, Cost>();
 
             var unit = new Unit(null, new UnitType(), new Point());
-            Func<Point, CostToMoveIntoResult> getCostToMoveIntoFunc = delegate (Point point) { return unit.CostToMoveInto(point); };
+            Func<Point, GetCostToMoveIntoResult> getCostToMoveIntoFunc = delegate (Point point) { return unit.CostToMoveInto(point); };
             var cellGrid = new CellGrid(60, 40);
             mapSolver.Solve(null, new Point(cellGrid.NumberOfColumns, cellGrid.NumberOfRows), new Point(0, 0), new Point(1, 2), openList, closedList);
 
@@ -38,7 +38,7 @@ namespace PhoenixTests
             var closedList = new Dictionary<Point, Cost>();
 
             var unit = new Unit(null, new UnitType(), new Point());
-            Func<Point, CostToMoveIntoResult> getCostToMoveIntoFunc = delegate (Point point) { return unit.CostToMoveInto(point); };
+            Func<Point, GetCostToMoveIntoResult> getCostToMoveIntoFunc = delegate (Point point) { return unit.CostToMoveInto(point); };
             var cellGrid = new CellGrid(60, 40);
             mapSolver.Solve(getCostToMoveIntoFunc, new Point(cellGrid.NumberOfColumns, cellGrid.NumberOfRows), new Point(0, 0), new Point(6, 0), openList, closedList);
 
@@ -62,7 +62,7 @@ namespace PhoenixTests
             var closedList = new Dictionary<Point, Cost>();
 
             var unit = new Unit(null, new UnitType(), new Point());
-            Func<Point, CostToMoveIntoResult> getCostToMoveIntoFunc = delegate (Point point) { return unit.CostToMoveInto(point); };
+            Func<Point, GetCostToMoveIntoResult> getCostToMoveIntoFunc = delegate (Point point) { return unit.CostToMoveInto(point); };
             var cellGrid = new CellGrid(60, 40);
             mapSolver.Solve(getCostToMoveIntoFunc, new Point(cellGrid.NumberOfColumns, cellGrid.NumberOfRows), new Point(12, 9), new Point(13, 7), openList, closedList);
 

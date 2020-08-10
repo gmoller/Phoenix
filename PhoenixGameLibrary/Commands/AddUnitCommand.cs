@@ -15,7 +15,7 @@ namespace PhoenixGameLibrary.Commands
 
             var units = new Units();
             units.AddUnit(Globals.Instance.World, unitType, position);
-            var newStack = new Stack(units);
+            var newStack = new Stack(Globals.Instance.World, units);
 
             stacks.Add(newStack);
         }

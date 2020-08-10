@@ -6,11 +6,11 @@ namespace PhoenixGameLibrary.Commands
     {
         public override void Execute()
         {
-            var payload = ((Unit unit, Point hexToMoveTo))Payload;
-            var unit = payload.unit;
+            var payload = ((Stack stack, Point hexToMoveTo))Payload;
+            var stack = payload.stack;
             var hexToMoveTo = payload.hexToMoveTo;
 
-            unit.MoveTo(hexToMoveTo);
+            stack.MoveTo(hexToMoveTo);
         }
     }
 }

@@ -40,7 +40,7 @@
   <ItemGroup>
     <Compile Include="AStarSearch.cs" />
     <Compile Include="BreadthFirstSearch.cs" />
-    <Compile Include="CostToMoveIntoResult.cs" />
+    <Compile Include="GetCostToMoveIntoResult.cs" />
     <Compile Include="DataDictionary.cs" />
     <Compile Include="DataList.cs" />
     <Compile Include="DeviceManager.cs" />

@@ -11,11 +11,10 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Stack : IEnumerable<Unit>
     {
+        private readonly World _world;
         private readonly Units _units;
 
         public UnitStatus Status { get; private set; }
-
-        public Unit this[int index] => _units[index];
 
         public Point Location => _units[0].Location;
 
@@ -24,10 +23,13 @@ namespace PhoenixGameLibrary
         public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(_units));
 
         public int Count => _units.Count;
-        public bool IsBusy => Status == UnitStatus.Patrol || Status == UnitStatus.Fortify; // || Status == UnitStatus.Explore;
+        public bool IsBusy => Status == UnitStatus.Patrol || Status == UnitStatus.Fortify;
 
-        public Stack(Units units)
+        public Unit this[int index] => _units[index];
+
+        public Stack(World world, Units units)
         {
+            _world = world;
             _units = units;
             Status = UnitStatus.None;
         }
@@ -54,6 +56,82 @@ namespace PhoenixGameLibrary
         {
             Status = UnitStatus.None;
             _units.SetStatusToNone();
+        }
+
+        internal void MoveTo(Point locationToMoveTo)
+        {
+            var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
+            var movementCost = GetCostToMoveInto(cellToMoveTo);
+
+            foreach (var unit in _units)
+            {
+                unit.Location = locationToMoveTo;
+                unit.SetSeenCells(Location);
+
+                unit.MovementPoints -= movementCost.CostToMoveInto;
+                if (unit.MovementPoints < 0.0f)
+                {
+                    unit.MovementPoints = 0.0f;
+                }
+            }
+        }
+
+        public GetCostToMoveIntoResult GetCostToMoveInto(Point location)
+        {
+            var cellToMoveTo = _world.OverlandMap.CellGrid.GetCell(location.X, location.Y);
+
+            return GetCostToMoveInto(cellToMoveTo);
+        }
+
+        public GetCostToMoveIntoResult GetCostToMoveInto(Cell cell)
+        {
+            if (cell == Cell.Empty) return new GetCostToMoveIntoResult(false);
+            if (cell.SeenState == SeenState.NeverSeen) return new GetCostToMoveIntoResult(true, 9999999.9f);
+
+            var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
+
+            return GetCostToMoveInto(terrainType);
+        }
+
+        private GetCostToMoveIntoResult GetCostToMoveInto(TerrainType terrainType)
+        {
+            var potentialMovementCosts = GetPotentialMovementCosts(terrainType);
+            var canMoveInto = potentialMovementCosts.Count > 0;
+
+            if (!canMoveInto) return new GetCostToMoveIntoResult(false);
+
+            float costToMoveInto = float.MaxValue;
+            bool foundCost = false;
+            foreach (var potentialMovementCost in potentialMovementCosts)
+            {
+                if (potentialMovementCost.Cost < costToMoveInto)
+                {
+                    costToMoveInto = potentialMovementCost.Cost;
+                    foundCost = true;
+                }
+            }
+
+            if (!foundCost) throw new Exception($"No cost found for Terrain Type [{terrainType}], MovementTypes [{MovementTypes}].");
+
+            return new GetCostToMoveIntoResult(true, costToMoveInto);
+        }
+
+        private List<MovementCost> GetPotentialMovementCosts(TerrainType terrainType)
+        {
+            var potentialMovementCosts = new List<MovementCost>();
+            foreach (var unitMovementType in MovementTypes)
+            {
+                foreach (var movementCost in terrainType.MovementCosts)
+                {
+                    if (unitMovementType != movementCost.MovementType.Name) continue;
+                    if (movementCost.Cost > 0.0)
+                    {
+                        potentialMovementCosts.Add(movementCost);
+                    }
+                }
+            }
+
+            return potentialMovementCosts;
         }
 
         internal void BeginTurn()

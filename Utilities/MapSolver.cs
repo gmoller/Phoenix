@@ -6,7 +6,7 @@ namespace Utilities
 {
     public class MapSolver : AStarSearch<Point, Cost>
     {
-        private Func<Point, CostToMoveIntoResult> _getCostToMoveIntoFunc;
+        private Func<Point, GetCostToMoveIntoResult> _getCostToMoveIntoFunc;
         private Point _gridSize;
         private Point _destination;
         private Dictionary<Point, Cost> _closedList;
@@ -37,7 +37,7 @@ namespace Utilities
             }
         }
 
-        public void Solve(Func<Point, CostToMoveIntoResult> getCostToMoveIntoFunc, Point gridSize, Point start, Point destination, PriorityQueue<Node> openList, Dictionary<Point, Cost> closedList)
+        public void Solve(Func<Point, GetCostToMoveIntoResult> getCostToMoveIntoFunc, Point gridSize, Point start, Point destination, PriorityQueue<Node> openList, Dictionary<Point, Cost> closedList)
         {
             _getCostToMoveIntoFunc = getCostToMoveIntoFunc;
             _gridSize = gridSize;

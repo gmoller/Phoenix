@@ -44,7 +44,7 @@ namespace PhoenixGamePresentationLibrary
 
         public Point Location => _stack.Location;
         public float MovementPoints => _stack.MovementPoints;
-        public Unit FirstUnit => _stack[0];
+        //private Unit FirstUnit => _stack[0];
 
         public int Count => _stack.Count;
 
@@ -84,6 +84,16 @@ namespace PhoenixGamePresentationLibrary
             }
 
             _actionButtons = actionButtons;
+        }
+
+        internal GetCostToMoveIntoResult GetCostToMoveInto(Point location)
+        {
+            return _stack.GetCostToMoveInto(location);
+        }
+
+        internal GetCostToMoveIntoResult GetCostToMoveInto(Cell location)
+        {
+            return _stack.GetCostToMoveInto(location);
         }
 
         internal void Update(InputHandler input, float deltaTime)
@@ -144,7 +154,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void StartUnitMovement(Point hexToMoveTo)
         {
-            var path = MovementPathDeterminer.DetermineMovementPath(FirstUnit, Location, hexToMoveTo);
+            var path = MovementPathDeterminer.DetermineMovementPath(this, Location, hexToMoveTo);
             SetMovementPath(path);
 
             IsMovingState = true;
@@ -154,7 +164,7 @@ namespace PhoenixGamePresentationLibrary
         private void MoveStack(float deltaTime)
         {
             // if stack cannot move into next hex in path
-            var cost = FirstUnit.CostToMoveInto(MovementPath[0]);
+            var cost = _stack.GetCostToMoveInto(MovementPath[0]);
             if (!cost.CanMoveInto && Status != UnitStatus.Explore)
             {
                 DeselectStack();
@@ -186,7 +196,7 @@ namespace PhoenixGamePresentationLibrary
         {
             MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
 
-            Command moveUnitCommand = new MoveUnitCommand { Payload = (FirstUnit, MovementPath[0]) };
+            Command moveUnitCommand = new MoveUnitCommand { Payload = (_stack, MovementPath[0]) };
             moveUnitCommand.Execute();
             RemoveFirstItemFromMovementPath();
 
@@ -288,7 +298,7 @@ namespace PhoenixGamePresentationLibrary
 
             // draw unit icon
             destinationRectangle = new Rectangle((int)_currentPositionOnScreen.X, (int)_currentPositionOnScreen.Y, 36, 32);
-            var frame = _stackViews.UnitAtlas.Frames[FirstUnit.UnitTypeTextureName];
+            var frame = _stackViews.UnitAtlas.Frames[_stack[0].UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
             spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
