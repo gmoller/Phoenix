@@ -15,9 +15,8 @@ namespace PhoenixGamePresentationLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     internal class StackView
     {
-        private const float BLINK_TIME_IN_MILLISECONDS = 500.0f;
+        private const float BLINK_TIME_IN_MILLISECONDS = 250.0f;
 
-        private readonly WorldView _worldView;
         private readonly StackViews _stackViews;
         private readonly Stack _stack;
 
@@ -29,15 +28,16 @@ namespace PhoenixGamePresentationLibrary
         private bool _blink;
 
         public Guid Id { get; }
+        public WorldView WorldView { get; }
+        public bool IsMovingState { get; set; }
+        public float MovementCountdownTime { get; set; }
+        public Vector2 CurrentPositionOnScreen { get; set; }
 
         public bool IsBusy => _stack.IsBusy;
         public UnitStatus Status => _stack.Status;
 
         public EnumerableList<Point> MovementPath => new EnumerableList<Point>(_movementPath);
         public bool IsSelected => _stackViews.Current == this;
-        public bool IsMovingState { get; set; }
-        public float MovementCountdownTime { get; set; }
-        public Vector2 CurrentPositionOnScreen { get; set; }
         public EnumerableList<IControl> ActionButtons => new EnumerableList<IControl>(_actionButtons);
 
         public Point Location => _stack.Location;
@@ -49,7 +49,7 @@ namespace PhoenixGamePresentationLibrary
         public StackView(WorldView worldView, StackViews stackViews, Stack stack)
         {
             Id = Guid.NewGuid();
-            _worldView = worldView;
+            WorldView = worldView;
             _stackViews = stackViews;
             _stack = stack;
             _movementPath = new List<Point>();
@@ -65,7 +65,7 @@ namespace PhoenixGamePresentationLibrary
             var imgMovementTypes = new List<IControl>();
             foreach (var movementType in _stack.MovementTypes)
             {
-                var img = _worldView.MovementTypeImages[movementType];
+                var img = WorldView.MovementTypeImages[movementType];
                 imgMovementTypes.Add(img);
             }
 
@@ -77,7 +77,7 @@ namespace PhoenixGamePresentationLibrary
             var actionButtons = new List<IControl>();
             foreach (var action in _stack.Actions)
             {
-                var btn = _worldView.ActionButtons[action];
+                var btn = WorldView.ActionButtons[action];
                 actionButtons.Add(btn);
             }
 
@@ -86,32 +86,45 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Update(InputHandler input, float deltaTime)
         {
+            var selectionHandler = new SelectionHandler();
+            var mustSelect = selectionHandler.HandleSelection(input, this);
+            if (mustSelect)
+            {
+                SelectStack();
+            }
+
+            if (!IsSelected) return;
+
             // check for blink
             _blink = DetermineBlinkState(_blink, deltaTime);
 
             // handle exploring
             var exploreHandler = new ExploreHandler();
-            exploreHandler.HandleExplore(this);
+            var path = exploreHandler.HandleExplore(this);
+            if (path.Count > 0)
+            {
+                SetMovementPath(path);
+            }
 
             // handle potential movement
             var potentialMovementHandler = new PotentialMovementHandler();
-            potentialMovementHandler.HandleMovement(input, this, _worldView.World);
+            path = potentialMovementHandler.HandleMovement(input, this, WorldView.World);
+            SetPotentialMovementPath(path);
 
             // handle movement
             var movementHandler = new MovementHandler();
             movementHandler.HandleMovement(input, this, deltaTime);
 
-            // handle selection/deselection
-            var selectUnit = CheckForUnitSelection(input);
-            if (selectUnit)
-            {
-                SelectStack();
-            }
-
             foreach (var button in ActionButtons)
             {
                 button.Update(input, deltaTime);
             }
+        }
+
+        private void SelectStack()
+        {
+            _blink = true;
+            _stackViews.SetCurrent(this);
         }
 
         internal void DoPatrolAction()
@@ -136,7 +149,7 @@ namespace PhoenixGamePresentationLibrary
 
         private bool DetermineBlinkState(bool blink, float deltaTime)
         {
-            if (IsSelected && !IsMovingState)
+            if (!IsMovingState)
             {
                 _blinkCooldownInMilliseconds -= deltaTime;
                 if (_blinkCooldownInMilliseconds > 0.0f) return blink;
@@ -151,27 +164,6 @@ namespace PhoenixGamePresentationLibrary
             }
 
             return blink;
-        }
-
-        private bool CheckForUnitSelection(InputHandler input)
-        {
-            if (IsSelected) return false;
-            if (input.IsRightMouseButtonReleased) return CursorIsOnThisStack();
-
-            return false;
-        }
-
-        private bool CursorIsOnThisStack()
-        {
-            var hexPoint = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
-
-            return _stack.Location == hexPoint;
-        }
-
-        private void SelectStack()
-        {
-            _blink = true;
-            _stackViews.SetCurrent(this);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -288,12 +280,7 @@ namespace PhoenixGamePresentationLibrary
             return DebuggerDisplay;
         }
 
-        private string DebuggerDisplay => $"{{Count={_stack.Count}}}";
-
-        public void ResetPotentialMovementPath()
-        {
-            _potentialMovementPath = new List<Point>();
-        }
+        private string DebuggerDisplay => $"{{Id={Id},UnitsInStack={_stack.Count}}}";
 
         internal void SetPotentialMovementPath(List<Point> path)
         {
@@ -308,7 +295,10 @@ namespace PhoenixGamePresentationLibrary
 
         internal void DeselectStack()
         {
-            _stackViews.SelectNext();
+            if (_stackViews.Current == null || Id == _stackViews.Current.Id)
+            {
+                _stackViews.SelectNext();
+            }
         }
 
         internal void SetMovementPath(List<Point> path)

@@ -13,7 +13,7 @@ namespace PhoenixGameLibrary
     {
         private readonly Units _units;
 
-        private UnitStatus _status;
+        public UnitStatus Status { get; private set; }
 
         public Unit this[int index] => _units[index];
 
@@ -24,36 +24,35 @@ namespace PhoenixGameLibrary
         public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(_units));
 
         public int Count => _units.Count;
-        public bool IsBusy => _status == UnitStatus.Patrol || _status == UnitStatus.Fortify || _status == UnitStatus.Explore;
-        public UnitStatus Status => _status;
+        public bool IsBusy => Status == UnitStatus.Patrol || Status == UnitStatus.Fortify; // || Status == UnitStatus.Explore;
 
         public Stack(Units units)
         {
             _units = units;
-            _status = UnitStatus.None;
+            Status = UnitStatus.None;
         }
 
         public void DoPatrolAction()
         {
-            _status = UnitStatus.Patrol;
+            Status = UnitStatus.Patrol;
             _units.DoPatrolAction();
         }
 
         public void DoFortifyAction()
         {
-            _status = UnitStatus.Fortify;
+            Status = UnitStatus.Fortify;
             _units.DoFortifyAction();
         }
 
         public void DoExploreAction()
         {
-            _status = UnitStatus.Explore;
+            Status = UnitStatus.Explore;
             _units.DoExploreAction();
         }
 
         public void SetStatusToNone()
         {
-            _status = UnitStatus.None;
+            Status = UnitStatus.None;
             _units.SetStatusToNone();
         }
 

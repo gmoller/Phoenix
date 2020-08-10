@@ -86,7 +86,7 @@ namespace PhoenixGamePresentationLibrary
             var queue = new Queue<StackView>();
             foreach (var stackView in _stackViews)
             {
-                if (!stackView.IsBusy) // not patrol, fortify, or explore
+                if (!stackView.IsBusy) // not patrol, or fortify
                 {
                     queue.Enqueue(stackView);
                 }
@@ -100,6 +100,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void DoWaitAction()
         {
+            // send current to back of the queue
             _ordersQueue.Enqueue(Current);
             SelectNext();
         }
@@ -124,7 +125,7 @@ namespace PhoenixGamePresentationLibrary
         internal void DoExploreAction()
         {
             Current.DoExploreAction();
-            SelectNext();
+            //SelectNext();
         }
 
         internal void SetCurrent(StackView stackView)

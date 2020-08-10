@@ -14,7 +14,7 @@ namespace PhoenixGamePresentationLibrary
         private float _rotation;
         private Vector2 _position;
 
-        public Rectangle VisibleArea { get; private set; }
+        //private Rectangle VisibleArea { get; set; }
         public Matrix Transform { get; private set; }
         public int Width => _viewport.Width;
         public int Height => _viewport.Height;
@@ -59,14 +59,14 @@ namespace PhoenixGamePresentationLibrary
             _position = newPosition;
         }
 
-        public void MoveCamera(Vector2 movePosition)
+        private void MoveCamera(Vector2 movePosition)
         {
             var newPosition = _position + movePosition;
 
             _position = newPosition;
         }
 
-        public void AdjustZoom(float zoomAmount)
+        private void AdjustZoom(float zoomAmount)
         {
             _zoom += zoomAmount;
             _zoom = MathHelper.Clamp(_zoom, 0.35f, 5.0f); // 0.1 - 5.0f
@@ -126,7 +126,7 @@ namespace PhoenixGamePresentationLibrary
                 MathHelper.Max(tl.X, MathHelper.Max(tr.X, MathHelper.Max(bl.X, br.X))),
                 MathHelper.Max(tl.Y, MathHelper.Max(tr.Y, MathHelper.Max(bl.Y, br.Y))));
 
-            VisibleArea = new Rectangle((int)min.X - (int)HexLibrary.Constants.HEX_WIDTH, (int)min.Y - 96, (int)(max.X - min.X) + (int)HexLibrary.Constants.HEX_WIDTH * 2, (int)(max.Y - min.Y) + 192); // 60, 92
+            //VisibleArea = new Rectangle((int)min.X - (int)HexLibrary.Constants.HEX_WIDTH, (int)min.Y - 96, (int)(max.X - min.X) + (int)HexLibrary.Constants.HEX_WIDTH * 2, (int)(max.Y - min.Y) + 192); // 60, 92
         }
     }
 }

@@ -19,28 +19,28 @@ namespace PhoenixGamePresentationLibrary
             var restartMovement = CheckForRestartOfMovement(stackView);
             if (restartMovement)
             {
-                RestartUnitMovement(stackView);
+                RestartUnitMovement(stackView); // action
             }
 
             var startUnitMovement = CheckForUnitMovementFromKeyboardInitiation(input, stackView);
             if (startUnitMovement.startMovement)
             {
-                StartUnitMovement(stackView, startUnitMovement.hexToMoveTo);
+                StartUnitMovement(stackView, startUnitMovement.hexToMoveTo); // action
             }
             else
             {
                 startUnitMovement = CheckForUnitMovementFromMouseInitiation(input, stackView);
                 if (startUnitMovement.startMovement)
                 {
-                    StartUnitMovement(stackView, startUnitMovement.hexToMoveTo);
+                    StartUnitMovement(stackView, startUnitMovement.hexToMoveTo); // action
                 }
             }
 
             if (UnitIsMoving(stackView))
             {
-                MoveUnit(stackView, deltaTime);
+                MoveUnit(stackView, deltaTime); // action
                 var unitHasReachedNextCell = CheckIfUnitHasReachedNextCell(stackView);
-                if (unitHasReachedNextCell) MoveUnitToCell(stackView);
+                if (unitHasReachedNextCell) MoveUnitToCell(stackView); // action
             }
         }
 
@@ -62,7 +62,7 @@ namespace PhoenixGamePresentationLibrary
 
         private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromKeyboardInitiation(InputHandler input, StackView stackView)
         {
-            if (!stackView.IsSelected || stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.AreAnyNumPadKeysDown) return (false, new Point(0, 0));
+            if (stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.AreAnyNumPadKeysDown) return (false, new Point(0, 0));
 
             var direction = DetermineDirection(input);
             if (direction == Direction.None) return (false, new Point(0, 0));
@@ -77,7 +77,7 @@ namespace PhoenixGamePresentationLibrary
 
         private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input, StackView stackView)
         {
-            if (!stackView.IsSelected || stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.IsLeftMouseButtonReleased || input.Eaten) return (false, new Point(0, 0));
+            if (stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.IsLeftMouseButtonReleased || input.Eaten) return (false, new Point(0, 0));
 
             // unit is selected, left mouse button released and unit is not already moving
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
@@ -152,6 +152,7 @@ namespace PhoenixGamePresentationLibrary
             var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - stackView.MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
 
             stackView.CurrentPositionOnScreen = newPosition;
+            stackView.WorldView.Camera.LookAtPixel(stackView.CurrentPositionOnScreen);
         }
 
         private bool CheckIfUnitHasReachedNextCell(StackView stackView)
@@ -163,10 +164,7 @@ namespace PhoenixGamePresentationLibrary
         {
             stackView.MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
 
-            Command moveUnitCommand = new MoveUnitCommand
-            {
-                Payload = (stackView.FirstUnit, stackView.MovementPath[0])
-            };
+            Command moveUnitCommand = new MoveUnitCommand { Payload = (stackView.FirstUnit, stackView.MovementPath[0]) };
             moveUnitCommand.Execute();
 
             // if run out of movement points

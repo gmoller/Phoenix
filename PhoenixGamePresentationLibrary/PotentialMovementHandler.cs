@@ -7,30 +7,24 @@ namespace PhoenixGamePresentationLibrary
 {
     internal class PotentialMovementHandler
     {
-        internal void HandleMovement(InputHandler input, StackView stackView, World world)
+        internal List<Point> HandleMovement(InputHandler input, StackView stackView, World world)
         {
-            if (!stackView.IsSelected || stackView.IsMovingState || !input.MouseIsWithinScreen || input.Eaten)
-            {
-                stackView.ResetPotentialMovementPath();
-            }
-            else
-            {
-                var potentialMovementHandler = new PotentialMovementHandler();
-                var path = potentialMovementHandler.GetPotentialMovementPath(stackView, world);
-                stackView.SetPotentialMovementPath(path);
-            }
+            if (stackView.IsMovingState || !input.MouseIsWithinScreen || input.Eaten) return new List<Point>();
+
+            var path = GetPotentialMovementPath(stackView, world);
+
+            return path;
         }
 
         private List<Point> GetPotentialMovementPath(StackView stackView, World world)
         {
             var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(stackView.FirstUnit, world); // TODO: first unit always used, need to check all units (assumes only 1 unit right now)
-            if (potentialMovement)
-            {
-                var path = MovementPathDeterminer.DetermineMovementPath(stackView.FirstUnit, stackView.Location, hexToMoveTo);
-                return path;
-            }
+            if (!potentialMovement) return new List<Point>();
 
-            return new List<Point>();
+            var path = MovementPathDeterminer.DetermineMovementPath(stackView.FirstUnit, stackView.Location, hexToMoveTo);
+
+            return path;
+
         }
 
         private (bool potentialMovement, Point hexToMoveTo) CheckForPotentialUnitMovement(Unit unit, World world)
