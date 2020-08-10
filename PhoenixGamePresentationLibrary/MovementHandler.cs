@@ -11,7 +11,7 @@ namespace PhoenixGamePresentationLibrary
 {
     internal static class MovementHandler
     {
-        internal static void HandleMovement(InputHandler input, StackView stackView, float deltaTime, Action restartUnitMovement, Action<Point> startUnitMovement, Action<float> moveUnit, Action moveUnitToCell)
+        internal static void HandleMovement(InputHandler input, StackView stackView, float deltaTime, Action restartUnitMovement, Action<Point> startUnitMovement, Action<float> moveStack, Action moveStackToCell)
         {
             var restartMovement = CheckForRestartOfMovement(stackView);
             if (restartMovement)
@@ -29,11 +29,11 @@ namespace PhoenixGamePresentationLibrary
 
             if (UnitIsMoving(stackView))
             {
-                moveUnit(deltaTime);
+                moveStack(deltaTime);
                 var unitHasReachedNextCell = CheckIfUnitHasReachedNextCell(stackView);
                 if (unitHasReachedNextCell)
                 {
-                    moveUnitToCell();
+                    moveStackToCell();
                 }
             }
         }

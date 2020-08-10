@@ -125,7 +125,6 @@ namespace PhoenixGamePresentationLibrary
         internal void DoExploreAction()
         {
             Current.DoExploreAction();
-            //SelectNext();
         }
 
         internal void SetCurrent(StackView stackView)

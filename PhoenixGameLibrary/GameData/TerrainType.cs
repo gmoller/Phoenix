@@ -62,7 +62,7 @@ namespace PhoenixGameLibrary.GameData
                 //TerrainType.Create(8, "Volcano", 4.0f, 0.0f, 0.0f),
                 TerrainType.Create(9, "Tundra", new MovementCosts(new MovementCost("Walking", 2.0f), new MovementCost("Flying", 1.0f), new MovementCost("Swimming", 1.0f), new MovementCost("Sailing", 0.0f)), new Texture("terrain_hextiles_cold_1", 8), new Texture("terrain_hextiles_cold_1", 9), new Texture("terrain_hextiles_cold_1", 10), new Texture("terrain_hextiles_cold_1", 11)),
                 //TerrainType.Create(10, "Shore", -1.0f, 0.5f, 0.0f),
-                TerrainType.Create(11, "Ocean", new MovementCosts(new MovementCost("Walking", 0.0f), new MovementCost("Flying", 1.0f), new MovementCost("Swimming", 1.0f), new MovementCost("Sailing", 1.0f)), new Texture("terrain_hextiles_basic_1", 4), new Texture("terrain_hextiles_basic_1", 5), new Texture("terrain_hextiles_basic_1", 6), new Texture("terrain_hextiles_basic_1", 7))
+                TerrainType.Create(11, "Ocean", new MovementCosts(new MovementCost("Flying", 1.0f), new MovementCost("Swimming", 1.0f), new MovementCost("Sailing", 1.0f)), new Texture("terrain_hextiles_basic_1", 4), new Texture("terrain_hextiles_basic_1", 5), new Texture("terrain_hextiles_basic_1", 6), new Texture("terrain_hextiles_basic_1", 7))
                 //TerrainType.Create(12, "SorceryNode", 1.0f, 2.0f, 0.0f),
                 //TerrainType.Create(13, "ChaosNode", 4.0f, 0.0f, 5.0f),
                 //TerrainType.Create(14, "NatureNode", 2.0f, 2.5f, 3.0f)

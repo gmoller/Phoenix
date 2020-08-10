@@ -97,7 +97,7 @@ namespace PhoenixGamePresentationLibrary
              
             ExploreHandler.HandleExplore(this, SetMovementPath);
             PotentialMovementHandler.HandlePotentialMovement(input, this, _worldView.World, SetPotentialMovementPath);
-            MovementHandler.HandleMovement(input, this, deltaTime, RestartUnitMovement, StartUnitMovement, MoveUnit, MoveUnitToCell);
+            MovementHandler.HandleMovement(input, this, deltaTime, RestartUnitMovement, StartUnitMovement, MoveStack, MoveStackToCell);
 
             ActionButtons.Update(input, deltaTime);
         }
@@ -154,8 +154,23 @@ namespace PhoenixGamePresentationLibrary
             MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
         }
 
-        private void MoveUnit(float deltaTime)
+        private void MoveStack(float deltaTime)
         {
+            // if stack cannot move into next hex in path
+            var cost = FirstUnit.CostToMoveInto(MovementPath[0]);
+            if (!cost.CanMoveInto && Status != UnitStatus.Explore)
+            {
+                DeselectStack();
+                return;
+            }
+
+            if (!cost.CanMoveInto && Status == UnitStatus.Explore)
+            {
+                //   if exploring: pick new path
+                SetMovementPath(new List<Point>());
+                ExploreHandler.HandleExplore(this, SetMovementPath);
+            }
+
             MovementCountdownTime -= deltaTime;
 
             // determine start cell screen position
@@ -170,18 +185,13 @@ namespace PhoenixGamePresentationLibrary
             _worldView.Camera.LookAtPixel(newPosition);
         }
 
-        private void MoveUnitToCell()
+        private void MoveStackToCell()
         {
             MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
 
             Command moveUnitCommand = new MoveUnitCommand { Payload = (FirstUnit, MovementPath[0]) };
             moveUnitCommand.Execute();
-
-            //if (Location == _destination)
-            //{
-            //    var path = MovementPathDeterminer.DetermineMovementPath(FirstUnit, Location, Destination);
-            //    SetMovementPath(path);
-            //}
+            RemoveFirstItemFromMovementPath();
 
             // if run out of movement points
             if (MovementPoints <= 0.0f)
@@ -191,10 +201,22 @@ namespace PhoenixGamePresentationLibrary
             }
 
             // if reached final destination
-            RemoveFirstItemFromMovementPath();
             if (MovementPath.Count == 0)
             {
                 IsMovingState = false;
+            }
+        }
+
+        private void RemoveFirstItemFromMovementPath()
+        {
+            _movementPath.RemoveAt(0);
+        }
+
+        private void DeselectStack()
+        {
+            if (_stackViews.Current == null || Id == _stackViews.Current.Id)
+            {
+                _stackViews.SelectNext();
             }
         }
 
@@ -324,19 +346,6 @@ namespace PhoenixGamePresentationLibrary
             var frame = _stackViews.UnitAtlas.Frames[unit.UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
             spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
-        }
-
-        private void DeselectStack()
-        {
-            if (_stackViews.Current == null || Id == _stackViews.Current.Id)
-            {
-                _stackViews.SelectNext();
-            }
-        }
-
-        private void RemoveFirstItemFromMovementPath()
-        {
-            _movementPath.RemoveAt(0);
         }
 
         public override string ToString()
