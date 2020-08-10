@@ -1,22 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Input;
 using PhoenixGameLibrary;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
 {
-    internal class PotentialMovementHandler
+    internal static class PotentialMovementHandler
     {
-        internal List<Point> HandleMovement(InputHandler input, StackView stackView, World world)
+        internal static void HandleMovement(InputHandler input, StackView stackView, World world, Action<List<Point>> action)
         {
-            if (stackView.IsMovingState || !input.MouseIsWithinScreen || input.Eaten) return new List<Point>();
+            if (stackView.IsMovingState || !input.MouseIsWithinScreen || input.Eaten) return;
 
             var path = GetPotentialMovementPath(stackView, world);
 
-            return path;
+            action(path);
         }
 
-        private List<Point> GetPotentialMovementPath(StackView stackView, World world)
+        private static List<Point> GetPotentialMovementPath(StackView stackView, World world)
         {
             var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(stackView.FirstUnit, world); // TODO: first unit always used, need to check all units (assumes only 1 unit right now)
             if (!potentialMovement) return new List<Point>();
@@ -27,7 +28,7 @@ namespace PhoenixGamePresentationLibrary
 
         }
 
-        private (bool potentialMovement, Point hexToMoveTo) CheckForPotentialUnitMovement(Unit unit, World world)
+        private static (bool potentialMovement, Point hexToMoveTo) CheckForPotentialUnitMovement(Unit unit, World world)
         {
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
             var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);

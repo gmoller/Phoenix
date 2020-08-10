@@ -86,12 +86,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            var selectionHandler = new SelectionHandler();
-            var mustSelect = selectionHandler.HandleSelection(input, this);
-            if (mustSelect)
-            {
-                SelectStack();
-            }
+            SelectionHandler.HandleSelection(input, this, SelectStack);
 
             if (!IsSelected) return;
 
@@ -99,22 +94,15 @@ namespace PhoenixGamePresentationLibrary
             _blink = DetermineBlinkState(_blink, deltaTime);
 
             // handle exploring
-            var exploreHandler = new ExploreHandler();
-            var path = exploreHandler.HandleExplore(this);
-            if (path.Count > 0)
-            {
-                SetMovementPath(path);
-            }
+            ExploreHandler.HandleExplore(this, SetMovementPath);
 
             // handle potential movement
-            var potentialMovementHandler = new PotentialMovementHandler();
-            path = potentialMovementHandler.HandleMovement(input, this, WorldView.World);
-            SetPotentialMovementPath(path);
+            PotentialMovementHandler.HandleMovement(input, this, WorldView.World, SetPotentialMovementPath);
 
             // handle movement
-            var movementHandler = new MovementHandler();
-            movementHandler.HandleMovement(input, this, deltaTime);
+            MovementHandler.HandleMovement(input, this, deltaTime);
 
+            //ActionButtons.Update(input, deltaTime); // could do with extension method
             foreach (var button in ActionButtons)
             {
                 button.Update(input, deltaTime);
@@ -275,14 +263,7 @@ namespace PhoenixGamePresentationLibrary
             spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
 
-        public override string ToString()
-        {
-            return DebuggerDisplay;
-        }
-
-        private string DebuggerDisplay => $"{{Id={Id},UnitsInStack={_stack.Count}}}";
-
-        internal void SetPotentialMovementPath(List<Point> path)
+        private void SetPotentialMovementPath(List<Point> path)
         {
             _potentialMovementPath = path;
         }
@@ -310,5 +291,12 @@ namespace PhoenixGamePresentationLibrary
         {
             _movementPath.RemoveAt(0);
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Id={Id},UnitsInStack={_stack.Count}}}";
     }
 }

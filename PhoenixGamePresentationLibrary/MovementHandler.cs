@@ -10,11 +10,11 @@ using Point = Utilities.Point;
 
 namespace PhoenixGamePresentationLibrary
 {
-    internal class MovementHandler
+    internal static class MovementHandler
     {
         private const float MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS = 250.0f;
 
-        internal void HandleMovement(InputHandler input, StackView stackView, float deltaTime)
+        internal static void HandleMovement(InputHandler input, StackView stackView, float deltaTime)
         {
             var restartMovement = CheckForRestartOfMovement(stackView);
             if (restartMovement)
@@ -44,7 +44,7 @@ namespace PhoenixGamePresentationLibrary
             }
         }
 
-        private bool CheckForRestartOfMovement(StackView stackView)
+        private static bool CheckForRestartOfMovement(StackView stackView)
         {
             if (stackView.IsMovingState == false && stackView.MovementPath.Count > 0 && stackView.MovementPoints > 0.0f)
             {
@@ -54,13 +54,13 @@ namespace PhoenixGamePresentationLibrary
             return false;
         }
 
-        private void RestartUnitMovement(StackView stackView)
+        private static void RestartUnitMovement(StackView stackView)
         {
             stackView.IsMovingState = true;
             stackView.MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
         }
 
-        private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromKeyboardInitiation(InputHandler input, StackView stackView)
+        private static (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromKeyboardInitiation(InputHandler input, StackView stackView)
         {
             if (stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.AreAnyNumPadKeysDown) return (false, new Point(0, 0));
 
@@ -75,7 +75,7 @@ namespace PhoenixGamePresentationLibrary
             return costToMoveIntoResult.CanMoveInto ? (true, hexToMoveTo) : (false, new Point(0, 0));
         }
 
-        private (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input, StackView stackView)
+        private static (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input, StackView stackView)
         {
             if (stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.IsLeftMouseButtonReleased || input.Eaten) return (false, new Point(0, 0));
 
@@ -90,7 +90,7 @@ namespace PhoenixGamePresentationLibrary
             return costToMoveIntoResult.CanMoveInto ? (true, hexToMoveTo) : (false, new Point(0, 0));
         }
 
-        private Direction DetermineDirection(InputHandler input)
+        private static Direction DetermineDirection(InputHandler input)
         {
             if (input.IsKeyDown(Keys.NumPad4))
             {
@@ -125,7 +125,7 @@ namespace PhoenixGamePresentationLibrary
             return Direction.None;
         }
 
-        private void StartUnitMovement(StackView stackView, Point hexToMoveTo)
+        private static void StartUnitMovement(StackView stackView, Point hexToMoveTo)
         {
             var path = MovementPathDeterminer.DetermineMovementPath(stackView.FirstUnit, stackView.Location, hexToMoveTo);
             stackView.SetMovementPath(path);
@@ -134,12 +134,12 @@ namespace PhoenixGamePresentationLibrary
             stackView.MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
         }
 
-        private bool UnitIsMoving(StackView stackView)
+        private static bool UnitIsMoving(StackView stackView)
         {
             return stackView.IsMovingState;
         }
 
-        private void MoveUnit(StackView stackView, float deltaTime)
+        private static void MoveUnit(StackView stackView, float deltaTime)
         {
             stackView.MovementCountdownTime -= deltaTime;
 
@@ -155,12 +155,12 @@ namespace PhoenixGamePresentationLibrary
             stackView.WorldView.Camera.LookAtPixel(stackView.CurrentPositionOnScreen);
         }
 
-        private bool CheckIfUnitHasReachedNextCell(StackView stackView)
+        private static bool CheckIfUnitHasReachedNextCell(StackView stackView)
         {
             return stackView.MovementCountdownTime <= 0;
         }
 
-        private void MoveUnitToCell(StackView stackView)
+        private static void MoveUnitToCell(StackView stackView)
         {
             stackView.MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
 

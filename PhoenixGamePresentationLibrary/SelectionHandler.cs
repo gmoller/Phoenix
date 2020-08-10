@@ -1,25 +1,28 @@
-﻿using Input;
+﻿using System;
+using Input;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
 {
-    internal class SelectionHandler
+    internal static class SelectionHandler
     {
-        internal bool HandleSelection(InputHandler input, StackView stackView)
+        internal static void HandleSelection(InputHandler input, StackView stackView, Action action)
         {
-            if (stackView.IsSelected) return false;
+            if (stackView.IsSelected) return;
 
             var selectUnit = CheckForUnitSelection(input, stackView);
-
-            return selectUnit;
+            if (selectUnit)
+            {
+                action();
+            }
         }
 
-        private bool CheckForUnitSelection(InputHandler input, StackView stackView)
+        private static bool CheckForUnitSelection(InputHandler input, StackView stackView)
         {
             return input.IsRightMouseButtonReleased && CursorIsOnThisStack(stackView);
         }
 
-        private bool CursorIsOnThisStack(StackView stackView)
+        private static bool CursorIsOnThisStack(StackView stackView)
         {
             var hexPoint = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
 
