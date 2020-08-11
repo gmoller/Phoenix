@@ -22,12 +22,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblOther = new LabelAutoSized(_topLeftPosition + new Vector2(0.0f, -15.0f), Alignment.TopLeft, "Other", "CrimsonText-Regular-12", Color.Orange, Color.Red);
+            _lblOther = new LabelAutoSized(_topLeftPosition + new Vector2(0.0f, -15.0f), Alignment.TopLeft, "Other", "CrimsonText-Regular-12", Color.Orange, "lblOther", Color.Red);
             _lblOther.LoadContent(content);
 
-            var slots3 = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 65), "GUI_Textures_1", "slot", 2, 1, 10.0f);
+            var slots3 = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 65), "GUI_Textures_1", "slot", 2, 1, 10.0f, "slots3");
             slots3.LoadContent(content);
-            _smallFrameOther = new Frame(_topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 65), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots3);
+            _smallFrameOther = new Frame(_topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 65), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, "smallFrameOther", slots3);
             _smallFrameOther.LoadContent(content);
         }
 

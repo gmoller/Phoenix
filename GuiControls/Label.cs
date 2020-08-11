@@ -12,6 +12,7 @@ namespace GuiControls
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public abstract class Label : Control
     {
+        #region State
         private readonly Func<string> _getTextFunc;
 
         protected readonly string FontName;
@@ -22,21 +23,22 @@ namespace GuiControls
 
         protected SpriteFont Font { get; set; }
         public virtual string Text { get; set; }
+        #endregion
 
         protected Label(
-            Vector2 position, 
-            Alignment positionAlignment, 
-            Vector2 size, 
+            Vector2 position,
+            Alignment positionAlignment,
+            Vector2 size,
             string text,
             Func<string> getTextFunc,
-            string fontName, 
-            Color textColor, 
-            Color? textShadowColor = null, 
-            Color? backColor = null, 
-            Color? borderColor = null, 
-            float layerDepth = 0.0f, 
-            IControl parent = null,
-            string name = "") : 
+            string fontName,
+            Color textColor,
+            string name,
+            Color? textShadowColor = null,
+            Color? backColor = null,
+            Color? borderColor = null,
+            float layerDepth = 0.0f,
+            IControl parent = null) : 
             base(
                 position, 
                 positionAlignment, 
@@ -46,10 +48,10 @@ namespace GuiControls
                 null, 
                 null, 
                 null, 
-                null, 
+                null,
+                name,
                 layerDepth, 
-                parent,
-                name)
+                parent)
         {
             Text = text;
             _getTextFunc = getTextFunc;
@@ -71,7 +73,7 @@ namespace GuiControls
         {
             if (_getTextFunc != null)
             {
-                Text = _getTextFunc.Invoke();
+                Text = _getTextFunc();
             }
 
             base.Update(input, deltaTime, transform);
@@ -130,6 +132,7 @@ namespace GuiControls
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class LabelAutoSized : Label
     {
+        #region State
         private readonly Vector2 _position;
         private readonly Alignment _positionAlignment;
         private readonly bool _autoSize;
@@ -143,6 +146,7 @@ namespace GuiControls
                 Resize(value);
             }
         }
+        #endregion
 
         public LabelAutoSized(
             Vector2 position,
@@ -150,8 +154,8 @@ namespace GuiControls
             Func<string> getTextFunc,
             string fontName,
             Color textColor,
-            IControl parent = null,
-            string name = "") :
+            string name,
+            IControl parent = null) :
             this(
                 position,
                 positionAlignment,
@@ -159,12 +163,12 @@ namespace GuiControls
                 getTextFunc,
                 fontName,
                 textColor,
+                name,
                 null,
                 null,
                 null,
                 0.0f,
-                parent,
-                name)
+                parent)
         {
         }
 
@@ -174,8 +178,8 @@ namespace GuiControls
             string text,
             string fontName,
             Color textColor,
-            IControl parent,
-            string name = "") :
+            string name,
+            IControl parent) :
             this(
                 position,
                 positionAlignment,
@@ -183,12 +187,12 @@ namespace GuiControls
                 null,
                 fontName,
                 textColor,
+                name,
                 null,
                 null,
                 null,
                 0.0f,
-                parent,
-                name)
+                parent)
         {
         }
 
@@ -198,6 +202,7 @@ namespace GuiControls
             string text,
             string fontName,
             Color textColor,
+            string name,
             Color? textShadowColor = null) :
             this(
                 position,
@@ -206,6 +211,7 @@ namespace GuiControls
                 null,
                 fontName,
                 textColor,
+                name,
                 textShadowColor)
         {
         }
@@ -217,12 +223,12 @@ namespace GuiControls
             Func<string> getTextFunc,
             string fontName,
             Color textColor,
+            string name,
             Color? textShadowColor = null,
             Color? backColor = null,
             Color? borderColor = null,
             float layerDepth = 0.0f,
-            IControl parent = null,
-            string name = "") :
+            IControl parent = null) :
             base(
                 position,
                 positionAlignment,
@@ -231,12 +237,12 @@ namespace GuiControls
                 getTextFunc,
                 fontName,
                 textColor,
+                name,
                 textShadowColor,
                 backColor,
                 borderColor,
                 layerDepth,
-                parent,
-                name)
+                parent)
         {
             _position = position;
             _positionAlignment = positionAlignment;
@@ -267,7 +273,9 @@ namespace GuiControls
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class LabelSized : Label
     {
+        #region State
         private readonly Alignment _contentAlignment;
+        #endregion
 
         public LabelSized(
             Vector2 position,
@@ -277,36 +285,7 @@ namespace GuiControls
             string text,
             string fontName,
             Color textColor,
-            Color? textShadowColor = null,
-            Color? backColor = null,
-            Color? borderColor = null,
-            string name = "") :
-            this(
-                position,
-                positionAlignment,
-                size,
-                contentAlignment,
-                text,
-                null,
-                fontName,
-                textColor,
-                textShadowColor,
-                backColor,
-                borderColor,
-                0.0f,
-                null,
-                name)
-        {
-        }
-
-        public LabelSized(
-            Vector2 position,
-            Alignment positionAlignment,
-            Vector2 size,
-            Alignment contentAlignment,
-            string text,
-            string fontName,
-            Color textColor,
+            string name,
             Color? textShadowColor = null,
             Color? backColor = null,
             Color? borderColor = null) :
@@ -319,11 +298,38 @@ namespace GuiControls
                 null,
                 fontName,
                 textColor,
+                name,
                 textShadowColor,
                 backColor,
                 borderColor)
         {
         }
+
+        //public LabelSized(
+        //    Vector2 position,
+        //    Alignment positionAlignment,
+        //    Vector2 size,
+        //    Alignment contentAlignment,
+        //    string text,
+        //    string fontName,
+        //    Color textColor,
+        //    Color? textShadowColor = null,
+        //    Color? backColor = null,
+        //    Color? borderColor = null) :
+        //    this(
+        //        position,
+        //        positionAlignment,
+        //        size,
+        //        contentAlignment,
+        //        text,
+        //        null,
+        //        fontName,
+        //        textColor,
+        //        textShadowColor,
+        //        backColor,
+        //        borderColor)
+        //{
+        //}
 
         public LabelSized(
             Vector2 position,
@@ -333,6 +339,7 @@ namespace GuiControls
             string text,
             string fontName,
             Color textColor,
+            string name,
             Color? textShadowColor = null,
             IControl parent = null) :
             this(
@@ -344,6 +351,7 @@ namespace GuiControls
                 null,
                 fontName,
                 textColor,
+                name,
                 textShadowColor,
                 null,
                 null,
@@ -361,12 +369,12 @@ namespace GuiControls
             Func<string> getTextFunc,
             string fontName,
             Color textColor,
+            string name,
             Color? textShadowColor = null,
             Color? backColor = null,
             Color? borderColor = null,
             float layerDepth = 0.0f,
-            IControl parent = null,
-            string name = "") :
+            IControl parent = null) :
             base(
                 position,
                 positionAlignment,
@@ -375,12 +383,12 @@ namespace GuiControls
                 getTextFunc,
                 fontName,
                 textColor,
+                name,
                 textShadowColor,
                 backColor,
                 borderColor,
                 layerDepth,
-                parent,
-                name)
+                parent)
         {
             _contentAlignment = contentAlignment;
             DetermineArea(position, positionAlignment, size);

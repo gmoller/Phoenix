@@ -4,13 +4,15 @@ using Microsoft.Xna.Framework;
 using Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Utilities;
+using Point = Microsoft.Xna.Framework.Point;
 
 namespace GuiControls
 {
     public interface IControl
     {
         IControl Parent { get; }
-        List<IControl> ChildControls { get; }
+        EnumerableDictionary<IControl> ChildControls { get; }
 
         string Name { get; }
 

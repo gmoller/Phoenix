@@ -16,8 +16,10 @@ namespace PhoenixTests
             var openList = new PriorityQueue<AStarSearch<Point, Cost>.Node>();
             var closedList = new Dictionary<Point, Cost>();
 
-            var unit = new Unit(null, new UnitType(), new Point());
-            GetCostToMoveIntoResult GetCostToMoveIntoFunc(Point point) => unit.CostToMoveInto(point);
+            //var world = new World(60, 40);
+            var stack = new Stack(null, null);
+            //var unit = new Unit(null, new UnitType(), new Point());
+            GetCostToMoveIntoResult GetCostToMoveIntoFunc(Point point) => stack.GetCostToMoveInto(point);
             var cellGrid = new CellGrid(60, 40);
             mapSolver.Solve(GetCostToMoveIntoFunc, new Point(cellGrid.NumberOfColumns, cellGrid.NumberOfRows), new Point(0, 0), new Point(1, 2), openList, closedList);
 

@@ -110,7 +110,7 @@ namespace PhoenixGamePresentationLibrary
             var movementTypeImages = new Dictionary<string, Image>();
             foreach (var movementType in movementTypes)
             {
-                var image = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(18.0f, 12.0f), "MovementTypes", movementType.Name);
+                var image = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(18.0f, 12.0f), "MovementTypes", movementType.Name, "image");
                 image.LoadContent(content);
                 movementTypeImages.Add(movementType.Name, image);
             }
@@ -123,15 +123,16 @@ namespace PhoenixGamePresentationLibrary
             var actionTypes = Globals.Instance.ActionTypes;
 
             var actionButtons = new Dictionary<string, Button>();
+            var i = 0;
             foreach (var actionType in actionTypes)
             {
-                var button = new Button(Vector2.Zero, Alignment.TopLeft, new Vector2(115.0f, 30.0f), "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_n", "simpleb_h");
+                i++;
+                var button = new Button(Vector2.Zero, Alignment.TopLeft, new Vector2(115.0f, 30.0f), "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_n", "simpleb_h", "button");
                 button.LoadContent(content);
                 button.Click += (o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name));
-                var label = new LabelSized(button.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black, null, button);
+                var label = new LabelSized(button.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black, $"label{i}", null, button);
                 label.LoadContent(content);
-                button.AddControl(label);
-                //button.ChildControls[label.Name];
+                //var test = button.ChildControls[label.Name];
 
                 actionButtons.Add(actionType.Name, button);
             }

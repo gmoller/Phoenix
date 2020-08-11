@@ -24,7 +24,7 @@ namespace GuiControls
         private string _textureHover;
         private string _textureDisabled;
 
-        public List<IControl> ChildControls { get; private set; }
+        private Dictionary<string, IControl> _childControls;
 
         public IControl Parent { get; private set; }
 
@@ -65,11 +65,13 @@ namespace GuiControls
         public int Height => ActualDestinationRectangle.Height;
         public Point Size => ActualDestinationRectangle.Size;
 
+        public EnumerableDictionary<IControl> ChildControls => new EnumerableDictionary<IControl>(_childControls);
+
         private Control()
         {
         }
 
-        protected Control(Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, string textureNormal, string textureActive, string textureHover, string textureDisabled, float layerDepth = 0.0f, IControl parent = null, string name = "")
+        protected Control(Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, string textureNormal, string textureActive, string textureHover, string textureDisabled, string name, float layerDepth = 0.0f, IControl parent = null)
         {
             Parent = parent;
 
@@ -88,7 +90,9 @@ namespace GuiControls
 
             Enabled = true;
 
-            ChildControls = new List<IControl>();
+            _childControls = new Dictionary<string, IControl>();
+
+            Parent?.AddControl(this);
         }
 
         protected Control(Control copyThis) : this()
@@ -103,7 +107,7 @@ namespace GuiControls
 
         public void AddControl(IControl control)
         {
-            ChildControls.Add(control);
+            _childControls.Add(control.Name, control);
         }
 
         public void AddControls(params IControl[] controls)
@@ -399,7 +403,7 @@ namespace GuiControls
             Enabled = copyThis.Enabled;
             MouseOver = copyThis.MouseOver;
             Click = copyThis.Click;
-            ChildControls = copyThis.ChildControls;
+            _childControls = copyThis._childControls;
         }
 
         public override string ToString()

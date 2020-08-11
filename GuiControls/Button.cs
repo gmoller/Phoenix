@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Input;
 
 namespace GuiControls
 {
@@ -9,30 +8,30 @@ namespace GuiControls
     public class Button : Control
     {
         public Button(
-            Vector2 position, 
+            Vector2 position,
             Alignment positionAlignment,
-            Vector2 size, 
-            string textureAtlas, 
-            string textureNormal, 
-            string textureActive, 
-            string textureDisabled, 
-            string textureHover, 
-            float layerDepth = 0.0f, 
-            IControl parent = null, 
-            string name = "") :
+            Vector2 size,
+            string textureAtlas,
+            string textureNormal,
+            string textureActive,
+            string textureDisabled,
+            string textureHover,
+            string name,
+            float layerDepth = 0.0f,
+            IControl parent = null) :
             base(
-                position, 
-                positionAlignment, 
-                size, 
-                textureAtlas, 
-                textureNormal, 
-                textureNormal, 
-                textureActive, 
-                textureHover, 
-                textureDisabled, 
-                layerDepth, 
-                parent,
-                name)
+                position,
+                positionAlignment,
+                size,
+                textureAtlas,
+                textureNormal,
+                textureNormal,
+                textureActive,
+                textureHover,
+                textureDisabled,
+                name,
+                layerDepth,
+                parent)
         {
         }
 

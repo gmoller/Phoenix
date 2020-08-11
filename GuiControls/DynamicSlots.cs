@@ -9,11 +9,13 @@ namespace GuiControls
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class DynamicSlots : Control
     {
+        #region State
         private readonly int _numberOfSlotsX;
         private readonly int _numberOfSlotsY;
         private List<IControl> _slots;
         private readonly float _slotPadding;
         private readonly List<LabelSized> _labels;
+        #endregion
 
         public DynamicSlots(
             Vector2 position, 
@@ -23,24 +25,24 @@ namespace GuiControls
             string textureName, 
             int numberOfSlotsX, 
             int numberOfSlotsY, 
-            float slotPadding, 
+            float slotPadding,
+            string name,
             List<LabelSized> labels = null,
             float layerDepth = 0.0f,
-            IControl parent = null,
-            string name = "") :
+            IControl parent = null) :
             base(
-                position, 
-                positionAlignment, 
-                size, 
-                textureAtlas, 
-                textureName, 
-                null, 
-                null, 
-                null, 
+                position,
+                positionAlignment,
+                size,
+                textureAtlas,
+                textureName,
                 null,
+                null,
+                null,
+                null,
+                name,
                 layerDepth,
-                parent,
-                name)
+                parent)
         {
             _numberOfSlotsX = numberOfSlotsX;
             _numberOfSlotsY = numberOfSlotsY;
@@ -103,7 +105,7 @@ namespace GuiControls
             {
                 for (var i = 0; i < numberOfSlotsX; ++i)
                 {
-                    var slot = new Slot((int)x, (int)y, (int)slotWidth, (int)slotHeight, TextureAtlas, TextureName);
+                    var slot = new Slot((int)x, (int)y, (int)slotWidth, (int)slotHeight, TextureAtlas, TextureName, "slot");
                     slot.LoadContent(content);
                     slots.Add(slot);
                     x += slotWidth;
@@ -121,12 +123,13 @@ namespace GuiControls
     public class Slot : Control
     {
         public Slot(
-            int x, 
-            int y, 
-            int width, 
-            int height, 
-            string textureAtlas, 
-            string textureName) : 
+            int x,
+            int y,
+            int width,
+            int height,
+            string textureAtlas,
+            string textureName,
+            string name) : 
             base(
                 new Vector2(x, y), 
                 Alignment.TopLeft, 
@@ -136,7 +139,8 @@ namespace GuiControls
                 "", 
                 "", 
                 "", 
-                "")
+                "",
+                name)
         {
         }
 

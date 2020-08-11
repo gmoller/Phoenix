@@ -14,8 +14,8 @@ namespace GuiControls
             Vector2 size,
             string textureAtlas,
             string textureName,
-            IControl parent = null,
-            string name = "") :
+            string name,
+            IControl parent = null) :
             this(
                 position,
                 positionAlignment,
@@ -70,9 +70,9 @@ namespace GuiControls
                 textureName,
                 textureName,
                 textureName,
+                name,
                 layerDepth,
-                parent,
-                name)
+                parent)
         {
         }
 

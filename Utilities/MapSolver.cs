@@ -62,7 +62,7 @@ namespace Utilities
                 //    neighbor.Row >= _gridSize.Y) continue;
 
                 var point = new Point(neighbor.Col, neighbor.Row);
-                var costToMoveIntoResult = _getCostToMoveIntoFunc.Invoke(point);
+                var costToMoveIntoResult = _getCostToMoveIntoFunc(point);
                 if (!costToMoveIntoResult.CanMoveInto)
                 {
                     continue;

@@ -23,12 +23,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _smallFrame = new Frame(_topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 160), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50);
+            _smallFrame = new Frame(_topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 160), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, "smallFrame");
             _smallFrame.LoadContent(content);
 
-            _lblProducing = new LabelAutoSized(_topLeftPosition, Alignment.TopLeft, "Producing", "CrimsonText-Regular-12", Color.Orange, Color.Red);
+            _lblProducing = new LabelAutoSized(_topLeftPosition, Alignment.TopLeft, "Producing", "CrimsonText-Regular-12", Color.Orange, "lblProducing", Color.Red);
             _lblProducing.LoadContent(content);
-            _lblCurrent = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 35.0f), Alignment.TopLeft, string.Empty, "CrimsonText-Regular-12", Color.Orange);
+            _lblCurrent = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 35.0f), Alignment.TopLeft, string.Empty, "CrimsonText-Regular-12", Color.Orange, "lblCurrent");
             _lblCurrent.LoadContent(content);
         }
 
@@ -39,11 +39,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Begin();
             _smallFrame.Draw(spriteBatch);
             _lblProducing.Draw(spriteBatch);
             _lblCurrent.Draw(spriteBatch);
-            //spriteBatch.End();
         }
     }
 }

@@ -10,6 +10,7 @@ namespace GuiControls
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Frame : Control
     {
+        #region State
         private readonly int _topPadding;
         private readonly int _bottomPadding;
         private readonly int _leftPadding;
@@ -19,6 +20,7 @@ namespace GuiControls
 
         private Rectangle[] _sourcePatches;
         private Rectangle[] _destinationPatches;
+        #endregion
 
         public Frame(
             Vector2 position,
@@ -26,6 +28,7 @@ namespace GuiControls
             Vector2 size,
             string textureAtlas,
             string textureName,
+            string name,
             IControl parent = null) :
             this(
                 position,
@@ -37,6 +40,7 @@ namespace GuiControls
                 0,
                 0,
                 0,
+                name,
                 null,
                 0.0f,
                 parent)
@@ -44,19 +48,19 @@ namespace GuiControls
         }
 
         public Frame(
-            Vector2 position, 
-            Alignment positionAlignment, 
-            Vector2 size, 
-            string textureAtlas, 
-            string textureName, 
-            int topPadding, 
-            int bottomPadding, 
-            int leftPadding, 
-            int rightPadding, 
-            DynamicSlots slots = null, 
-            float layerDepth = 0.0f, 
-            IControl parent = null, 
-            string name = "") :
+            Vector2 position,
+            Alignment positionAlignment,
+            Vector2 size,
+            string textureAtlas,
+            string textureName,
+            int topPadding,
+            int bottomPadding,
+            int leftPadding,
+            int rightPadding,
+            string name,
+            DynamicSlots slots = null,
+            float layerDepth = 0.0f,
+            IControl parent = null) :
             base(
                 position, 
                 positionAlignment, 
@@ -66,10 +70,10 @@ namespace GuiControls
                 null, 
                 null, 
                 null, 
-                null, 
+                null,
+                name,
                 layerDepth, 
-                parent,
-                name)
+                parent)
         {
             _topPadding = topPadding;
             _bottomPadding = bottomPadding;

@@ -28,12 +28,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _lblBuildings = new LabelAutoSized(_topLeftPosition - new Vector2(0.0f, 5.0f), Alignment.TopLeft, "Buildings", "CrimsonText-Regular-12", Color.Orange, Color.Red);
+            _lblBuildings = new LabelAutoSized(_topLeftPosition - new Vector2(0.0f, 5.0f), Alignment.TopLeft, "Buildings", "CrimsonText-Regular-12", Color.Orange, "lblBuildings", Color.Red);
             _lblBuildings.LoadContent(content);
 
-            var slots = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 450), "GUI_Textures_1", "slot", 10, 13, 10.0f);
+            var slots = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 450), "GUI_Textures_1", "slot", 10, 13, 10.0f, "slots");
             slots.LoadContent(content);
-            _smallFrameBuildings = new Frame(_topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, slots);
+            _smallFrameBuildings = new Frame(_topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, "smallFrameBuildings", slots);
             _smallFrameBuildings.LoadContent(content);
 
             _texture = AssetsManager.Instance.GetTexture("Buildings");
