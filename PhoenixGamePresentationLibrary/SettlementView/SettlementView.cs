@@ -30,7 +30,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private Vector2 _topLeftPositionMain;
         private Vector2 _topLeftPositionSecondary;
 
-        internal Settlement Settlement { get; set; }
+        internal Settlement Settlement { get; }
 
         internal SettlementView(Settlement settlement)
         {
@@ -39,8 +39,8 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void LoadContent(ContentManager content)
         {
-            _topLeftPositionMain = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.05f, 200.0f);
-            _topLeftPositionSecondary = new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.65f, 200.0f);
+            _topLeftPositionMain = new Vector2(1920.0f * 0.05f, 200.0f);
+            _topLeftPositionSecondary = new Vector2(1920.0f * 0.65f, 200.0f);
 
             _guiTextures = AssetsManager.Instance.GetTexture("GUI_Textures_1");
             _guiAtlas = AssetsManager.Instance.GetAtlas("GUI_Textures_1");

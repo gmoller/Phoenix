@@ -242,6 +242,11 @@ namespace PhoenixGamePresentationLibrary
             _stack.DoExploreAction();
         }
 
+        internal void DoBuildAction()
+        {
+            //_stack.DoDoBuildAction();
+        }
+
         internal void SetStatusToNone()
         {
             _stack.SetStatusToNone();

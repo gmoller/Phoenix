@@ -52,6 +52,13 @@ namespace PhoenixGameLibrary
             _units.DoExploreAction();
         }
 
+        public void DoBuildAction()
+        {
+            // find first settler unit
+            // add new outpost
+            // destroy the sett;er unit
+        }
+
         public void SetStatusToNone()
         {
             Status = UnitStatus.None;

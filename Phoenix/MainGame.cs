@@ -1,10 +1,11 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using PhoenixGameLibrary;
 using PhoenixGamePresentationLibrary;
 using Utilities;
-using Microsoft.Xna.Framework.Input;
+using Utilities.ViewportAdapters;
 
 namespace Phoenix
 {
@@ -60,6 +61,7 @@ namespace Phoenix
         {
             Logger.Instance.Log("Loading content...");
 
+            DeviceManager.Instance.ViewportAdapter = new ScalingViewportAdapter(GraphicsDevice, 1920, 1080);
             DeviceManager.Instance.SetCurrentSpriteBatch(new SpriteBatch(GraphicsDevice));
 
             _phoenixGameView.LoadContent(GraphicsDevice, Content);
@@ -101,7 +103,7 @@ namespace Phoenix
 
             _phoenixGameView.Draw(spriteBatch);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: DeviceManager.Instance.ViewportAdapter.GetScaleMatrix());
             _metricsPanel.Draw(spriteBatch);
             spriteBatch.End();
 

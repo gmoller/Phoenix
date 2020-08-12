@@ -265,11 +265,11 @@ namespace GuiControls
         {
             BeforeDraw(transform);
 
-            var spriteBatch = BeginSpriteBatch(transform);
+            //var spriteBatch = BeginSpriteBatch(transform);
 
             InDraw(transform);
 
-            EndSpriteBatch(spriteBatch);
+            //EndSpriteBatch(spriteBatch);
 
             AfterDraw(transform);
 
@@ -281,8 +281,8 @@ namespace GuiControls
 
         protected void DetermineArea(Vector2 position, Alignment alignment, Vector2 size)
         {
-            //var topLeft = DetermineTopLeft(position, alignment, size);
-            var topLeft = DetermineTopLeft(position * DeviceManager.Instance.SizeRatio, alignment, size * DeviceManager.Instance.SizeRatio);
+            var topLeft = DetermineTopLeft(position, alignment, size);
+            //var topLeft = DetermineTopLeft(position * DeviceManager.Instance.SizeRatio, alignment, size * DeviceManager.Instance.SizeRatio);
             if (Parent == null)
             {
                 ActualDestinationRectangle = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)size.X, (int)size.Y);
@@ -335,23 +335,24 @@ namespace GuiControls
             return topLeft;
         }
 
-        protected SpriteBatch BeginSpriteBatch(Matrix? transform)
-        {
-            var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
-            //spriteBatch.Begin(rasterizerState: new RasterizerState { ScissorTestEnable = true }, transformMatrix: transform);
+        //protected SpriteBatch BeginSpriteBatch(Matrix? transform)
+        //{
+        //    var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
+        //    //var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
+        //    //spriteBatch.Begin(rasterizerState: new RasterizerState { ScissorTestEnable = true }, transformMatrix: transform);
 
-            //_originalScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
-            //spriteBatch.GraphicsDevice.ScissorRectangle = ActualDestinationRectangle;
+        //    //_originalScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+        //    //spriteBatch.GraphicsDevice.ScissorRectangle = ActualDestinationRectangle;
 
-            return spriteBatch;
-        }
+        //    return spriteBatch;
+        //}
 
-        protected void EndSpriteBatch(SpriteBatch spriteBatch)
-        {
-            spriteBatch.End();
-            //spriteBatch.GraphicsDevice.ScissorRectangle = _originalScissorRectangle;
-            DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
-        }
+        //protected void EndSpriteBatch(SpriteBatch spriteBatch)
+        //{
+        //    spriteBatch.End();
+        //    //spriteBatch.GraphicsDevice.ScissorRectangle = _originalScissorRectangle;
+        //    //DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
+        //}
 
         protected void SetTexture(string textureName)
         {

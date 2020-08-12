@@ -41,7 +41,7 @@ namespace PhoenixGamePresentationLibrary
             _settlementViews = new SettlementViews(this, World.Settlements);
             _hudView = new HudView(this, _stackViews);
 
-            Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.GraphicsDevice.Viewport.Width, DeviceManager.Instance.GraphicsDevice.Viewport.Height));
+            Camera = new Camera(new Rectangle(0, 0, 1920, 1080));
             Camera.LoadContent(content);
 
             _overlandSettlementsView.LoadContent(content);
@@ -78,7 +78,7 @@ namespace PhoenixGamePresentationLibrary
             _stackViews.Draw(spriteBatch);
             spriteBatch.End();
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: DeviceManager.Instance.ViewportAdapter.GetScaleMatrix());
             _hudView.Draw(spriteBatch);
             _settlementViews.Draw(spriteBatch);
             spriteBatch.End();
@@ -154,6 +154,7 @@ namespace PhoenixGamePresentationLibrary
                     _stackViews.DoWaitAction();
                     break;
                 case "BuildOutpost":
+                    _stackViews.DoBuildAction();
                     break;
                 case "Fortify":
                     _stackViews.DoFortifyAction();

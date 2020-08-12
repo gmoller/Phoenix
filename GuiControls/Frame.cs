@@ -109,20 +109,21 @@ namespace GuiControls
             _slots?.Draw(spriteBatch);
         }
 
-        protected override void InDraw(Matrix? transform = null)
-        {
-            var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
-            spriteBatch.Begin(transformMatrix: transform);
+        //protected override void InDraw(Matrix? transform = null)
+        //{
+        //    var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
+        //    //var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
+        //    spriteBatch.Begin(transformMatrix: transform);
 
-            for (var i = 0; i < _sourcePatches.Length; ++i)
-            {
-                spriteBatch.Draw(Texture, _destinationPatches[i], _sourcePatches[i], Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
-            }
+        //    for (var i = 0; i < _sourcePatches.Length; ++i)
+        //    {
+        //        spriteBatch.Draw(Texture, _destinationPatches[i], _sourcePatches[i], Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
+        //    }
 
-            _slots?.Draw(spriteBatch);
+        //    _slots?.Draw(spriteBatch);
 
-            spriteBatch.End();
-        }
+        //    spriteBatch.End();
+        //}
 
         private Rectangle[] CreatePatches(Rectangle rectangle, int topPadding, int bottomPadding, int leftPadding, int rightPadding)
         {

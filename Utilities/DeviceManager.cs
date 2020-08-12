@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Utilities.ViewportAdapters;
 
 namespace Utilities
 {
@@ -13,12 +14,12 @@ namespace Utilities
 
         public static DeviceManager Instance => Lazy.Value;
 
-        private readonly ObjectPool<SpriteBatch> _spriteBatchesPool;
         private SpriteBatch _currentSpriteBatch;
         private readonly Stack<Viewport> _viewports;
 
         public GraphicsDevice GraphicsDevice { get; set; }
         public GraphicsDeviceManager GraphicsDeviceManager { get; set; }
+        public ViewportAdapter ViewportAdapter { get; set; }
         public Point WorldPositionPointedAtByMouseCursor { get; set; }
         public Point WorldHexPointedAtByMouseCursor { get; set; }
 
@@ -39,16 +40,11 @@ namespace Utilities
             }
 
             ScreenResolution = new Point(width, height);
-            SizeRatio = new Vector2(width / 1920.0f, height / 1080.0f);
-            //SizeRatio = new Vector2(width / 1000.0f, height / 1000.0f);
         }
-
-        public Vector2 SizeRatio { get; private set; }
 
         private DeviceManager()
         {
             _viewports = new Stack<Viewport>();
-            _spriteBatchesPool = new ObjectPool<SpriteBatch>();
         }
 
         public void SetCurrentSpriteBatch(SpriteBatch spriteBatch)
@@ -59,7 +55,6 @@ namespace Utilities
         public void DisposeSpriteBatches()
         {
             _currentSpriteBatch.Dispose();
-            _spriteBatchesPool.Dispose();
         }
 
         public SpriteBatch GetCurrentSpriteBatch()
@@ -67,19 +62,19 @@ namespace Utilities
             return _currentSpriteBatch;
         }
 
-        public SpriteBatch GetNewSpriteBatch()
-        {
-            var spriteBatch = _spriteBatchesPool.HasFreeObject ? _spriteBatchesPool.Get() : new SpriteBatch(GraphicsDevice);
-            //var spriteBatch = new SpriteBatch(GraphicsDevice);
+        //private SpriteBatch GetNewSpriteBatch()
+        //{
+        //    var spriteBatch = _spriteBatchesPool.HasFreeObject ? _spriteBatchesPool.Get() : new SpriteBatch(GraphicsDevice);
+        //    //var spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            return spriteBatch;
-        }
+        //    return spriteBatch;
+        //}
 
-        public void ReturnSpriteBatchToPool(SpriteBatch spriteBatch)
-        {
-            _spriteBatchesPool.Add(spriteBatch);
-            //spriteBatch.Dispose();
-        }
+        //public void ReturnSpriteBatchToPool(SpriteBatch spriteBatch)
+        //{
+        //    _spriteBatchesPool.Add(spriteBatch);
+        //    //spriteBatch.Dispose();
+        //}
 
         public void SetViewport(Viewport newViewport)
         {

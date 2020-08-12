@@ -27,9 +27,9 @@ namespace PhoenixGamePresentationLibrary
 
         internal HudView(WorldView worldView, StackViews stackViews)
         {
-            var width = (int)(DeviceManager.Instance.GraphicsDevice.Viewport.Width * 0.1305f); // 13.05% of screen width
-            var height = (int)(DeviceManager.Instance.GraphicsDevice.Viewport.Height * 0.945f); // 94.5% of screen height
-            var x = DeviceManager.Instance.GraphicsDevice.Viewport.Width - width;
+            var width = (int)(1920 * 0.1305f); // 13.05% of screen width
+            var height = (int)(1080 * 0.945f); // 94.5% of screen height
+            var x = 1920 - width;
             var y = 0;
             _area = new Rectangle(x, y, width, height); // 250x1020
 
@@ -91,7 +91,7 @@ namespace PhoenixGamePresentationLibrary
             //_hudViewFrame.Deserialize(json);
             //var newFrame = new Frame(json);
 
-            var pos = new Vector2(DeviceManager.Instance.MapViewport.X + DeviceManager.Instance.MapViewport.Width, DeviceManager.Instance.MapViewport.Y + DeviceManager.Instance.MapViewport.Height);
+            var pos = new Vector2(1920.0f, 1080.0f);
             var btnEndTurn = new Button(pos, Alignment.BottomRight, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h", "btnEndTurn");
             btnEndTurn.LoadContent(content);
             btnEndTurn.Click += BtnEndTurnClick;

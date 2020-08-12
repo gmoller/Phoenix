@@ -127,6 +127,11 @@ namespace PhoenixGamePresentationLibrary
             Current.DoExploreAction();
         }
 
+        internal void DoBuildAction()
+        {
+            Current.DoBuildAction();
+        }
+
         internal void SetCurrent(StackView stackView)
         {
             _selectedThisTurn.Add(stackView.Id);

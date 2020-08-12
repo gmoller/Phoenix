@@ -14,7 +14,6 @@ namespace PhoenixGamePresentationLibrary
         private float _rotation;
         private Vector2 _position;
 
-        //private Rectangle VisibleArea { get; set; }
         public Matrix Transform { get; private set; }
         public int Width => _viewport.Width;
         public int Height => _viewport.Height;

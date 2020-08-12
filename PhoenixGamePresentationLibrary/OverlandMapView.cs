@@ -33,7 +33,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawCellGrid(SpriteBatch spriteBatch, CellGrid cellGrid, Camera camera)
         {
-            var center = camera.ScreenToWorld(new Vector2(DeviceManager.Instance.GraphicsDevice.Viewport.Width / 2.0f, DeviceManager.Instance.GraphicsDevice.Viewport.Height / 2.0f));
+            var center = camera.ScreenToWorld(new Vector2(1920.0f / 2.0f, 1080.0f / 2.0f));
             var centerHex = HexOffsetCoordinates.FromPixel((int)center.X, (int)center.Y);
 
             var columnsToLeft = 10; // TODO: remove hardcoding, use size of hex and cater for zoom (how many hexes fit on the screen)

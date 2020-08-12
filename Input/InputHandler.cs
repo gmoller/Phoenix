@@ -5,7 +5,7 @@ namespace Input
 {
     public class InputHandler
     {
-        public Microsoft.Xna.Framework.Point MousePosition => MouseHandler.MousePosition;
+        public Microsoft.Xna.Framework.Point MousePosition => DeviceManager.Instance.ViewportAdapter.PointToScreen(MouseHandler.MousePosition);
         public Microsoft.Xna.Framework.Point MouseMovement => MouseHandler.MouseMovement;
         public bool MouseWheelUp => MouseHandler.MouseWheelUp();
         public bool MouseWheelDown => MouseHandler.MouseWheelDown();
@@ -14,15 +14,15 @@ namespace Input
         public bool IsRightMouseButtonReleased => MouseHandler.IsRightButtonReleased();
 
         public bool HasMouseMoved => MouseHandler.HasMouseMoved();
-        public bool MouseIsAtTopOfScreen => MouseHandler.MousePosition.Y < DeviceManager.Instance.MapViewport.Y + 20.0f && MouseHandler.MousePosition.Y >= DeviceManager.Instance.MapViewport.Y;
-        public bool MouseIsAtBottomOfScreen => MouseHandler.MousePosition.Y > DeviceManager.Instance.MapViewport.Height - 20.0f && MouseHandler.MousePosition.Y <= DeviceManager.Instance.MapViewport.Height;
-        public bool MouseIsAtLeftOfScreen => MouseHandler.MousePosition.X < DeviceManager.Instance.MapViewport.X + 20.0f && MouseHandler.MousePosition.X >= DeviceManager.Instance.MapViewport.X;
-        public bool MouseIsAtRightOfScreen => MouseHandler.MousePosition.X > DeviceManager.Instance.MapViewport.Width - 20.0f && MouseHandler.MousePosition.X <= DeviceManager.Instance.MapViewport.Width;
+        public bool MouseIsAtTopOfScreen => MousePosition.Y < 20.0f && MousePosition.Y >= 0.0f;
+        public bool MouseIsAtBottomOfScreen => MousePosition.Y > 1080 - 20.0f && MousePosition.Y <= 1080.0f;
+        public bool MouseIsAtLeftOfScreen => MousePosition.X < 20.0f && MousePosition.X >= 0.0f;
+        public bool MouseIsAtRightOfScreen => MousePosition.X > 1920.0f - 20.0f && MousePosition.X <= 1920.0f;
 
-        public bool MouseIsWithinScreen => MouseHandler.MousePosition.X >= DeviceManager.Instance.MapViewport.X &&
-                                           MouseHandler.MousePosition.X <= DeviceManager.Instance.MapViewport.Width &&
-                                           MouseHandler.MousePosition.Y >= DeviceManager.Instance.MapViewport.Y &&
-                                           MouseHandler.MousePosition.Y <= DeviceManager.Instance.MapViewport.Height;
+        public bool MouseIsWithinScreen => MousePosition.X >= 0.0f &&
+                                           MousePosition.X <= 1920.0f &&
+                                           MousePosition.Y >= 0.0f &&
+                                           MousePosition.Y <= 1080.0f;
 
         public bool AreAnyNumPadKeysDown =>
             KeyboardHandler.IsKeyDown(Keys.NumPad4) ||
