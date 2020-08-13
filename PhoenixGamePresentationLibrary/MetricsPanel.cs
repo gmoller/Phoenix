@@ -18,8 +18,6 @@ namespace PhoenixGamePresentationLibrary
         private Label _lblGcCount2;
         private Label _lblScreenPosition1;
         private Label _lblScreenPosition2;
-        private Label _lblViewportPosition1;
-        private Label _lblViewportPosition2;
         private Label _lblWorldPosition1;
         private Label _lblWorldPosition2;
         private Label _lblWorldHex1;
@@ -28,6 +26,14 @@ namespace PhoenixGamePresentationLibrary
         private Label _lblMemory2;
         private Label _lblFps1;
         private Label _lblFps2;
+        private Label _lblResolution1;
+        private Label _lblResolution2;
+        private Label _lblResolution3;
+        private Label _lblResolution4;
+        private Label _lblResolution5;
+        private Label _lblResolution6;
+        private Label _lblResolution7;
+        private Label _lblResolution8;
 
         public MetricsPanel(Vector2 position)
         {
@@ -51,30 +57,45 @@ namespace PhoenixGamePresentationLibrary
             _lblScreenPosition2 = new LabelSized(new Vector2(150.0f, 30.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblScreenPosition2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblScreenPosition2.LoadContent(content);
 
-            _lblViewportPosition1 = new LabelSized(new Vector2(0.0f, 60.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "VIEWPORT POS:", "CrimsonText-Regular-12", Color.LawnGreen, "lblViewportPosition1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
-            _lblViewportPosition1.LoadContent(content);
-            _lblViewportPosition2 = new LabelSized(new Vector2(150.0f, 60.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblViewportPosition2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
-            _lblViewportPosition2.LoadContent(content);
-
-            _lblWorldPosition1 = new LabelSized(new Vector2(0.0f, 90.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "WORLD POS:", "CrimsonText-Regular-12", Color.LawnGreen, "lblWorldPosition1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblWorldPosition1 = new LabelSized(new Vector2(0.0f, 60.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "WORLD POS:", "CrimsonText-Regular-12", Color.LawnGreen, "lblWorldPosition1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblWorldPosition1.LoadContent(content);
-            _lblWorldPosition2 = new LabelSized(new Vector2(150.0f, 90.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblWorldPosition2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblWorldPosition2 = new LabelSized(new Vector2(150.0f, 60.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblWorldPosition2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblWorldPosition2.LoadContent(content);
 
-            _lblWorldHex1 = new LabelSized(new Vector2(0.0f, 120.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "WORLD HEX:", "CrimsonText-Regular-12", Color.LawnGreen, "lblWorldHex1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblWorldHex1 = new LabelSized(new Vector2(0.0f, 90.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "WORLD HEX:", "CrimsonText-Regular-12", Color.LawnGreen, "lblWorldHex1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblWorldHex1.LoadContent(content);
-            _lblWorldHex2 = new LabelSized(new Vector2(150.0f, 120.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblWorldHex2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblWorldHex2 = new LabelSized(new Vector2(150.0f, 90.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblWorldHex2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblWorldHex2.LoadContent(content);
 
-            _lblMemory1 = new LabelSized(new Vector2(0.0f, 150.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "MEMORY:", "CrimsonText-Regular-12", Color.LawnGreen, "lblMemory1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblMemory1 = new LabelSized(new Vector2(0.0f, 120.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "MEMORY:", "CrimsonText-Regular-12", Color.LawnGreen, "lblMemory1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblMemory1.LoadContent(content);
-            _lblMemory2 = new LabelSized(new Vector2(150.0f, 150.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblMemory2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblMemory2 = new LabelSized(new Vector2(150.0f, 120.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblMemory2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblMemory2.LoadContent(content);
 
-            _lblFps1 = new LabelSized(new Vector2(0.0f, 180.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "FPS (Update/Draw):", "CrimsonText-Regular-12", Color.LawnGreen, "lblFps1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblFps1 = new LabelSized(new Vector2(0.0f, 150.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "FPS (Update/Draw):", "CrimsonText-Regular-12", Color.LawnGreen, "lblFps1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblFps1.LoadContent(content);
-            _lblFps2 = new LabelSized(new Vector2(150.0f, 180.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblFps2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblFps2 = new LabelSized(new Vector2(150.0f, 150.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblFps2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
             _lblFps2.LoadContent(content);
+
+            _lblResolution1 = new LabelSized(new Vector2(0.0f, 180.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "ClientBounds:", "CrimsonText-Regular-12", Color.LawnGreen, "lblResolution1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblResolution1.LoadContent(content);
+            _lblResolution2 = new LabelSized(new Vector2(150.0f, 180.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblResolution2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblResolution2.LoadContent(content);
+
+            _lblResolution3 = new LabelSized(new Vector2(0.0f, 210.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "Viewport:", "CrimsonText-Regular-12", Color.LawnGreen, "lblResolution1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblResolution3.LoadContent(content);
+            _lblResolution4 = new LabelSized(new Vector2(150.0f, 210.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblResolution2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblResolution4.LoadContent(content);
+
+            _lblResolution5 = new LabelSized(new Vector2(0.0f, 240.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "DisplayMode:", "CrimsonText-Regular-12", Color.LawnGreen, "lblResolution1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblResolution5.LoadContent(content);
+            _lblResolution6 = new LabelSized(new Vector2(150.0f, 240.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblResolution2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblResolution6.LoadContent(content);
+
+            _lblResolution7 = new LabelSized(new Vector2(0.0f, 270.0f), Alignment.TopLeft, size1, Alignment.MiddleLeft, "CurrentDisplayMode:", "CrimsonText-Regular-12", Color.LawnGreen, "lblResolution1", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblResolution7.LoadContent(content);
+            _lblResolution8 = new LabelSized(new Vector2(150.0f, 270.0f), Alignment.TopLeft, size2, Alignment.MiddleRight, string.Empty, "CrimsonText-Regular-12", Color.LawnGreen, "lblResolution2", Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            _lblResolution8.LoadContent(content);
         }
 
         public void Update(GameTime gameTime)
@@ -89,8 +110,11 @@ namespace PhoenixGamePresentationLibrary
             _lblMemory2.Text = $"{GC.GetTotalMemory(false) / 1024} KB";
             _lblWorldHex2.Text = $"{device.WorldHexPointedAtByMouseCursor.X},{device.WorldHexPointedAtByMouseCursor.Y}";
             _lblWorldPosition2.Text = $"({device.WorldPositionPointedAtByMouseCursor.X},{device.WorldPositionPointedAtByMouseCursor.Y})";
-            _lblViewportPosition2.Text = $"({mouseState.Position.X - device.MapViewport.X},{mouseState.Position.Y - device.MapViewport.Y})";
             _lblScreenPosition2.Text = $"({mouseState.Position.X},{mouseState.Position.Y})";
+            _lblResolution2.Text = $"{device.Window.ClientBounds.Width}x{device.Window.ClientBounds.Height}";
+            _lblResolution4.Text = $"{device.ViewportAdapter.Viewport.Width}x{device.ViewportAdapter.Viewport.Height}";
+            _lblResolution6.Text = $"{device.GraphicsDevice.DisplayMode.Width}x{device.GraphicsDevice.DisplayMode.Height}";
+            _lblResolution8.Text = $"{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width}x{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height}";
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -101,8 +125,6 @@ namespace PhoenixGamePresentationLibrary
             _lblGcCount2.Draw(spriteBatch);
             _lblScreenPosition1.Draw(spriteBatch);
             _lblScreenPosition2.Draw(spriteBatch);
-            _lblViewportPosition1.Draw(spriteBatch);
-            _lblViewportPosition2.Draw(spriteBatch);
             _lblWorldPosition1.Draw(spriteBatch);
             _lblWorldPosition2.Draw(spriteBatch);
             _lblWorldHex1.Draw(spriteBatch);
@@ -111,6 +133,14 @@ namespace PhoenixGamePresentationLibrary
             _lblMemory2.Draw(spriteBatch);
             _lblFps1.Draw(spriteBatch);
             _lblFps2.Draw(spriteBatch);
+            _lblResolution1.Draw(spriteBatch);
+            _lblResolution2.Draw(spriteBatch);
+            _lblResolution3.Draw(spriteBatch);
+            _lblResolution4.Draw(spriteBatch);
+            _lblResolution5.Draw(spriteBatch);
+            _lblResolution6.Draw(spriteBatch);
+            _lblResolution7.Draw(spriteBatch);
+            _lblResolution8.Draw(spriteBatch);
 
             DeviceManager.Instance.ResetViewport();
 

@@ -19,12 +19,11 @@ namespace Utilities
 
         public GraphicsDevice GraphicsDevice { get; set; }
         public GraphicsDeviceManager GraphicsDeviceManager { get; set; }
+        public GameWindow Window { get; set; }
         public ViewportAdapter ViewportAdapter { get; set; }
         public Point WorldPositionPointedAtByMouseCursor { get; set; }
         public Point WorldHexPointedAtByMouseCursor { get; set; }
 
-        public Viewport MapViewport => new Viewport(GraphicsDevice.Viewport.X + Margin.X, GraphicsDevice.Viewport.Y + Margin.Y, GraphicsDevice.Viewport.Width - Margin.X * 2, GraphicsDevice.Viewport.Height - Margin.Y * 2, 0, 1);
-        //public Viewport MetricsViewport => new Viewport(GraphicsDevice.Viewport.X + Margin.X, GraphicsDevice.Viewport.Height - 200 - Margin.Y, GraphicsDevice.Viewport.Width - Margin.X * 2, 201, 0, 1);
         public Viewport MetricsViewport => new Viewport(GraphicsDevice.Viewport.X + Margin.X, GraphicsDevice.Viewport.Y + Margin.Y, 300, 201, 0, 1);
 
         public Point ScreenResolution { get; private set; }
@@ -61,20 +60,6 @@ namespace Utilities
         {
             return _currentSpriteBatch;
         }
-
-        //private SpriteBatch GetNewSpriteBatch()
-        //{
-        //    var spriteBatch = _spriteBatchesPool.HasFreeObject ? _spriteBatchesPool.Get() : new SpriteBatch(GraphicsDevice);
-        //    //var spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        //    return spriteBatch;
-        //}
-
-        //public void ReturnSpriteBatchToPool(SpriteBatch spriteBatch)
-        //{
-        //    _spriteBatchesPool.Add(spriteBatch);
-        //    //spriteBatch.Dispose();
-        //}
 
         public void SetViewport(Viewport newViewport)
         {
