@@ -41,7 +41,7 @@ namespace PhoenixGamePresentationLibrary
             _settlementViews = new SettlementViews(this, World.Settlements);
             _hudView = new HudView(this, _stackViews);
 
-            Camera = new Camera(new Rectangle(0, 0, 1920, 1080));
+            Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.ScreenResolution.X, DeviceManager.Instance.ScreenResolution.Y));
             Camera.LoadContent(content);
 
             _overlandSettlementsView.LoadContent(content);
@@ -71,7 +71,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform); // FrontToBack
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform* DeviceManager.Instance.ViewportAdapter.GetScaleMatrix()); // FrontToBack
             _overlandMapView.Draw(spriteBatch);
             _overlandSettlementsView.Draw(spriteBatch);
 

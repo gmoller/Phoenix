@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework.Input;
-using Utilities;
 
 namespace Input
 {
     public class InputHandler
     {
-        public Microsoft.Xna.Framework.Point MousePosition => DeviceManager.Instance.ViewportAdapter.PointToScreen(MouseHandler.MousePosition);
+        public Microsoft.Xna.Framework.Point MousePosition => MouseHandler.MousePosition; // DeviceManager.Instance.ViewportAdapter.PointToScreen(MouseHandler.MousePosition);
         public Microsoft.Xna.Framework.Point MouseMovement => MouseHandler.MouseMovement;
         public bool MouseWheelUp => MouseHandler.MouseWheelUp();
         public bool MouseWheelDown => MouseHandler.MouseWheelDown();

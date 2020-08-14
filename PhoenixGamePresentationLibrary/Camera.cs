@@ -106,7 +106,7 @@ namespace PhoenixGamePresentationLibrary
                         Matrix.CreateRotationZ(_rotation) *
                         Matrix.CreateScale(_zoom) *
                         Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0));
-            UpdateVisibleArea();
+            //UpdateVisibleArea();
         }
 
         private void UpdateVisibleArea()
