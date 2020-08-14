@@ -1,4 +1,5 @@
-﻿using HexLibrary;
+﻿using System;
+using HexLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Input;
@@ -16,6 +17,11 @@ namespace PhoenixGamePresentationLibrary
 
         public Matrix Transform { get; private set; }
         public float Zoom { get; private set; }
+
+        public int NumberOfHexesToLeft { get; private set; }
+        public int NumberOfHexesToRight { get; private set; }
+        public int NumberOfHexesAbove { get; private set; }
+        public int NumberOfHexesBelow { get; private set; }
         #endregion
 
         public int Width => _viewport.Width;
@@ -24,13 +30,15 @@ namespace PhoenixGamePresentationLibrary
         public Camera(Rectangle viewport)
         {
             _viewport = viewport;
+
+            _position = Vector2.Zero;
+            _rotation = 0.0f;
+            Zoom = 1.0f;
+            CalculateNumberOfHexesFromCenter(viewport, Zoom);
         }
 
         internal void LoadContent(ContentManager content)
         {
-            Zoom = 1.0f;
-            _rotation = 0.0f;
-            _position = Vector2.Zero;
         }
 
         public Vector2 WorldToScreen(Vector2 worldPosition)
@@ -61,24 +69,19 @@ namespace PhoenixGamePresentationLibrary
             _position = newPosition;
         }
 
-        private void MoveCamera(Vector2 movePosition)
+        private void CalculateNumberOfHexesFromCenter(Rectangle viewport, float zoom)
         {
-            var newPosition = _position + movePosition;
-
-            _position = newPosition;
-        }
-
-        private void AdjustZoom(float zoomAmount)
-        {
-            Zoom += zoomAmount;
-            Zoom = MathHelper.Clamp(Zoom, 0.35f, 5.0f); // 0.1 - 5.0f
+            NumberOfHexesToLeft = (int)(Math.Ceiling(viewport.Width / HexLibrary.Constants.HexWidth * (1 / zoom)) / 2.0f) + 1;
+            NumberOfHexesToRight = NumberOfHexesToLeft;
+            NumberOfHexesAbove = (int)(Math.Ceiling(viewport.Height / HexLibrary.Constants.HexThreeQuarterHeight * (1 / zoom)) / 2.0f) + 1;
+            NumberOfHexesBelow = NumberOfHexesAbove;
         }
 
         public void Update(InputHandler input, float deltaTime)
         {
-            var zoom = input.MouseWheelUp ? 0.05f : 0.0f;
-            zoom = input.MouseWheelDown ? -0.05f : zoom;
-            AdjustZoom(zoom);
+            var zoomAmount = input.MouseWheelUp ? 0.05f : 0.0f;
+            zoomAmount = input.MouseWheelDown ? -0.05f : zoomAmount;
+            AdjustZoom(zoomAmount);
 
             var panCameraDistance = input.IsLeftMouseButtonDown && input.HasMouseMoved ? input.MouseMovement.ToVector2() : Vector2.Zero;
             MoveCamera(panCameraDistance);
@@ -92,15 +95,30 @@ namespace PhoenixGamePresentationLibrary
             panCameraDistance = input.MouseIsAtRightOfScreen ? new Vector2(1.0f, 0.0f) * deltaTime : Vector2.Zero;
             MoveCamera(panCameraDistance);
 
-            ClampCamera();
+            ClampCamera(Zoom);
             UpdateMatrix();
         }
 
-        private void ClampCamera()
+        private void AdjustZoom(float zoomAmount)
         {
-            // TODO: scale not taken into account!
-            _position.X = MathHelper.Clamp(_position.X, _viewport.Center.X, Constants.WORLD_MAP_WIDTH_IN_PIXELS - _viewport.Center.X);
-            _position.Y = MathHelper.Clamp(_position.Y, _viewport.Center.Y, Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _viewport.Center.Y);
+            if (zoomAmount.AboutEquals(0.0f)) return;
+
+            Zoom += zoomAmount;
+            Zoom = MathHelper.Clamp(Zoom, 0.35f, 5.0f); // 0.1 - 5.0f
+            CalculateNumberOfHexesFromCenter(_viewport, Zoom);
+        }
+
+        private void MoveCamera(Vector2 movePosition)
+        {
+            var newPosition = _position + movePosition;
+
+            _position = newPosition;
+        }
+
+        private void ClampCamera(float zoom)
+        {
+            _position.X = MathHelper.Clamp(_position.X, _viewport.Center.X * (1 / zoom), Constants.WORLD_MAP_WIDTH_IN_PIXELS - _viewport.Center.X * (1 / zoom));
+            _position.Y = MathHelper.Clamp(_position.Y, _viewport.Center.Y * (1 / zoom), Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _viewport.Center.Y * (1 / zoom));
         }
 
         private void UpdateMatrix()

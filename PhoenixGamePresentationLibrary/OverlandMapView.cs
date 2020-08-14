@@ -35,28 +35,19 @@ namespace PhoenixGamePresentationLibrary
             var center = camera.ScreenToWorld(new Vector2(1920.0f / 2.0f, 1080.0f / 2.0f));
             var centerHex = HexOffsetCoordinates.FromPixel((int)center.X, (int)center.Y);
 
-            //var columnsToLeft = (int)Math.Ceiling(10 * camera.Zoom * 5); // TODO: remove hardcoding, use size of hex and cater for zoom (how many hexes fit on the screen)
-            //var columnsToRight = (int)Math.Ceiling(10 * camera.Zoom * 5);
-            //var rowsUp = (int)Math.Ceiling(7 * camera.Zoom * 5);
-            //var rowsDown = (int)Math.Ceiling(7 * camera.Zoom * 5);
-            var columnsToLeft = 10; // TODO: remove hardcoding, use size of hex and cater for zoom (how many hexes fit on the screen)
-            var columnsToRight = 10;
-            var rowsUp = 10;
-            var rowsDown = 10;
-
-            var fromColumn = centerHex.Col - columnsToLeft;
+            var fromColumn = centerHex.Col - camera.NumberOfHexesToLeft;
             if (fromColumn < 0) fromColumn = 0;
-            var toColumn = centerHex.Col + columnsToRight;
+            var toColumn = centerHex.Col + camera.NumberOfHexesToRight;
             if (toColumn > PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS) toColumn = PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS;
 
-            var fromRow = centerHex.Row - rowsUp;
+            var fromRow = centerHex.Row - camera.NumberOfHexesAbove;
             if (fromRow < 0) fromRow = 0;
-            var toRow = centerHex.Row + rowsDown;
+            var toRow = centerHex.Row + camera.NumberOfHexesBelow;
             if (toRow > PhoenixGameLibrary.Constants.WORLD_MAP_ROWS) toRow = PhoenixGameLibrary.Constants.WORLD_MAP_ROWS;
 
-            for (int r = fromRow; r < toRow; ++r)
+            for (int r = fromRow; r <= toRow; ++r)
             {
-                for (int q = fromColumn; q < toColumn; ++q)
+                for (int q = fromColumn; q <= toColumn; ++q)
                 {
                     var cell = cellGrid.GetCell(q, r);
 
