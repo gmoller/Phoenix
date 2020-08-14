@@ -63,9 +63,9 @@ namespace HexLibrary
 
         public static Vector2 ToPixel(int q, int r)
         {
-            var x = Constants.HEX_SIZE * (Constants.SQUARE_ROOT_OF_3 * q + Constants.HALF_OF_SQUARE_ROOT_OF_3 * r);
-            var y = Constants.HEX_SIZE * (1.5f * r);
-            var pixel = new Vector2((float)x, y);
+            var x = Constants.HexSize * (Constants.SquareRootOf3 * q + Constants.HalfOfSquareRootOf3 * r);
+            var y = Constants.HexSize * (1.5f * r);
+            var pixel = new Vector2((float)x, (float)y);
 
             return pixel;
         }
@@ -77,9 +77,9 @@ namespace HexLibrary
 
         public static HexAxial FromPixel(int x, int y)
         {
-            var q = (Constants.ONE_THIRD_OF_SQUARE_ROOT_OF_3 * x - Constants.ONE_THIRD * y) / Constants.HEX_SIZE;
-            var r = (Constants.TWO_THIRDS * y) / Constants.HEX_SIZE;
-            var axial = Round((float)q, r);
+            var q = (Constants.OneThirdOfSquareRootOf3 * x - Constants.ONE_THIRD * y) / Constants.HexSize;
+            var r = (Constants.TWO_THIRDS * y) / Constants.HexSize;
+            var axial = Round((float)q, (float)r);
 
             return axial;
         }

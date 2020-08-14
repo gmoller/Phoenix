@@ -140,9 +140,9 @@ namespace HexLibrary
 
         public static HexCube FromPixel(int x, int y)
         {
-            var q = (Constants.ONE_THIRD_OF_SQUARE_ROOT_OF_3 * x - Constants.ONE_THIRD * y) / Constants.HEX_SIZE;
-            var r = (Constants.TWO_THIRDS * y) / Constants.HEX_SIZE;
-            var axial = HexAxial.Round((float)q, r);
+            var q = (Constants.OneThirdOfSquareRootOf3 * x - Constants.ONE_THIRD * y) / Constants.HexSize;
+            var r = (Constants.TWO_THIRDS * y) / Constants.HexSize;
+            var axial = HexAxial.Round((float)q, (float)r);
             var cube = HexAxial.ToCube(axial);
 
             return cube;

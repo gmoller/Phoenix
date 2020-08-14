@@ -139,9 +139,9 @@ namespace HexLibrary
 
         public static Vector2 ToPixel(int col, int row)
         {
-            var x = Constants.HEX_SIZE * (Constants.SQUARE_ROOT_OF_3 * (col + 0.5f * (row & 1)));
-            var y = Constants.HEX_SIZE * (1.5f * row);
-            var pixel = new Vector2((float)x, y);
+            var x = Constants.HexSize * (Constants.SquareRootOf3 * (col + 0.5f * (row & 1)));
+            var y = Constants.HexSize * (1.5f * row);
+            var pixel = new Vector2((float)x, (float)y);
 
             return pixel;
         }

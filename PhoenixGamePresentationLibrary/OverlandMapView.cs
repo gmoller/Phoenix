@@ -126,7 +126,7 @@ namespace PhoenixGamePresentationLibrary
             float degrees = 60 * i - 30;
             float radians = MathHelper.ToRadians(degrees);
 
-            var v = new Vector2((float)(HexLibrary.Constants.HEX_SIZE * Math.Cos(radians)), (float)(HexLibrary.Constants.HEX_SIZE * Math.Sin(radians)));
+            var v = new Vector2((float)(HexLibrary.Constants.HexSize * Math.Cos(radians)), (float)(HexLibrary.Constants.HexSize * Math.Sin(radians)));
 
             return v;
         }
