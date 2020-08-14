@@ -65,7 +65,7 @@ namespace PhoenixGamePresentationLibrary
 
         private static (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input, StackView stackView)
         {
-            if (stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.IsLeftMouseButtonReleased || input.Eaten) return (false, new Point(0, 0));
+            if (stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.IsLeftMouseButtonReleased) return (false, new Point(0, 0));
 
             // unit is selected, left mouse button released and unit is not already moving
             var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;

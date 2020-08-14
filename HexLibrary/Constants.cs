@@ -2,6 +2,21 @@
 
 namespace HexLibrary
 {
+    // https://hexagoncalculator.apphb.com/
+    // https://www.redblobgames.com/grids/hexagons/
+
+    //    Width == Side to Side
+    //  /--------\
+    //      ..         \
+    //    .    .       |
+    //  .        .     |
+    //  .        .     |
+    //  .        .     | Height == Vertex to Vertex
+    //  .        .     | Size == Half of Height == Center to Vertex
+    //  .        .     |
+    //    .    .       |
+    //      ..         /
+
     public static class Constants
     {
         public const float HEX_SCALE = 0.5f;

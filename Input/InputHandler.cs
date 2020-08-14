@@ -31,7 +31,7 @@ namespace Input
             KeyboardHandler.IsKeyDown(Keys.NumPad1) ||
             KeyboardHandler.IsKeyDown(Keys.NumPad3);
 
-        public bool Eaten { get; set; }
+        //public bool Eaten { get; set; }
 
         public void Initialize()
         {

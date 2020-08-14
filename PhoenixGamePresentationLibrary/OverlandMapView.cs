@@ -23,7 +23,6 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            if (input.Eaten) return;
         }
 
         internal void Draw(SpriteBatch spriteBatch)
@@ -36,6 +35,10 @@ namespace PhoenixGamePresentationLibrary
             var center = camera.ScreenToWorld(new Vector2(1920.0f / 2.0f, 1080.0f / 2.0f));
             var centerHex = HexOffsetCoordinates.FromPixel((int)center.X, (int)center.Y);
 
+            //var columnsToLeft = (int)Math.Ceiling(10 * camera.Zoom * 5); // TODO: remove hardcoding, use size of hex and cater for zoom (how many hexes fit on the screen)
+            //var columnsToRight = (int)Math.Ceiling(10 * camera.Zoom * 5);
+            //var rowsUp = (int)Math.Ceiling(7 * camera.Zoom * 5);
+            //var rowsDown = (int)Math.Ceiling(7 * camera.Zoom * 5);
             var columnsToLeft = 10; // TODO: remove hardcoding, use size of hex and cater for zoom (how many hexes fit on the screen)
             var columnsToRight = 10;
             var rowsUp = 10;

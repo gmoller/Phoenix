@@ -152,24 +152,44 @@ namespace GuiControls
             }
         }
 
-        protected virtual void BeforeUpdate(InputHandler input, float deltaTime, Matrix? transform = null)
-        {
-        }
-
-        protected virtual void AfterUpdate(InputHandler input, float deltaTime, Matrix? transform = null)
-        {
-        }
-
         public virtual void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
-            if (!Enabled)
+            var mousePosition = GetMousePosition(input, transform);
+            MouseOver = ActualDestinationRectangle.Contains(mousePosition);
+
+            if (Enabled)
+            {
+                SetTexture(MouseOver ? _textureHover : _textureNormal);
+            }
+            else
             {
                 SetTexture(_textureDisabled);
+            }
+
+            if (_cooldownTimeInMilliseconds > 0.0f)
+            {
+                SetTexture(_textureActive);
+                _cooldownTimeInMilliseconds -= deltaTime;
+                if (_cooldownTimeInMilliseconds <= 0.0f)
+                {
+                    OnClickComplete();
+                }
                 return;
             }
 
-            BeforeUpdate(input, deltaTime, transform);
+            if (MouseOver && input.IsLeftMouseButtonReleased)
+            {
+                OnClick(new EventArgs());
+            }
 
+            foreach (var childControl in ChildControls)
+            {
+                childControl.Update(input, deltaTime, transform);
+            }
+        }
+
+        private Point GetMousePosition(InputHandler input, Matrix? transform)
+        {
             Point mousePosition;
             if (transform == null)
             {
@@ -181,54 +201,20 @@ namespace GuiControls
                 mousePosition = new Point(worldPosition.X, worldPosition.Y);
             }
 
-            MouseOver = ActualDestinationRectangle.Contains(mousePosition);
-            input.Eaten = MouseOver;
-
-            if (_cooldownTimeInMilliseconds > 0.0f)
-            {
-                _cooldownTimeInMilliseconds -= deltaTime;
-                if (_cooldownTimeInMilliseconds <= 0.0f)
-                {
-                    OnClickComplete();
-                }
-                return;
-            }
-
-            SetTexture(MouseOver ? _textureHover : _textureNormal);
-
-            if (MouseOver && input.IsLeftMouseButtonReleased)
-            {
-                OnClick(new EventArgs());
-            }
-
-            AfterUpdate(input, deltaTime, transform);
-
-            foreach (var childControl in ChildControls)
-            {
-                childControl.Update(input, deltaTime, transform);
-            }
+            return mousePosition;
         }
 
         private void OnClickComplete()
         {
             _cooldownTimeInMilliseconds = 0.0f;
-
-            SetTexture(_textureNormal);
         }
 
         private void OnClick(EventArgs e)
         {
+            if (!Enabled) return;
+
             _cooldownTimeInMilliseconds = CLICK_COOLDOWN_TIME_IN_MILLISECONDS;
-            SetTexture(_textureActive);
             Click?.Invoke(this, e);
-        }
-
-        protected virtual void BeforeDraw(SpriteBatch spriteBatch)
-        {
-        }
-
-        protected virtual void BeforeDraw(Matrix? transform = null)
-        {
         }
 
         protected virtual void InDraw(SpriteBatch spriteBatch)
@@ -239,21 +225,9 @@ namespace GuiControls
         {
         }
 
-        protected virtual void AfterDraw(SpriteBatch spriteBatch)
-        {
-        }
-
-        protected virtual void AfterDraw(Matrix? transform = null)
-        {
-        }
-
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            BeforeDraw(spriteBatch);
-
             InDraw(spriteBatch);
-
-            AfterDraw(spriteBatch);
 
             foreach (var childControl in ChildControls)
             {
@@ -263,15 +237,7 @@ namespace GuiControls
 
         public virtual void Draw(Matrix? transform = null)
         {
-            BeforeDraw(transform);
-
-            //var spriteBatch = BeginSpriteBatch(transform);
-
             InDraw(transform);
-
-            //EndSpriteBatch(spriteBatch);
-
-            AfterDraw(transform);
 
             foreach (var childControl in ChildControls)
             {
@@ -334,25 +300,6 @@ namespace GuiControls
 
             return topLeft;
         }
-
-        //protected SpriteBatch BeginSpriteBatch(Matrix? transform)
-        //{
-        //    var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
-        //    //var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
-        //    //spriteBatch.Begin(rasterizerState: new RasterizerState { ScissorTestEnable = true }, transformMatrix: transform);
-
-        //    //_originalScissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
-        //    //spriteBatch.GraphicsDevice.ScissorRectangle = ActualDestinationRectangle;
-
-        //    return spriteBatch;
-        //}
-
-        //protected void EndSpriteBatch(SpriteBatch spriteBatch)
-        //{
-        //    spriteBatch.End();
-        //    //spriteBatch.GraphicsDevice.ScissorRectangle = _originalScissorRectangle;
-        //    //DeviceManager.Instance.ReturnSpriteBatchToPool(spriteBatch);
-        //}
 
         protected void SetTexture(string textureName)
         {

@@ -110,7 +110,7 @@ namespace PhoenixGamePresentationLibrary
         public void Update(InputHandler input, float deltaTime)
         {
             var mouseOver = _area.Contains(input.MousePosition);
-            input.Eaten = mouseOver;
+            _hudViewFrame.Enabled = mouseOver;
 
             _hudViewFrame.Update(input, deltaTime);
 

@@ -8,13 +8,16 @@ namespace PhoenixGamePresentationLibrary
 {
     public class Camera
     {
+        #region State
         private readonly Rectangle _viewport;
 
-        private float _zoom;
         private float _rotation;
         private Vector2 _position;
 
         public Matrix Transform { get; private set; }
+        public float Zoom { get; private set; }
+        #endregion
+
         public int Width => _viewport.Width;
         public int Height => _viewport.Height;
 
@@ -25,7 +28,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void LoadContent(ContentManager content)
         {
-            _zoom = 1.0f;
+            Zoom = 1.0f;
             _rotation = 0.0f;
             _position = Vector2.Zero;
         }
@@ -67,8 +70,8 @@ namespace PhoenixGamePresentationLibrary
 
         private void AdjustZoom(float zoomAmount)
         {
-            _zoom += zoomAmount;
-            _zoom = MathHelper.Clamp(_zoom, 0.35f, 5.0f); // 0.1 - 5.0f
+            Zoom += zoomAmount;
+            Zoom = MathHelper.Clamp(Zoom, 0.35f, 5.0f); // 0.1 - 5.0f
         }
 
         public void Update(InputHandler input, float deltaTime)
@@ -104,7 +107,7 @@ namespace PhoenixGamePresentationLibrary
         {
             Transform = Matrix.CreateTranslation(new Vector3(-_position.X, -_position.Y, 0)) *
                         Matrix.CreateRotationZ(_rotation) *
-                        Matrix.CreateScale(_zoom) *
+                        Matrix.CreateScale(Zoom) *
                         Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0));
             //UpdateVisibleArea();
         }
