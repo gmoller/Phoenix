@@ -13,7 +13,7 @@ namespace PhoenixGamePresentationLibrary
         private readonly Rectangle _viewport;
 
         private float _rotation;
-        private Vector2 _position;
+        private Vector2 _centerPosition;
 
         public Matrix Transform { get; private set; }
         public float Zoom { get; private set; }
@@ -31,7 +31,7 @@ namespace PhoenixGamePresentationLibrary
         {
             _viewport = viewport;
 
-            _position = Vector2.Zero;
+            _centerPosition = Vector2.Zero;
             _rotation = 0.0f;
             Zoom = 1.0f;
             CalculateNumberOfHexesFromCenter(viewport, Zoom);
@@ -46,27 +46,40 @@ namespace PhoenixGamePresentationLibrary
             return Vector2.Transform(worldPosition, Transform);
         }
 
+        /// <summary>
+        /// Translates the position of a vector to it's position in the world.
+        /// </summary>
+        /// <param name="screenPosition"></param>
+        /// <returns></returns>
         public Vector2 ScreenToWorld(Vector2 screenPosition)
         {
             return Vector2.Transform(screenPosition, Matrix.Invert(Transform));
         }
 
-        public void LookAtCell(Utilities.Point hexPoint)
-        {
-            var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y);
-            _position = newPosition;
-        }
-
         public void LookAtCellPointedAtByMouse()
         {
             var hexPoint = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
-            var newPosition = HexOffsetCoordinates.ToPixel (hexPoint.X, hexPoint.Y);
-            _position = newPosition;
+            var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y);
+            _centerPosition = newPosition;
         }
 
+        /// <summary>
+        /// Center camera on cell.
+        /// </summary>
+        /// <param name="hexPoint"></param>
+        public void LookAtCell(Utilities.Point hexPoint)
+        {
+            var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y); // in world
+            _centerPosition = newPosition;
+        }
+
+        /// <summary>
+        /// Center camera on pixel.
+        /// </summary>
+        /// <param name="newPosition"></param>
         public void LookAtPixel(Vector2 newPosition)
         {
-            _position = newPosition;
+            _centerPosition = newPosition;
         }
 
         private void CalculateNumberOfHexesFromCenter(Rectangle viewport, float zoom)
@@ -110,23 +123,23 @@ namespace PhoenixGamePresentationLibrary
 
         private void MoveCamera(Vector2 movePosition)
         {
-            var newPosition = _position + movePosition;
+            var newPosition = _centerPosition + movePosition;
 
-            _position = newPosition;
+            _centerPosition = newPosition;
         }
 
         private void ClampCamera(float zoom)
         {
-            _position.X = MathHelper.Clamp(_position.X, _viewport.Center.X * (1 / zoom), Constants.WORLD_MAP_WIDTH_IN_PIXELS - _viewport.Center.X * (1 / zoom));
-            _position.Y = MathHelper.Clamp(_position.Y, _viewport.Center.Y * (1 / zoom), Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _viewport.Center.Y * (1 / zoom));
+            _centerPosition.X = MathHelper.Clamp(_centerPosition.X, _viewport.Center.X * (1 / zoom), Constants.WORLD_MAP_WIDTH_IN_PIXELS - _viewport.Center.X * (1 / zoom));
+            _centerPosition.Y = MathHelper.Clamp(_centerPosition.Y, _viewport.Center.Y * (1 / zoom), Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _viewport.Center.Y * (1 / zoom));
         }
 
         private void UpdateMatrix()
         {
-            Transform = Matrix.CreateTranslation(new Vector3(-_position.X, -_position.Y, 0)) *
+            Transform = Matrix.CreateTranslation(new Vector3(-_centerPosition.X, -_centerPosition.Y, 0.0f)) *
                         Matrix.CreateRotationZ(_rotation) *
                         Matrix.CreateScale(Zoom) *
-                        Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0));
+                        Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0.0f));
             //UpdateVisibleArea();
         }
 

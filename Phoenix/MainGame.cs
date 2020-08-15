@@ -31,9 +31,11 @@ namespace Phoenix
             VariableTimeStep();
             DeviceManager.Instance.GraphicsDevice = GraphicsDevice;
             DeviceManager.Instance.GraphicsDeviceManager = _graphicsDeviceManager;
-            DeviceManager.Instance.SetScreenResolution(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
-            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
             DeviceManager.Instance.Window = Window;
+            //DeviceManager.Instance.SetScreenResolution(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(960, 540);
+            //DeviceManager.Instance.SetScreenResolution(1600, 1200);
             //DeviceManager.Instance.SetScreenResolution(1680, 1050);
             //DeviceManager.Instance.SetScreenResolution(1024, 900);
             //DeviceManager.Instance.SetScreenResolution(800, 600);

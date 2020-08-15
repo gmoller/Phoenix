@@ -24,9 +24,10 @@ namespace Utilities
         public Point WorldPositionPointedAtByMouseCursor { get; set; }
         public Point WorldHexPointedAtByMouseCursor { get; set; }
 
-        public Viewport MetricsViewport => new Viewport(GraphicsDevice.Viewport.X + Margin.X, GraphicsDevice.Viewport.Y + Margin.Y, 300, 201, 0, 1);
-
         public Point ScreenResolution { get; private set; }
+        public Vector2 ScreenRatio { get; private set; }
+
+        public Viewport MetricsViewport => new Viewport(GraphicsDevice.Viewport.X + Margin.X, GraphicsDevice.Viewport.Y + Margin.Y, 300, 201, 0, 1);
 
         public void SetScreenResolution(int width, int height)
         {
@@ -39,6 +40,7 @@ namespace Utilities
             }
 
             ScreenResolution = new Point(width, height);
+            ScreenRatio = new Vector2(width / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, height / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
         }
 
         private DeviceManager()
