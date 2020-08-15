@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Input;
 using Utilities;
+using Utilities.ExtensionMethods;
 
 namespace PhoenixGamePresentationLibrary
 {

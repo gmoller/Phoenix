@@ -95,13 +95,17 @@ namespace PhoenixGameLibrary
             }
             Citizens = new SettlementCitizens(this, settlementSize, _buildingsBuilt);
 
+            // control
             _catchmentCells = cellGrid.GetCatchment(location.X, location.Y, 2);
             foreach (var item in _catchmentCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
-                cellGrid.SetCell(cell, cell.SeenState);
+                cellGrid.SetCell(cell, cell.SeenState, 1);
             }
+            _catchmentCells = cellGrid.GetCatchment(location.X, location.Y, 2);
+            cellGrid.CellFactionChange(_catchmentCells);
 
+            // sight
             _seenCells = cellGrid.GetCatchment(location.X, location.Y, 3);
             foreach (var item in _seenCells)
             {

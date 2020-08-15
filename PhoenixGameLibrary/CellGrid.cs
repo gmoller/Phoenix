@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using HexLibrary;
 using Utilities;
+using Utilities.ExtensionMethods;
 
 namespace PhoenixGameLibrary
 {
@@ -53,10 +54,31 @@ namespace PhoenixGameLibrary
 
         public void SetCell(Cell cell, SeenState seenState)
         {
+            SetCell(cell, seenState, cell.ControlledByFaction);
+        }
+
+        public void SetCell(Cell cell, SeenState seenState, int controlledByFaction)
+        {
             if (cell.Equals(Cell.Empty)) return;
 
-            var newCell = new Cell(cell, seenState);
+            var newCell = new Cell(cell, seenState, controlledByFaction, cell.Borders);
             _cellGrid[cell.Column, cell.Row] = newCell;
+        }
+
+        public void CellFactionChange(List<Cell> cells)
+        {
+            foreach (var cell in cells)
+            {
+                var borders = 0;
+                for (var i = 0; i < 6; i++)
+                {
+                    var neighbor = cell.GetNeighbor((Direction)i);
+                    borders = cell.ControlledByFaction == neighbor.ControlledByFaction ? borders.ResetBit(i) : borders.SetBit(i);
+                }
+
+                var newCell = new Cell(cell, cell.SeenState, cell.ControlledByFaction, (byte)borders);
+                _cellGrid[cell.Column, cell.Row] = newCell;
+            }
         }
 
         public List<Cell> GetCatchment(int column, int row, int radius)
@@ -65,9 +87,10 @@ namespace PhoenixGameLibrary
             var catchment = HexOffsetCoordinates.GetSpiralRing(column, row, radius);
             foreach (var tile in catchment)
             {
-                if (tile.Col >= 0 && tile.Row >= 0 && tile.Col < Constants.WORLD_MAP_COLUMNS && tile.Row < Constants.WORLD_MAP_ROWS)
+                var cell = GetCell(tile.Col, tile.Row);
+
+                if (cell != Cell.Empty)
                 {
-                    var cell = GetCell(tile.Col, tile.Row);
                     catchmentCells.Add(cell);
                 }
             }

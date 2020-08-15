@@ -80,6 +80,24 @@ namespace HexLibrary
             return neighbors;
         }
 
+        public static HexOffsetCoordinates[] GetSpiralRing(HexOffsetCoordinates offsetCoordinates, int radius)
+        {
+            return GetSpiralRing(offsetCoordinates.Col, offsetCoordinates.Row, radius);
+        }
+
+        public static HexOffsetCoordinates[] GetSpiralRing(int col, int row, int radius)
+        {
+            var ring = new List<HexOffsetCoordinates> { new HexOffsetCoordinates(col, row) };
+
+            for (var k = 1; k <= radius; ++k)
+            {
+                var o = GetSingleRing(col, row, k);
+                ring.AddRange(o.ToList());
+            }
+
+            return ring.ToArray();
+        }
+
         public static HexOffsetCoordinates[] GetSingleRing(HexOffsetCoordinates offsetCoordinates, int radius)
         {
             return GetSingleRing(offsetCoordinates.Col, offsetCoordinates.Row, radius);
@@ -101,24 +119,6 @@ namespace HexLibrary
                     ring.Add(offset);
                     cube = HexCube.GetNeighbor(cube, (Direction)i);
                 }
-            }
-
-            return ring.ToArray();
-        }
-
-        public static HexOffsetCoordinates[] GetSpiralRing(HexOffsetCoordinates offsetCoordinates, int radius)
-        {
-            return GetSpiralRing(offsetCoordinates.Col, offsetCoordinates.Row, radius);
-        }
-
-        public static HexOffsetCoordinates[] GetSpiralRing(int col, int row, int radius)
-        {
-            var ring = new List<HexOffsetCoordinates> { new HexOffsetCoordinates(col, row) };
-
-            for (var k = 1; k <= radius; ++k)
-            {
-                var o = GetSingleRing(col, row, k);
-                ring.AddRange(o.ToList());
             }
 
             return ring.ToArray();

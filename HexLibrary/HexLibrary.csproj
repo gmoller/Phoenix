@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="Hex.cs" />
     <Compile Include="HexAxial.cs" />
     <Compile Include="HexCube.cs" />
     <Compile Include="HexOffsetCoordinates.cs" />

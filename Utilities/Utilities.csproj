@@ -40,13 +40,15 @@
   <ItemGroup>
     <Compile Include="AStarSearch.cs" />
     <Compile Include="BreadthFirstSearch.cs" />
+    <Compile Include="ExtensionMethods\ByteExtensions.cs" />
+    <Compile Include="ExtensionMethods\IntegerExtensions.cs" />
     <Compile Include="GetCostToMoveIntoResult.cs" />
     <Compile Include="DataDictionary.cs" />
     <Compile Include="DataList.cs" />
     <Compile Include="DeviceManager.cs" />
     <Compile Include="EnumerableDictionary.cs" />
     <Compile Include="EnumerableList.cs" />
-    <Compile Include="FloatExtensions.cs" />
+    <Compile Include="ExtensionMethods\FloatExtensions.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="IIdentifiedById.cs" />
     <Compile Include="IIdentifiedByIdAndName.cs" />
@@ -60,7 +62,7 @@
     <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="Primitives2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringExtensions.cs" />
+    <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="TextWrapper.cs" />
     <Compile Include="ViewportAdapters\DefaultViewportAdapter.cs" />
     <Compile Include="ViewportAdapters\ScalingViewportAdapter.cs" />

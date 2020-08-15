@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utilities
+namespace Utilities.ExtensionMethods
 {
     public static class FloatExtensions
     {

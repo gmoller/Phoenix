@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using Utilities;
+using Utilities.ExtensionMethods;
 using Point = Microsoft.Xna.Framework.Point;
 
 namespace GuiControls

@@ -5,6 +5,7 @@ using Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.GameData;
 using Utilities;
+using Utilities.ExtensionMethods;
 using Point = Utilities.Point;
 
 namespace PhoenixGamePresentationLibrary
@@ -19,12 +20,12 @@ namespace PhoenixGamePresentationLibrary
                 restartUnitMovement();
             }
 
-            var startUnitMovementKeyboard = CheckForUnitMovementFromKeyboardInitiation(input, stackView);
-            var startUnitMovementMouse = CheckForUnitMovementFromMouseInitiation(input, stackView);
+            var (startMovementKeyboard, hexToMoveToKeyboard) = CheckForUnitMovementFromKeyboardInitiation(input, stackView);
+            var (startMovementMouse, hexToMoveToMouse) = CheckForUnitMovementFromMouseInitiation(input, stackView);
 
-            if (startUnitMovementKeyboard.startMovement || startUnitMovementMouse.startMovement)
+            if (startMovementKeyboard || startMovementMouse)
             {
-                startUnitMovement(startUnitMovementKeyboard.startMovement ? startUnitMovementKeyboard.hexToMoveTo : startUnitMovementMouse.hexToMoveTo);
+                startUnitMovement(startMovementKeyboard ? hexToMoveToKeyboard : hexToMoveToMouse);
             }
 
             if (UnitIsMoving(stackView))
@@ -53,9 +54,9 @@ namespace PhoenixGamePresentationLibrary
             if (stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.AreAnyNumPadKeysDown) return (false, new Point(0, 0));
 
             var direction = DetermineDirection(input);
-            if (direction == Direction.None) return (false, new Point(0, 0));
+            if (!direction.shouldMove) return (false, new Point(0, 0));
 
-            var neighbor = HexOffsetCoordinates.GetNeighbor(stackView.Location.X, stackView.Location.Y, direction);
+            var neighbor = HexOffsetCoordinates.GetNeighbor(stackView.Location.X, stackView.Location.Y, direction.direction);
             var hexToMoveTo = new Point(neighbor.Col, neighbor.Row);
 
             var costToMoveIntoResult = stackView.GetCostToMoveInto(hexToMoveTo);
@@ -78,39 +79,39 @@ namespace PhoenixGamePresentationLibrary
             return costToMoveIntoResult.CanMoveInto ? (true, hexToMoveTo) : (false, new Point(0, 0));
         }
 
-        private static Direction DetermineDirection(InputHandler input)
+        private static (bool shouldMove, Direction direction) DetermineDirection(InputHandler input)
         {
             if (input.IsKeyDown(Keys.NumPad4))
             {
-                return Direction.West;
+                return (true, Direction.West);
             }
 
             if (input.IsKeyDown(Keys.NumPad6))
             {
-                return Direction.East;
+                return (true, Direction.East);
             }
 
             if (input.IsKeyDown(Keys.NumPad7))
             {
-                return Direction.NorthWest;
+                return (true, Direction.NorthWest);
             }
 
             if (input.IsKeyDown(Keys.NumPad9))
             {
-                return Direction.NorthEast;
+                return (true, Direction.NorthEast);
             }
 
             if (input.IsKeyDown(Keys.NumPad1))
             {
-                return Direction.SouthWest;
+                return (true, Direction.SouthWest);
             }
 
             if (input.IsKeyDown(Keys.NumPad3))
             {
-                return Direction.SouthEast;
+                return (true, Direction.SouthEast);
             }
 
-            return Direction.None;
+            return (false, Direction.East);
         }
 
         private static bool UnitIsMoving(StackView stackView)

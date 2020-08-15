@@ -7,6 +7,7 @@ using Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.GameData;
 using Utilities;
+using Utilities.ExtensionMethods;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -69,8 +70,37 @@ namespace PhoenixGamePresentationLibrary
                     }
 
                     //DrawHexBorder(spriteBatch, cell);
+                    DrawBorders(spriteBatch, cell);
                 }
             }
+        }
+
+        private void DrawBorders(SpriteBatch spriteBatch, Cell cell)
+        {
+            if (cell.Borders.IsBitSet((byte)Direction.East)) DrawBorder(spriteBatch, cell, HexVertexDirection.NorthEast,  HexVertexDirection.SouthEast);
+            if (cell.Borders.IsBitSet((byte)Direction.SouthEast)) DrawBorder(spriteBatch, cell, HexVertexDirection.SouthEast,  HexVertexDirection.South);
+            if (cell.Borders.IsBitSet((byte)Direction.SouthWest)) DrawBorder(spriteBatch, cell, HexVertexDirection.South,  HexVertexDirection.SouthWest);
+            if (cell.Borders.IsBitSet((byte)Direction.West)) DrawBorder(spriteBatch, cell, HexVertexDirection.SouthWest,  HexVertexDirection.NorthWest);
+            if (cell.Borders.IsBitSet((byte)Direction.NorthWest)) DrawBorder(spriteBatch, cell, HexVertexDirection.NorthWest, HexVertexDirection.North);
+            if (cell.Borders.IsBitSet((byte)Direction.NorthEast)) DrawBorder(spriteBatch, cell, HexVertexDirection.North, HexVertexDirection.NorthEast);
+        }
+
+        private void DrawBorder(SpriteBatch spriteBatch, Cell cell, Direction direction, HexVertexDirection vertexDirection1, HexVertexDirection vertexDirection2)
+        {
+            var neighbor = cell.GetNeighbor(direction);
+
+            if (cell.ControlledByFaction == 0 || cell.ControlledByFaction == neighbor.ControlledByFaction) return;
+
+            DrawBorder(spriteBatch, cell, vertexDirection1, vertexDirection2);
+        }
+
+        private void DrawBorder(SpriteBatch spriteBatch, Cell cell, HexVertexDirection vertexDirection1, HexVertexDirection vertexDirection2)
+        {
+            var centerPosition = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row);
+            var point1 = Hex.GetCorner(vertexDirection1);
+            var point2 = Hex.GetCorner(vertexDirection2);
+
+            spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, cell.ControlledByFaction == 1 ? Color.DarkBlue : Color.Red, 5.0f, 0.5f);
         }
 
         private void DrawCell(SpriteBatch spriteBatch, Cell cell, Color color)
@@ -97,12 +127,12 @@ namespace PhoenixGamePresentationLibrary
             var centerPosition = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row);
 
             var color = Color.PeachPuff;
-            var point0 = GetHexCorner(5);
-            var point1 = GetHexCorner(0);
-            var point2 = GetHexCorner(1);
-            var point3 = GetHexCorner(2);
-            var point4 = GetHexCorner(3);
-            var point5 = GetHexCorner(4);
+            var point0 = Hex.GetCorner(HexVertexDirection.North);
+            var point1 = Hex.GetCorner(HexVertexDirection.NorthEast);
+            var point2 = Hex.GetCorner(HexVertexDirection.SouthEast);
+            var point3 = Hex.GetCorner(HexVertexDirection.South);
+            var point4 = Hex.GetCorner(HexVertexDirection.SouthWest);
+            var point5 = Hex.GetCorner(HexVertexDirection.NorthWest);
 
             spriteBatch.DrawLine(centerPosition + point0, centerPosition + point1, color, 1.0f);
             spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, color, 1.0f);
@@ -110,16 +140,6 @@ namespace PhoenixGamePresentationLibrary
             spriteBatch.DrawLine(centerPosition + point3, centerPosition + point4, color, 1.0f);
             spriteBatch.DrawLine(centerPosition + point4, centerPosition + point5, color, 1.0f);
             spriteBatch.DrawLine(centerPosition + point5, centerPosition + point0, color, 1.0f);
-        }
-
-        private Vector2 GetHexCorner(int i)
-        {
-            float degrees = 60 * i - 30;
-            float radians = MathHelper.ToRadians(degrees);
-
-            var v = new Vector2((float)(HexLibrary.Constants.HexSize * Math.Cos(radians)), (float)(HexLibrary.Constants.HexSize * Math.Sin(radians)));
-
-            return v;
         }
     }
 }
