@@ -92,7 +92,7 @@ namespace PhoenixGamePresentationLibrary
             //var newFrame = new Frame(json);
 
             var pos = new Vector2(1920.0f, 1080.0f);
-            var btnEndTurn = new Button(pos, Alignment.BottomRight, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h", "btnEndTurn");
+            var btnEndTurn = new Button(pos, Alignment.BottomRight, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_n", "reg_button_h", "btnEndTurn");
             btnEndTurn.LoadContent(content);
             btnEndTurn.Click += BtnEndTurnClick;
 
@@ -109,7 +109,7 @@ namespace PhoenixGamePresentationLibrary
 
         public void Update(InputHandler input, float deltaTime)
         {
-            var mouseOver = _area.Contains(input.MousePosition);
+            var mouseOver = _area.Contains(input.MousePosition) || _hudViewFrame.ChildControls["btnEndTurn"].Area.Contains(input.MousePosition);
             _hudViewFrame.Enabled = mouseOver;
 
             _hudViewFrame.Update(input, deltaTime);

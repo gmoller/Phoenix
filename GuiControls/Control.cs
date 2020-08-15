@@ -40,7 +40,12 @@ namespace GuiControls
 
         public string Name { get; protected set; }
 
-        public bool Enabled { get; set; }
+        private bool _enabled;
+        public bool Enabled
+        {
+            get => Parent?.Enabled ?? _enabled;
+            set => _enabled = value;
+        }
         public bool MouseOver { get; private set; }
 
         public event EventHandler Click;
@@ -55,6 +60,8 @@ namespace GuiControls
         public Point TopRight => new Point(Right, Top);
         public Point BottomLeft => new Point(Left, Bottom);
         public Point BottomRight => new Point(Right, Bottom);
+
+        public Rectangle Area => new Rectangle(TopLeft, Size);
 
         public Point RelativeTopLeft => new Point(Left - (Parent?.Left ?? 0), Top - (Parent?.Top ?? 0));
         public Point RelativeTopRight => new Point(RelativeTopLeft.X + Width, RelativeTopLeft.Y);
@@ -107,6 +114,11 @@ namespace GuiControls
 
         public void AddControl(IControl control)
         {
+            if (control.Parent == null)
+            {
+                ((Control)control).Parent = this;
+            }
+
             _childControls.Add(control.Name, control);
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Input;
 using Microsoft.Xna.Framework.Content;
@@ -11,7 +10,7 @@ namespace GuiControls
 {
     public interface IControl
     {
-        IControl Parent { get; }
+        IControl Parent { get;  }
         EnumerableDictionary<IControl> ChildControls { get; }
 
         string Name { get; }
@@ -26,6 +25,8 @@ namespace GuiControls
         Point BottomLeft { get; }
         Point BottomRight { get; }
 
+        Rectangle Area { get; }
+
         Point RelativeTopLeft { get; }
         Point RelativeTopRight { get; }
         Point RelativeMiddleRight { get; }
@@ -34,6 +35,8 @@ namespace GuiControls
         int Width { get; }
         int Height { get; }
         Point Size { get; }
+
+        bool Enabled { get; }
 
         event EventHandler Click;
 
