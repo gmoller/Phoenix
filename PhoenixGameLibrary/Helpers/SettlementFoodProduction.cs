@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.GameData;
+using Utilities;
 
 namespace PhoenixGameLibrary.Helpers
 {
@@ -22,11 +24,14 @@ namespace PhoenixGameLibrary.Helpers
             foodBreakdown.Add("Farmers", foodFromFarmers);
 
             // buildings
-            foreach (var item in Globals.Instance.BuildingFoodOutputIncreaseTypes)
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var buildingFoodOutputIncreaseTypes = ((GameMetadata)context.GameMetadata).BuildingFoodOutputIncreaseTypes;
+            var buildingTypes = ((GameMetadata)context.GameMetadata).BuildingTypes;
+            foreach (var item in buildingFoodOutputIncreaseTypes)
             {
                 if (buildingsBuilt.Contains(item.Id))
                 {
-                    var buildingName = Globals.Instance.BuildingTypes[item.Id].Name;
+                    var buildingName = buildingTypes[item.Id].Name;
                     foodBreakdown.Add(buildingName, item.FoodOutputIncrease);
                 }
             }

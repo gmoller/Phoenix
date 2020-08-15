@@ -45,10 +45,10 @@
     <Compile Include="GetCostToMoveIntoResult.cs" />
     <Compile Include="DataDictionary.cs" />
     <Compile Include="DataList.cs" />
-    <Compile Include="DeviceManager.cs" />
     <Compile Include="EnumerableDictionary.cs" />
     <Compile Include="EnumerableList.cs" />
     <Compile Include="ExtensionMethods\FloatExtensions.cs" />
+    <Compile Include="GlobalContext.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="IIdentifiedById.cs" />
     <Compile Include="IIdentifiedByIdAndName.cs" />

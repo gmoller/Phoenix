@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
-using Utilities;
+using Utilities.ViewportAdapters;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -28,9 +28,9 @@ namespace PhoenixGamePresentationLibrary
             _imgCursor.SetTopLeftPosition((int)_cursor.Position.X, (int)_cursor.Position.Y);
         }
 
-        internal void Draw(SpriteBatch spriteBatch)
+        internal void Draw(SpriteBatch spriteBatch, ViewportAdapter viewportAdapter)
         {
-            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: DeviceManager.Instance.ViewportAdapter.GetScaleMatrix());
+            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: viewportAdapter.GetScaleMatrix());
             _imgCursor.Draw(spriteBatch);
             spriteBatch.End();
         }

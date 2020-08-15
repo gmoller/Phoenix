@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -48,7 +49,7 @@ namespace PhoenixGamePresentationLibrary
             _hudViewFrame = new Frame(topLeftPosition, Alignment.TopLeft, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame");
             _hudViewFrame.LoadContent(content);
 
-            string GetTextFuncForDate() => Globals.Instance.World.CurrentDate;
+            string GetTextFuncForDate() => _worldView.World.CurrentDate;
             var lblCurrentDate = new LabelAutoSized(new Vector2(_hudViewFrame.Width * 0.5f, 20.0f), Alignment.MiddleCenter, GetTextFuncForDate, "Maleficio-Regular-18", Color.Aquamarine, "lblCurrentDate", _hudViewFrame);
             lblCurrentDate.LoadContent(content);
 
@@ -65,7 +66,7 @@ namespace PhoenixGamePresentationLibrary
             var imgFood = new Image(imgMana.RelativeTopLeft.ToVector2() + new Vector2(0.0f, imgMana.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", "imgFood", resourceFrame);
             imgFood.LoadContent(content);
 
-            string GetTextFuncForGold() => $"{Globals.Instance.World.PlayerFaction.GoldInTreasury} GP (+{Globals.Instance.World.PlayerFaction.GoldPerTurn})";
+            string GetTextFuncForGold() => $"{_worldView.World.PlayerFaction.GoldInTreasury} GP (+{_worldView.World.PlayerFaction.GoldPerTurn})";
             var lblGold = new LabelAutoSized(imgGold.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, GetTextFuncForGold, "CrimsonText-Regular-12", Color.Yellow, "lblGold", resourceFrame);
             lblGold.LoadContent(content);
 
@@ -73,7 +74,7 @@ namespace PhoenixGamePresentationLibrary
             var lblMana = new LabelAutoSized(imgMana.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, GetTextFuncForMana, "CrimsonText-Regular-12", Color.Yellow, "lblMana", resourceFrame);
             lblMana.LoadContent(content);
 
-            string GetTextFuncForFood() => $"{Globals.Instance.World.PlayerFaction.FoodPerTurn} Food";
+            string GetTextFuncForFood() => $"{_worldView.World.PlayerFaction.FoodPerTurn} Food";
             var lblFood = new LabelAutoSized(imgFood.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, GetTextFuncForFood, "CrimsonText-Regular-12", Color.Yellow, "lblFood", resourceFrame);
             lblFood.LoadContent(content);
             #endregion
@@ -185,7 +186,7 @@ namespace PhoenixGamePresentationLibrary
         {
             var x = _area.X + 10.0f;
             var y = _area.Y + 400.0f;
-            foreach (var item in Globals.Instance.World.NotificationList)
+            foreach (var item in _worldView.World.NotificationList)
             {
                 var lines = TextWrapper.WrapText(item, 150, _font);
                 foreach (var line in lines)
@@ -202,14 +203,16 @@ namespace PhoenixGamePresentationLibrary
             var y = _area.Y + _area.Height * 0.96f;
 
             // get tile mouse is over
-            var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
-            var hexPoint = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
+            var cellGrid = _worldView.World.OverlandMap.CellGrid;
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var hexPoint = context.WorldHexPointedAtByMouseCursor;
             if (hexPoint.X >= 0 && hexPoint.Y >= 0 && hexPoint.X < PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS && hexPoint.Y < PhoenixGameLibrary.Constants.WORLD_MAP_ROWS)
             {
                 var cell = cellGrid.GetCell(hexPoint.X, hexPoint.Y);
                 if (cell.SeenState != SeenState.NeverSeen)
                 {
-                    var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
+                    var terrainTypes = ((GameMetadata)context.GameMetadata).TerrainTypes;
+                    var terrainType = terrainTypes[cell.TerrainTypeId];
                     var text1 = $"{terrainType.Name} - {terrainType.FoodOutput} food";
                     spriteBatch.DrawString(_font, text1, new Vector2(x, y), Color.White);
 

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Input;
 using PhoenixGameLibrary;
+using Utilities.ViewportAdapters;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -110,10 +111,10 @@ namespace PhoenixGamePresentationLibrary
             _cursorView.Update(_input, deltaTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, ViewportAdapter viewportAdapter)
         {
-            _worldView.Draw(spriteBatch);
-            _cursorView.Draw(spriteBatch);
+            _worldView.Draw(spriteBatch, viewportAdapter);
+            _cursorView.Draw(spriteBatch, viewportAdapter);
         }
     }
 }

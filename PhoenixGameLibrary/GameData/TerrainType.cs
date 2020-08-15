@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.Remoting.Messaging;
 using Utilities;
 
 namespace PhoenixGameLibrary.GameData
@@ -15,9 +16,9 @@ namespace PhoenixGameLibrary.GameData
         public int Id { get; }
         public string Name { get; }
         public MovementCosts MovementCosts { get; }
-        public float FoodOutput => Globals.Instance.TerrainFoodOutputTypes.Contains(Id) ? Globals.Instance.TerrainFoodOutputTypes[Id].FoodOutput  : 0.0f;
-        public float ProductionPercentage => Globals.Instance.TerrainProductionPercentageTypes.Contains(Id) ? Globals.Instance.TerrainProductionPercentageTypes[Id].ProductionPercentage : 0.0f;
-        public bool CanSettleOn => Globals.Instance.TerrainCanSettleOnTypes.Contains(Id);
+        public float FoodOutput => GetFoodOutput();
+        public float ProductionPercentage => GetProductionPercentage();
+        public bool CanSettleOn => GetCanSettleOn();
         public List<Texture> PossibleTextures { get; }
 
         private TerrainType(int id, string name, MovementCosts movementCosts, params Texture[] possibleTextures)
@@ -40,6 +41,30 @@ namespace PhoenixGameLibrary.GameData
         public override string ToString()
         {
             return DebuggerDisplay;
+        }
+
+        private float GetFoodOutput()
+        {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var terrainFoodOutputTypes = ((GameMetadata)context.GameMetadata).TerrainFoodOutputTypes;
+
+            return terrainFoodOutputTypes.Contains(Id) ? terrainFoodOutputTypes[Id].FoodOutput : 0.0f;
+        }
+
+        private float GetProductionPercentage()
+        {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var terrainProductionPercentageTypes = ((GameMetadata)context.GameMetadata).TerrainProductionPercentageTypes;
+
+            return terrainProductionPercentageTypes.Contains(Id) ? terrainProductionPercentageTypes[Id].ProductionPercentage : 0.0f;
+        }
+
+        private bool GetCanSettleOn()
+        {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var terrainCanSettleOnTypes = ((GameMetadata)context.GameMetadata).TerrainCanSettleOnTypes;
+
+            return terrainCanSettleOnTypes.Contains(Id);
         }
 
         private string DebuggerDisplay => $"{{Id={Id},Name={Name}}}";

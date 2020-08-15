@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using HexLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -59,7 +60,8 @@ namespace PhoenixGamePresentationLibrary
 
         public void LookAtCellPointedAtByMouse()
         {
-            var hexPoint = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var hexPoint = context.WorldHexPointedAtByMouseCursor;
             var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y);
             _centerPosition = newPosition;
         }

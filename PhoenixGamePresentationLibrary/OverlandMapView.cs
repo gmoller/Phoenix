@@ -1,11 +1,9 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using HexLibrary;
 using Input;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.GameData;
 using Utilities;
 using Utilities.ExtensionMethods;
 
@@ -52,15 +50,11 @@ namespace PhoenixGamePresentationLibrary
                 {
                     var cell = cellGrid.GetCell(q, r);
 
-                    //if (cell.BelongsToSettlement >= 0) // TODO: only display if IsCityView
-                    //{
-                    //    DrawCell(spriteBatch, cell, Color.LightSlateGray);
-                    //}
                     if (cell.SeenState == SeenState.NeverSeen)
                     {
                         DrawCell(spriteBatch, cell, Color.White);
                     }
-                    else if (cell.IsSeenByPlayer(Globals.Instance.World))
+                    else if (cell.IsSeenByPlayer(_worldView.World))
                     {
                         DrawCell(spriteBatch, cell, Color.White);
                     }  
@@ -83,15 +77,6 @@ namespace PhoenixGamePresentationLibrary
             if (cell.Borders.IsBitSet((byte)Direction.West)) DrawBorder(spriteBatch, cell, HexVertexDirection.SouthWest,  HexVertexDirection.NorthWest);
             if (cell.Borders.IsBitSet((byte)Direction.NorthWest)) DrawBorder(spriteBatch, cell, HexVertexDirection.NorthWest, HexVertexDirection.North);
             if (cell.Borders.IsBitSet((byte)Direction.NorthEast)) DrawBorder(spriteBatch, cell, HexVertexDirection.North, HexVertexDirection.NorthEast);
-        }
-
-        private void DrawBorder(SpriteBatch spriteBatch, Cell cell, Direction direction, HexVertexDirection vertexDirection1, HexVertexDirection vertexDirection2)
-        {
-            var neighbor = cell.GetNeighbor(direction);
-
-            if (cell.ControlledByFaction == 0 || cell.ControlledByFaction == neighbor.ControlledByFaction) return;
-
-            DrawBorder(spriteBatch, cell, vertexDirection1, vertexDirection2);
         }
 
         private void DrawBorder(SpriteBatch spriteBatch, Cell cell, HexVertexDirection vertexDirection1, HexVertexDirection vertexDirection2)

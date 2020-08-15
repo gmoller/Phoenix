@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.Remoting.Messaging;
 using Utilities;
 using Utilities.ExtensionMethods;
 
@@ -50,9 +51,12 @@ namespace PhoenixGameLibrary.GameData
 
         public bool IsReadyToBeBuilt(List<int> buildingsAlreadyBuilt)
         {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var buildingTypes = ((GameMetadata)context.GameMetadata).BuildingTypes;
+
             foreach (var building in _dependsOnBuildings)
             {
-                var buildingId = Globals.Instance.BuildingTypes[building].Id;
+                var buildingId = buildingTypes[building].Id;
                 if (!buildingsAlreadyBuilt.Contains(buildingId))
                 {
                     return false;

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.GameData;
+using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -71,8 +73,11 @@ namespace PhoenixGameLibrary
             // TODO: wild game not being factored in
 
             // buildings
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var buildingFoodOutputIncreaseTypes = ((GameMetadata)context.GameMetadata).BuildingFoodOutputIncreaseTypes;
+
             var freeFood = 0.0;
-            foreach (var item in Globals.Instance.BuildingFoodOutputIncreaseTypes)
+            foreach (var item in buildingFoodOutputIncreaseTypes)
             {
                 if (buildingsBuilt.Contains(item.Id))
                 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using Input;
 using Utilities;
 
@@ -24,7 +25,8 @@ namespace PhoenixGamePresentationLibrary
 
         private static bool CursorIsOnThisStack(StackView stackView)
         {
-            var hexPoint = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var hexPoint = context.WorldHexPointedAtByMouseCursor;
 
             return stackView.Location == hexPoint;
         }

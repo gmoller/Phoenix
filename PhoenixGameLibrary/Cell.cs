@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.Remoting.Messaging;
 using HexLibrary;
 using PhoenixGameLibrary.GameData;
 using Utilities;
@@ -21,7 +22,7 @@ namespace PhoenixGameLibrary
         public Texture TextureFogOfWar { get; }
         public SeenState SeenState { get; }
         public int ControlledByFaction { get; }
-        public byte Borders { get; set; }
+        public byte Borders { get; }
         #endregion
 
         public int Column => Index % Constants.WORLD_MAP_COLUMNS;
@@ -39,7 +40,10 @@ namespace PhoenixGameLibrary
             }
             else
             {
-                var terrainType = Globals.Instance.TerrainTypes[terrainTypeId];
+                var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+                var terrainTypes = ((GameMetadata)context.GameMetadata).TerrainTypes;
+
+                var terrainType = terrainTypes[terrainTypeId];
                 Texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
             }
             
@@ -60,14 +64,14 @@ namespace PhoenixGameLibrary
             Borders = borders;
         }
 
-        public List<Cell> GetNeighbors()
+        public List<Cell> GetNeighbors(CellGrid cellGrid)
         {
             var neighbors = HexOffsetCoordinates.GetSingleRing(Column, Row, 1);
 
             var returnCells = new List<Cell>();
             foreach (var neighbor in neighbors)
             {
-                var cell = Globals.Instance.World.OverlandMap.CellGrid.GetCell(neighbor.Col, neighbor.Row);
+                var cell = cellGrid.GetCell(neighbor.Col, neighbor.Row);
 
                 if (cell != Empty)
                 {
@@ -78,11 +82,11 @@ namespace PhoenixGameLibrary
             return returnCells;
         }
 
-        public Cell GetNeighbor(Direction direction)
+        public Cell GetNeighbor(Direction direction, CellGrid cellGrid)
         {
             var neighbor = HexOffsetCoordinates.GetNeighbor(Column, Row, direction);
 
-            var cell = Globals.Instance.World.OverlandMap.CellGrid.GetCell(neighbor.Col, neighbor.Row);
+            var cell = cellGrid.GetCell(neighbor.Col, neighbor.Row);
 
             return cell;
         }
@@ -115,11 +119,6 @@ namespace PhoenixGameLibrary
             return obj is Cell cell && this == cell;
         }
 
-        public override int GetHashCode()
-        {
-            return Index.GetHashCode() ^ TerrainTypeId.GetHashCode() ^ Texture.GetHashCode() ^ TextureFogOfWar.GetHashCode() ^ SeenState.GetHashCode() ^ ControlledByFaction.GetHashCode();
-        }
-
         public static bool operator == (Cell a, Cell b)
         {
             return a.Index == b.Index && a.TerrainTypeId == b.TerrainTypeId && a.Texture == b.Texture && a.TextureFogOfWar == b.TextureFogOfWar && a.SeenState == b.SeenState && a.ControlledByFaction == b.ControlledByFaction;
@@ -128,6 +127,11 @@ namespace PhoenixGameLibrary
         public static bool operator !=(Cell a, Cell b)
         {
             return !(a == b);
+        }
+
+        public override int GetHashCode()
+        {
+            return Index.GetHashCode() ^ TerrainTypeId.GetHashCode() ^ Texture.GetHashCode() ^ TextureFogOfWar.GetHashCode() ^ SeenState.GetHashCode() ^ ControlledByFaction.GetHashCode();
         }
 
         public override string ToString()

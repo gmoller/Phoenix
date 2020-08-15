@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +11,7 @@ using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using Utilities;
+using Utilities.ViewportAdapters;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -41,7 +43,8 @@ namespace PhoenixGamePresentationLibrary
             _settlementViews = new SettlementViews(this, World.Settlements);
             _hudView = new HudView(this, _stackViews);
 
-            Camera = new Camera(new Rectangle(0, 0, DeviceManager.Instance.ScreenResolution.X, DeviceManager.Instance.ScreenResolution.Y));
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            Camera = new Camera(new Rectangle(0, 0, context.ActualResolution.X, context.ActualResolution.Y));
             Camera.LoadContent(content);
 
             _overlandSettlementsView.LoadContent(content);
@@ -57,10 +60,11 @@ namespace PhoenixGamePresentationLibrary
         {
             Camera.Update(input, deltaTime);
 
-            var worldPosPointedAtByMouseCursor = Camera.ScreenToWorld(new Vector2(input.MousePosition.X, input.MousePosition.Y));
-            DeviceManager.Instance.WorldPositionPointedAtByMouseCursor = new Utilities.Point((int)worldPosPointedAtByMouseCursor.X, (int)worldPosPointedAtByMouseCursor.Y);
-            var worldHex = HexOffsetCoordinates.FromPixel((int)worldPosPointedAtByMouseCursor.X, (int)worldPosPointedAtByMouseCursor.Y);
-            DeviceManager.Instance.WorldHexPointedAtByMouseCursor = new Utilities.Point(worldHex.Col, worldHex.Row);
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+
+            var worldPositionPointedAtByMouseCursor = GetWorldPositionPointedAtByMouseCursor(Camera, input.MousePosition);
+            context.WorldPositionPointedAtByMouseCursor = worldPositionPointedAtByMouseCursor;
+            context.WorldHexPointedAtByMouseCursor = GetWorldHexPointedAtByMouseCursor(worldPositionPointedAtByMouseCursor);
 
             _overlandMapView.Update(input, deltaTime);
             _overlandSettlementsView.Update(input, deltaTime);
@@ -69,16 +73,30 @@ namespace PhoenixGamePresentationLibrary
             _hudView.Update(input, deltaTime);
         }
 
-        internal void Draw(SpriteBatch spriteBatch)
+        private Utilities.Point GetWorldPositionPointedAtByMouseCursor(Camera camera, Microsoft.Xna.Framework.Point mousePosition)
         {
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform* DeviceManager.Instance.ViewportAdapter.GetScaleMatrix()); // FrontToBack
+            var worldPosPointedAtByMouseCursor = Camera.ScreenToWorld(new Vector2(mousePosition.X, mousePosition.Y));
+
+            return new Utilities.Point((int)worldPosPointedAtByMouseCursor.X, (int)worldPosPointedAtByMouseCursor.Y);
+        }
+
+        private Utilities.Point GetWorldHexPointedAtByMouseCursor(Utilities.Point worldPositionPointedAtByMouseCursor)
+        {
+            var worldHex = HexOffsetCoordinates.FromPixel(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
+
+            return new Utilities.Point(worldHex.Col, worldHex.Row);
+        }
+
+        internal void Draw(SpriteBatch spriteBatch, ViewportAdapter viewportAdapter)
+        {
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform * viewportAdapter.GetScaleMatrix()); // FrontToBack
             _overlandMapView.Draw(spriteBatch);
             _overlandSettlementsView.Draw(spriteBatch);
 
             _stackViews.Draw(spriteBatch);
             spriteBatch.End();
 
-            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: DeviceManager.Instance.ViewportAdapter.GetScaleMatrix());
+            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: viewportAdapter.GetScaleMatrix());
             _hudView.Draw(spriteBatch);
             _settlementViews.Draw(spriteBatch);
             spriteBatch.End();
@@ -105,7 +123,8 @@ namespace PhoenixGamePresentationLibrary
 
         private Dictionary<string, Image> LoadMovementTypeImages(ContentManager content)
         {
-            var movementTypes = Globals.Instance.MovementTypes;
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var movementTypes = ((GameMetadata)context.GameMetadata).MovementTypes;
 
             var movementTypeImages = new Dictionary<string, Image>();
             foreach (var movementType in movementTypes)
@@ -120,7 +139,8 @@ namespace PhoenixGamePresentationLibrary
 
         private Dictionary<string, Button> LoadActionButtons(ContentManager content)
         {
-            var actionTypes = Globals.Instance.ActionTypes;
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var actionTypes = ((GameMetadata)context.GameMetadata).ActionTypes;
 
             var actionButtons = new Dictionary<string, Button>();
             var i = 0;

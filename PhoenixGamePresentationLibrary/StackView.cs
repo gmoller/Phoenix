@@ -104,9 +104,9 @@ namespace PhoenixGamePresentationLibrary
 
             _blink = DetermineBlinkState(_blink, deltaTime);
              
-            ExploreHandler.HandleExplore(this, SetMovementPath);
+            ExploreHandler.HandleExplore(this, SetMovementPath, _worldView.World);
             PotentialMovementHandler.HandlePotentialMovement(input, this, _worldView.World, SetPotentialMovementPath);
-            MovementHandler.HandleMovement(input, this, deltaTime, RestartUnitMovement, StartUnitMovement, MoveStack, MoveStackToCell);
+            MovementHandler.HandleMovement(input, this, deltaTime, RestartUnitMovement, StartUnitMovement, MoveStack, MoveStackToCell, _worldView.World);
 
             ActionButtons.Update(input, deltaTime);
         }
@@ -154,7 +154,7 @@ namespace PhoenixGamePresentationLibrary
 
         private void StartUnitMovement(Point hexToMoveTo)
         {
-            var path = MovementPathDeterminer.DetermineMovementPath(this, Location, hexToMoveTo);
+            var path = MovementPathDeterminer.DetermineMovementPath(this, Location, hexToMoveTo, _worldView.World);
             SetMovementPath(path);
 
             IsMovingState = true;
@@ -175,7 +175,7 @@ namespace PhoenixGamePresentationLibrary
             {
                 //   if exploring: pick new path
                 SetMovementPath(new List<Point>());
-                ExploreHandler.HandleExplore(this, SetMovementPath);
+                ExploreHandler.HandleExplore(this, SetMovementPath, _worldView.World);
             }
 
             MovementCountdownTime -= deltaTime;

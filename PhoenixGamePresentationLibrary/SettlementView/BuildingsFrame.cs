@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Runtime.Remoting.Messaging;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
@@ -44,10 +45,13 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         {
             if (input.IsLeftMouseButtonReleased)
             {
+                var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+                var buildingTypes = ((GameMetadata)context.GameMetadata).BuildingTypes;
+
                 // determine where mouse pointer is (is it over a slot? which slot?)
                 var baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
                 var baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
-                foreach (var building in Globals.Instance.BuildingTypes)
+                foreach (var building in buildingTypes)
                 {
                     var topLeftX = baseTopLeftX + building.Slot.X * 49;
                     var topLeftY = baseTopLeftY + building.Slot.Y * 25;
@@ -66,22 +70,21 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Begin();
-
             _lblBuildings.Draw(spriteBatch);
             _smallFrameBuildings.Draw(spriteBatch);
 
             DrawBuildings(spriteBatch);
             DrawArrows(spriteBatch);
-
-            //spriteBatch.End();
         }
 
         private void DrawBuildings(SpriteBatch spriteBatch)
         {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var buildingTypes = ((GameMetadata)context.GameMetadata).BuildingTypes;
+
             var baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
             var baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
-            foreach (var building in Globals.Instance.BuildingTypes)
+            foreach (var building in buildingTypes)
             {
                 var topLeftX = baseTopLeftX + building.Slot.X * 49;
                 var topLeftY = baseTopLeftY + building.Slot.Y * 25;

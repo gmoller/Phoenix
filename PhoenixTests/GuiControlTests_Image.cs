@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GuiControls;
 using Microsoft.Xna.Framework;
-using Utilities;
 using Point = Microsoft.Xna.Framework.Point;
 
 namespace PhoenixTests
@@ -12,7 +11,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_image_creation_top_left_no_parent()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl image = new Image(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", "image");
             Assert.AreEqual(new Point(100, 100), image.TopLeft);
@@ -32,7 +31,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_image_creation_top_center_no_parent()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl image = new Image(new Vector2(100.0f, 100.0f), Alignment.TopCenter, new Vector2(100.0f, 100.0f), "Icons_1", "", "image");
             Assert.AreEqual(new Point(50, 100), image.TopLeft);
@@ -52,7 +51,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_image_creation_top_right_no_parent()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl image = new Image(new Vector2(100.0f, 100.0f), Alignment.TopRight, new Vector2(100.0f, 100.0f), "Icons_1", "", "image");
             Assert.AreEqual(new Point(0, 100), image.TopLeft);
@@ -72,7 +71,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_image_creation_middle_left_no_parent()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl image = new Image(new Vector2(100.0f, 100.0f), Alignment.MiddleLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", "image");
             Assert.AreEqual(new Point(100, 50), image.TopLeft);
@@ -92,7 +91,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_image_creation_middle_center_no_parent()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl image = new Image(new Vector2(100.0f, 100.0f), Alignment.MiddleCenter, new Vector2(100.0f, 100.0f), "Icons_1", "", "image");
             Assert.AreEqual(new Point(50, 50), image.TopLeft);
@@ -112,7 +111,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_image_creation_middle_right_no_parent()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl image = new Image(new Vector2(100.0f, 100.0f), Alignment.MiddleRight, new Vector2(100.0f, 100.0f), "Icons_1", "", "image");
             Assert.AreEqual(new Point(0, 50), image.TopLeft);
@@ -132,7 +131,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_image_creation_bottom_left_no_parent()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl image = new Image(new Vector2(100.0f, 100.0f), Alignment.BottomLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", "image");
             Assert.AreEqual(new Point(100, 0), image.TopLeft);
@@ -152,7 +151,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_image_creation_bottom_center_no_parent()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl image = new Image(new Vector2(100.0f, 100.0f), Alignment.BottomCenter, new Vector2(100.0f, 100.0f), "Icons_1", "", "image");
             Assert.AreEqual(new Point(50, 0), image.TopLeft);
@@ -172,7 +171,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_image_creation_bottom_right_no_parent()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl image = new Image(new Vector2(100.0f, 100.0f), Alignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", "", "image");
             Assert.AreEqual(new Point(0, 0), image.TopLeft);
@@ -192,7 +191,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_image_creation_top_left_parent_top_left()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             var parent = new Image(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", "parent");
 
@@ -216,7 +215,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_image_creation_top_left_parent_bottom_right()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             var parent = new Image(new Vector2(100.0f, 100.0f), Alignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", "", "parent");
 
@@ -238,7 +237,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_image_creation_middle_center_no_parent_half_screen_resolution()
         {
-            DeviceManager.Instance.SetScreenResolution(960, 540);
+            //DeviceManager.Instance.SetScreenResolution(960, 540);
 
             IControl image = new Image(new Vector2(960.0f, 540.0f), Alignment.MiddleCenter, new Vector2(1920.0f, 1080.0f), "Icons_1", "", "image");
             Assert.AreEqual(new Point(0, 0), image.TopLeft);
@@ -258,7 +257,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_changing_of_image_position()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl image = new Image(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", "image");
             image.SetTopLeftPosition(image.TopLeft.X - 100, image.TopLeft.Y - 100);

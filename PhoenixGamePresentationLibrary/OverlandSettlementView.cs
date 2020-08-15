@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Runtime.Remoting.Messaging;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
@@ -6,7 +7,6 @@ using HexLibrary;
 using Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
-using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
@@ -47,15 +47,16 @@ namespace PhoenixGamePresentationLibrary
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
+            var cellGrid = _worldView.World.OverlandMap.CellGrid;
             var cell = cellGrid.GetCell(Settlement.Location.X, Settlement.Location.Y);
             DrawSettlement(spriteBatch, cell);
         }
 
         private bool CursorIsOnThisSettlement(Settlement settlement)
         {
-            var hexPoint = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
-            bool cursorIsOnThisSettlement = settlement.Location == hexPoint;
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var hexToMoveTo = context.WorldHexPointedAtByMouseCursor;
+            var cursorIsOnThisSettlement = settlement.Location == hexToMoveTo;
 
             return cursorIsOnThisSettlement;
         }

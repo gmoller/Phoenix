@@ -1,14 +1,9 @@
-﻿using System;
-using Utilities;
+﻿using Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
-    public sealed class Globals
+    public class GameMetadata
     {
-        private static readonly Lazy<Globals> Lazy = new Lazy<Globals>(() => new Globals());
-
-        public World World { get; set; }
-
         public NamedDataDictionary<TerrainType> TerrainTypes { get; }
         public DataDictionary<TerrainFoodOutputType> TerrainFoodOutputTypes { get; }
         public DataDictionary<TerrainProductionPercentageType> TerrainProductionPercentageTypes { get; }
@@ -26,9 +21,7 @@ namespace PhoenixGameLibrary.GameData
         public NamedDataDictionary<UnitType> UnitTypes { get; }
         public NamedDataDictionary<ActionType> ActionTypes { get; }
 
-        public static Globals Instance => Lazy.Value;
-
-        private Globals()
+        public GameMetadata()
         {
             TerrainTypes = NamedDataDictionary<TerrainType>.Create(TerrainTypesLoader.Load());
             TerrainFoodOutputTypes = DataDictionary<TerrainFoodOutputType>.Create(TerrainFoodOutputTypesLoader.Load());

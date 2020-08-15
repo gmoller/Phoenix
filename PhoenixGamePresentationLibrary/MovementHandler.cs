@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework.Input;
 using HexLibrary;
 using Input;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.GameData;
 using Utilities;
 using Utilities.ExtensionMethods;
 using Point = Utilities.Point;
@@ -12,7 +12,7 @@ namespace PhoenixGamePresentationLibrary
 {
     internal static class MovementHandler
     {
-        internal static void HandleMovement(InputHandler input, StackView stackView, float deltaTime, Action restartUnitMovement, Action<Point> startUnitMovement, Action<float> moveStack, Action moveStackToCell)
+        internal static void HandleMovement(InputHandler input, StackView stackView, float deltaTime, Action restartUnitMovement, Action<Point> startUnitMovement, Action<float> moveStack, Action moveStackToCell, World world)
         {
             var restartMovement = CheckForRestartOfMovement(stackView);
             if (restartMovement)
@@ -21,7 +21,7 @@ namespace PhoenixGamePresentationLibrary
             }
 
             var (startMovementKeyboard, hexToMoveToKeyboard) = CheckForUnitMovementFromKeyboardInitiation(input, stackView);
-            var (startMovementMouse, hexToMoveToMouse) = CheckForUnitMovementFromMouseInitiation(input, stackView);
+            var (startMovementMouse, hexToMoveToMouse) = CheckForUnitMovementFromMouseInitiation(input, stackView, world);
 
             if (startMovementKeyboard || startMovementMouse)
             {
@@ -64,14 +64,15 @@ namespace PhoenixGamePresentationLibrary
             return costToMoveIntoResult.CanMoveInto ? (true, hexToMoveTo) : (false, new Point(0, 0));
         }
 
-        private static (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input, StackView stackView)
+        private static (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input, StackView stackView, World world)
         {
             if (stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.IsLeftMouseButtonReleased) return (false, new Point(0, 0));
 
             // unit is selected, left mouse button released and unit is not already moving
-            var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var hexToMoveTo = context.WorldHexPointedAtByMouseCursor;
             if (hexToMoveTo == stackView.Location) return (false, new Point(0, 0));
-            var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
+            var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new Point(0, 0));
 
             var costToMoveIntoResult = stackView.GetCostToMoveInto(cellToMoveTo);

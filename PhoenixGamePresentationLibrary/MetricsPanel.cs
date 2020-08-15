@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using GuiControls;
 using Microsoft.Xna.Framework.Graphics;
 using Utilities;
+using Utilities.ViewportAdapters;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -35,9 +38,12 @@ namespace PhoenixGamePresentationLibrary
         private Label _lblResolution7;
         private Label _lblResolution8;
 
+        private readonly Stack<Viewport> _viewports;
+
         public MetricsPanel(Vector2 position)
         {
             _position = position;
+            _viewports = new Stack<Viewport>();
         }
 
         public void LoadContent(ContentManager content)
@@ -98,28 +104,31 @@ namespace PhoenixGamePresentationLibrary
             _lblResolution8.LoadContent(content);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, ViewportAdapter viewportAdapter)
         {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var gameWindow = (GameWindow)context.GameWindow;
+            var graphicsDevice = (GraphicsDevice)context.GraphicsDevice;
+
             _fps.Update(gameTime);
 
-            MouseState mouseState = Mouse.GetState();
+            var mouseState = Mouse.GetState();
 
-            var device = DeviceManager.Instance;
             _lblGcCount2.Text = $"{GC.CollectionCount(0)},{GC.CollectionCount(1)},{GC.CollectionCount(2)}";
             _lblFps2.Text = $"{_fps.UpdateFramesPerSecond}/{_fps.DrawFramesPerSecond}";
             _lblMemory2.Text = $"{GC.GetTotalMemory(false) / 1024} KB";
-            _lblWorldHex2.Text = $"{device.WorldHexPointedAtByMouseCursor.X},{device.WorldHexPointedAtByMouseCursor.Y}";
-            _lblWorldPosition2.Text = $"({device.WorldPositionPointedAtByMouseCursor.X},{device.WorldPositionPointedAtByMouseCursor.Y})";
+            _lblWorldHex2.Text = $"{context.WorldHexPointedAtByMouseCursor.X},{context.WorldHexPointedAtByMouseCursor.Y}";
+            _lblWorldPosition2.Text = $"({context.WorldPositionPointedAtByMouseCursor.X},{context.WorldPositionPointedAtByMouseCursor.Y})";
             _lblScreenPosition2.Text = $"({mouseState.Position.X},{mouseState.Position.Y})";
-            _lblResolution2.Text = $"{device.Window.ClientBounds.Width}x{device.Window.ClientBounds.Height}";
-            _lblResolution4.Text = $"{device.ViewportAdapter.Viewport.Width}x{device.ViewportAdapter.Viewport.Height}";
-            _lblResolution6.Text = $"{device.GraphicsDevice.DisplayMode.Width}x{device.GraphicsDevice.DisplayMode.Height}";
+            _lblResolution2.Text = $"{gameWindow.ClientBounds.Width}x{gameWindow.ClientBounds.Height}";
+            _lblResolution4.Text = $"{viewportAdapter.Viewport.Width}x{viewportAdapter.Viewport.Height}";
+            _lblResolution6.Text = $"{graphicsDevice.DisplayMode.Width}x{graphicsDevice.DisplayMode.Height}";
             _lblResolution8.Text = $"{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width}x{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height}";
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            DeviceManager.Instance.SetViewport(DeviceManager.Instance.MetricsViewport);
+            SetViewport(GetViewport());
 
             _lblGcCount1.Draw(spriteBatch);
             _lblGcCount2.Draw(spriteBatch);
@@ -142,9 +151,35 @@ namespace PhoenixGamePresentationLibrary
             _lblResolution7.Draw(spriteBatch);
             _lblResolution8.Draw(spriteBatch);
 
-            DeviceManager.Instance.ResetViewport();
+            ResetViewport();
 
             _fps.Draw();
+        }
+
+        private void SetViewport(Viewport newViewport)
+        {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var graphicsDevice = (GraphicsDevice)context.GraphicsDevice;
+
+            _viewports.Push(graphicsDevice.Viewport);
+            graphicsDevice.Viewport = newViewport;
+        }
+
+        private void ResetViewport()
+        {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var graphicsDevice = (GraphicsDevice)context.GraphicsDevice;
+
+            var previousViewport = _viewports.Pop();
+            graphicsDevice.Viewport = previousViewport;
+        }
+
+        private Viewport GetViewport()
+        {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var graphicsDevice = (GraphicsDevice)context.GraphicsDevice;
+
+            return new Viewport(graphicsDevice.Viewport.X, graphicsDevice.Viewport.Y, 300, 201, 0, 1);
         }
     }
 }

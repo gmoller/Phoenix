@@ -72,7 +72,7 @@ namespace PhoenixGameLibrary
                 var borders = 0;
                 for (var i = 0; i < 6; i++)
                 {
-                    var neighbor = cell.GetNeighbor((Direction)i);
+                    var neighbor = cell.GetNeighbor((Direction)i, this);
                     borders = cell.ControlledByFaction == neighbor.ControlledByFaction ? borders.ResetBit(i) : borders.SetBit(i);
                 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using AssetsLibrary;
 using Input;
 using Microsoft.Xna.Framework;
@@ -210,7 +211,8 @@ namespace GuiControls
             }
             else
             {
-                var worldPosition = DeviceManager.Instance.WorldPositionPointedAtByMouseCursor;
+                var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+                var worldPosition = context.WorldPositionPointedAtByMouseCursor;
                 mousePosition = new Point(worldPosition.X, worldPosition.Y);
             }
 

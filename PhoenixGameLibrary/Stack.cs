@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -67,7 +68,7 @@ namespace PhoenixGameLibrary
 
         internal void MoveTo(Point locationToMoveTo)
         {
-            var cellToMoveTo = Globals.Instance.World.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
+            var cellToMoveTo = _world.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
             var movementCost = GetCostToMoveInto(cellToMoveTo);
 
             foreach (var unit in _units)
@@ -95,7 +96,9 @@ namespace PhoenixGameLibrary
             if (cell == Cell.Empty) return new GetCostToMoveIntoResult(false);
             if (cell.SeenState == SeenState.NeverSeen) return new GetCostToMoveIntoResult(true, 9999999.9f);
 
-            var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var terrainTypes = ((GameMetadata)context.GameMetadata).TerrainTypes;
+            var terrainType = terrainTypes[cell.TerrainTypeId];
 
             return GetCostToMoveInto(terrainType);
         }
@@ -197,8 +200,11 @@ namespace PhoenixGameLibrary
 
         private List<string> DetermineActions(Units units)
         {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var actionTypes = ((GameMetadata)context.GameMetadata).ActionTypes;
+
             var movementActions = new List<string>();
-            foreach (var actionType in Globals.Instance.ActionTypes)
+            foreach (var actionType in actionTypes)
             {
                 if (actionType.AppliesToAll)
                 {

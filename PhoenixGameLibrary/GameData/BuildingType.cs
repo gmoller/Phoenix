@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.Remoting.Messaging;
 using Utilities;
 
 namespace PhoenixGameLibrary.GameData
@@ -52,17 +53,19 @@ namespace PhoenixGameLibrary.GameData
         {
             if (buildingsAlreadyBuilt.Contains(Id)) return false;
 
-            var isReadyToBeBuilt = true;
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var buildingTypes = ((GameMetadata)context.GameMetadata).BuildingTypes;
+
             foreach (var building in _dependsOnBuildings)
             {
-                var buildingId = Globals.Instance.BuildingTypes[building].Id;
+                var buildingId = buildingTypes[building].Id;
                 if (!buildingsAlreadyBuilt.Contains(buildingId))
                 {
                     return false;
                 }
             }
 
-            return isReadyToBeBuilt;
+            return true;
         }
 
         public override string ToString()

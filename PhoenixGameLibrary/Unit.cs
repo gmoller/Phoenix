@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -94,7 +95,9 @@ namespace PhoenixGameLibrary
             if (cell == Cell.Empty) return new GetCostToMoveIntoResult(false);
             if (cell.SeenState == SeenState.NeverSeen) return new GetCostToMoveIntoResult(true, 9999999.9f);
 
-            var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var terrainTypes = ((GameMetadata)context.GameMetadata).TerrainTypes;
+            var terrainType = terrainTypes[cell.TerrainTypeId];
 
             return CostToMoveInto(terrainType);
         }
@@ -142,7 +145,7 @@ namespace PhoenixGameLibrary
 
         internal void SetSeenCells(Point location)
         {
-            var cellGrid = Globals.Instance.World.OverlandMap.CellGrid;
+            var cellGrid = _world.OverlandMap.CellGrid;
             _seenCells = cellGrid.GetCatchment(location.X, location.Y, GetScoutingRange());
             foreach (var item in _seenCells)
             {
@@ -153,12 +156,15 @@ namespace PhoenixGameLibrary
 
         private int GetScoutingRange()
         {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var movementTypes = ((GameMetadata)context.GameMetadata).MovementTypes;
+
             var scoutingRange = 1;
 
             var incrementByForMovementType = 0;
             foreach (var movementTypeKey in _unitType.MovementTypes)
             {
-                var movementType = Globals.Instance.MovementTypes[movementTypeKey];
+                var movementType = movementTypes[movementTypeKey];
                 var incrementSightBy = movementType.IncrementSightBy;
                 if (incrementSightBy > incrementByForMovementType)
                 {

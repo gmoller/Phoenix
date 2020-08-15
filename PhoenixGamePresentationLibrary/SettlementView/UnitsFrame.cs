@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
 using PhoenixGameLibrary.GameData;
+using Utilities;
 
 namespace PhoenixGamePresentationLibrary.SettlementView
 {
@@ -60,7 +62,9 @@ namespace PhoenixGamePresentationLibrary.SettlementView
             var x = baseTopLeftX;
             var y = baseTopLeftY;
 
-            foreach (var unit in Globals.Instance.UnitTypes)
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var unitTypes = ((GameMetadata)context.GameMetadata).UnitTypes;
+            foreach (var unit in unitTypes)
             {
                 if (_parent.Settlement.UnitCanBeBuilt(unit.Name))
                 {
@@ -77,9 +81,12 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         }
 
         private void UnitClick(object sender, EventArgs e)
-        { 
+        {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var unitTypes = ((GameMetadata)context.GameMetadata).UnitTypes;
+
             var unit = (LabelSized)sender;
-            var unit2 = Globals.Instance.UnitTypes[unit.Name];
+            var unit2 = unitTypes[unit.Name];
             _parent.Settlement.AddToProductionQueue(unit2);
         }
     }

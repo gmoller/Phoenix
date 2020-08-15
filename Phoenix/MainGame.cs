@@ -1,17 +1,23 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PhoenixGameLibrary;
+using PhoenixGameLibrary.GameData;
 using PhoenixGamePresentationLibrary;
 using Utilities;
 using Utilities.ViewportAdapters;
+using Point = Utilities.Point;
 
 namespace Phoenix
 {
     public class MainGame : Game
     {
         private readonly GraphicsDeviceManager _graphicsDeviceManager;
+
+        private SpriteBatch _spriteBatch;
+        private ViewportAdapter _viewportAdapter;
 
         private PhoenixGame _phoenixGame;
         private PhoenixGameView _phoenixGameView;
@@ -25,21 +31,27 @@ namespace Phoenix
 
         protected override void Initialize()
         {
-            Logger.Instance.Log("Initializing...");
+            Logger.Instance.Log("MainGame Initializing...");
 
             Window.Position = new Microsoft.Xna.Framework.Point(0, 0);
             VariableTimeStep();
-            DeviceManager.Instance.GraphicsDevice = GraphicsDevice;
-            DeviceManager.Instance.GraphicsDeviceManager = _graphicsDeviceManager;
-            DeviceManager.Instance.Window = Window;
-            //DeviceManager.Instance.SetScreenResolution(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
-            //DeviceManager.Instance.SetScreenResolution(960, 540);
-            //DeviceManager.Instance.SetScreenResolution(1600, 1200);
-            //DeviceManager.Instance.SetScreenResolution(1680, 1050);
-            //DeviceManager.Instance.SetScreenResolution(1024, 900);
-            //DeviceManager.Instance.SetScreenResolution(800, 600);
-            //DeviceManager.Instance.SetScreenResolution(320, 240);
+
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+
+            context.GameMetadata = new GameMetadata();
+
+            context.GraphicsDevice = GraphicsDevice;
+            context.GraphicsDeviceManager = _graphicsDeviceManager;
+            context.GameWindow = Window;
+
+            if (context.DesiredResolution == Point.Empty)
+            {
+                SetScreenResolution(_graphicsDeviceManager, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            }
+            else
+            {
+                SetScreenResolution(_graphicsDeviceManager, context.DesiredResolution.X, context.DesiredResolution.Y);
+            }
 
             _phoenixGame = new PhoenixGame();
             _phoenixGameView = new PhoenixGameView(_phoenixGame);
@@ -62,12 +74,27 @@ namespace Phoenix
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000.0f / 60); // 60fps
         }
 
+        private void SetScreenResolution(GraphicsDeviceManager graphicsDeviceManager, int width, int height)
+        {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+
+            graphicsDeviceManager.PreferredBackBufferWidth = width;
+            graphicsDeviceManager.PreferredBackBufferHeight = height;
+            //graphicsDeviceManager.IsFullScreen = true;
+            graphicsDeviceManager.ApplyChanges();
+
+            var actualWidth = graphicsDeviceManager.GraphicsDevice.Viewport.Width;
+            var actualHeight = graphicsDeviceManager.GraphicsDevice.Viewport.Height;
+            context.ActualResolution = new Point(actualWidth, actualHeight);
+            context.ScreenRatio = new Vector2(actualWidth / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, actualHeight / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+        }
+
         protected override void LoadContent()
         {
             Logger.Instance.Log("Loading content...");
 
-            DeviceManager.Instance.ViewportAdapter = new ScalingViewportAdapter(GraphicsDevice, 1920, 1080);
-            DeviceManager.Instance.SetCurrentSpriteBatch(new SpriteBatch(GraphicsDevice));
+            _viewportAdapter = new ScalingViewportAdapter(GraphicsDevice, 1920, 1080);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _phoenixGameView.LoadContent(GraphicsDevice, Content);
 
@@ -81,7 +108,7 @@ namespace Phoenix
         {
             Logger.Instance.Log("Unloading content...");
 
-            DeviceManager.Instance.DisposeSpriteBatches();
+            _spriteBatch.Dispose();
 
             Logger.Instance.LogComplete();
         }
@@ -95,7 +122,7 @@ namespace Phoenix
 
             _phoenixGame.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             _phoenixGameView.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds); // here for controls updates
-            _metricsPanel.Update(gameTime);
+            _metricsPanel.Update(gameTime, _viewportAdapter);
 
             base.Update(gameTime);
         }
@@ -104,13 +131,11 @@ namespace Phoenix
         {
             GraphicsDevice.Clear(Color.Black);
 
-            var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
+            _phoenixGameView.Draw(_spriteBatch, _viewportAdapter);
 
-            _phoenixGameView.Draw(spriteBatch);
-
-            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: DeviceManager.Instance.ViewportAdapter.GetScaleMatrix());
-            _metricsPanel.Draw(spriteBatch);
-            spriteBatch.End();
+            _spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: _viewportAdapter.GetScaleMatrix());
+            _metricsPanel.Draw(_spriteBatch);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

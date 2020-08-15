@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using Input;
 using PhoenixGameLibrary;
 using Utilities;
@@ -22,7 +23,7 @@ namespace PhoenixGamePresentationLibrary
             var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(stackView, world);
             if (!potentialMovement) return new List<Point>();
 
-            var path = MovementPathDeterminer.DetermineMovementPath(stackView, stackView.Location, hexToMoveTo);
+            var path = MovementPathDeterminer.DetermineMovementPath(stackView, stackView.Location, hexToMoveTo, world);
 
             return path;
 
@@ -30,7 +31,8 @@ namespace PhoenixGamePresentationLibrary
 
         private static (bool potentialMovement, Point hexToMoveTo) CheckForPotentialUnitMovement(StackView stackView, World world)
         {
-            var hexToMoveTo = DeviceManager.Instance.WorldHexPointedAtByMouseCursor;
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var hexToMoveTo = context.WorldHexPointedAtByMouseCursor;
             var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new Point(0, 0));
             var costToMoveIntoResult = stackView.GetCostToMoveInto(cellToMoveTo);

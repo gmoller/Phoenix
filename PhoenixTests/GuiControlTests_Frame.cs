@@ -12,7 +12,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_frame_creation_top_left_no_parent()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl frame = new Frame(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame");
             Assert.AreEqual(new Point(100, 100), frame.TopLeft);
@@ -32,7 +32,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_frame_creation_bottom_right_no_parent()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl frame = new Frame(new Vector2(100.0f, 100.0f), Alignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame");
             Assert.AreEqual(new Point(0, 0), frame.TopLeft);
@@ -52,7 +52,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_frame_creation_top_left_parent_top_left()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             var parent = new Frame(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "parent");
 
@@ -76,7 +76,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_frame_creation_top_left_parent_bottom_right()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             var parent = new Frame(new Vector2(100.0f, 100.0f), Alignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "parent");
 
@@ -98,7 +98,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_frame_creation_middle_center_no_parent_half_screen_resolution()
         {
-            DeviceManager.Instance.SetScreenResolution(960, 540);
+            //DeviceManager.Instance.SetScreenResolution(960, 540);
 
             IControl frame = new Frame(new Vector2(960.0f, 540.0f), Alignment.MiddleCenter, new Vector2(1920.0f, 1080.0f), "Icons_1", "", 10, 10, 10, 10, "frame");
             Assert.AreEqual(new Point(0, 0), frame.TopLeft);
@@ -118,7 +118,7 @@ namespace PhoenixTests
         [TestMethod]
         public void Test_changing_of_frame_position()
         {
-            DeviceManager.Instance.SetScreenResolution(1920, 1080);
+            //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl frame = new Frame(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame");
             frame.SetTopLeftPosition(frame.TopLeft.X - 100, frame.TopLeft.Y - 100);

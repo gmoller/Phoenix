@@ -5,8 +5,10 @@ namespace Utilities
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct Point
     {
+        #region State
         public int X { get; }
         public int Y { get; }
+        #endregion
 
         public Point(int x, int y)
         {
@@ -16,34 +18,26 @@ namespace Utilities
 
         public static Point Empty => new Point(0, 0);
 
-        public static bool operator ==(Point p1, Point p2)
-        {
-            return p1.X == p2.X && p1.Y == p2.Y;
-        }
-
-        public static bool operator !=(Point p1, Point p2)
-        {
-            return p1.X != p2.X || p1.Y != p2.Y;
-        }
+        #region Overrides and Overloads
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Point))
-            {
-                return false;
-            }
+            return obj is Point point && this == point;
+        }
 
-            var point = (Point)obj;
+        public static bool operator == (Point a, Point b)
+        {
+            return a.X == b.X && a.Y == b.Y;
+        }
 
-            return X == point.X && Y == point.Y;
+        public static bool operator != (Point a, Point b)
+        {
+            return !(a == b);
         }
 
         public override int GetHashCode()
         {
-            var hashCode = 1861411795;
-            hashCode = hashCode * -1521134295 + X.GetHashCode();
-            hashCode = hashCode * -1521134295 + Y.GetHashCode();
-            return hashCode;
+            return X.GetHashCode() ^ Y.GetHashCode();
         }
 
         public override string ToString()
@@ -52,5 +46,8 @@ namespace Utilities
         }
 
         private string DebuggerDisplay => $"{{X={X},Y={Y}}}";
+
+        #endregion
+
     }
 }

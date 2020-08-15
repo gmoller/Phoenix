@@ -29,8 +29,6 @@ namespace PhoenixGameLibrary
 
         internal World(int numberOfColumns, int numberOfRows)
         {
-            Globals.Instance.World = this;
-
             PlayerFaction = new Faction();
             OverlandMap = new OverlandMap(this, numberOfColumns, numberOfRows);
             Settlements = new Settlements(this);
@@ -46,7 +44,7 @@ namespace PhoenixGameLibrary
 
         internal void AddUnit(Point location, UnitType unitType)
         {
-            var addUnitCommand = new AddUnitCommand { Payload = (location, unitType, Stacks) };
+            var addUnitCommand = new AddUnitCommand { Payload = (location, unitType, Stacks, this) };
             addUnitCommand.Execute();
         }
 
