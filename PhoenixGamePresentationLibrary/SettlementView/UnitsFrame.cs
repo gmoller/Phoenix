@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
+using PhoenixGameLibrary;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 

@@ -1,6 +1,7 @@
-﻿using Utilities;
+﻿using PhoenixGameLibrary.GameData;
+using Utilities;
 
-namespace PhoenixGameLibrary.GameData
+namespace PhoenixGameLibrary
 {
     public class GameMetadata
     {
