@@ -8,10 +8,14 @@ namespace PhoenixGamePresentationLibrary
 {
     internal class SettlementViews
     {
+        #region State
         private readonly WorldView _worldView;
 
         private readonly Settlements _settlements;
         private readonly List<SettlementView.SettlementView> _settlementViews;
+
+        private ContentManager _content;
+        #endregion
 
         internal SettlementViews(WorldView worldView, Settlements settlements)
         {
@@ -28,10 +32,17 @@ namespace PhoenixGamePresentationLibrary
                 settlementView.LoadContent(content);
                 _settlementViews.Add(settlementView);
             }
+
+            _content = content;
         }
 
         internal void Update(InputHandler input, float deltaTime)
         {
+            while (_settlementViews.Count < _settlements.Count)
+            {
+                CreateNewSettlementView(_worldView, _settlements[_settlementViews.Count]);
+            }
+
             foreach (var settlementView in _settlementViews)
             {
                 settlementView.Update(input, deltaTime);
@@ -47,6 +58,13 @@ namespace PhoenixGamePresentationLibrary
                     settlementView.Draw(spriteBatch);
                 }
             }
+        }
+
+        private void CreateNewSettlementView(WorldView worldView, Settlement settlement)
+        {
+            var settlementView = new SettlementView.SettlementView(settlement);
+            settlementView.LoadContent(_content);
+            _settlementViews.Add(settlementView);
         }
     }
 }

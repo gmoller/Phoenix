@@ -23,7 +23,7 @@ namespace PhoenixGameLibrary
         {
             PlayerFaction = new Faction();
             OverlandMap = new OverlandMap(this, numberOfColumns, numberOfRows);
-            Settlements = new Settlements(this);
+            Settlements = new Settlements();
             Stacks = new Stacks();
             _turnNumber = 0;
             NotificationList = new NotificationList();

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -9,18 +8,16 @@ namespace PhoenixGameLibrary
     public class Settlements : IEnumerable<Settlement>
     {
         #region State
-        private readonly World _world;
-
         private readonly List<Settlement> _settlements;
 
         public int FoodProducedThisTurn { get; private set; }
         #endregion
 
         public Settlement this[int index] => _settlements[index];
+        public int Count => _settlements.Count;
 
-        internal Settlements(World world)
+        internal Settlements()
         {
-            _world = world;
             _settlements = new List<Settlement>();
         }
 

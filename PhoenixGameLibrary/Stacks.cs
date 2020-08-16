@@ -12,7 +12,6 @@ namespace PhoenixGameLibrary
         #endregion
 
         public Stack this[int index] => _stacks[index];
-
         public int Count => _stacks.Count;
 
         internal Stacks()
