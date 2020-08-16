@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using PhoenixGameLibrary.GameData;
-using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -11,8 +9,6 @@ namespace PhoenixGameLibrary
     public class Units : IEnumerable<Unit>
     {
         #region State
-        private readonly World _world;
-
         private readonly List<Unit> _units;
         #endregion
 
@@ -20,9 +16,8 @@ namespace PhoenixGameLibrary
 
         internal int Count => _units.Count;
 
-        internal Units(World world)
+        internal Units()
         {
-            _world = world;
             _units = new List<Unit>();
         }
 

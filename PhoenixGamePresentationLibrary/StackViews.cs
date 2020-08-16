@@ -13,6 +13,7 @@ namespace PhoenixGamePresentationLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     internal class StackViews : IEnumerable<StackView>
     {
+        #region State
         private readonly WorldView _worldView;
 
         private readonly Stacks _stacks;
@@ -28,6 +29,7 @@ namespace PhoenixGamePresentationLibrary
         internal AtlasSpec2 UnitAtlas { get; private set; }
 
         internal StackView Current { get; private set; }
+        #endregion
 
         public int Count => _stackViews.Count;
 

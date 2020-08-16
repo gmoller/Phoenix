@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Remoting.Messaging;
-using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -14,6 +13,7 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Unit
     {
+        #region State
         private readonly World _world;
 
         private readonly UnitType _unitType;
@@ -23,6 +23,7 @@ namespace PhoenixGameLibrary
         private Guid Id { get; }
         public Point Location { get; internal set; } // hex cell the unit is in
         public float MovementPoints { get; internal set; }
+        #endregion
 
         private string Name => _unitType.Name;
         public EnumerableList<string> Actions => new EnumerableList<string>(_unitType.Actions);

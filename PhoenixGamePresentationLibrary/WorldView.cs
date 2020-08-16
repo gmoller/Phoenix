@@ -16,6 +16,9 @@ namespace PhoenixGamePresentationLibrary
 {
     public class WorldView
     {
+        #region State
+        public World World { get; }
+
         private OverlandMapView _overlandMapView;
         private OverlandSettlementViews _overlandSettlementsView;
         private StackViews _stackViews;
@@ -25,7 +28,8 @@ namespace PhoenixGamePresentationLibrary
         private Dictionary<string, Button> _actionButtons;
 
         public Camera Camera { get; private set; }
-        public World World { get; }
+        #endregion 
+
         public EnumerableDictionary<Image> MovementTypeImages => new EnumerableDictionary<Image>(_movementTypeImages);
         public EnumerableDictionary<Button> ActionButtons => new EnumerableDictionary<Button>(_actionButtons);
 

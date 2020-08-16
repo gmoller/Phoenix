@@ -7,7 +7,9 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Stacks : IEnumerable<Stack>
     {
+        #region State
         private readonly List<Stack> _stacks;
+        #endregion
 
         public Stack this[int index] => _stacks[index];
 

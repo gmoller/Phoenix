@@ -16,6 +16,7 @@ namespace PhoenixGamePresentationLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     internal class StackView
     {
+        #region State
         private const float BLINK_TIME_IN_MILLISECONDS = 250.0f;
         private const float MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS = 250.0f;
 
@@ -33,6 +34,7 @@ namespace PhoenixGamePresentationLibrary
         public Guid Id { get; }
         public bool IsMovingState { get; private set; }
         public float MovementCountdownTime { get; private set; }
+        #endregion
 
         public bool IsBusy => _stack.IsBusy;
         public UnitStatus Status => _stack.Status;
