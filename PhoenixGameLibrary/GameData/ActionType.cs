@@ -43,12 +43,12 @@ namespace PhoenixGameLibrary.GameData
             var actionTypes = new List<ActionType>
             {
                 ActionType.Create(0, "Done", "Done", true),
-                ActionType.Create(1, "Patrol", "Patrol", true),
-                ActionType.Create(2, "Wait", "Wait", true),
-                ActionType.Create(3, "BuildOutpost", "Build", false),
-                ActionType.Create(4, "Purify", "Purify", false),
-                ActionType.Create(5, "Fortify", "Fortify", true),
-                ActionType.Create(6, "Explore", "Explore", true)
+                ActionType.Create(1, "Wait", "Wait", true),
+                ActionType.Create(2, "Patrol", "Patrol", true),
+                ActionType.Create(3, "Fortify", "Fortify", true),
+                ActionType.Create(4, "Explore", "Explore", true),
+                ActionType.Create(5, "BuildOutpost", "Build", false),
+                ActionType.Create(6, "Purify", "Purify", false)
             };
 
             return NamedDataDictionary<ActionType>.Create(actionTypes);

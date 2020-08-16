@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using HexLibrary;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -18,7 +20,7 @@ namespace PhoenixGameLibrary
         public UnitStatus Status { get; private set; }
         #endregion
 
-        public Point Location => _units[0].Location;
+        public Point Location => _units.Count > 0 ?_units[0].Location : Point.Empty;
 
         public float MovementPoints => DetermineMovementPoints();
         public EnumerableList<string> MovementTypes => new EnumerableList<string>(DetermineMovementTypes());
@@ -206,31 +208,67 @@ namespace PhoenixGameLibrary
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
             var actionTypes = ((GameMetadata)context.GameMetadata).ActionTypes;
 
-            var movementActions = new List<string>();
-            foreach (var actionType in actionTypes)
-            {
-                if (actionType.AppliesToAll)
-                {
-                    if (actionType.AppliesToAll)
-                    {
-                        movementActions.Add(actionType.ButtonName);
-                    }
-                }
-            }
+            // first add actions that apply to all
+            var filteredActionTypes = (from actionType in actionTypes where actionType.AppliesToAll select actionType).ToList();
 
+            // then add any other actions that apply to units
             foreach (var unit in units)
             {
                 var unitActions = unit.Actions;
                 foreach (var action in unitActions)
                 {
-                    if (!movementActions.Contains(action))
+                    var actionType = actionTypes[action];
+                    var addAction = false;
+                    // don't add if there's already an action added (i.e. no duplicates)
+                    if (filteredActionTypes.All(at => at.ButtonName != action))
                     {
-                        movementActions.Add(action);
+                        // do a specific check for this action
+                        // TODO: move this into a Func on the ActionType: addAction = actionType.DoSpecificCheck(Location);
+                        if (action == "BuildOutpost")
+                        {
+                            addAction = CanSettleOnTerrain(Location);
+                        }
+                        else
+                        {
+                            addAction = true;
+                        }
+                    }
+
+                    if (addAction)
+                    {
+                        filteredActionTypes.Add(actionType);
                     }
                 }
             }
 
-            return movementActions;
+            var actionsNames = (from action in filteredActionTypes select action.Name).ToList();
+
+            return actionsNames;
+        }
+
+        private bool CanSettleOnTerrain(Point thisLocation)
+        {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var terrainTypes = ((GameMetadata)context.GameMetadata).TerrainTypes;
+
+            // if terrain is settle-able
+            var cell = _world.OverlandMap.CellGrid.GetCell(thisLocation);
+            var terrainType = terrainTypes[cell.TerrainTypeId];
+
+            if (!terrainType.CanSettleOn) return false;
+            
+            // and not within 4 distance from another settlement
+            var settlements = _world.Settlements;
+            foreach (var settlement in settlements)
+            {
+                var distance = HexOffsetCoordinates.GetDistance(thisLocation.X, thisLocation.Y, settlement.Location.X, settlement.Location.Y);
+                if (distance >= 4)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private bool IsSwimming(Units units)

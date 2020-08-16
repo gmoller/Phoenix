@@ -144,10 +144,17 @@ namespace PhoenixGamePresentationLibrary
 
             var actionButtons = new Dictionary<string, Button>();
             var i = 0;
+            var x = 1680; // position of unitFrame BottomRight: (1680;806)
+            var y = 806;
+            var buttonSize = new Vector2(115.0f, 30.0f);
             foreach (var actionType in actionTypes)
             {
+                var xOffset = buttonSize.X * (i % 2);
+                var yOffset = buttonSize.Y * (i / 2); // math.Floor
+                var position = new Vector2(x + xOffset, y + yOffset);
                 i++;
-                var button = new Button(Vector2.Zero, Alignment.TopLeft, new Vector2(115.0f, 30.0f), "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_n", "simpleb_h", actionType.Name);
+
+                var button = new Button(position, Alignment.TopLeft, buttonSize, "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_a", "simpleb_h", actionType.Name);
                 button.LoadContent(content);
                 button.Click += (o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name));
                 var label = new LabelSized(button.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black, $"label{i}", null, button);

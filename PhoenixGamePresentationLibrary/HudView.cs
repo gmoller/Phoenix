@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -97,7 +96,7 @@ namespace PhoenixGamePresentationLibrary
             //var newFrame = new Frame(json);
 
             var pos = new Vector2(1920.0f, 1080.0f);
-            var btnEndTurn = new Button(pos, Alignment.BottomRight, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_n", "reg_button_h", "btnEndTurn");
+            var btnEndTurn = new Button(pos, Alignment.BottomRight, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h", "btnEndTurn");
             btnEndTurn.LoadContent(content);
             btnEndTurn.Click += BtnEndTurnClick;
 
@@ -180,17 +179,10 @@ namespace PhoenixGamePresentationLibrary
         private void DrawActionButtons(SpriteBatch spriteBatch)
         {
             var selectedStackViewActions = SelectedStackView.Actions;
-            var i = 0;
-            var x = 1680; // position of unitFrame BottomRight: (1680;806)
-            var y = 806;
             foreach (var actionButton in _actionButtons)
             {
-                var xOffset = actionButton.Width * (i % 2);
-                var yOffset = actionButton.Height * (i / 2); // math.Floor
-                actionButton.SetTopLeftPosition(x + xOffset, y + yOffset);
                 actionButton.Enabled = selectedStackViewActions.Contains(actionButton.Name);
                 actionButton.Draw(spriteBatch);
-                i++;
             }
         }
 

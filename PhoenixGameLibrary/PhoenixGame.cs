@@ -17,7 +17,7 @@ namespace PhoenixGameLibrary
 
             World.AddSettlement(new Point(12, 9), "Fairhaven", "Barbarians");
             World.AddUnit(new Point(12, 9), unitTypes["Test Dude"]);
-            World.AddUnit(new Point(12, 9), unitTypes["Barbarian Settlers"]);
+            World.AddUnit(new Point(15, 7), unitTypes["Barbarian Settlers"]);
             World.AddUnit(new Point(12, 9), unitTypes["Barbarian Spearmen"]);
         }
 
