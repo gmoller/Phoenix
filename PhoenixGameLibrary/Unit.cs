@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Remoting.Messaging;
+using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -60,10 +61,8 @@ namespace PhoenixGameLibrary
 
         internal void DoBuildAction()
         {
-            // assume settle for now 
-            // check if can settle
-            // if can call create outpost command, and return true
-            // if not return false
+            // assume settler for now
+            _world.AddSettlement(Location, "Coldwind Creek", "Barbarians"); // TODO: get new from user and race type name from faction
         }
 
         internal void SetStatusToNone()

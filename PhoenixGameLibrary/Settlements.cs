@@ -8,11 +8,13 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Settlements : IEnumerable<Settlement>
     {
+        #region State
         private readonly World _world;
 
         private readonly List<Settlement> _settlements;
 
         public int FoodProducedThisTurn { get; private set; }
+        #endregion
 
         public Settlement this[int index] => _settlements[index];
 
@@ -33,9 +35,8 @@ namespace PhoenixGameLibrary
             FoodProducedThisTurn = foodProducedThisTurn;
         }
 
-        internal void AddSettlement(string name, string raceTypeName, Point hexLocation, CellGrid cellGrid)
+        internal void Add(Settlement settlement)
         {
-            var settlement = new Settlement(_world, name, raceTypeName, hexLocation, 4, cellGrid, "Builders Hall", "Barracks", "Smithy");
             _settlements.Add(settlement);
         }
 

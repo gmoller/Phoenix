@@ -34,6 +34,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AddNewOutpostCommand.cs" />
     <Compile Include="Commands\AddUnitCommand.cs" />
     <Compile Include="Commands\BeginTurnCommand.cs" />
     <Compile Include="Commands\CloseSettlementCommand.cs" />

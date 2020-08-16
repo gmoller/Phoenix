@@ -11,10 +11,12 @@ namespace PhoenixGamePresentationLibrary
     {
         private readonly PhoenixGame _phoenixGame;
 
+        #region State
         private WorldView _worldView;
         private CursorView _cursorView;
         private Cursor _cursor;
         private InputHandler _input;
+        #endregion
 
         public PhoenixGameView(PhoenixGame phoenixGame)
         {

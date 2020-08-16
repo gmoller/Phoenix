@@ -7,25 +7,17 @@ namespace PhoenixGameLibrary
 {
     public class World
     {
+        #region State
         private int _turnNumber;
 
         public OverlandMap OverlandMap { get; }
         public Settlements Settlements { get; }
         public Stacks Stacks { get; }
         public Faction PlayerFaction { get; }
-        public string CurrentDate
-        {
-            get
-            {
-                var year = 1400 + _turnNumber / 12;
-                var month = _turnNumber % 12 + 1;
-                var monthString = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
-
-                return $"{monthString} {year}";
-            }
-        }
-
         public NotificationList NotificationList { get; }
+        #endregion
+
+        public string CurrentDate => GetCurrentDate();
 
         internal World(int numberOfColumns, int numberOfRows)
         {
@@ -39,7 +31,8 @@ namespace PhoenixGameLibrary
 
         internal void AddSettlement(Point location, string name, string raceTypeName)
         {
-            Settlements.AddSettlement(name, raceTypeName, location, OverlandMap.CellGrid);
+            var addNewOutpostCommand = new AddNewOutpostCommand { Payload = (location, name, raceTypeName, Settlements, this) };
+            addNewOutpostCommand.Execute();
         }
 
         internal void AddUnit(Point location, UnitType unitType)
@@ -66,6 +59,15 @@ namespace PhoenixGameLibrary
             Settlements.EndTurn();
             Stacks.EndTurn();
             _turnNumber++;
+        }
+
+        private string GetCurrentDate()
+        {
+            var month = _turnNumber % 12 + 1;
+            var monthString = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
+            var year = 1400 + _turnNumber / 12;
+
+            return $"{monthString} {year}";
         }
     }
 }

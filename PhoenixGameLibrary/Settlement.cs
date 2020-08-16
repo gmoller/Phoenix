@@ -206,7 +206,6 @@ namespace PhoenixGameLibrary
                     _currentlyBuilding = new CurrentlyBuilding(-1, -1, 0);
                     Command openSettlementCommand = new OpenSettlementCommand { Payload = this };
                     openSettlementCommand.Execute();
-                    // TODO: look at settlement
                 }
             }
             if (_currentlyBuilding.UnitId >= 0)

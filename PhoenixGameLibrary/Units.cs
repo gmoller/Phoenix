@@ -10,20 +10,24 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Units : IEnumerable<Unit>
     {
+        #region State
+        private readonly World _world;
+
         private readonly List<Unit> _units;
+        #endregion
 
         public Unit this[int index] => _units[index];
 
         internal int Count => _units.Count;
 
-        internal Units()
+        internal Units(World world)
         {
+            _world = world;
             _units = new List<Unit>();
         }
 
-        internal void Add(World world, UnitType unitType, Point point)
+        internal void Add(Unit unit)
         {
-            var unit = new Unit(world, unitType, point);
             _units.Add(unit);
         }
 

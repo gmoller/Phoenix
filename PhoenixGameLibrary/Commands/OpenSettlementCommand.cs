@@ -6,6 +6,7 @@
         {
             var settlement = (Settlement)Payload;
             settlement.IsSelected = true;
+            // TODO: look at settlement
         }
     }
 }
