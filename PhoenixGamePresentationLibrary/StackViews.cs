@@ -70,8 +70,10 @@ namespace PhoenixGamePresentationLibrary
             {
                 stackView.Update(input, deltaTime);
             }
+        }
 
-            // remove any dead units
+        internal void RemoveDeadUnits()
+        {
             var numberRemoved = _stackViews.RemoveAll(stackView => stackView.Count == 0);
 
             if (numberRemoved > 0)
@@ -164,7 +166,6 @@ namespace PhoenixGamePresentationLibrary
                 }
                 else
                 {
-                    Current.SetButtons();
                     _worldView.Camera.LookAtCell(Current.Location);
                 }
             }

@@ -26,7 +26,6 @@ namespace PhoenixGamePresentationLibrary
         private Vector2 _currentPositionOnScreen;
         private List<Point> _movementPath;
         private List<Point> _potentialMovementPath;
-        private List<IControl> _actionButtons;
 
         private float _blinkCooldownInMilliseconds;
         private bool _blink;
@@ -40,7 +39,8 @@ namespace PhoenixGamePresentationLibrary
 
         public EnumerableList<Point> MovementPath => new EnumerableList<Point>(_movementPath);
         public bool IsSelected => _stackViews.Current == this;
-        public EnumerableList<IControl> ActionButtons => new EnumerableList<IControl>(_actionButtons);
+
+        public EnumerableList<string> Actions => _stack.Actions;
 
         public Point Location => _stack.Location;
         public float MovementPoints => _stack.MovementPoints;
@@ -57,7 +57,6 @@ namespace PhoenixGamePresentationLibrary
             _potentialMovementPath = new List<Point>();
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             _currentPositionOnScreen = HexOffsetCoordinates.ToPixel(stack.Location.X, stack.Location.Y);
-            _actionButtons = new List<IControl>();
         }
 
         internal List<IControl> GetMovementTypeImages()
@@ -71,18 +70,6 @@ namespace PhoenixGamePresentationLibrary
             }
 
             return imgMovementTypes;
-        }
-
-        internal void SetButtons()
-        {
-            var actionButtons = new List<IControl>();
-            foreach (var action in _stack.Actions)
-            {
-                var btn = _worldView.ActionButtons[action];
-                actionButtons.Add(btn);
-            }
-
-            _actionButtons = actionButtons;
         }
 
         internal GetCostToMoveIntoResult GetCostToMoveInto(Point location)
@@ -106,8 +93,6 @@ namespace PhoenixGamePresentationLibrary
             ExploreHandler.HandleExplore(this, SetMovementPath, _worldView.World);
             PotentialMovementHandler.HandlePotentialMovement(input, this, _worldView.World, SetPotentialMovementPath);
             MovementHandler.HandleMovement(input, this, deltaTime, RestartUnitMovement, StartUnitMovement, MoveStack, MoveStackToCell, _worldView.World);
-
-            ActionButtons.Update(input, deltaTime);
         }
 
         private void SelectStack()
@@ -172,7 +157,7 @@ namespace PhoenixGamePresentationLibrary
 
             if (!cost.CanMoveInto && Status == UnitStatus.Explore)
             {
-                //   if exploring: pick new path
+                // if exploring: pick new path
                 SetMovementPath(new List<Point>());
                 ExploreHandler.HandleExplore(this, SetMovementPath, _worldView.World);
             }

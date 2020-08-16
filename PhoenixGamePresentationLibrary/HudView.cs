@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -7,23 +8,26 @@ using AssetsLibrary;
 using GuiControls;
 using Input;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.GameData;
 using Utilities;
 
 namespace PhoenixGamePresentationLibrary
 {
     internal class HudView
     {
+        #region State
         private readonly WorldView _worldView;
 
         private SpriteFont _font;
         private readonly Rectangle _area;
 
         private Frame _hudViewFrame;
+        private EnumerableDictionary<Button> _actionButtons;
 
         private Label _test;
 
         private readonly StackViews _stackViews;
+        #endregion
+
         private StackView SelectedStackView => _stackViews.Current;
 
         internal HudView(WorldView worldView, StackViews stackViews)
@@ -103,6 +107,8 @@ namespace PhoenixGamePresentationLibrary
             _hudViewFrame.AddControl(btnEndTurn);
             #endregion
 
+            _actionButtons = _worldView.ActionButtons;
+
             _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, null, null, Color.Blue);
             _test.Click += delegate { _test.MoveTopLeftPosition(10, -10); };
             _test.LoadContent(content);
@@ -114,6 +120,11 @@ namespace PhoenixGamePresentationLibrary
             _hudViewFrame.Enabled = mouseOver;
 
             _hudViewFrame.Update(input, deltaTime);
+
+            foreach (var actionButton in _actionButtons)
+            {
+                actionButton.Update(input, deltaTime);
+            }
 
             _test.Update(input, deltaTime);
         }
@@ -168,15 +179,16 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawActionButtons(SpriteBatch spriteBatch)
         {
-            var actionButtons = SelectedStackView.ActionButtons;
+            var selectedStackViewActions = SelectedStackView.Actions;
             var i = 0;
             var x = 1680; // position of unitFrame BottomRight: (1680;806)
             var y = 806;
-            foreach (var actionButton in actionButtons)
+            foreach (var actionButton in _actionButtons)
             {
                 var xOffset = actionButton.Width * (i % 2);
                 var yOffset = actionButton.Height * (i / 2); // math.Floor
                 actionButton.SetTopLeftPosition(x + xOffset, y + yOffset);
+                actionButton.Enabled = selectedStackViewActions.Contains(actionButton.Name);
                 actionButton.Draw(spriteBatch);
                 i++;
             }

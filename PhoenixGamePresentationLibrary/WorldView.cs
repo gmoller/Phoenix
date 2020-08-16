@@ -46,13 +46,13 @@ namespace PhoenixGamePresentationLibrary
             Camera = new Camera(new Rectangle(0, 0, context.ActualResolution.X, context.ActualResolution.Y));
             Camera.LoadContent(content);
 
+            _movementTypeImages = LoadMovementTypeImages(content);
+            _actionButtons = LoadActionButtons(content);
+
             _overlandSettlementsView.LoadContent(content);
             _stackViews.LoadContent(content);
             _settlementViews.LoadContent(content);
             _hudView.LoadContent(content);
-
-            _movementTypeImages = LoadMovementTypeImages(content);
-            _actionButtons = LoadActionButtons(content);
         }
 
         internal void Update(InputHandler input, float deltaTime)
@@ -70,6 +70,7 @@ namespace PhoenixGamePresentationLibrary
             _stackViews.Update(input, deltaTime);
             _settlementViews.Update(input, deltaTime);
             _hudView.Update(input, deltaTime);
+            _stackViews.RemoveDeadUnits();
         }
 
         private Utilities.Point GetWorldPositionPointedAtByMouseCursor(Camera camera, Microsoft.Xna.Framework.Point mousePosition)
@@ -146,7 +147,7 @@ namespace PhoenixGamePresentationLibrary
             foreach (var actionType in actionTypes)
             {
                 i++;
-                var button = new Button(Vector2.Zero, Alignment.TopLeft, new Vector2(115.0f, 30.0f), "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_n", "simpleb_h", "button");
+                var button = new Button(Vector2.Zero, Alignment.TopLeft, new Vector2(115.0f, 30.0f), "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_n", "simpleb_h", actionType.Name);
                 button.LoadContent(content);
                 button.Click += (o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name));
                 var label = new LabelSized(button.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black, $"label{i}", null, button);
