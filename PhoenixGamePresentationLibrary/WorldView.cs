@@ -9,7 +9,6 @@ using HexLibrary;
 using Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
-using PhoenixGameLibrary.GameData;
 using Utilities;
 using Utilities.ViewportAdapters;
 

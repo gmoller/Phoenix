@@ -14,8 +14,7 @@ namespace PhoenixGameLibrary.Commands
             var stacks = payload.stacks;
             var world = payload.world;
 
-            var units = new Units();
-            units.AddUnit(world, unitType, position);
+            var units = new Units { { world, unitType, position } };
             var newStack = new Stack(world, units);
 
             stacks.Add(newStack);

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -20,10 +21,15 @@ namespace PhoenixGameLibrary
             _units = new List<Unit>();
         }
 
-        internal void AddUnit(World world, UnitType unitType, Point point)
+        internal void Add(World world, UnitType unitType, Point point)
         {
             var unit = new Unit(world, unitType, point);
             _units.Add(unit);
+        }
+
+        internal void Remove(Unit unit)
+        {
+            _units.Remove(unit);
         }
 
         internal void DoPatrolAction()
@@ -56,6 +62,11 @@ namespace PhoenixGameLibrary
             {
                 unit.SetStatusToNone();
             }
+        }
+
+        internal List<Unit> GetUnitsByAction(string actionType)
+        {
+            return _units.Where(unit => unit.Actions.Contains(actionType)).ToList();
         }
 
         public override string ToString()

@@ -13,10 +13,12 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class CellGrid
     {
+        #region State
         private readonly Cell[,] _cellGrid;
 
         public int NumberOfColumns { get; }
         public int NumberOfRows { get; }
+        #endregion
 
         public CellGrid(int numberOfColumns, int numberOfRows)
         {

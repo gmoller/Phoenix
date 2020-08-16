@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.GameData;
 using Utilities;
@@ -12,10 +11,12 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Stack : IEnumerable<Unit>
     {
+        #region State
         private readonly World _world;
         private readonly Units _units;
 
         public UnitStatus Status { get; private set; }
+        #endregion
 
         public Point Location => _units[0].Location;
 
@@ -55,9 +56,11 @@ namespace PhoenixGameLibrary
 
         public void DoBuildAction()
         {
-            // find first settler unit
-            // add new outpost
-            // destroy the sett;er unit
+            var builders = _units.GetUnitsByAction("BuildOutpost");
+            if (builders.Count == 0) return;
+
+            builders[0].DoBuildAction();
+            _units.Remove(builders[0]);
         }
 
         public void SetStatusToNone()

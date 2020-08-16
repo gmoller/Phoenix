@@ -16,6 +16,11 @@ namespace Utilities
             _list = list;
         }
 
+        public bool Contains(T item)
+        {
+            return _list.Contains(item);
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             foreach (var item in _list)

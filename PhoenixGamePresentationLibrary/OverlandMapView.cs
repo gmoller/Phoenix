@@ -85,12 +85,11 @@ namespace PhoenixGamePresentationLibrary
             var point1 = Hex.GetCorner(vertexDirection1);
             var point2 = Hex.GetCorner(vertexDirection2);
 
-            spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, cell.ControlledByFaction == 1 ? Color.DarkBlue : Color.Red, 5.0f, 0.5f);
+            spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, cell.ControlledByFaction == 1 ? Color.DarkGreen : Color.Red, 5.0f, 0.5f);
         }
 
         private void DrawCell(SpriteBatch spriteBatch, Cell cell, Color color)
         {
-            //var terrainType = Globals.Instance.TerrainTypes[cell.TerrainTypeId];
             bool neverSeen = cell.SeenState == SeenState.NeverSeen;
             var texture = AssetsManager.Instance.GetTexture(neverSeen ? cell.TextureFogOfWar.TexturePalette  : cell.Texture.TexturePalette);
             var spec = AssetsManager.Instance.GetAtlas(neverSeen ? cell.TextureFogOfWar.TexturePalette : cell.Texture.TexturePalette);
@@ -101,10 +100,6 @@ namespace PhoenixGamePresentationLibrary
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
             var layerDepth = cell.Index / 10000.0f;
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
-
-            //var size = new Vector2(111, 192);
-            //var imgTile = new Image("imgTile", centerPosition - PhoenixGameLibrary.Constants.HEX_ORIGIN / 2 + new Vector2(10.0f, 0.0f), ContentAlignment.MiddleCenter, size, cell.Texture.TexturePalette, cell.Texture.TextureId, layerDepth);
-            //imgTile.Draw(spriteBatch);
         }
 
         private void DrawHexBorder(SpriteBatch spriteBatch, Cell cell)

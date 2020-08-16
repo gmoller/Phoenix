@@ -70,6 +70,14 @@ namespace PhoenixGamePresentationLibrary
             {
                 stackView.Update(input, deltaTime);
             }
+
+            // remove any dead units
+            var numberRemoved = _stackViews.RemoveAll(stackView => stackView.Count == 0);
+
+            if (numberRemoved > 0)
+            {
+                _stacks.RemoveDeadUnits();
+            }
         }
 
         internal void Draw(SpriteBatch spriteBatch)
@@ -130,6 +138,7 @@ namespace PhoenixGamePresentationLibrary
         internal void DoBuildAction()
         {
             Current.DoBuildAction();
+            SelectNext();
         }
 
         internal void SetCurrent(StackView stackView)

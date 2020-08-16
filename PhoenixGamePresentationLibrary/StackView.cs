@@ -44,7 +44,6 @@ namespace PhoenixGamePresentationLibrary
 
         public Point Location => _stack.Location;
         public float MovementPoints => _stack.MovementPoints;
-        //private Unit FirstUnit => _stack[0];
 
         public int Count => _stack.Count;
 
@@ -244,7 +243,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void DoBuildAction()
         {
-            //_stack.DoDoBuildAction();
+            _stack.DoBuildAction();
         }
 
         internal void SetStatusToNone()

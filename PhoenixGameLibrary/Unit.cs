@@ -58,6 +58,14 @@ namespace PhoenixGameLibrary
             SetSeenCells(Location);
         }
 
+        internal void DoBuildAction()
+        {
+            // assume settle for now 
+            // check if can settle
+            // if can call create outpost command, and return true
+            // if not return false
+        }
+
         internal void SetStatusToNone()
         {
             _status = UnitStatus.None;

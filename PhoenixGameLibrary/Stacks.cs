@@ -39,6 +39,11 @@ namespace PhoenixGameLibrary
             }
         }
 
+        public void RemoveDeadUnits()
+        {
+            _stacks.RemoveAll(stack => stack.Count == 0);
+        }
+
         public IEnumerator<Stack> GetEnumerator()
         {
             foreach (var item in _stacks)

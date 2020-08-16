@@ -4,12 +4,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.GameData;
 using PhoenixGamePresentationLibrary;
 using Utilities;
 using Utilities.ViewportAdapters;
 using Point = Utilities.Point;
-
+ 
 namespace Phoenix
 {
     public class MainGame : Game
