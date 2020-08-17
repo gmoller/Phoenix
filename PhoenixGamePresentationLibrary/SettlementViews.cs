@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Input;
@@ -6,31 +8,34 @@ using PhoenixGameLibrary;
 
 namespace PhoenixGamePresentationLibrary
 {
-    internal class SettlementViews
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
+    internal class SettlementViews : IEnumerable<SettlementView>
     {
         #region State
         private readonly WorldView _worldView;
 
         private readonly Settlements _settlements;
-        private readonly List<SettlementView.SettlementView> _settlementViews;
+        private readonly List<SettlementView> _settlementViews;
 
         private ContentManager _content;
         #endregion
+
+        public int Count => _settlementViews.Count;
+
+        public SettlementView this[int index] => _settlementViews[index];
 
         internal SettlementViews(WorldView worldView, Settlements settlements)
         {
             _worldView = worldView;
             _settlements = settlements;
-            _settlementViews = new List<SettlementView.SettlementView>();
+            _settlementViews = new List<SettlementView>();
         }
 
         internal void LoadContent(ContentManager content)
         {
             foreach (var settlement in _settlements)
             {
-                var settlementView = new SettlementView.SettlementView(settlement);
-                settlementView.LoadContent(content);
-                _settlementViews.Add(settlementView);
+                CreateNewSettlementView(_worldView, settlement);
             }
 
             _content = content;
@@ -62,9 +67,29 @@ namespace PhoenixGamePresentationLibrary
 
         private void CreateNewSettlementView(WorldView worldView, Settlement settlement)
         {
-            var settlementView = new SettlementView.SettlementView(settlement);
+            var settlementView = new SettlementView(settlement);
             settlementView.LoadContent(_content);
             _settlementViews.Add(settlementView);
         }
+
+        public IEnumerator<SettlementView> GetEnumerator()
+        {
+            foreach (var item in _settlementViews)
+            {
+                yield return item;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Count={_settlementViews.Count}}}";
     }
 }

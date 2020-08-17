@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
 
-namespace PhoenixGamePresentationLibrary.SettlementView
+namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 {
     internal class OtherFrame
     {

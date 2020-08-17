@@ -7,10 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.GameData;
 using Utilities;
 
-namespace PhoenixGamePresentationLibrary.SettlementView
+namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 {
     internal class UnitsFrame
     {

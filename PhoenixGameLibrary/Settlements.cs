@@ -21,6 +21,7 @@ namespace PhoenixGameLibrary
             _settlements = new List<Settlement>();
         }
 
+        // TODO: why is this here?
         internal void Update(float deltaTime)
         {
             int foodProducedThisTurn = 0;
@@ -35,6 +36,14 @@ namespace PhoenixGameLibrary
         internal void Add(Settlement settlement)
         {
             _settlements.Add(settlement);
+        }
+
+        internal void BeginTurn()
+        {
+            foreach (var settlement in _settlements)
+            {
+                settlement.BeginTurn();
+            }
         }
 
         internal void EndTurn()

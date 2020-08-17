@@ -349,7 +349,7 @@ namespace PhoenixGamePresentationLibrary
         public override string ToString()
         {
             return DebuggerDisplay;
-        }
+        } 
 
         private string DebuggerDisplay => $"{{Id={Id},UnitsInStack={_stack.Count}}}";
     }

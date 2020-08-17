@@ -17,6 +17,7 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Settlement
     {
+        #region State
         private readonly World _world;
 
         private readonly int _id;
@@ -31,6 +32,10 @@ namespace PhoenixGameLibrary
         public RaceType RaceType { get; }
 
         public Point Location { get; }
+
+        public SettlementCitizens Citizens { get; }
+        #endregion
+
         public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
         public int GrowthRate => DetermineGrowthRate();
         public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(Location, _catchmentCells);
@@ -41,8 +46,6 @@ namespace PhoenixGameLibrary
         //public int GoldUpkeep => DetermineGoldUpkeep();
         //public int GoldSurplus => DetermineGoldSurplus();
         //private CurrentlyBuilding CurrentlyBuilding { get; set; }
-
-        public SettlementCitizens Citizens { get; }
 
         public string CurrentlyBuilding
         {
@@ -181,6 +184,10 @@ namespace PhoenixGameLibrary
         public void AddToProductionQueue(UnitType unit)
         {
             _currentlyBuilding = new CurrentlyBuilding(-1, unit.Id, _currentlyBuilding.ProductionAccrued);
+        }
+
+        internal void BeginTurn()
+        {
         }
 
         internal void EndTurn()

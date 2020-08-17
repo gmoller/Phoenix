@@ -1,18 +1,21 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 using AssetsLibrary;
 using GuiControls;
 using Input;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
-using Utilities;
+using PhoenixGamePresentationLibrary.SettlementViewComposite;
 
-namespace PhoenixGamePresentationLibrary.SettlementView
+namespace PhoenixGamePresentationLibrary
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     internal class SettlementView
     {
+        #region State
         private Texture2D _guiTextures;
         private AtlasSpec2 _guiAtlas;
 
@@ -31,6 +34,7 @@ namespace PhoenixGamePresentationLibrary.SettlementView
         private Vector2 _topLeftPositionSecondary;
 
         internal Settlement Settlement { get; }
+        #endregion
 
         internal SettlementView(Settlement settlement)
         {
@@ -104,9 +108,15 @@ namespace PhoenixGamePresentationLibrary.SettlementView
 
         internal void CloseButtonClick(object sender, EventArgs e)
         {
-            Command closeSettlementCommand = new CloseSettlementCommand();
-            closeSettlementCommand.Payload = Settlement;
+            Command closeSettlementCommand = new CloseSettlementCommand { Payload = Settlement };
             closeSettlementCommand.Execute();
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => $"{{Name={Settlement.Name}}}";
     }
 }
