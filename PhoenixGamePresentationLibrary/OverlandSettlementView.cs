@@ -37,8 +37,7 @@ namespace PhoenixGamePresentationLibrary
         {
             if (input.IsRightMouseButtonReleased && CursorIsOnThisSettlement(Settlement))
             {
-                Command openSettlementCommand = new OpenSettlementCommand();
-                openSettlementCommand.Payload = Settlement;
+                Command openSettlementCommand = new OpenSettlementCommand { Payload = (Settlement, _worldView.World.Settlements) };
                 openSettlementCommand.Execute();
 
                 _worldView.Camera.LookAtCell(Settlement.Location);

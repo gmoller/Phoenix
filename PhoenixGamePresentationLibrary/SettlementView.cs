@@ -16,6 +16,8 @@ namespace PhoenixGamePresentationLibrary
     internal class SettlementView
     {
         #region State
+        private readonly WorldView _worldView;
+
         private Texture2D _guiTextures;
         private AtlasSpec2 _guiAtlas;
 
@@ -33,12 +35,12 @@ namespace PhoenixGamePresentationLibrary
         private Vector2 _topLeftPositionMain;
         private Vector2 _topLeftPositionSecondary;
 
-        internal Settlement Settlement { get; }
+        internal Settlement Settlement { get; set; }
         #endregion
 
-        internal SettlementView(Settlement settlement)
+        internal SettlementView(WorldView worldView)
         {
-            Settlement = settlement;
+            _worldView = worldView;
         }
 
         internal void LoadContent(ContentManager content)
@@ -108,7 +110,7 @@ namespace PhoenixGamePresentationLibrary
 
         internal void CloseButtonClick(object sender, EventArgs e)
         {
-            Command closeSettlementCommand = new CloseSettlementCommand { Payload = Settlement };
+            Command closeSettlementCommand = new CloseSettlementCommand { Payload = (Settlement, _worldView.World.Settlements) };
             closeSettlementCommand.Execute();
         }
 

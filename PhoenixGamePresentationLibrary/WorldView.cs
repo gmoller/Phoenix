@@ -22,7 +22,7 @@ namespace PhoenixGamePresentationLibrary
         private OverlandMapView _overlandMapView;
         private OverlandSettlementViews _overlandSettlementsView;
         private StackViews _stackViews;
-        private SettlementViews _settlementViews;
+        private SettlementView _settlementView;
         private HudView _hudView;
         private Dictionary<string, Image> _movementTypeImages;
         private Dictionary<string, Button> _actionButtons;
@@ -43,7 +43,7 @@ namespace PhoenixGamePresentationLibrary
             _overlandMapView = new OverlandMapView(this, World.OverlandMap);
             _overlandSettlementsView = new OverlandSettlementViews(this, World.Settlements);
             _stackViews = new StackViews(this, World.Stacks);
-            _settlementViews = new SettlementViews(this, World.Settlements);
+            _settlementView = new SettlementView(this);
             _hudView = new HudView(this, _stackViews);
 
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
@@ -55,7 +55,10 @@ namespace PhoenixGamePresentationLibrary
 
             _overlandSettlementsView.LoadContent(content);
             _stackViews.LoadContent(content);
-            _settlementViews.LoadContent(content);
+
+            _settlementView.Settlement = World.Settlements[0];
+            _settlementView.LoadContent(content);
+
             _hudView.LoadContent(content);
         }
 
@@ -72,9 +75,34 @@ namespace PhoenixGamePresentationLibrary
             _overlandMapView.Update(input, deltaTime);
             _overlandSettlementsView.Update(input, deltaTime);
             _stackViews.Update(input, deltaTime);
-            _settlementViews.Update(input, deltaTime);
+
+            _settlementView.Settlement = World.Settlements.Selected;
+            if (_settlementView.Settlement != null)
+            {
+                _settlementView.Update(input, deltaTime);
+            }
+
             _hudView.Update(input, deltaTime);
             _stackViews.RemoveDeadUnits();
+        }
+
+        internal void Draw(SpriteBatch spriteBatch, ViewportAdapter viewportAdapter)
+        {
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform * viewportAdapter.GetScaleMatrix()); // FrontToBack
+            _overlandMapView.Draw(spriteBatch);
+            _overlandSettlementsView.Draw(spriteBatch);
+
+            _stackViews.Draw(spriteBatch);
+            spriteBatch.End();
+
+            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: viewportAdapter.GetScaleMatrix());
+            _hudView.Draw(spriteBatch);
+            if (_settlementView.Settlement != null)
+            {
+                _settlementView.Draw(spriteBatch);
+            }
+
+            spriteBatch.End();
         }
 
         private Utilities.Point GetWorldPositionPointedAtByMouseCursor(Camera camera, Microsoft.Xna.Framework.Point mousePosition)
@@ -89,21 +117,6 @@ namespace PhoenixGamePresentationLibrary
             var worldHex = HexOffsetCoordinates.FromPixel(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
 
             return new Utilities.Point(worldHex.Col, worldHex.Row);
-        }
-
-        internal void Draw(SpriteBatch spriteBatch, ViewportAdapter viewportAdapter)
-        {
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform * viewportAdapter.GetScaleMatrix()); // FrontToBack
-            _overlandMapView.Draw(spriteBatch);
-            _overlandSettlementsView.Draw(spriteBatch);
-
-            _stackViews.Draw(spriteBatch);
-            spriteBatch.End();
-
-            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: viewportAdapter.GetScaleMatrix());
-            _hudView.Draw(spriteBatch);
-            _settlementViews.Draw(spriteBatch);
-            spriteBatch.End();
         }
 
         public void BeginTurn()

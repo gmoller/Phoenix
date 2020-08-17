@@ -4,8 +4,11 @@
     {
         public override void Execute()
         {
-            var settlement = (Settlement)Payload;
-            settlement.IsSelected = false;
+            var payload = ((Settlement settlement, Settlements settlements))Payload;
+
+            var settlements = payload.settlements;
+
+            settlements.Selected = null;
         }
     }
 }

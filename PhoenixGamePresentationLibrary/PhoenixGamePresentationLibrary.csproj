@@ -56,7 +56,6 @@
     <Compile Include="PhoenixGameView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectionHandler.cs" />
-    <Compile Include="SettlementViews.cs" />
     <Compile Include="SettlementViewComposite\BuildingsFrame.cs" />
     <Compile Include="SettlementViewComposite\MainFrame.cs" />
     <Compile Include="SettlementViewComposite\OtherFrame.cs" />

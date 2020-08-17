@@ -46,45 +46,8 @@ namespace PhoenixGameLibrary
         //public int GoldUpkeep => DetermineGoldUpkeep();
         //public int GoldSurplus => DetermineGoldSurplus();
         //private CurrentlyBuilding CurrentlyBuilding { get; set; }
-
-        public string CurrentlyBuilding
-        {
-            get
-            {
-                if (_currentlyBuilding.BuildingId >= 0)
-                {
-                    var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-                    var buildingTypes = ((GameMetadata)context.GameMetadata).BuildingTypes;
-                    var building = buildingTypes[_currentlyBuilding.BuildingId];
-                    return $"Current: {building.Name} ({_currentlyBuilding.ProductionAccrued}/{building.ConstructionCost})";
-                }
-                if (_currentlyBuilding.UnitId >= 0)
-                {
-                    var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-                    var unitTypes = ((GameMetadata)context.GameMetadata).UnitTypes;
-                    var unit = unitTypes[_currentlyBuilding.UnitId];
-                    return $"Current: {unit.Name} ({_currentlyBuilding.ProductionAccrued}/{unit.ConstructionCost})";
-                }
-
-                return "Current: <nothing>";
-            }
-        }
-
-        public SettlementType SettlementType
-        {
-            get
-            {
-                if (Citizens.TotalPopulation <= 4) return SettlementType.Hamlet;
-                if (Citizens.TotalPopulation >= 5 && Citizens.TotalPopulation <= 8) return SettlementType.Village;
-                if (Citizens.TotalPopulation >= 9 && Citizens.TotalPopulation <= 12) return SettlementType.Town;
-                if (Citizens.TotalPopulation >= 13 && Citizens.TotalPopulation <= 16) return SettlementType.City;
-                if (Citizens.TotalPopulation >= 17) return SettlementType.Capital;
-
-                throw new Exception("Unknown settlement type.");
-            }
-        }
-
-        public bool IsSelected { get; set; }
+        public string CurrentlyBuilding => GetCurrentlyBuilding();
+        public SettlementType SettlementType => GetSettlementType();
 
         internal Settlement(World world, string name, string raceTypeName, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
         {
@@ -211,8 +174,10 @@ namespace PhoenixGameLibrary
                     _buildingsBuilt.Add(_currentlyBuilding.BuildingId);
                     _world.NotificationList.Add($"- {Name} has produced a {buildingTypes[_currentlyBuilding.BuildingId].Name}");
                     _currentlyBuilding = new CurrentlyBuilding(-1, -1, 0);
-                    Command openSettlementCommand = new OpenSettlementCommand { Payload = this };
+                    Command openSettlementCommand = new OpenSettlementCommand { Payload = (this, _world.Settlements) };
                     openSettlementCommand.Execute();
+
+                    //_worldView.Camera.LookAtCell(Settlement.Location);
                 }
             }
             if (_currentlyBuilding.UnitId >= 0)
@@ -243,6 +208,37 @@ namespace PhoenixGameLibrary
             }
 
             return false;
+        }
+
+        private string GetCurrentlyBuilding()
+        {
+            if (_currentlyBuilding.BuildingId >= 0)
+            {
+                var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+                var buildingTypes = ((GameMetadata)context.GameMetadata).BuildingTypes;
+                var building = buildingTypes[_currentlyBuilding.BuildingId];
+                return $"Current: {building.Name} ({_currentlyBuilding.ProductionAccrued}/{building.ConstructionCost})";
+            }
+            if (_currentlyBuilding.UnitId >= 0)
+            {
+                var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+                var unitTypes = ((GameMetadata)context.GameMetadata).UnitTypes;
+                var unit = unitTypes[_currentlyBuilding.UnitId];
+                return $"Current: {unit.Name} ({_currentlyBuilding.ProductionAccrued}/{unit.ConstructionCost})";
+            }
+
+            return "Current: <nothing>";
+        }
+
+        private SettlementType GetSettlementType()
+        {
+            if (Citizens.TotalPopulation <= 4) return SettlementType.Hamlet;
+            if (Citizens.TotalPopulation >= 5 && Citizens.TotalPopulation <= 8) return SettlementType.Village;
+            if (Citizens.TotalPopulation >= 9 && Citizens.TotalPopulation <= 12) return SettlementType.Town;
+            if (Citizens.TotalPopulation >= 13 && Citizens.TotalPopulation <= 16) return SettlementType.City;
+            if (Citizens.TotalPopulation >= 17) return SettlementType.Capital;
+
+            throw new Exception("Unknown settlement type.");
         }
 
         private int DetermineGrowthRate()

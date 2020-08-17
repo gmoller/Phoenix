@@ -65,11 +65,12 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             _btnAddWorker.LoadContent(content);
             _btnAddWorker.Click += btnAddWorkerClick;
 
-            _imgFarmer = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20, 30), "Citizens", $"Citizen_{_parent.Settlement.RaceType.Name}_Farmer", "imgFarmer");
+            // TODO: fix hardcoded race type name
+            _imgFarmer = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20, 30), "Citizens", $"Citizen_Barbarians_Farmer", "imgFarmer");
             _imgFarmer.LoadContent(content);
-            _imgWorker = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20, 30), "Citizens", $"Citizen_{_parent.Settlement.RaceType.Name}_Worker", "imgWorker");
+            _imgWorker = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20, 30), "Citizens", $"Citizen_Barbarians_Worker", "imgWorker");
             _imgWorker.LoadContent(content);
-            _imgRebel = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20, 30), "Citizens", $"Citizen_{_parent.Settlement.RaceType.Name}_Rebel", "imgRebel");
+            _imgRebel = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20, 30), "Citizens", $"Citizen_Barbarians_Rebel", "imgRebel");
             _imgRebel.LoadContent(content);
 
             EnableOrDisableButtons();

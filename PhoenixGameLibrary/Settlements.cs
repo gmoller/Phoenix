@@ -10,6 +10,7 @@ namespace PhoenixGameLibrary
         #region State
         private readonly List<Settlement> _settlements;
 
+        public Settlement Selected { get; set; }
         public int FoodProducedThisTurn { get; private set; }
         #endregion
 
