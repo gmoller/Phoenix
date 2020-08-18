@@ -463,7 +463,7 @@ namespace MonoGameUtilities
                 CreateThePixel(spriteBatch);
             }
 
-            spriteBatch.Draw(_pixel, position, null, null, null, 0.0f, null, color, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(_pixel, position, null, color, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, layerDepth);
         }
 
         #endregion

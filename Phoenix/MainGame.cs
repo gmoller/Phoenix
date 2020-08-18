@@ -85,7 +85,7 @@ namespace Phoenix
             var actualWidth = graphicsDeviceManager.GraphicsDevice.Viewport.Width;
             var actualHeight = graphicsDeviceManager.GraphicsDevice.Viewport.Height;
             context.ActualResolution = new Point(actualWidth, actualHeight);
-            context.ScreenRatio = new Vector2(actualWidth / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, actualHeight / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            context.ScreenRatio = new PointF(actualWidth / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, actualHeight / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
         }
 
         protected override void LoadContent()
