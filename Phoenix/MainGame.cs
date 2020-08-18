@@ -3,10 +3,10 @@ using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGamePresentationLibrary;
 using Utilities;
-using Utilities.ViewportAdapters;
 using Point = Utilities.Point;
  
 namespace Phoenix

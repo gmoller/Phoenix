@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
 using Input;
+using MonoGameUtilities;
 using PhoenixGameLibrary;
 using Utilities;
 
@@ -87,7 +88,7 @@ namespace PhoenixGamePresentationLibrary
             unitFrame.LoadContent(content);
 
             string GetTextFuncForMoves() => SelectedStackView == null ? string.Empty : $"Moves: {SelectedStackView.MovementPoints}";
-            var lblMoves = new LabelAutoSized(unitFrame.BottomLeft.ToVector2() + new Vector2(10.0f, -15.0f), Alignment.BottomLeft, GetTextFuncForMoves, "CrimsonText-Regular-12", Color.White, "lblMoves", unitFrame);
+            var lblMoves = new LabelAutoSized(new Vector2(10.0f, 270.0f), Alignment.TopLeft, GetTextFuncForMoves, "CrimsonText-Regular-12", Color.White, "lblMoves", unitFrame);
             lblMoves.LoadContent(content);
             #endregion
 

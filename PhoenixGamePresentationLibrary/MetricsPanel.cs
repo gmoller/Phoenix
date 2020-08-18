@@ -4,10 +4,10 @@ using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
-using GuiControls;
 using Microsoft.Xna.Framework.Graphics;
+using GuiControls;
+using MonoGameUtilities.ViewportAdapters;
 using Utilities;
-using Utilities.ViewportAdapters;
 
 namespace PhoenixGamePresentationLibrary
 {

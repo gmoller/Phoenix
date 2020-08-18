@@ -7,10 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using HexLibrary;
 using Input;
+using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using Utilities;
-using Utilities.ViewportAdapters;
 
 namespace PhoenixGamePresentationLibrary
 {

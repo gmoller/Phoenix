@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdPartyBinaries\MonoGame.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -58,15 +54,11 @@
     <Compile Include="NamedDataList.cs" />
     <Compile Include="ObjectPool.cs" />
     <Compile Include="Point.cs" />
+    <Compile Include="PointF.cs" />
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="RandomNumberGenerator.cs" />
-    <Compile Include="Primitives2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="TextWrapper.cs" />
-    <Compile Include="ViewportAdapters\DefaultViewportAdapter.cs" />
-    <Compile Include="ViewportAdapters\ScalingViewportAdapter.cs" />
-    <Compile Include="ViewportAdapters\ViewportAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HexLibrary\HexLibrary.csproj">

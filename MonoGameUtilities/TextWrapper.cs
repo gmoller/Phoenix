@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Utilities
+namespace MonoGameUtilities
 {
     public class TextWrapper
     {

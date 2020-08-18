@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using HexLibrary;
 using Input;
+using MonoGameUtilities;
 using PhoenixGameLibrary;
-using Utilities;
 using Utilities.ExtensionMethods;
 
 namespace PhoenixGamePresentationLibrary

@@ -2,8 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Input;
+using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
-using Utilities.ViewportAdapters;
 
 namespace PhoenixGamePresentationLibrary
 {

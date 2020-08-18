@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
-using Utilities.ViewportAdapters;
+using MonoGameUtilities.ViewportAdapters;
 
 namespace PhoenixGamePresentationLibrary
 {

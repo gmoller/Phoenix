@@ -14,7 +14,7 @@ namespace PhoenixGameLibrary
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
             var unitTypes = ((GameMetadata)context.GameMetadata).UnitTypes;
 
-            World.AddSettlement(new Point(12, 9), "Fairhaven", "Barbarians");
+            World.AddSettlement(new Point(12, 9), "Barbarians");
             World.AddUnit(new Point(12, 9), unitTypes["Test Dude"]);
             World.AddUnit(new Point(15, 7), unitTypes["Barbarian Settlers"]);
             World.AddUnit(new Point(12, 9), unitTypes["Barbarian Spearmen"]);

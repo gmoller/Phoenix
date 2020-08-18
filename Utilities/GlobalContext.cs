@@ -1,12 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-
-namespace Utilities
+﻿namespace Utilities
 {
     public class GlobalContext
     {
         public Point DesiredResolution { get; set; }
         public Point ActualResolution { get; set; }
-        public Vector2 ScreenRatio { get; set; }
+        public PointF ScreenRatio { get; set; }
 
         public Point WorldPositionPointedAtByMouseCursor { get; set; }
         public Point WorldHexPointedAtByMouseCursor { get; set; }

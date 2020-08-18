@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Utilities.ExtensionMethods;
 
 namespace Utilities
 {
@@ -6,34 +7,34 @@ namespace Utilities
     /// This struct is immutable.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public struct Point
+    public struct PointF
     {
         #region State
-        public int X { get; }
-        public int Y { get; }
+        public float X { get; }
+        public float Y { get; }
         #endregion
 
-        public Point(int x, int y)
+        public PointF(float x, float y)
         {
             X = x;
             Y = y;
         }
 
-        public static Point Empty => new Point(0, 0);
+        public static PointF Empty => new PointF(0.0f, 0.0f);
 
         #region Overrides and Overloads
 
         public override bool Equals(object obj)
         {
-            return obj is Point point && this == point;
+            return obj is PointF point && this == point;
         }
 
-        public static bool operator == (Point a, Point b)
+        public static bool operator == (PointF a, PointF b)
         {
-            return a.X == b.X && a.Y == b.Y;
+            return a.X.AboutEquals(b.X) && a.Y.AboutEquals(b.Y);
         }
 
-        public static bool operator != (Point a, Point b)
+        public static bool operator != (PointF a, PointF b)
         {
             return !(a == b);
         }
@@ -51,6 +52,5 @@ namespace Utilities
         private string DebuggerDisplay => $"{{X={X},Y={Y}}}";
 
         #endregion
-
     }
 }

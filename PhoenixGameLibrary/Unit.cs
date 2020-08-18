@@ -63,7 +63,7 @@ namespace PhoenixGameLibrary
         internal void DoBuildAction()
         {
             // assume settler for now
-            _world.AddSettlement(Location, "Coldwind Creek", "Barbarians"); // TODO: get new from user and race type name from faction
+            _world.AddSettlement(Location, "Barbarians"); // TODO: get new from user and race type name from faction
         }
 
         internal void SetStatusToNone()

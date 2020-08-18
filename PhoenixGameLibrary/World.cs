@@ -1,4 +1,6 @@
 ﻿using System.Globalization;
+using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using Utilities;
@@ -29,8 +31,18 @@ namespace PhoenixGameLibrary
             NotificationList = new NotificationList();
         }
 
-        internal void AddSettlement(Point location, string name, string raceTypeName)
+        internal void AddSettlement(Point location, string raceTypeName)
         {
+            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var raceTypes = ((GameMetadata)context.GameMetadata).RaceTypes;
+
+            var raceType = raceTypes[raceTypeName];
+            var townNames = raceType.TownNames;
+            var chosenIndex = RandomNumberGenerator.Instance.GetRandomInt(0, townNames.Length - 1);
+            var name = townNames[chosenIndex];
+
+            var foo = townNames.ToList();
+
             var addNewOutpostCommand = new AddNewOutpostCommand { Payload = (location, name, raceTypeName, Settlements, this) };
             addNewOutpostCommand.Execute();
         }
