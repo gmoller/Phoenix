@@ -1,45 +1,46 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using AssetsLibrary;
+using GuiControls;
 using Input;
 
 namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 {
     internal class SecondaryFrame
     {
+        #region State
         private readonly SettlementView _parent;
         private readonly Vector2 _topLeftPosition;
-        private readonly Texture2D _texture;
-        private readonly AtlasSpec2 _atlas;
+        private readonly string _textureAtlas;
 
-        private Rectangle _topFrame;
-        private Rectangle _bottomFrame;
+        private Frame _secondaryFrame;
 
-        internal SecondaryFrame(SettlementView parent, Vector2 topLeftPosition, Texture2D texture, AtlasSpec2 atlas)
+        #endregion
+
+        internal SecondaryFrame(SettlementView parent, Vector2 topLeftPosition, string textureAtlas)
         {
             _parent = parent;
             _topLeftPosition = topLeftPosition;
-            _texture = texture;
-            _atlas = atlas;
+            _textureAtlas = textureAtlas;
         }
 
         internal void LoadContent(ContentManager content)
         {
-            var frame = _atlas.Frames["frame_main"];
-            _topFrame = frame.ToRectangle();
-            frame = _atlas.Frames["frame_bottom"];
-            _bottomFrame = frame.ToRectangle();
+            _secondaryFrame = new Frame(_topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), _textureAtlas, "frame_main", "secondaryFrame");
+            _secondaryFrame.LoadContent(content);
+
+            var bottomFrame = new Frame(new Vector2(-2.0f, 680.0f), Alignment.TopLeft, new Vector2(563.0f, 71.0f), _textureAtlas, "frame_bottom", "bottomFrame", _secondaryFrame);
+            bottomFrame.LoadContent(content);
         }
 
         internal void Update(InputHandler input, float deltaTime)
         {
+            _secondaryFrame.Update(input, deltaTime);
         }
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, new Vector2(_topLeftPosition.X, _topLeftPosition.Y), _topFrame, Color.White);
-            spriteBatch.Draw(_texture, new Vector2(_topLeftPosition.X - 2.0f, _topLeftPosition.Y + 680.0f), _bottomFrame, Color.White);
+            _secondaryFrame.Draw(spriteBatch);
         }
     }
 }

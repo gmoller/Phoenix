@@ -130,26 +130,26 @@ namespace PhoenixGamePresentationLibrary
         {
             SetViewport(GetViewport());
 
-            _lblGcCount1.Draw(spriteBatch);
-            _lblGcCount2.Draw(spriteBatch);
-            _lblScreenPosition1.Draw(spriteBatch);
-            _lblScreenPosition2.Draw(spriteBatch);
-            _lblWorldPosition1.Draw(spriteBatch);
-            _lblWorldPosition2.Draw(spriteBatch);
-            _lblWorldHex1.Draw(spriteBatch);
-            _lblWorldHex2.Draw(spriteBatch);
-            _lblMemory1.Draw(spriteBatch);
-            _lblMemory2.Draw(spriteBatch);
-            _lblFps1.Draw(spriteBatch);
-            _lblFps2.Draw(spriteBatch);
-            _lblResolution1.Draw(spriteBatch);
-            _lblResolution2.Draw(spriteBatch);
-            _lblResolution3.Draw(spriteBatch);
-            _lblResolution4.Draw(spriteBatch);
-            _lblResolution5.Draw(spriteBatch);
-            _lblResolution6.Draw(spriteBatch);
-            _lblResolution7.Draw(spriteBatch);
-            _lblResolution8.Draw(spriteBatch);
+            //_lblGcCount1.Draw(spriteBatch);
+            //_lblGcCount2.Draw(spriteBatch);
+            //_lblScreenPosition1.Draw(spriteBatch);
+            //_lblScreenPosition2.Draw(spriteBatch);
+            //_lblWorldPosition1.Draw(spriteBatch);
+            //_lblWorldPosition2.Draw(spriteBatch);
+            //_lblWorldHex1.Draw(spriteBatch);
+            //_lblWorldHex2.Draw(spriteBatch);
+            //_lblMemory1.Draw(spriteBatch);
+            //_lblMemory2.Draw(spriteBatch);
+            //_lblFps1.Draw(spriteBatch);
+            //_lblFps2.Draw(spriteBatch);
+            //_lblResolution1.Draw(spriteBatch);
+            //_lblResolution2.Draw(spriteBatch);
+            //_lblResolution3.Draw(spriteBatch);
+            //_lblResolution4.Draw(spriteBatch);
+            //_lblResolution5.Draw(spriteBatch);
+            //_lblResolution6.Draw(spriteBatch);
+            //_lblResolution7.Draw(spriteBatch);
+            //_lblResolution8.Draw(spriteBatch);
 
             ResetViewport();
 

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using AssetsLibrary;
-using GuiControls;
 using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -18,13 +16,8 @@ namespace PhoenixGamePresentationLibrary
         #region State
         private readonly WorldView _worldView;
 
-        private Texture2D _guiTextures;
-        private AtlasSpec2 _guiAtlas;
-
         private MainFrame _mainFrame;
         private SecondaryFrame _secondaryFrame;
-        private LabelAutoSized _lblSettlementName1;
-        private LabelAutoSized _lblSettlementName2;
         private PopulationFrame _populationFrame;
         private ResourceFrame _resourceFrame;
         private BuildingsFrame _buildingsFrame;
@@ -48,18 +41,10 @@ namespace PhoenixGamePresentationLibrary
             _topLeftPositionMain = new Vector2(1920.0f * 0.05f, 200.0f);
             _topLeftPositionSecondary = new Vector2(1920.0f * 0.65f, 200.0f);
 
-            _guiTextures = AssetsManager.Instance.GetTexture("GUI_Textures_1");
-            _guiAtlas = AssetsManager.Instance.GetAtlas("GUI_Textures_1");
-
-            _mainFrame = new MainFrame(this, _topLeftPositionMain, _guiTextures, _guiAtlas);
+            _mainFrame = new MainFrame(this, _topLeftPositionMain, "GUI_Textures_1");
             _mainFrame.LoadContent(content);
-            _secondaryFrame = new SecondaryFrame(this, _topLeftPositionSecondary, _guiTextures, _guiAtlas);
+            _secondaryFrame = new SecondaryFrame(this, _topLeftPositionSecondary, "GUI_Textures_1");
             _secondaryFrame.LoadContent(content);
-
-            _lblSettlementName1 = new LabelAutoSized(new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 49.0f), Alignment.MiddleCenter, string.Empty, "Carolingia-Regular-24", Color.Purple, "lblSettlementName1", Color.DarkBlue);
-            _lblSettlementName1.LoadContent(content);
-            _lblSettlementName2 = new LabelAutoSized(new Vector2(_topLeftPositionMain.X + 278.0f, _topLeftPositionMain.Y - 24.0f), Alignment.MiddleCenter, string.Empty, "Carolingia-Regular-24", Color.Purple, "lblSettlementName2", Color.DarkBlue);
-            _lblSettlementName2.LoadContent(content);
 
             _populationFrame = new PopulationFrame(this, new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 40.0f));
             _populationFrame.LoadContent(content);
@@ -81,9 +66,6 @@ namespace PhoenixGamePresentationLibrary
             _mainFrame.Update(input, deltaTime);
             _secondaryFrame.Update(input, deltaTime);
 
-            _lblSettlementName1.Text = $"{Settlement.SettlementType} of";
-            _lblSettlementName2.Text = $"{Settlement.Name}";
-
             _populationFrame.Update(input, deltaTime);
             _resourceFrame.Update(input, deltaTime);
             _producingFrame.Update(input, deltaTime);
@@ -96,9 +78,6 @@ namespace PhoenixGamePresentationLibrary
         {
             _mainFrame.Draw(spriteBatch);
             _secondaryFrame.Draw(spriteBatch);
-
-            _lblSettlementName1.Draw(spriteBatch);
-            _lblSettlementName2.Draw(spriteBatch);
 
             _populationFrame.Draw(spriteBatch);
             _resourceFrame.Draw(spriteBatch);

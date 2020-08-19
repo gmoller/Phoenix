@@ -175,6 +175,31 @@ namespace GuiControls
         public LabelAutoSized(
             Vector2 position,
             Alignment positionAlignment,
+            Func<string> getTextFunc,
+            string fontName,
+            Color textColor,
+            string name,
+            Color? textShadowColor,
+            IControl parent = null) :
+            this(
+                position,
+                positionAlignment,
+                null,
+                getTextFunc,
+                fontName,
+                textColor,
+                name,
+                textShadowColor,
+                null,
+                null,
+                0.0f,
+                parent)
+        {
+        }
+
+        public LabelAutoSized(
+            Vector2 position,
+            Alignment positionAlignment,
             string text,
             string fontName,
             Color textColor,

@@ -8,11 +8,13 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 {
     internal class OtherFrame
     {
+        #region State
         private readonly SettlementView _parent;
         private readonly Vector2 _topLeftPosition;
 
         private LabelAutoSized _lblOther;
         private Frame _smallFrameOther;
+        #endregion
 
         internal OtherFrame(SettlementView parent, Vector2 topLeftPosition)
         {

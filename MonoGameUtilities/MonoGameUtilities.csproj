@@ -38,6 +38,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionMethods\PointExtensions.cs" />
+    <Compile Include="ExtensionMethods\PointFExtensions.cs" />
+    <Compile Include="ExtensionMethods\Vector2Extensions.cs" />
     <Compile Include="Primitives2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextWrapper.cs" />
@@ -45,6 +48,11 @@
     <Compile Include="ViewportAdapters\ScalingViewportAdapter.cs" />
     <Compile Include="ViewportAdapters\ViewportAdapter.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{5320ff4a-6c80-4627-9b74-9e7cb1a109fd}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
