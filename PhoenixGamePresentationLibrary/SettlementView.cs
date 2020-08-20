@@ -23,7 +23,6 @@ namespace PhoenixGamePresentationLibrary
         private BuildingsFrame _buildingsFrame;
         private UnitsFrame _unitsFrame;
         private OtherFrame _otherFrame;
-        private ProducingFrame _producingFrame;
 
         private Vector2 _topLeftPositionMain;
         private Vector2 _topLeftPositionSecondary;
@@ -50,8 +49,6 @@ namespace PhoenixGamePresentationLibrary
             _populationFrame.LoadContent(content);
             _resourceFrame = new ResourceFrame(this, new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 190.0f));
             _resourceFrame.LoadContent(content);
-            _producingFrame = new ProducingFrame(this, new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 390.0f));
-            _producingFrame.LoadContent(content);
 
             _buildingsFrame = new BuildingsFrame(this, new Vector2(_topLeftPositionSecondary.X + 20.0f, _topLeftPositionSecondary.Y + 40.0f));
             _buildingsFrame.LoadContent(content);
@@ -68,7 +65,6 @@ namespace PhoenixGamePresentationLibrary
 
             _populationFrame.Update(input, deltaTime);
             _resourceFrame.Update(input, deltaTime);
-            _producingFrame.Update(input, deltaTime);
             _buildingsFrame.Update(input, deltaTime);
             _unitsFrame.Update(input, deltaTime);
             _otherFrame.Update(input, deltaTime);
@@ -81,7 +77,6 @@ namespace PhoenixGamePresentationLibrary
 
             _populationFrame.Draw(spriteBatch);
             _resourceFrame.Draw(spriteBatch);
-            _producingFrame.Draw(spriteBatch);
             _buildingsFrame.Draw(spriteBatch);
             _unitsFrame.Draw(spriteBatch);
             _otherFrame.Draw(spriteBatch);

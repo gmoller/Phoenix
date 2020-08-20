@@ -50,7 +50,7 @@ namespace PhoenixGamePresentationLibrary
 
             #region HudViewFrame
             var size = new Vector2(_area.Width, _area.Height);
-            _hudViewFrame = new Frame(topLeftPosition, Alignment.TopLeft, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame");
+            _hudViewFrame = new Frame(topLeftPosition, Alignment.TopLeft, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame", null);
             _hudViewFrame.LoadContent(content);
 
             string GetTextFuncForDate() => _worldView.World.CurrentDate;

@@ -6,39 +6,38 @@ using Input;
 
 namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 {
-    internal class SecondaryFrame
+    internal class SecondaryFrame : Control
     {
         #region State
         private readonly SettlementView _parent;
         private readonly Vector2 _topLeftPosition;
-        private readonly string _textureAtlas;
 
         private Frame _secondaryFrame;
 
         #endregion
 
-        internal SecondaryFrame(SettlementView parent, Vector2 topLeftPosition, string textureAtlas)
+        internal SecondaryFrame(SettlementView parent, Vector2 topLeftPosition, string textureAtlas) :
+            base(topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), textureAtlas, "", "", "", "", "", "SecondaryFrame")
         {
             _parent = parent;
             _topLeftPosition = topLeftPosition;
-            _textureAtlas = textureAtlas;
         }
 
-        internal void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content)
         {
-            _secondaryFrame = new Frame(_topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), _textureAtlas, "frame_main", "secondaryFrame");
+            _secondaryFrame = new Frame(_topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), TextureAtlas, "frame_main", "secondaryFrame");
             _secondaryFrame.LoadContent(content);
 
-            var bottomFrame = new Frame(new Vector2(-2.0f, 680.0f), Alignment.TopLeft, new Vector2(563.0f, 71.0f), _textureAtlas, "frame_bottom", "bottomFrame", _secondaryFrame);
+            var bottomFrame = new Frame(new Vector2(-2.0f, 680.0f), Alignment.TopLeft, new Vector2(563.0f, 71.0f), TextureAtlas, "frame_bottom", "bottomFrame", _secondaryFrame);
             bottomFrame.LoadContent(content);
         }
 
-        internal void Update(InputHandler input, float deltaTime)
+        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
-            _secondaryFrame.Update(input, deltaTime);
+            _secondaryFrame.Update(input, deltaTime, transform);
         }
 
-        internal void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             _secondaryFrame.Draw(spriteBatch);
         }

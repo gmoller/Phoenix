@@ -60,7 +60,6 @@
     <Compile Include="SettlementViewComposite\MainFrame.cs" />
     <Compile Include="SettlementViewComposite\OtherFrame.cs" />
     <Compile Include="SettlementViewComposite\PopulationFrame.cs" />
-    <Compile Include="SettlementViewComposite\ProducingFrame.cs" />
     <Compile Include="SettlementViewComposite\ResourceFrame.cs" />
     <Compile Include="SettlementViewComposite\SecondaryFrame.cs" />
     <Compile Include="SettlementView.cs" />

@@ -58,6 +58,35 @@ namespace GuiControls
             int leftPadding,
             int rightPadding,
             string name,
+            IControl parent = null) :
+            this(
+                position,
+                positionAlignment,
+                size,
+                textureAtlas,
+                textureName,
+                topPadding,
+                bottomPadding,
+                leftPadding,
+                rightPadding,
+                name,
+                null,
+                0.0f,
+                parent)
+        {
+        }
+
+        public Frame(
+            Vector2 position,
+            Alignment positionAlignment,
+            Vector2 size,
+            string textureAtlas,
+            string textureName,
+            int topPadding,
+            int bottomPadding,
+            int leftPadding,
+            int rightPadding,
+            string name,
             DynamicSlots slots = null,
             float layerDepth = 0.0f,
             IControl parent = null) :

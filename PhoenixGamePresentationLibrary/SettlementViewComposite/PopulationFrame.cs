@@ -42,7 +42,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             _lblPopulationGrowth = new LabelAutoSized(new Vector2(_topLeftPosition.X + 516.0f, _topLeftPosition.Y), Alignment.MiddleRight, "Population: 0", "CrimsonText-Regular-12", Color.Orange, "lblPopulationGrowth");
             _lblPopulationGrowth.LoadContent(content);
 
-            _smallFrame = new Frame(_topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 120), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, "smallFrame");
+            _smallFrame = new Frame(_topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 120), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, "smallFrame", null);
             _smallFrame.LoadContent(content);
 
             _lblFarmers = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 25.0f), Alignment.TopLeft, "Farmers:", "CrimsonText-Regular-12", Color.Orange, "lblFarmers");

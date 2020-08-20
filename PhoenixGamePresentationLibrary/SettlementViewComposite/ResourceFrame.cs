@@ -11,13 +11,6 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
         private readonly SettlementView _parent;
 
         private readonly Vector2 _topLeftPosition;
-        private Frame _smallFrame;
-        private LabelAutoSized _lblResources;
-        private LabelAutoSized _lblFood;
-        private LabelAutoSized _lblProduction;
-        private LabelAutoSized _lblGold;
-        private LabelAutoSized _lblPower;
-        private LabelAutoSized _lblResearch;
         private FoodView _foodView;
         private ProductionView _productionView;
 
@@ -29,23 +22,6 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 
         internal void LoadContent(ContentManager content)
         {
-            _smallFrame = new Frame(_topLeftPosition + new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515, 175), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, "smallFrame");
-            _smallFrame.LoadContent(content);
-
-            _lblResources = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y), Alignment.TopLeft, "Resources", "CrimsonText-Regular-12", Color.Orange, "lblResources", Color.DarkBlue);
-            _lblResources.LoadContent(content);
-
-            _lblFood = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 25.0f), Alignment.TopLeft, "Food", "CrimsonText-Regular-12", Color.Orange, "lblFood");
-            _lblFood.LoadContent(content);
-            _lblProduction = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 55.0f), Alignment.TopLeft, "Production", "CrimsonText-Regular-12", Color.Orange, "lblProduction");
-            _lblProduction.LoadContent(content);
-            _lblGold = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 85.0f), Alignment.TopLeft, "Gold", "CrimsonText-Regular-12", Color.Orange, "lblGold");
-            _lblGold.LoadContent(content);
-            _lblPower = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 115.0f), Alignment.TopLeft, "Power", "CrimsonText-Regular-12", Color.Orange, "lblPower");
-            _lblPower.LoadContent(content);
-            _lblResearch = new LabelAutoSized(new Vector2(_topLeftPosition.X + 20.0f, _topLeftPosition.Y + 145.0f), Alignment.TopLeft, "Research", "CrimsonText-Regular-12", Color.Orange, "lblResearch");
-            _lblResearch.LoadContent(content);
-
             _foodView = new FoodView(new Vector2(_topLeftPosition.X + 150.0f, _topLeftPosition.Y + 20.0f), _parent);
             _foodView.LoadContent(content);
             _productionView = new ProductionView(new Vector2(_topLeftPosition.X + 150.0f, _topLeftPosition.Y + 50.0f), _parent);
@@ -60,14 +36,6 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            _smallFrame.Draw(spriteBatch);
-            _lblResources.Draw(spriteBatch);
-            _lblFood.Draw(spriteBatch);
-            _lblProduction.Draw(spriteBatch);
-            _lblGold.Draw(spriteBatch);
-            _lblPower.Draw(spriteBatch);
-            _lblResearch.Draw(spriteBatch);
-
             _foodView.Draw(spriteBatch);
             _productionView.Draw(spriteBatch);
         }

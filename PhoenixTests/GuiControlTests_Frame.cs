@@ -14,7 +14,7 @@ namespace PhoenixTests
         {
             //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl frame = new Frame(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame");
+            IControl frame = new Frame(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame", null);
             Assert.AreEqual(new Point(100, 100), frame.TopLeft);
             Assert.AreEqual(new Point(200, 100), frame.TopRight);
             Assert.AreEqual(new Point(100, 200), frame.BottomLeft);
@@ -34,7 +34,7 @@ namespace PhoenixTests
         {
             //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl frame = new Frame(new Vector2(100.0f, 100.0f), Alignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame");
+            IControl frame = new Frame(new Vector2(100.0f, 100.0f), Alignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame", null);
             Assert.AreEqual(new Point(0, 0), frame.TopLeft);
             Assert.AreEqual(new Point(100, 0), frame.TopRight);
             Assert.AreEqual(new Point(0, 100), frame.BottomLeft);
@@ -54,9 +54,9 @@ namespace PhoenixTests
         {
             //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            var parent = new Frame(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "parent");
+            var parent = new Frame(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "parent", null);
 
-            IControl frame = new Frame(new Vector2(50.0f, 50.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame", null, 0.0f, parent);
+            IControl frame = new Frame(new Vector2(50.0f, 50.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame", parent);
             Assert.AreEqual(new Point(150, 150), frame.TopLeft);
             Assert.AreEqual(new Point(250, 150), frame.TopRight);
             Assert.AreEqual(new Point(150, 250), frame.BottomLeft);
@@ -78,9 +78,9 @@ namespace PhoenixTests
         {
             //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            var parent = new Frame(new Vector2(100.0f, 100.0f), Alignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "parent");
+            var parent = new Frame(new Vector2(100.0f, 100.0f), Alignment.BottomRight, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "parent", null);
 
-            IControl frame = new Frame(new Vector2(50.0f, 50.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame", null, 0.0f, parent);
+            IControl frame = new Frame(new Vector2(50.0f, 50.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame", parent);
             Assert.AreEqual(new Point(50, 50), frame.TopLeft);
             Assert.AreEqual(new Point(150, 50), frame.TopRight);
             Assert.AreEqual(new Point(50, 150), frame.BottomLeft);
@@ -100,7 +100,7 @@ namespace PhoenixTests
         {
             //DeviceManager.Instance.SetScreenResolution(960, 540);
 
-            IControl frame = new Frame(new Vector2(960.0f, 540.0f), Alignment.MiddleCenter, new Vector2(1920.0f, 1080.0f), "Icons_1", "", 10, 10, 10, 10, "frame");
+            IControl frame = new Frame(new Vector2(960.0f, 540.0f), Alignment.MiddleCenter, new Vector2(1920.0f, 1080.0f), "Icons_1", "", 10, 10, 10, 10, "frame", null);
             Assert.AreEqual(new Point(0, 0), frame.TopLeft);
             Assert.AreEqual(new Point(1920, 0), frame.TopRight);
             Assert.AreEqual(new Point(0, 1080), frame.BottomLeft);
@@ -120,7 +120,7 @@ namespace PhoenixTests
         {
             //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
-            IControl frame = new Frame(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame");
+            IControl frame = new Frame(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", 10, 10, 10, 10, "frame", null);
             frame.SetTopLeftPosition(frame.TopLeft.X - 100, frame.TopLeft.Y - 100);
             Assert.AreEqual(new Point(0, 0), frame.TopLeft);
             Assert.AreEqual(new Point(100, 0), frame.TopRight);
