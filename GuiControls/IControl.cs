@@ -12,6 +12,7 @@ namespace GuiControls
     {
         IControl Parent { get;  }
         EnumerableDictionary<IControl> ChildControls { get; }
+        IControl this[string index] { get; }
 
         string Name { get; }
 

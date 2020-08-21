@@ -17,9 +17,9 @@ namespace PhoenixGamePresentationLibrary
         private readonly WorldView _worldView;
 
         private MainFrame _mainFrame;
+        private CitizenView _populationFrame;
+
         private SecondaryFrame _secondaryFrame;
-        private PopulationFrame _populationFrame;
-        private ResourceFrame _resourceFrame;
         private BuildingsFrame _buildingsFrame;
         private UnitsFrame _unitsFrame;
         private OtherFrame _otherFrame;
@@ -42,13 +42,12 @@ namespace PhoenixGamePresentationLibrary
 
             _mainFrame = new MainFrame(this, _topLeftPositionMain, "GUI_Textures_1");
             _mainFrame.LoadContent(content);
+
+            _populationFrame = new CitizenView(this, new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 40.0f));
+            _populationFrame.LoadContent(content);
+
             _secondaryFrame = new SecondaryFrame(this, _topLeftPositionSecondary, "GUI_Textures_1");
             _secondaryFrame.LoadContent(content);
-
-            _populationFrame = new PopulationFrame(this, new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 40.0f));
-            _populationFrame.LoadContent(content);
-            _resourceFrame = new ResourceFrame(this, new Vector2(_topLeftPositionMain.X + 20.0f, _topLeftPositionMain.Y + 190.0f));
-            _resourceFrame.LoadContent(content);
 
             _buildingsFrame = new BuildingsFrame(this, new Vector2(_topLeftPositionSecondary.X + 20.0f, _topLeftPositionSecondary.Y + 40.0f));
             _buildingsFrame.LoadContent(content);
@@ -61,10 +60,9 @@ namespace PhoenixGamePresentationLibrary
         internal void Update(InputHandler input, float deltaTime)
         {
             _mainFrame.Update(input, deltaTime);
-            _secondaryFrame.Update(input, deltaTime);
-
             _populationFrame.Update(input, deltaTime);
-            _resourceFrame.Update(input, deltaTime);
+
+            _secondaryFrame.Update(input, deltaTime);
             _buildingsFrame.Update(input, deltaTime);
             _unitsFrame.Update(input, deltaTime);
             _otherFrame.Update(input, deltaTime);
@@ -73,10 +71,9 @@ namespace PhoenixGamePresentationLibrary
         internal void Draw(SpriteBatch spriteBatch)
         {
             _mainFrame.Draw(spriteBatch);
-            _secondaryFrame.Draw(spriteBatch);
-
             _populationFrame.Draw(spriteBatch);
-            _resourceFrame.Draw(spriteBatch);
+
+            _secondaryFrame.Draw(spriteBatch);
             _buildingsFrame.Draw(spriteBatch);
             _unitsFrame.Draw(spriteBatch);
             _otherFrame.Draw(spriteBatch);

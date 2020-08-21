@@ -59,8 +59,8 @@
     <Compile Include="SettlementViewComposite\BuildingsFrame.cs" />
     <Compile Include="SettlementViewComposite\MainFrame.cs" />
     <Compile Include="SettlementViewComposite\OtherFrame.cs" />
-    <Compile Include="SettlementViewComposite\PopulationFrame.cs" />
-    <Compile Include="SettlementViewComposite\ResourceFrame.cs" />
+    <Compile Include="SettlementViewComposite\CitizenView.cs" />
+    <Compile Include="SettlementViewComposite\CommodityView.cs" />
     <Compile Include="SettlementViewComposite\SecondaryFrame.cs" />
     <Compile Include="SettlementView.cs" />
     <Compile Include="SettlementViewComposite\UnitsFrame.cs" />

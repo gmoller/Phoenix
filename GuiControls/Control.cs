@@ -75,6 +75,7 @@ namespace GuiControls
         public Point Size => ActualDestinationRectangle.Size;
 
         public EnumerableDictionary<IControl> ChildControls => new EnumerableDictionary<IControl>(_childControls);
+        public IControl this[string key] => FindControl(key);
 
         private Control()
         {
@@ -367,6 +368,18 @@ namespace GuiControls
             MouseOver = copyThis.MouseOver;
             Click = copyThis.Click;
             _childControls = copyThis._childControls;
+        }
+
+        private IControl FindControl(string key)
+        {
+            var split = key.Split('.');
+            var childControl = ChildControls[split[0]];
+            for (var i = 1; i < split.Length; i++)
+            {
+                childControl = childControl[split[i]];
+            }
+
+            return childControl;
         }
 
         public override string ToString()
