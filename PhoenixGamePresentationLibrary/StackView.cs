@@ -7,6 +7,7 @@ using HexLibrary;
 using Input;
 using Microsoft.Xna.Framework;
 using MonoGameUtilities;
+using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using Utilities;
@@ -59,7 +60,7 @@ namespace PhoenixGamePresentationLibrary
             _movementPath = new List<Point>();
             _potentialMovementPath = new List<Point>();
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
-            _currentPositionOnScreen = HexOffsetCoordinates.ToPixel(stack.Location.X, stack.Location.Y);
+            _currentPositionOnScreen = HexOffsetCoordinates.ToPixel(stack.Location.X, stack.Location.Y).ToVector2();
         }
 
         internal List<IControl> GetMovementTypeImages()
@@ -168,10 +169,10 @@ namespace PhoenixGamePresentationLibrary
             MovementCountdownTime -= deltaTime;
 
             // determine start cell screen position
-            var startPosition = HexOffsetCoordinates.ToPixel(Location.X, Location.Y);
+            var startPosition = HexOffsetCoordinates.ToPixel(Location.X, Location.Y).ToVector2();
             // determine end cell screen position
             var hexToMoveTo = MovementPath[0];
-            var endPosition = HexOffsetCoordinates.ToPixel(hexToMoveTo.X, hexToMoveTo.Y);
+            var endPosition = HexOffsetCoordinates.ToPixel(hexToMoveTo.X, hexToMoveTo.Y).ToVector2();
             // lerp between the two positions
             var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
 
@@ -299,7 +300,7 @@ namespace PhoenixGamePresentationLibrary
         {
             foreach (var item in movementPath)
             {
-                var centerPosition = HexOffsetCoordinates.ToPixel(item.X, item.Y);
+                var centerPosition = HexOffsetCoordinates.ToPixel(item.X, item.Y).ToVector2();
                 spriteBatch.DrawCircle(centerPosition, radius, 10, color, thickness);
             }
         }

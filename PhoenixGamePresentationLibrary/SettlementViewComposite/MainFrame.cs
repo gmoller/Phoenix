@@ -33,6 +33,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             var lblFarmers = new LabelAutoSized(new Vector2(20.0f, 25.0f), Alignment.TopLeft, "Farmers:", "CrimsonText-Regular-12", Color.Orange, "lblFarmers", frmPopulation);
             var lblWorkers = new LabelAutoSized(new Vector2(20.0f, 55.0f), Alignment.TopLeft, "Workers:", "CrimsonText-Regular-12", Color.Orange, "lblWorkers", frmPopulation);
             var lblRebels = new LabelAutoSized(new Vector2(20.0f, 85.0f), Alignment.TopLeft, "Rebels:", "CrimsonText-Regular-12", Color.Orange, "lblRebels", frmPopulation);
+            var citizenView = new CitizenView(new Vector2(130.0f, 20.0f), Alignment.TopLeft, settlementView, "Citizens", "citizenView", frmPopulation);
 
             var frmResources = new Frame(new Vector2(20.0f, 190.0f), Alignment.TopLeft, new Vector2(515, 175), TextureAtlas, "frame2_whole", 50, 50, 50, 50, "frmResources", _frmMain);
             var lblResources = new LabelAutoSized(new Vector2(20.0f, 0.0f), Alignment.TopLeft, "Resources", "CrimsonText-Regular-12", Color.Orange, "lblResources", Color.DarkBlue, frmResources);
@@ -89,6 +90,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             _frmMain["frmPopulation.lblFarmers"].LoadContent(content);
             _frmMain["frmPopulation.lblWorkers"].LoadContent(content);
             _frmMain["frmPopulation.lblRebels"].LoadContent(content);
+            _frmMain["frmPopulation.citizenView"].LoadContent(content);
             _frmMain["frmResources"].LoadContent(content);
             _frmMain["frmResources.lblResources"].LoadContent(content);
             _frmMain["frmResources.lblFood"].LoadContent(content);

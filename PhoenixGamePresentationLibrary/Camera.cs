@@ -4,8 +4,10 @@ using HexLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Input;
+using MonoGameUtilities.ExtensionMethods;
 using Utilities;
 using Utilities.ExtensionMethods;
+using MathHelper = Microsoft.Xna.Framework.MathHelper;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -63,7 +65,7 @@ namespace PhoenixGamePresentationLibrary
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
             var hexPoint = context.WorldHexPointedAtByMouseCursor;
             var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y);
-            _centerPosition = newPosition;
+            _centerPosition = newPosition.ToVector2();
         }
 
         /// <summary>
@@ -73,7 +75,7 @@ namespace PhoenixGamePresentationLibrary
         public void LookAtCell(Utilities.Point hexPoint)
         {
             var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y); // in world
-            _centerPosition = newPosition;
+            _centerPosition = newPosition.ToVector2();
         }
 
         /// <summary>

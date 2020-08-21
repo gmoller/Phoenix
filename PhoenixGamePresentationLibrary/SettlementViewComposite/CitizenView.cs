@@ -7,11 +7,10 @@ using Input;
 
 namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 {
-    internal class CitizenView
+    internal class CitizenView : Control
     {
-        private readonly SettlementView _parent;
-
-        private readonly Vector2 _topLeftPosition;
+        #region State
+        private readonly SettlementView _settlementView;
 
         private Button _btnSubtractFarmer;
         private Button _btnAddFarmer;
@@ -21,55 +20,57 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
         private Image _imgFarmer;
         private Image _imgWorker;
         private Image _imgRebel;
+        #endregion
 
-        internal CitizenView(SettlementView parent, Vector2 topLeftPosition)
+        internal CitizenView(Vector2 position, Alignment positionAlignment, SettlementView settlementView, string textureAtlas, string name, IControl parent = null) :
+            base(position, positionAlignment, new Vector2(100.0f, 30.0f), textureAtlas, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, name, 0.0f, parent)
         {
-            _parent = parent;
-            _topLeftPosition = topLeftPosition;
-        }
+            _settlementView = settlementView;
 
-        internal void LoadContent(ContentManager content)
-        {
-            _btnSubtractFarmer = new Button(new Vector2(_topLeftPosition.X + 140.0f, _topLeftPosition.Y + 30.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h", "btnSubtractFarmer");
-            _btnSubtractFarmer.LoadContent(content);
+            _btnSubtractFarmer = new Button(new Vector2(Area.X, Area.Y), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h", "btnSubtractFarmer");
             _btnSubtractFarmer.Click += SubtractFarmerButtonClick;
-            _btnAddFarmer = new Button(new Vector2(_topLeftPosition.X + 160.0f, _topLeftPosition.Y + 30.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h", "btnAddFarmer");
-            _btnAddFarmer.LoadContent(content);
+            _btnAddFarmer = new Button(new Vector2(Area.X + 20.0f, Area.Y), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h", "btnAddFarmer");
             _btnAddFarmer.Click += AddFarmerButtonClick;
-            _btnSubtractWorker = new Button(new Vector2(_topLeftPosition.X + 140.0f, _topLeftPosition.Y + 60.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h", "btnSubtractWorker");
-            _btnSubtractWorker.LoadContent(content);
+            _btnSubtractWorker = new Button(new Vector2(Area.X, Area.Y + 30.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h", "btnSubtractWorker");
             _btnSubtractWorker.Click += SubtractWorkerButtonClick;
-            _btnAddWorker = new Button(new Vector2(_topLeftPosition.X + 160.0f, _topLeftPosition.Y + 60.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h", "btnAddWorker");
-            _btnAddWorker.LoadContent(content);
+            _btnAddWorker = new Button(new Vector2(Area.X + 20.0f, Area.Y + 30.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h", "btnAddWorker");
             _btnAddWorker.Click += AddWorkerButtonClick;
 
-            // TODO: fix hardcoded race type name
-            _imgFarmer = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20, 30), "Citizens", "Citizen_Barbarians_Farmer", "imgFarmer");
-            _imgFarmer.LoadContent(content);
-            _imgWorker = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20, 30), "Citizens", "Citizen_Barbarians_Worker", "imgWorker");
-            _imgWorker.LoadContent(content);
-            _imgRebel = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20, 30), "Citizens", "Citizen_Barbarians_Rebel", "imgRebel");
-            _imgRebel.LoadContent(content);
-
-            EnableOrDisableButtons();
+            _imgFarmer = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 30.0f), textureAtlas, $"Citizen_{settlementView.Settlement.RaceType.Name}_Farmer", "imgFarmer");
+            _imgWorker = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 30.0f), textureAtlas, $"Citizen_{settlementView.Settlement.RaceType.Name}_Worker", "imgWorker");
+            _imgRebel = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 30.0f), textureAtlas, $"Citizen_{settlementView.Settlement.RaceType.Name}_Rebel", "imgRebel");
         }
 
-        internal void Update(InputHandler input, float deltaTime)
+        public override void LoadContent(ContentManager content)
         {
+            _btnSubtractFarmer.LoadContent(content);
+            _btnAddFarmer.LoadContent(content);
+            _btnSubtractWorker.LoadContent(content);
+            _btnAddWorker.LoadContent(content);
+
+            _imgFarmer.LoadContent(content);
+            _imgWorker.LoadContent(content);
+            _imgRebel.LoadContent(content);
+        }
+
+        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        {
+            EnableOrDisableButtons();
+
             _btnSubtractFarmer.Update(input, deltaTime);
             _btnAddFarmer.Update(input, deltaTime);
             _btnSubtractWorker.Update(input, deltaTime);
             _btnAddWorker.Update(input, deltaTime);
-
-            EnableOrDisableButtons();
         }
 
-        internal void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200, _topLeftPosition.Y + 25), _imgFarmer, _parent.Settlement.Citizens.SubsistenceFarmers);
-            DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200 + (_parent.Settlement.Citizens.SubsistenceFarmers * 20) + 20, _topLeftPosition.Y + 25), _imgFarmer, _parent.Settlement.Citizens.AdditionalFarmers);
-            DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200, _topLeftPosition.Y + 55), _imgWorker, _parent.Settlement.Citizens.Workers);
-            DrawCitizens(spriteBatch, new Vector2(_topLeftPosition.X + 200, _topLeftPosition.Y + 85), _imgRebel, 0); //_settlement.Citizens.Rebels
+            float offsetX = 70.0f;
+            float offsetY = -5.0f;
+            DrawCitizens(spriteBatch, new Vector2(Area.X + offsetX, Area.Y + offsetY), _imgFarmer, _settlementView.Settlement.Citizens.SubsistenceFarmers);
+            DrawCitizens(spriteBatch, new Vector2(Area.X + offsetX + _settlementView.Settlement.Citizens.SubsistenceFarmers * _imgFarmer.Width + _imgFarmer.Width, Area.Y + offsetY), _imgFarmer, _settlementView.Settlement.Citizens.AdditionalFarmers);
+            DrawCitizens(spriteBatch, new Vector2(Area.X + offsetX, Area.Y + offsetY + _imgFarmer.Height), _imgWorker, _settlementView.Settlement.Citizens.Workers);
+            DrawCitizens(spriteBatch, new Vector2(Area.X + offsetX, Area.Y + offsetY + _imgFarmer.Height + _imgWorker.Height), _imgRebel, 0); //_settlement.Citizens.Rebels
 
             _btnSubtractFarmer.Draw(spriteBatch);
             _btnAddFarmer.Draw(spriteBatch);
@@ -86,38 +87,38 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
                 image.SetTopLeftPosition(x, y);
                 image.Draw(spriteBatch);
 
-                x += 20;
+                x += image.Width;
             }
         }
 
         private void SubtractFarmerButtonClick(object sender, EventArgs e)
         {
-            _parent.Settlement.Citizens.ConvertFarmerToWorker();
+            _settlementView.Settlement.Citizens.ConvertFarmerToWorker();
         }
 
         private void AddFarmerButtonClick(object sender, EventArgs e)
         {
-            _parent.Settlement.Citizens.ConvertWorkerToFarmer();
+            _settlementView.Settlement.Citizens.ConvertWorkerToFarmer();
         }
 
         private void SubtractWorkerButtonClick(object sender, EventArgs e)
         {
-            _parent.Settlement.Citizens.ConvertWorkerToFarmer();
+            _settlementView.Settlement.Citizens.ConvertWorkerToFarmer();
         }
 
         private void AddWorkerButtonClick(object sender, EventArgs e)
         {
-            _parent.Settlement.Citizens.ConvertFarmerToWorker();
+            _settlementView.Settlement.Citizens.ConvertFarmerToWorker();
         }
 
         private void EnableOrDisableButtons()
         {
-            if (_parent.Settlement == null) return;
+            if (_settlementView.Settlement == null) return;
 
-            _btnSubtractFarmer.Enabled = _parent.Settlement.Citizens.AdditionalFarmers > 0;
-            _btnAddFarmer.Enabled = _parent.Settlement.Citizens.Workers > 0;
-            _btnSubtractWorker.Enabled = _parent.Settlement.Citizens.Workers > 0;
-            _btnAddWorker.Enabled = _parent.Settlement.Citizens.AdditionalFarmers > 0;
+            _btnSubtractFarmer.Enabled = _settlementView.Settlement.Citizens.AdditionalFarmers > 0;
+            _btnAddFarmer.Enabled = _settlementView.Settlement.Citizens.Workers > 0;
+            _btnSubtractWorker.Enabled = _settlementView.Settlement.Citizens.Workers > 0;
+            _btnAddWorker.Enabled = _settlementView.Settlement.Citizens.AdditionalFarmers > 0;
         }
     }
 }

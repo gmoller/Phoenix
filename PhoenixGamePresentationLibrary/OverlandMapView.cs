@@ -4,6 +4,7 @@ using AssetsLibrary;
 using HexLibrary;
 using Input;
 using MonoGameUtilities;
+using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using Utilities.ExtensionMethods;
 
@@ -81,9 +82,9 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawBorder(SpriteBatch spriteBatch, Cell cell, HexVertexDirection vertexDirection1, HexVertexDirection vertexDirection2)
         {
-            var centerPosition = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row);
-            var point1 = Hex.GetCorner(vertexDirection1);
-            var point2 = Hex.GetCorner(vertexDirection2);
+            var centerPosition = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row).ToVector2();
+            var point1 = Hex.GetCorner(vertexDirection1).ToVector2();
+            var point2 = Hex.GetCorner(vertexDirection2).ToVector2();
 
             spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, cell.ControlledByFaction == 1 ? Color.DarkGreen : Color.Red, 5.0f, 0.5f);
         }
@@ -104,15 +105,15 @@ namespace PhoenixGamePresentationLibrary
 
         private void DrawHexBorder(SpriteBatch spriteBatch, Cell cell)
         {
-            var centerPosition = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row);
+            var centerPosition = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row).ToVector2();
 
             var color = Color.PeachPuff;
-            var point0 = Hex.GetCorner(HexVertexDirection.North);
-            var point1 = Hex.GetCorner(HexVertexDirection.NorthEast);
-            var point2 = Hex.GetCorner(HexVertexDirection.SouthEast);
-            var point3 = Hex.GetCorner(HexVertexDirection.South);
-            var point4 = Hex.GetCorner(HexVertexDirection.SouthWest);
-            var point5 = Hex.GetCorner(HexVertexDirection.NorthWest);
+            var point0 = Hex.GetCorner(HexVertexDirection.North).ToVector2();
+            var point1 = Hex.GetCorner(HexVertexDirection.NorthEast).ToVector2();
+            var point2 = Hex.GetCorner(HexVertexDirection.SouthEast).ToVector2();
+            var point3 = Hex.GetCorner(HexVertexDirection.South).ToVector2();
+            var point4 = Hex.GetCorner(HexVertexDirection.SouthWest).ToVector2();
+            var point5 = Hex.GetCorner(HexVertexDirection.NorthWest).ToVector2();
 
             spriteBatch.DrawLine(centerPosition + point0, centerPosition + point1, color, 1.0f);
             spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, color, 1.0f);

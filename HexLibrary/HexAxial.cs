@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Microsoft.Xna.Framework;
+using Utilities;
 
 namespace HexLibrary
 {
@@ -56,16 +56,16 @@ namespace HexLibrary
             return axial;
         }
 
-        public static Vector2 ToPixel(HexAxial axial)
+        public static PointF ToPixel(HexAxial axial)
         {
             return ToPixel(axial.Q, axial.R);
         }
 
-        public static Vector2 ToPixel(int q, int r)
+        public static PointF ToPixel(int q, int r)
         {
             var x = Constants.HexSize * (Constants.SquareRootOf3 * q + Constants.HalfOfSquareRootOf3 * r);
             var y = Constants.HexSize * (1.5f * r);
-            var pixel = new Vector2((float)x, (float)y);
+            var pixel = new PointF((float)x, (float)y);
 
             return pixel;
         }

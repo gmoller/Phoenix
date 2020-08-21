@@ -43,7 +43,8 @@ namespace PhoenixGamePresentationLibrary
             _overlandMapView = new OverlandMapView(this, World.OverlandMap);
             _overlandSettlementsView = new OverlandSettlementViews(this, World.Settlements);
             _stackViews = new StackViews(this, World.Stacks);
-            _settlementView = new SettlementView(this);
+            _settlementView = new SettlementView(this, World.Settlements[0]);
+            _settlementView.LoadContent(content);
             _hudView = new HudView(this, _stackViews);
 
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
@@ -55,9 +56,6 @@ namespace PhoenixGamePresentationLibrary
 
             _overlandSettlementsView.LoadContent(content);
             _stackViews.LoadContent(content);
-
-            _settlementView.Settlement = World.Settlements[0];
-            _settlementView.LoadContent(content);
 
             _hudView.LoadContent(content);
         }

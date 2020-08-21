@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using HexLibrary;
 
 namespace Utilities
 {
@@ -13,7 +12,7 @@ namespace Utilities
 
         private Node? _solution;
 
-        public List<Point> Solution
+        public override List<Point> Solution
         {
             get
             {
@@ -37,7 +36,7 @@ namespace Utilities
             }
         }
 
-        public void Solve(Func<Point, GetCostToMoveIntoResult> getCostToMoveIntoFunc, Point gridSize, Point start, Point destination, PriorityQueue<Node> openList, Dictionary<Point, Cost> closedList)
+        public override void Solve(Func<Point, GetCostToMoveIntoResult> getCostToMoveIntoFunc, Point gridSize, Point start, Point destination, PriorityQueue<Node> openList, Dictionary<Point, Cost> closedList)
         {
             _getCostToMoveIntoFunc = getCostToMoveIntoFunc;
             _gridSize = gridSize;
@@ -54,14 +53,10 @@ namespace Utilities
         {
             var parentIndex = ToIndex(node.Position);
 
-            var neighbors = HexOffsetCoordinates.GetAllNeighbors(node.Position.X, node.Position.Y);
+            var neighbors = GetAllNeighbors(node.Position);
             foreach (var neighbor in neighbors)
             {
-                //// is within bounds of map?
-                //if (neighbor.Col < 0 || neighbor.Col >= _gridSize.X || neighbor.Row < 0 ||
-                //    neighbor.Row >= _gridSize.Y) continue;
-
-                var point = new Point(neighbor.Col, neighbor.Row);
+                var point = new Point(neighbor.X, neighbor.Y);
                 var costToMoveIntoResult = _getCostToMoveIntoFunc(point);
                 if (!costToMoveIntoResult.CanMoveInto)
                 {
@@ -80,13 +75,6 @@ namespace Utilities
             if (isSolved) _solution = new Node(position, _closedList[position]);
 
             return isSolved;
-        }
-
-        private static int GetDistance(Point source, Point destination)
-        {
-            var distance = HexOffsetCoordinates.GetDistance(source.X, source.Y, destination.X, destination.Y);
-
-            return distance;
         }
     }
 }

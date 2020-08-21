@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
+using Utilities;
 
 namespace HexLibrary
 {
@@ -132,16 +132,16 @@ namespace HexLibrary
         //    return offsetCoordinates;
         //}
 
-        public static Vector2 ToPixel(HexOffsetCoordinates offsetCoordinates)
+        public static PointF ToPixel(HexOffsetCoordinates offsetCoordinates)
         {
             return ToPixel(offsetCoordinates.Col, offsetCoordinates.Row);
         }
 
-        public static Vector2 ToPixel(int col, int row)
+        public static PointF ToPixel(int col, int row)
         {
             var x = Constants.HexSize * (Constants.SquareRootOf3 * (col + 0.5f * (row & 1)));
             var y = Constants.HexSize * (1.5f * row);
-            var pixel = new Vector2((float)x, (float)y);
+            var pixel = new PointF((float)x, (float)y);
 
             return pixel;
         }

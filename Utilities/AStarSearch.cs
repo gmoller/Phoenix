@@ -6,6 +6,15 @@ namespace Utilities
 {
     public abstract class AStarSearch<TKey, TValue> where TValue : IComparable<TValue>
     {
+        #region State
+        public Func<Point, Point[]> GetAllNeighbors { get; set; }
+        public Func<Point, Point, int> GetDistance { get; set; }
+
+        public abstract List<Point> Solution { get; }
+        #endregion
+
+        public abstract void Solve(Func<Point, GetCostToMoveIntoResult> getCostToMoveIntoFunc, Point gridSize, Point start,  Point destination, PriorityQueue<Node> openList, Dictionary<Point, Cost> closedList);
+
         protected void Solve(Node start, PriorityQueue<Node> openList, Dictionary<TKey, TValue> closedList)
         {
             openList.Enqueue(start);

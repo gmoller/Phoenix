@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.Xna.Framework;
+using Utilities;
 
 namespace HexLibrary
 {
@@ -125,12 +125,12 @@ namespace HexLibrary
             return cube;
         }
 
-        public static Vector2 ToPixel(HexCube cube)
+        public static PointF ToPixel(HexCube cube)
         {
             return ToPixel(cube.X, cube.Y, cube.Z);
         }
 
-        public static Vector2 ToPixel(int x, int y, int z)
+        public static PointF ToPixel(int x, int y, int z)
         {
             var axial = ToAxial(x, y, z);
             var point = HexAxial.ToPixel(axial.Q, axial.R);
