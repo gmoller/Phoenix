@@ -59,13 +59,11 @@
     <Compile Include="SettlementViewComposite\BuildingsFrame.cs" />
     <Compile Include="SettlementViewComposite\FoodView.cs" />
     <Compile Include="SettlementViewComposite\MainFrame.cs" />
-    <Compile Include="SettlementViewComposite\OtherFrame.cs" />
     <Compile Include="SettlementViewComposite\CitizenView.cs" />
     <Compile Include="SettlementViewComposite\CommodityView.cs" />
     <Compile Include="SettlementViewComposite\ProductionView.cs" />
     <Compile Include="SettlementViewComposite\SecondaryFrame.cs" />
     <Compile Include="SettlementView.cs" />
-    <Compile Include="SettlementViewComposite\UnitsFrame.cs" />
     <Compile Include="ToolTip.cs" />
     <Compile Include="StackViews.cs" />
     <Compile Include="StackView.cs" />
