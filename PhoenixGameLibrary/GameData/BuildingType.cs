@@ -54,7 +54,7 @@ namespace PhoenixGameLibrary.GameData
             if (buildingsAlreadyBuilt.Contains(Id)) return false;
 
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var buildingTypes = ((GameMetadata)context.GameMetadata).BuildingTypes;
+            var buildingTypes = context.GameMetadata.BuildingTypes;
 
             foreach (var building in _dependsOnBuildings)
             {

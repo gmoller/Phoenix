@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Remoting.Messaging;
-using PhoenixGameLibrary.GameData;
-using Utilities;
 
 namespace PhoenixGameLibrary.Helpers
 {
@@ -25,8 +22,8 @@ namespace PhoenixGameLibrary.Helpers
 
             // buildings
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var buildingFoodOutputIncreaseTypes = ((GameMetadata)context.GameMetadata).BuildingFoodOutputIncreaseTypes;
-            var buildingTypes = ((GameMetadata)context.GameMetadata).BuildingTypes;
+            var buildingFoodOutputIncreaseTypes = context.GameMetadata.BuildingFoodOutputIncreaseTypes;
+            var buildingTypes = context.GameMetadata.BuildingTypes;
             foreach (var item in buildingFoodOutputIncreaseTypes)
             {
                 if (buildingsBuilt.Contains(item.Id))
@@ -42,7 +39,7 @@ namespace PhoenixGameLibrary.Helpers
 
     public class FoodBreakdown
     {
-        private List<FoodBreakdownItem> _foodBreakdown;
+        private readonly List<FoodBreakdownItem> _foodBreakdown;
 
         internal FoodBreakdown()
         {
@@ -71,7 +68,7 @@ namespace PhoenixGameLibrary.Helpers
 
     internal struct FoodBreakdownItem
     {
-        internal string Name { get; }
+        private string Name { get; }
         internal float Food { get; }
 
         internal FoodBreakdownItem(string name, float food)

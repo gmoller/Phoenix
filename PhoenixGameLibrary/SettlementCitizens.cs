@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
-using PhoenixGameLibrary.GameData;
-using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -74,7 +72,7 @@ namespace PhoenixGameLibrary
 
             // buildings
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var buildingFoodOutputIncreaseTypes = ((GameMetadata)context.GameMetadata).BuildingFoodOutputIncreaseTypes;
+            var buildingFoodOutputIncreaseTypes = context.GameMetadata.BuildingFoodOutputIncreaseTypes;
 
             var freeFood = 0.0;
             foreach (var item in buildingFoodOutputIncreaseTypes)

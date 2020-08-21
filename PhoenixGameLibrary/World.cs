@@ -34,7 +34,7 @@ namespace PhoenixGameLibrary
         internal void AddSettlement(Point location, string raceTypeName)
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var raceTypes = ((GameMetadata)context.GameMetadata).RaceTypes;
+            var raceTypes = context.GameMetadata.RaceTypes;
 
             var raceType = raceTypes[raceTypeName];
             var townNames = raceType.TownNames;

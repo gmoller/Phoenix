@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.GameData;
-using Utilities;
 
 namespace PhoenixGameLibrary.Helpers
 {
@@ -21,7 +20,7 @@ namespace PhoenixGameLibrary.Helpers
 
             // buildings
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var buildingPopulationGrowthTypes = ((GameMetadata)context.GameMetadata).BuildingPopulationGrowthTypes;
+            var buildingPopulationGrowthTypes = context.GameMetadata.BuildingPopulationGrowthTypes;
 
             foreach (var item in buildingPopulationGrowthTypes)
             {

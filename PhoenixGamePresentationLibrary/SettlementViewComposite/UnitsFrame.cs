@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
 using PhoenixGameLibrary;
-using Utilities;
 
 namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 {
@@ -63,7 +62,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             var y = baseTopLeftY;
 
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var unitTypes = ((GameMetadata)context.GameMetadata).UnitTypes;
+            var unitTypes = context.GameMetadata.UnitTypes;
             foreach (var unit in unitTypes)
             {
                 if (_parent.Settlement.UnitCanBeBuilt(unit.Name))
@@ -83,7 +82,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
         private void UnitClick(object sender, EventArgs e)
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var unitTypes = ((GameMetadata)context.GameMetadata).UnitTypes;
+            var unitTypes = context.GameMetadata.UnitTypes;
 
             var unit = (LabelSized)sender;
             var unit2 = unitTypes[unit.Name];

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
-using PhoenixGameLibrary.GameData;
-using Utilities;
 
 namespace PhoenixGameLibrary.Helpers
 {
@@ -12,7 +10,7 @@ namespace PhoenixGameLibrary.Helpers
         {
             // TODO: Trade Goods, Shared Terrain, Corruption, Gaia's Blessing, Inspirations, Cursed Lands, Sawmill, Forester's Guild, Miner's Guild, Mechanicians' Guild
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var terrainTypes = ((GameMetadata)context.GameMetadata).TerrainTypes;
+            var terrainTypes = context.GameMetadata.TerrainTypes;
 
             float farmerProduction = settlement.RaceType.FarmerProductionRate * settlement.Citizens.Farmers;
             float workerProduction = settlement.RaceType.WorkerProductionRate * settlement.Citizens.Workers;

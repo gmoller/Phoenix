@@ -216,7 +216,7 @@ namespace PhoenixGamePresentationLibrary
                 var cell = cellGrid.GetCell(hexPoint.X, hexPoint.Y);
                 if (cell.SeenState != SeenState.NeverSeen)
                 {
-                    var terrainTypes = ((GameMetadata)context.GameMetadata).TerrainTypes;
+                    var terrainTypes = context.GameMetadata.TerrainTypes;
                     var terrainType = terrainTypes[cell.TerrainTypeId];
                     var text1 = $"{terrainType.Name} - {terrainType.FoodOutput} food";
                     spriteBatch.DrawString(_font, text1, new Vector2(x, y), Color.White);

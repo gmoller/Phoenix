@@ -52,7 +52,7 @@ namespace PhoenixGameLibrary.GameData
         public bool IsReadyToBeBuilt(List<int> buildingsAlreadyBuilt)
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var buildingTypes = ((GameMetadata)context.GameMetadata).BuildingTypes;
+            var buildingTypes = context.GameMetadata.BuildingTypes;
 
             foreach (var building in _dependsOnBuildings)
             {

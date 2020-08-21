@@ -46,7 +46,7 @@ namespace PhoenixGameLibrary.GameData
         private float GetFoodOutput()
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var terrainFoodOutputTypes = ((GameMetadata)context.GameMetadata).TerrainFoodOutputTypes;
+            var terrainFoodOutputTypes = context.GameMetadata.TerrainFoodOutputTypes;
 
             return terrainFoodOutputTypes.Contains(Id) ? terrainFoodOutputTypes[Id].FoodOutput : 0.0f;
         }
@@ -54,7 +54,7 @@ namespace PhoenixGameLibrary.GameData
         private float GetProductionPercentage()
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var terrainProductionPercentageTypes = ((GameMetadata)context.GameMetadata).TerrainProductionPercentageTypes;
+            var terrainProductionPercentageTypes = context.GameMetadata.TerrainProductionPercentageTypes;
 
             return terrainProductionPercentageTypes.Contains(Id) ? terrainProductionPercentageTypes[Id].ProductionPercentage : 0.0f;
         }
@@ -62,7 +62,7 @@ namespace PhoenixGameLibrary.GameData
         private bool GetCanSettleOn()
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var terrainCanSettleOnTypes = ((GameMetadata)context.GameMetadata).TerrainCanSettleOnTypes;
+            var terrainCanSettleOnTypes = context.GameMetadata.TerrainCanSettleOnTypes;
 
             return terrainCanSettleOnTypes.Contains(Id);
         }

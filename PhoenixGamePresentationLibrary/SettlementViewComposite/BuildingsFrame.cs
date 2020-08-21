@@ -7,7 +7,6 @@ using GuiControls;
 using Input;
 using MonoGameUtilities;
 using PhoenixGameLibrary;
-using Utilities;
 
 namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 {
@@ -47,7 +46,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             if (input.IsLeftMouseButtonReleased)
             {
                 var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-                var buildingTypes = ((GameMetadata)context.GameMetadata).BuildingTypes;
+                var buildingTypes = context.GameMetadata.BuildingTypes;
 
                 // determine where mouse pointer is (is it over a slot? which slot?)
                 var baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
@@ -81,7 +80,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
         private void DrawBuildings(SpriteBatch spriteBatch)
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var buildingTypes = ((GameMetadata)context.GameMetadata).BuildingTypes;
+            var buildingTypes = context.GameMetadata.BuildingTypes;
 
             var baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
             var baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);

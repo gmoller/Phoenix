@@ -1,4 +1,6 @@
-﻿namespace Utilities
+﻿using Utilities;
+
+namespace PhoenixGameLibrary
 {
     public class GlobalContext
     {
@@ -9,7 +11,7 @@
         public Point WorldPositionPointedAtByMouseCursor { get; set; }
         public Point WorldHexPointedAtByMouseCursor { get; set; }
 
-        public object GameMetadata { get; set; }
+        public GameMetadata GameMetadata { get; set; }
 
         public object GraphicsDevice { get; set; }
         public object GraphicsDeviceManager { get; set; }

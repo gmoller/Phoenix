@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Remoting.Messaging;
-using Utilities;
 using Utilities.ExtensionMethods;
 
 namespace PhoenixGameLibrary.GameData
@@ -31,7 +30,7 @@ namespace PhoenixGameLibrary.GameData
         private MovementType GetMovementType()
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var movementTypes = ((GameMetadata)context.GameMetadata).MovementTypes;
+            var movementTypes = context.GameMetadata.MovementTypes;
 
             return movementTypes[_movementType];
         }

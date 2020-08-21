@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.GameData;
-using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -66,7 +65,7 @@ namespace PhoenixGameLibrary
         private static TerrainType DetermineTerrainTypeId(float val)
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var terrainTypes = ((GameMetadata)context.GameMetadata).TerrainTypes;
+            var terrainTypes = context.GameMetadata.TerrainTypes;
 
             TerrainType terrainType;
 

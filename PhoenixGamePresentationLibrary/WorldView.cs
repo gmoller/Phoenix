@@ -139,7 +139,7 @@ namespace PhoenixGamePresentationLibrary
         private Dictionary<string, Image> LoadMovementTypeImages(ContentManager content)
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var movementTypes = ((GameMetadata)context.GameMetadata).MovementTypes;
+            var movementTypes = context.GameMetadata.MovementTypes;
 
             var movementTypeImages = new Dictionary<string, Image>();
             foreach (var movementType in movementTypes)
@@ -155,7 +155,7 @@ namespace PhoenixGamePresentationLibrary
         private Dictionary<string, Button> LoadActionButtons(ContentManager content)
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            var actionTypes = ((GameMetadata)context.GameMetadata).ActionTypes;
+            var actionTypes = context.GameMetadata.ActionTypes;
 
             var actionButtons = new Dictionary<string, Button>();
             var i = 0;

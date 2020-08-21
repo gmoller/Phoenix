@@ -212,9 +212,10 @@ namespace GuiControls
             }
             else
             {
-                var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-                var worldPosition = context.WorldPositionPointedAtByMouseCursor;
-                mousePosition = new Point(worldPosition.X, worldPosition.Y);
+                mousePosition = input.MousePosition;
+                //var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+                //var worldPosition = context.WorldPositionPointedAtByMouseCursor;
+                //mousePosition = new Point(worldPosition.X, worldPosition.Y);
             }
 
             return mousePosition;
