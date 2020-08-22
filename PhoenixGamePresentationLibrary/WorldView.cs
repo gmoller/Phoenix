@@ -20,15 +20,15 @@ namespace PhoenixGamePresentationLibrary
         #region State
         public World World { get; }
 
-        private OverlandMapView _overlandMapView;
-        private OverlandSettlementViews _overlandSettlementsView;
-        private StackViews _stackViews;
-        private SettlementView _settlementView;
-        private HudView _hudView;
-        private Dictionary<string, Image> _movementTypeImages;
-        private Dictionary<string, Button> _actionButtons;
+        private readonly OverlandMapView _overlandMapView;
+        private readonly OverlandSettlementViews _overlandSettlementsView;
+        private readonly StackViews _stackViews;
+        private readonly SettlementView _settlementView;
+        private readonly HudView _hudView;
+        private readonly Dictionary<string, Image> _movementTypeImages;
+        private readonly Dictionary<string, Button> _actionButtons;
 
-        public Camera Camera { get; private set; }
+        public Camera Camera { get; }
         #endregion 
 
         public EnumerableDictionary<Image> MovementTypeImages => new EnumerableDictionary<Image>(_movementTypeImages);
@@ -37,28 +37,39 @@ namespace PhoenixGamePresentationLibrary
         internal WorldView(World world)
         {
             World = world;
-        }
 
-        internal void LoadContent(ContentManager content)
-        {
             _overlandMapView = new OverlandMapView(this, World.OverlandMap);
             _overlandSettlementsView = new OverlandSettlementViews(this, World.Settlements);
             _stackViews = new StackViews(this, World.Stacks);
             _settlementView = new SettlementView(this, World.Settlements[0]);
-            _settlementView.LoadContent(content);
             _hudView = new HudView(this, _stackViews);
+
+            _movementTypeImages = InitializeMovementTypeImages();
+            _actionButtons = InitializeActionButtons();
 
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
             Camera = new Camera(new Rectangle(0, 0, context.ActualResolution.X, context.ActualResolution.Y));
-            Camera.LoadContent(content);
+        }
 
-            _movementTypeImages = LoadMovementTypeImages(content);
-            _actionButtons = LoadActionButtons(content);
-
+        internal void LoadContent(ContentManager content)
+        {
+            _settlementView.LoadContent(content);
             _overlandSettlementsView.LoadContent(content);
+            Camera.LoadContent(content);
             _stackViews.LoadContent(content);
-
             _hudView.LoadContent(content);
+
+            // TODO: _movementTypeImages.LoadContent(content);
+            foreach (var movementTypeImage in _movementTypeImages.Values)
+            {
+                movementTypeImage.LoadContent(content);
+            }
+
+            // TODO: _actionButtons.LoadContent(content);
+            foreach (var button in _actionButtons.Values)
+            {
+                button.LoadContent(content, true);
+            }
         }
 
         internal void Update(InputHandler input, float deltaTime)
@@ -106,7 +117,7 @@ namespace PhoenixGamePresentationLibrary
 
         private Utilities.Point GetWorldPositionPointedAtByMouseCursor(Camera camera, Microsoft.Xna.Framework.Point mousePosition)
         {
-            var worldPosPointedAtByMouseCursor = Camera.ScreenToWorld(new Vector2(mousePosition.X, mousePosition.Y));
+            var worldPosPointedAtByMouseCursor = camera.ScreenToWorld(new Vector2(mousePosition.X, mousePosition.Y));
 
             return new Utilities.Point((int)worldPosPointedAtByMouseCursor.X, (int)worldPosPointedAtByMouseCursor.Y);
         }
@@ -137,7 +148,7 @@ namespace PhoenixGamePresentationLibrary
             BeginTurn();
         }
 
-        private Dictionary<string, Image> LoadMovementTypeImages(ContentManager content)
+        private Dictionary<string, Image> InitializeMovementTypeImages()
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
             var movementTypes = context.GameMetadata.MovementTypes;
@@ -146,14 +157,13 @@ namespace PhoenixGamePresentationLibrary
             foreach (var movementType in movementTypes)
             {
                 var image = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(18.0f, 12.0f), "MovementTypes", movementType.Name, "image");
-                image.LoadContent(content);
                 movementTypeImages.Add(movementType.Name, image);
             }
 
             return movementTypeImages;
         }
 
-        private Dictionary<string, Button> LoadActionButtons(ContentManager content)
+        private Dictionary<string, Button> InitializeActionButtons()
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
             var actionTypes = context.GameMetadata.ActionTypes;
@@ -171,11 +181,9 @@ namespace PhoenixGamePresentationLibrary
                 i++;
 
                 var button = new Button(position, Alignment.TopLeft, buttonSize, "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_a", "simpleb_h", actionType.Name);
-                button.LoadContent(content);
                 button.Click += (o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name));
                 var label = new LabelSized(button.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black, $"label{i}", null);
                 button.AddControl(label);
-                label.LoadContent(content);
 
                 actionButtons.Add(actionType.Name, button);
             }

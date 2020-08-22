@@ -16,11 +16,12 @@ namespace PhoenixGamePresentationLibrary
         {
             _worldView = worldView;
             _settlements = settlements;
+
+            _overlandSettlementView = new OverlandSettlementView(_worldView);
         }
 
         public void LoadContent(ContentManager content)
         {
-            _overlandSettlementView = new OverlandSettlementView(_worldView);
             _overlandSettlementView.LoadContent(content);
         }
 

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GuiControls
@@ -119,22 +118,6 @@ namespace GuiControls
         }
 
         public override IControl Clone() { return new Image(this); }
-
-        public override void LoadContent(ContentManager content)
-        {
-            base.LoadContent(content);
-            //if (TextureAtlas.HasValue())
-            //{
-            //    var atlas = AssetsManager.Instance.GetAtlas(TextureAtlas);
-            //    Texture = AssetsManager.Instance.GetTexture(TextureAtlas);
-            //    SourceRectangle = atlas.Frames[TextureName].ToRectangle();
-            //}
-            //else
-            //{
-            //    Texture = AssetsManager.Instance.GetTexture(TextureName);
-            //    SourceRectangle = Texture.Bounds;
-            //}
-        }
 
         protected override void InDraw(SpriteBatch spriteBatch)
         {

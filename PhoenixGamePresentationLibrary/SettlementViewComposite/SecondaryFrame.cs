@@ -38,22 +38,12 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             _frmSecondary.AddControl(new Frame("frmFooter", new Vector2(563.0f, 71.0f), TextureAtlas, "frame_bottom"), Alignment.BottomCenter, Alignment.BottomCenter, new Point(0, 5));
         }
 
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
             _frmSecondary.LoadContent(content);
             _frmSecondary["frmUnits"].LoadContent(content);
             _frmSecondary["frmUnits.lblUnits"].LoadContent(content);
-            _frmSecondary["frmUnits.slots20"].LoadContent(content);
-            //TODO: clean this up, figure out a nice way of doing this (maybe "frmUnits.slots20->")
-            var foo = _frmSecondary["frmUnits.slots20"];
-            foreach (var bar in foo.ChildControls)
-            {
-                foreach (var item in bar.ChildControls)
-                {
-                    item.LoadContent(content);
-                }
-            }
-
+            _frmSecondary["frmUnits.slots20"].LoadContent(content, true);
             _frmSecondary["frmOther"].LoadContent(content);
             _frmSecondary["frmOther.lblOther"].LoadContent(content);
             _frmSecondary["frmOther.slots2"].LoadContent(content);

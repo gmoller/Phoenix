@@ -9,26 +9,26 @@ namespace PhoenixGamePresentationLibrary
     {
         private readonly Vector2 _topLeftPosition;
 
-        private Frame _frame;
-        private List<IControl> _controls;
+        private readonly Frame _frame;
+        private readonly List<IControl> _controls;
 
         public Vector2 Position { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         internal ToolTip(Vector2 topLeftPosition)
         {
             _topLeftPosition = topLeftPosition;
+
+            _frame = new Frame(_topLeftPosition, Alignment.TopLeft, new Vector2(100.0f, 100.0f), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "Frame");
+            _controls = new List<IControl>();
         }
 
         internal void LoadContent(ContentManager content)
         {
-            _frame = new Frame(_topLeftPosition, Alignment.TopLeft, new Vector2(100.0f, 100.0f), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "Frame");
             _frame.LoadContent(content);
-            _controls = new List<IControl>();
         }
 
         internal void AddControl(IControl control)
         {
-            //control.TopLeftPosition = _frame.TopLeftPosition + control.TopLeftPosition;
             _controls.Add(control);
         }
 

@@ -42,7 +42,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             _imgRebel = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 30.0f), textureAtlas, $"Citizen_{settlementView.Settlement.RaceType.Name}_Rebel", "imgRebel");
         }
 
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
             _btnSubtractFarmer.LoadContent(content);
             _btnAddFarmer.LoadContent(content);

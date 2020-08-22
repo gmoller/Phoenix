@@ -162,7 +162,7 @@ namespace GuiControls
             ActualDestinationRectangle = new Rectangle(ActualDestinationRectangle.X + point.X, ActualDestinationRectangle.Y + point.Y, ActualDestinationRectangle.Width, ActualDestinationRectangle.Height);
         }
 
-        public virtual void LoadContent(ContentManager content)
+        public virtual void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
             if (TextureAtlas.HasValue())
             {
@@ -173,6 +173,14 @@ namespace GuiControls
             else // no atlas
             {
                 SetTexture(_textureNormal);
+            }
+
+            if (loadChildrenContent)
+            {
+                foreach (var child in ChildControls)
+                {
+                    child.LoadContent(content, true);
+                }
             }
         }
 

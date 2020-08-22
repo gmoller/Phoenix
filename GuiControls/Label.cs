@@ -61,7 +61,7 @@ namespace GuiControls
             BorderColor = borderColor;
         }
 
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
             Font = AssetsManager.Instance.GetSpriteFont(FontName);
         }

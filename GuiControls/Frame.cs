@@ -192,7 +192,7 @@ namespace GuiControls
 
         public override IControl Clone() { return new Frame(this); }
 
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
             Texture = AssetsManager.Instance.GetTexture(TextureAtlas);
             var atlas = AssetsManager.Instance.GetAtlas(TextureAtlas);

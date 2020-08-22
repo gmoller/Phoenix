@@ -83,7 +83,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
         }
         #endregion
 
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
             _frmMain.LoadContent(content);
             _frmMain["frmHeader"].LoadContent(content);

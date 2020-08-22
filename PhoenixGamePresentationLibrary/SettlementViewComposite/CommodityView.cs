@@ -29,7 +29,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             //Area2 = new Rectangle();
         }
 
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
             _image1.LoadContent(content);
             _image2.LoadContent(content);
@@ -40,7 +40,6 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             //if (Area2.Contains(input.MousePosition))
             //{
             //    ToolTip = new ToolTip(input.MousePosition.ToVector2() + new Vector2(0.0f, 30.0f));
-            //    ToolTip.LoadContent(_content);
             //    ToolTip.AddControl(new Image(new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Bread"));
             //    ToolTip.AddControl(new Image(new Vector2(0.0f, 25.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Pickaxe"));
             //    ToolTip.AddControl(new LabelAutoSized(new Vector2(0.0f, 50.0f), Alignment.TopLeft, "Here is some text!", "CrimsonText-Regular-12", Color.Blue, Color.Red));

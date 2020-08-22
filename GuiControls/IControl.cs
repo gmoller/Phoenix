@@ -46,7 +46,7 @@ namespace GuiControls
         void AddControls(params IControl[] controls);
         void SetTopLeftPosition(Point point);
         void MoveTopLeftPosition(Point point);
-        void LoadContent(ContentManager content);
+        void LoadContent(ContentManager content, bool loadChildrenContent = false);
         void Update(InputHandler input, float deltaTime, Matrix? transform = null);
         void Draw(Matrix? transform = null);
         void Draw(SpriteBatch spriteBatch);

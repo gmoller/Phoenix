@@ -125,11 +125,12 @@ namespace GuiControls
 
         public override IControl Clone() { return new DynamicSlots(this); }
 
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
+            //base.LoadContent(content, loadChildrenContent);
             foreach (var child in ChildControls)
             {
-                child.LoadContent(content);
+                child.LoadContent(content, loadChildrenContent);
             }
         }
 
