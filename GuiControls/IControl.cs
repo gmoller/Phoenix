@@ -4,7 +4,7 @@ using Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Utilities;
-using Point = Microsoft.Xna.Framework.Point;
+using Point = Utilities.Point;
 
 namespace GuiControls
 {
@@ -12,7 +12,8 @@ namespace GuiControls
     {
         IControl Parent { get;  }
         EnumerableDictionary<IControl> ChildControls { get; }
-        IControl this[string index] { get; }
+        IControl this[int index] { get; }
+        IControl this[string key] { get; }
 
         string Name { get; }
 
@@ -41,10 +42,10 @@ namespace GuiControls
 
         event EventHandler Click;
 
-        void AddControl(IControl control);
+        void AddControl(IControl control, Alignment parentAlignment, Alignment childAlignment, Point offset = new Point());
         void AddControls(params IControl[] controls);
-        void SetTopLeftPosition(int x, int y);
-        void MoveTopLeftPosition(int x, int y);
+        void SetTopLeftPosition(Point point);
+        void MoveTopLeftPosition(Point point);
         void LoadContent(ContentManager content);
         void Update(InputHandler input, float deltaTime, Matrix? transform = null);
         void Draw(Matrix? transform = null);

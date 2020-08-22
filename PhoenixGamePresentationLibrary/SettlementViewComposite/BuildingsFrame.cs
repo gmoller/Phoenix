@@ -18,7 +18,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
         private Texture2D _texture;
         private AtlasSpec2 _atlas;
 
-        private LabelAutoSized _lblBuildings;
+        private LabelSized _lblBuildings;
         private Frame _smallFrameBuildings;
 
         internal BuildingsFrame(SettlementView parent, Vector2 topLeftPosition)
@@ -29,7 +29,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 
         internal void LoadContent(ContentManager content)
         {
-            _lblBuildings = new LabelAutoSized(_topLeftPosition - new Vector2(0.0f, 5.0f), Alignment.TopLeft, "Buildings", "CrimsonText-Regular-12", Color.Orange, "lblBuildings", Color.Red);
+            _lblBuildings = new LabelSized(_topLeftPosition - new Vector2(0.0f, 5.0f), Alignment.TopLeft, new Vector2(10.0f, 10.0f), Alignment.TopLeft, "Buildings", "CrimsonText-Regular-12", Color.Orange, "lblBuildings", Color.Red, null);
             _lblBuildings.LoadContent(content);
 
             var slots = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 450), "GUI_Textures_1", "slot", 10, 13, 10.0f, "slots", null);

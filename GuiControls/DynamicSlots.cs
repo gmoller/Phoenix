@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Utilities;
+using Point = Utilities.Point;
 
 namespace GuiControls
 {
@@ -12,6 +14,28 @@ namespace GuiControls
         private readonly int _numberOfSlotsY;
         private readonly float _slotPadding;
         #endregion
+
+        public DynamicSlots(
+            string name,
+            Vector2 size,
+            string textureAtlas,
+            string textureName,
+            int numberOfSlotsX,
+            int numberOfSlotsY,
+            float slotPadding) :
+            this(
+                Vector2.Zero,
+                Alignment.TopLeft,
+                size,
+                textureAtlas,
+                textureName,
+                numberOfSlotsX,
+                numberOfSlotsY,
+                slotPadding,
+                name,
+                0.0f)
+        {
+        }
 
         public DynamicSlots(
             Vector2 position,
@@ -39,7 +63,7 @@ namespace GuiControls
         {
         }
 
-        public DynamicSlots(
+        private DynamicSlots(
             Vector2 position, 
             Alignment positionAlignment, 
             Vector2 size, 
@@ -73,7 +97,7 @@ namespace GuiControls
             var startY = TopLeft.Y + _slotPadding;
             var slotWidth = (Size.X - _slotPadding * 2.0f) / _numberOfSlotsX;
             var slotHeight = (Size.Y - _slotPadding * 2.0f) / _numberOfSlotsY;
-            CreateSlots(startX, startY, slotWidth, slotHeight, _numberOfSlotsX, _numberOfSlotsY);
+            CreateSlots(new Vector2(startX, startY), new Vector2(slotWidth, slotHeight), _numberOfSlotsX, _numberOfSlotsY);
         }
 
         protected DynamicSlots(DynamicSlots copyThis) : base(copyThis)
@@ -90,21 +114,21 @@ namespace GuiControls
             }
         }
 
-        private void CreateSlots(float startX, float startY, float slotWidth, float slotHeight, int numberOfSlotsX, int numberOfSlotsY)
+        private void CreateSlots(Vector2 startPosition, Vector2 size, int numberOfSlotsX, int numberOfSlotsY)
         {
-            var x = startX;
-            var y = startY;
+            var x = startPosition.X;
+            var y = startPosition.Y;
 
             for (var j = 0; j < numberOfSlotsY; ++j)
             {
                 for (var i = 0; i < numberOfSlotsX; ++i)
                 {
-                    var slot = new Slot((int)x, (int)y, (int)slotWidth, (int)slotHeight, TextureAtlas, TextureName, $"slot[{i}.{j}]", this);
-                    x += slotWidth;
+                    AddControl(new Slot($"slot[{i}.{j}]", size, TextureAtlas, TextureName), Alignment.TopLeft, Alignment.TopLeft, new Point((int)x, (int)y));
+                    x += size.X;
                 }
 
-                x = startX;
-                y += slotHeight;
+                x = startPosition.X;
+                y += size.Y;
             }
         }
     }

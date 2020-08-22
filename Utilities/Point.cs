@@ -20,6 +20,7 @@ namespace Utilities
         }
 
         public static Point Empty => new Point(0, 0);
+        public static Point Zero => new Point(0, 0);
 
         #region Overrides and Overloads
 
@@ -36,6 +37,26 @@ namespace Utilities
         public static bool operator != (Point a, Point b)
         {
             return !(a == b);
+        }
+
+        public static Point operator + (Point a, Point b)
+        {
+            return new Point(a.X + b.X, a.Y + b.Y);
+        }
+
+        public static Point operator - (Point a, Point b)
+        {
+            return new Point(a.X - b.X, a.Y - b.Y);
+        }
+
+        public static Point operator * (Point a, Point b)
+        {
+            return new Point(a.X * b.X, a.Y * b.Y);
+        }
+
+        public static Point operator * (Point a, int scalar)
+        {
+            return new Point(a.X * scalar, a.Y * scalar);
         }
 
         public override int GetHashCode()

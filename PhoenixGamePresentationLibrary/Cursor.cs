@@ -1,15 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Input;
+﻿using Input;
+using Point = Utilities.Point;
 
 namespace PhoenixGamePresentationLibrary
 {
     public class Cursor
     {
-        public Vector2 Position { get; private set; }
+        public Point Position { get; private set; }
 
         public void Update(InputHandler input, float deltaTime)
         {
-            Position = new Vector2(input.MousePosition.X, input.MousePosition.Y);
+            Position = new Point(input.MousePosition.X, input.MousePosition.Y);
         }
     }
 }

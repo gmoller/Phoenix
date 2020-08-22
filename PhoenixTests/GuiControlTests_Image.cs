@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GuiControls;
 using Microsoft.Xna.Framework;
-using Point = Microsoft.Xna.Framework.Point;
+using Point = Utilities.Point;
 
 namespace PhoenixTests
 {
@@ -260,7 +260,7 @@ namespace PhoenixTests
             //DeviceManager.Instance.SetScreenResolution(1920, 1080);
 
             IControl image = new Image(new Vector2(100.0f, 100.0f), Alignment.TopLeft, new Vector2(100.0f, 100.0f), "Icons_1", "", "image");
-            image.SetTopLeftPosition(image.TopLeft.X - 100, image.TopLeft.Y - 100);
+            image.SetTopLeftPosition(image.TopLeft - new Point(100, 100));
             Assert.AreEqual(new Point(0, 0), image.TopLeft);
             Assert.AreEqual(new Point(100, 0), image.TopRight);
             Assert.AreEqual(new Point(0, 100), image.BottomLeft);
@@ -274,7 +274,7 @@ namespace PhoenixTests
             Assert.AreEqual(100, image.Height);
             Assert.AreEqual(new Point(100, 100), image.Size);
 
-            image.MoveTopLeftPosition(100, 100);
+            image.MoveTopLeftPosition(new Point(100, 100));
             Assert.AreEqual(new Point(100, 100), image.TopLeft);
             Assert.AreEqual(new Point(200, 100), image.TopRight);
             Assert.AreEqual(new Point(100, 200), image.BottomLeft);

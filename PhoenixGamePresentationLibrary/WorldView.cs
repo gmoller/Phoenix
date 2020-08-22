@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using HexLibrary;
 using Input;
+using MonoGameUtilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;

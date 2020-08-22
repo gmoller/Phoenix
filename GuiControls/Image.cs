@@ -9,6 +9,24 @@ namespace GuiControls
     public class Image : Control
     {
         public Image(
+            string name,
+            Vector2 size,
+            string textureAtlas,
+            string textureName) :
+            this(
+                Vector2.Zero, 
+                Alignment.TopLeft,
+                size,
+                textureAtlas,
+                textureName,
+                textureName,
+                0.0f,
+                null,
+                name)
+        {
+        }
+
+        public Image(
             Vector2 position,
             Alignment positionAlignment,
             Vector2 size,

@@ -8,6 +8,29 @@ namespace GuiControls
     public class Button : Control
     {
         public Button(
+            string name,
+            Vector2 size,
+            string textureAtlas,
+            string textureNormal,
+            string textureActive,
+            string textureDisabled,
+            string textureHover,
+            float layerDepth = 0.0f) :
+            this(
+                Vector2.Zero,
+                Alignment.TopLeft,
+                size,
+                textureAtlas,
+                textureNormal,
+                textureActive,
+                textureDisabled,
+                textureHover,
+                name,
+                layerDepth)
+        {
+        }
+
+        public Button(
             Vector2 position,
             Alignment positionAlignment,
             Vector2 size,

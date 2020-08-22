@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
-using Utilities;
 
 namespace GuiControls
 {
@@ -16,11 +15,55 @@ namespace GuiControls
         private readonly int _leftPadding;
         private readonly int _rightPadding;
 
-        private readonly DynamicSlots _slots;
-
         private Rectangle[] _sourcePatches;
         private Rectangle[] _destinationPatches;
         #endregion
+
+        public Frame(
+            string name,
+            Vector2 size,
+            string textureAtlas,
+            string textureName) :
+            this(
+                Vector2.Zero,
+                Alignment.TopLeft,
+                size,
+                textureAtlas,
+                textureName,
+                0,
+                0,
+                0,
+                0,
+                name,
+                0.0f,
+                null)
+        {
+        }
+
+        public Frame(
+            string name,
+            Vector2 size,
+            string textureAtlas,
+            string textureName,
+            int topPadding,
+            int bottomPadding,
+            int leftPadding,
+            int rightPadding) :
+            this(
+                Vector2.Zero,
+                Alignment.TopLeft,
+                size,
+                textureAtlas,
+                textureName,
+                topPadding,
+                bottomPadding,
+                leftPadding,
+                rightPadding,
+                name,
+                0.0f,
+                null)
+        {
+        }
 
         public Frame(
             Vector2 position,
@@ -41,7 +84,6 @@ namespace GuiControls
                 0,
                 0,
                 name,
-                null,
                 0.0f,
                 parent)
         {
@@ -70,13 +112,12 @@ namespace GuiControls
                 leftPadding,
                 rightPadding,
                 name,
-                null,
                 0.0f,
                 parent)
         {
         }
 
-        public Frame(
+        private Frame(
             Vector2 position,
             Alignment positionAlignment,
             Vector2 size,
@@ -87,7 +128,6 @@ namespace GuiControls
             int leftPadding,
             int rightPadding,
             string name,
-            DynamicSlots slots = null,
             float layerDepth = 0.0f,
             IControl parent = null) :
             base(
@@ -108,8 +148,6 @@ namespace GuiControls
             _bottomPadding = bottomPadding;
             _leftPadding = leftPadding;
             _rightPadding = rightPadding;
-
-            _slots = slots;
         }
 
         protected Frame(Frame copyThis) : base(copyThis)
@@ -134,25 +172,7 @@ namespace GuiControls
             {
                 spriteBatch.Draw(Texture, _destinationPatches[i], _sourcePatches[i], Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
             }
-
-            _slots?.Draw(spriteBatch);
         }
-
-        //protected override void InDraw(Matrix? transform = null)
-        //{
-        //    var spriteBatch = DeviceManager.Instance.GetCurrentSpriteBatch();
-        //    //var spriteBatch = DeviceManager.Instance.GetNewSpriteBatch();
-        //    spriteBatch.Begin(transformMatrix: transform);
-
-        //    for (var i = 0; i < _sourcePatches.Length; ++i)
-        //    {
-        //        spriteBatch.Draw(Texture, _destinationPatches[i], _sourcePatches[i], Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
-        //    }
-
-        //    _slots?.Draw(spriteBatch);
-
-        //    spriteBatch.End();
-        //}
 
         private Rectangle[] CreatePatches(Rectangle rectangle, int topPadding, int bottomPadding, int leftPadding, int rightPadding)
         {

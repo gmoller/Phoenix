@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Input;
 using MonoGameUtilities;
+using MonoGameUtilities.ExtensionMethods;
 
 namespace GuiControls
 {
@@ -129,196 +130,196 @@ namespace GuiControls
         }
     }
 
-    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class LabelAutoSized : Label
-    {
-        #region State
-        private readonly Vector2 _position;
-        private readonly Alignment _positionAlignment;
-        private readonly bool _autoSize;
+    //[DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
+    //public class LabelAutoSized : Label
+    //{
+    //    #region State
+    //    private readonly Vector2 _position;
+    //    private readonly Alignment _positionAlignment;
+    //    private readonly bool _autoSize;
 
-        public override string Text
-        {
-            get => base.Text;
-            set
-            {
-                base.Text = value;
-                Resize(value);
-            }
-        }
-        #endregion
+    //    public override string Text
+    //    {
+    //        get => base.Text;
+    //        set
+    //        {
+    //            base.Text = value;
+    //            Resize(value);
+    //        }
+    //    }
+    //    #endregion
 
-        public LabelAutoSized(
-            Vector2 position,
-            Alignment positionAlignment,
-            Func<string> getTextFunc,
-            string fontName,
-            Color textColor,
-            string name,
-            IControl parent = null) :
-            this(
-                position,
-                positionAlignment,
-                null,
-                getTextFunc,
-                fontName,
-                textColor,
-                name,
-                null,
-                null,
-                null,
-                0.0f,
-                parent)
-        {
-        }
+    //    public LabelAutoSized(
+    //        Vector2 position,
+    //        Alignment positionAlignment,
+    //        Func<string> getTextFunc,
+    //        string fontName,
+    //        Color textColor,
+    //        string name,
+    //        IControl parent = null) :
+    //        this(
+    //            position,
+    //            positionAlignment,
+    //            null,
+    //            getTextFunc,
+    //            fontName,
+    //            textColor,
+    //            name,
+    //            null,
+    //            null,
+    //            null,
+    //            0.0f,
+    //            parent)
+    //    {
+    //    }
 
-        public LabelAutoSized(
-            Vector2 position,
-            Alignment positionAlignment,
-            Func<string> getTextFunc,
-            string fontName,
-            Color textColor,
-            string name,
-            Color? textShadowColor,
-            IControl parent = null) :
-            this(
-                position,
-                positionAlignment,
-                null,
-                getTextFunc,
-                fontName,
-                textColor,
-                name,
-                textShadowColor,
-                null,
-                null,
-                0.0f,
-                parent)
-        {
-        }
+    //    public LabelAutoSized(
+    //        Vector2 position,
+    //        Alignment positionAlignment,
+    //        Func<string> getTextFunc,
+    //        string fontName,
+    //        Color textColor,
+    //        string name,
+    //        Color? textShadowColor,
+    //        IControl parent = null) :
+    //        this(
+    //            position,
+    //            positionAlignment,
+    //            null,
+    //            getTextFunc,
+    //            fontName,
+    //            textColor,
+    //            name,
+    //            textShadowColor,
+    //            null,
+    //            null,
+    //            0.0f,
+    //            parent)
+    //    {
+    //    }
 
-        public LabelAutoSized(
-            Vector2 position,
-            Alignment positionAlignment,
-            string text,
-            string fontName,
-            Color textColor,
-            string name,
-            Color? textShadowColor,
-            IControl parent = null) :
-            this(
-                position,
-                positionAlignment,
-                text,
-                null,
-                fontName,
-                textColor,
-                name,
-                textShadowColor,
-                null,
-                null,
-                0.0f,
-                parent)
-        {
-        }
+    //    public LabelAutoSized(
+    //        Vector2 position,
+    //        Alignment positionAlignment,
+    //        string text,
+    //        string fontName,
+    //        Color textColor,
+    //        string name,
+    //        Color? textShadowColor,
+    //        IControl parent = null) :
+    //        this(
+    //            position,
+    //            positionAlignment,
+    //            text,
+    //            null,
+    //            fontName,
+    //            textColor,
+    //            name,
+    //            textShadowColor,
+    //            null,
+    //            null,
+    //            0.0f,
+    //            parent)
+    //    {
+    //    }
 
-        public LabelAutoSized(
-            Vector2 position,
-            Alignment positionAlignment,
-            string text,
-            string fontName,
-            Color textColor,
-            string name,
-            IControl parent) :
-            this(
-                position,
-                positionAlignment,
-                text,
-                null,
-                fontName,
-                textColor,
-                name,
-                null,
-                null,
-                null,
-                0.0f,
-                parent)
-        {
-        }
+    //    public LabelAutoSized(
+    //        Vector2 position,
+    //        Alignment positionAlignment,
+    //        string text,
+    //        string fontName,
+    //        Color textColor,
+    //        string name,
+    //        IControl parent) :
+    //        this(
+    //            position,
+    //            positionAlignment,
+    //            text,
+    //            null,
+    //            fontName,
+    //            textColor,
+    //            name,
+    //            null,
+    //            null,
+    //            null,
+    //            0.0f,
+    //            parent)
+    //    {
+    //    }
 
-        public LabelAutoSized(
-            Vector2 position,
-            Alignment positionAlignment,
-            string text,
-            string fontName,
-            Color textColor,
-            string name,
-            Color? textShadowColor = null) :
-            this(
-                position,
-                positionAlignment,
-                text,
-                null,
-                fontName,
-                textColor,
-                name,
-                textShadowColor)
-        {
-        }
+    //    public LabelAutoSized(
+    //        Vector2 position,
+    //        Alignment positionAlignment,
+    //        string text,
+    //        string fontName,
+    //        Color textColor,
+    //        string name,
+    //        Color? textShadowColor = null) :
+    //        this(
+    //            position,
+    //            positionAlignment,
+    //            text,
+    //            null,
+    //            fontName,
+    //            textColor,
+    //            name,
+    //            textShadowColor)
+    //    {
+    //    }
 
-        private LabelAutoSized(
-            Vector2 position,
-            Alignment positionAlignment,
-            string text,
-            Func<string> getTextFunc,
-            string fontName,
-            Color textColor,
-            string name,
-            Color? textShadowColor = null,
-            Color? backColor = null,
-            Color? borderColor = null,
-            float layerDepth = 0.0f,
-            IControl parent = null) :
-            base(
-                position,
-                positionAlignment,
-                Vector2.Zero,
-                text,
-                getTextFunc,
-                fontName,
-                textColor,
-                name,
-                textShadowColor,
-                backColor,
-                borderColor,
-                layerDepth,
-                parent)
-        {
-            _position = position;
-            _positionAlignment = positionAlignment;
-            _autoSize = true;
-        }
+    //    private LabelAutoSized(
+    //        Vector2 position,
+    //        Alignment positionAlignment,
+    //        string text,
+    //        Func<string> getTextFunc,
+    //        string fontName,
+    //        Color textColor,
+    //        string name,
+    //        Color? textShadowColor = null,
+    //        Color? backColor = null,
+    //        Color? borderColor = null,
+    //        float layerDepth = 0.0f,
+    //        IControl parent = null) :
+    //        base(
+    //            position,
+    //            positionAlignment,
+    //            Vector2.Zero,
+    //            text,
+    //            getTextFunc,
+    //            fontName,
+    //            textColor,
+    //            name,
+    //            textShadowColor,
+    //            backColor,
+    //            borderColor,
+    //            layerDepth,
+    //            parent)
+    //    {
+    //        _position = position;
+    //        _positionAlignment = positionAlignment;
+    //        _autoSize = true;
+    //    }
 
-        public override void LoadContent(ContentManager content)
-        {
-            base.LoadContent(content);
-            Resize(Text);
-        }
+    //    public override void LoadContent(ContentManager content)
+    //    {
+    //        base.LoadContent(content);
+    //        Resize(Text);
+    //    }
 
-        protected override Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text)
-        {
-            return Vector2.Zero;
-        }
+    //    protected override Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text)
+    //    {
+    //        return Vector2.Zero;
+    //    }
 
-        private void Resize(string text)
-        {
-            if (_autoSize && Font != null && text != null)
-            {
-                var size = Font.MeasureString(text);
-                DetermineArea(_position, _positionAlignment, size);
-            }
-        }
-    }
+    //    private void Resize(string text)
+    //    {
+    //        if (_autoSize && Font != null && text != null)
+    //        {
+    //            var size = Font.MeasureString(text);
+    //            DetermineArea(_position, _positionAlignment, size);
+    //        }
+    //    }
+    //}
 
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class LabelSized : Label
@@ -326,6 +327,58 @@ namespace GuiControls
         #region State
         private readonly Alignment _contentAlignment;
         #endregion
+
+        public LabelSized(
+            string name,
+            Vector2 size,
+            Alignment contentAlignment,
+            string text,
+            string fontName,
+            Color textColor,
+            Color? textShadowColor = null,
+            Color? backColor = null,
+            Color? borderColor = null) :
+            this(
+                Vector2.Zero, 
+                Alignment.TopLeft,
+                size,
+                contentAlignment,
+                text,
+                null,
+                fontName,
+                textColor,
+                name,
+                textShadowColor,
+                backColor,
+                borderColor)
+        {
+        }
+
+        public LabelSized(
+            string name,
+            Vector2 size,
+            Alignment contentAlignment,
+            Func<string> getTextFunc,
+            string fontName,
+            Color textColor,
+            Color? textShadowColor = null,
+            Color? backColor = null,
+            Color? borderColor = null) :
+            this(
+                Vector2.Zero,
+                Alignment.TopLeft,
+                size,
+                contentAlignment,
+                string.Empty,
+                getTextFunc,
+                fontName,
+                textColor,
+                name,
+                textShadowColor,
+                backColor,
+                borderColor)
+        {
+        }
 
         public LabelSized(
             Vector2 position,
@@ -354,32 +407,6 @@ namespace GuiControls
                 borderColor)
         {
         }
-
-        //public LabelSized(
-        //    Vector2 position,
-        //    Alignment positionAlignment,
-        //    Vector2 size,
-        //    Alignment contentAlignment,
-        //    string text,
-        //    string fontName,
-        //    Color textColor,
-        //    Color? textShadowColor = null,
-        //    Color? backColor = null,
-        //    Color? borderColor = null) :
-        //    this(
-        //        position,
-        //        positionAlignment,
-        //        size,
-        //        contentAlignment,
-        //        text,
-        //        null,
-        //        fontName,
-        //        textColor,
-        //        textShadowColor,
-        //        backColor,
-        //        borderColor)
-        //{
-        //}
 
         public LabelSized(
             Vector2 position,

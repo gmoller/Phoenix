@@ -7,8 +7,10 @@ using AssetsLibrary;
 using GuiControls;
 using Input;
 using MonoGameUtilities;
+using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using Utilities;
+using Point = Utilities.Point;
 
 namespace PhoenixGamePresentationLibrary
 {
@@ -20,7 +22,7 @@ namespace PhoenixGamePresentationLibrary
         private SpriteFont _font;
         private readonly Rectangle _area;
 
-        private Frame _hudViewFrame;
+        private readonly Frame _hudViewFrame;
         private EnumerableDictionary<Button> _actionButtons;
 
         private Label _test;
@@ -38,79 +40,82 @@ namespace PhoenixGamePresentationLibrary
             var y = 0;
             _area = new Rectangle(x, y, width, height); // 250x1020
 
+            #region HudViewFrame
+
+            var topLeftPosition = new Vector2(_area.X, _area.Y);
+            _hudViewFrame = new Frame(topLeftPosition, Alignment.TopLeft, new Vector2(_area.Width, _area.Height), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame");
+
+            string GetTextFuncForDate() => _worldView.World.CurrentDate;
+            _hudViewFrame.AddControl(new LabelSized("lblCurrentDate", new Vector2(150.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForDate, "Maleficio-Regular-18", Color.Aquamarine), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 20));
+
+            #region ResourceFrame
+
+            _hudViewFrame.AddControl(new Frame("resourceFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 50));
+            _hudViewFrame["resourceFrame"].AddControl(new Image("imgGold", new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R"), Alignment.TopLeft, Alignment.TopLeft, new Point(10, 10));
+            _hudViewFrame["resourceFrame"].AddControl(new Image("imgMana", new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R"), Alignment.TopLeft, Alignment.TopLeft, new Point(10, 70));
+            _hudViewFrame["resourceFrame"].AddControl(new Image("imgFood", new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R"), Alignment.TopLeft, Alignment.TopLeft, new Point(10, 130));
+
+            string GetTextFuncForGold() => $"{_worldView.World.PlayerFaction.GoldInTreasury} GP (+{_worldView.World.PlayerFaction.GoldPerTurn})";
+            _hudViewFrame["resourceFrame.imgGold"].AddControl(new LabelSized("lblGold", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForGold, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new Point(20, 0));
+            string GetTextFuncForMana() => "5 MP (+1)";
+            _hudViewFrame["resourceFrame.imgMana"].AddControl(new LabelSized("lblMana", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForMana, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new Point(20, 0));
+            string GetTextFuncForFood() => $"{_worldView.World.PlayerFaction.FoodPerTurn} Food";
+            _hudViewFrame["resourceFrame.imgFood"].AddControl(new LabelSized("lblFood", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForFood, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new Point(20, 0));
+
+            #endregion
+
+            #region UnitFrame
+
+            _hudViewFrame.AddControl(new Frame("unitFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 500));
+
+            string GetTextFuncForMoves() => SelectedStackView == null ? string.Empty : $"Moves: {SelectedStackView.MovementPoints}";
+            _hudViewFrame["unitFrame"].AddControl(new LabelSized("lblMoves", new Vector2(130.0f, 15.0f), Alignment.MiddleLeft, GetTextFuncForMoves, "CrimsonText-Regular-12", Color.White), Alignment.BottomLeft, Alignment.BottomLeft, new Point(10, -13));
+
+            #endregion
+
+            var btnEndTurn = new Button("btnEndTurn", new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h");
+            btnEndTurn.Click += EndTurnButtonClick;
+
+            btnEndTurn.AddControl(new LabelSized("lblEndTurn", btnEndTurn.Size.ToVector2(), Alignment.MiddleCenter, "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue), Alignment.MiddleCenter, Alignment.MiddleCenter);
+
+            _hudViewFrame.AddControl(btnEndTurn, Alignment.BottomCenter, Alignment.TopCenter, Point.Zero);
+
+            #endregion
+
+            _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, "test", null, Color.Blue);
+            _test.Click += delegate { _test.MoveTopLeftPosition(new Point(10, -10)); };
+
             _worldView = worldView;
             _stackViews = stackViews;
+
+            //var json = _hudViewFrame.Serialize();
+            //_hudViewFrame.Deserialize(json);
+            //var newFrame = new Frame(json);
         }
 
         internal void LoadContent(ContentManager content)
         {
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
 
-            var topLeftPosition = new Vector2(_area.X, _area.Y);
-
-            #region HudViewFrame
-            var size = new Vector2(_area.Width, _area.Height);
-            _hudViewFrame = new Frame(topLeftPosition, Alignment.TopLeft, size, "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame", null);
             _hudViewFrame.LoadContent(content);
+            _hudViewFrame["lblCurrentDate"].LoadContent(content);
 
-            string GetTextFuncForDate() => _worldView.World.CurrentDate;
-            var lblCurrentDate = new LabelAutoSized(new Vector2(_hudViewFrame.Width * 0.5f, 20.0f), Alignment.MiddleCenter, GetTextFuncForDate, "Maleficio-Regular-18", Color.Aquamarine, "lblCurrentDate", _hudViewFrame);
-            lblCurrentDate.LoadContent(content);
+            _hudViewFrame["resourceFrame"].LoadContent(content);
+            _hudViewFrame["resourceFrame.imgGold"].LoadContent(content);
+            _hudViewFrame["resourceFrame.imgMana"].LoadContent(content);
+            _hudViewFrame["resourceFrame.imgFood"].LoadContent(content);
+            _hudViewFrame["resourceFrame.imgGold.lblGold"].LoadContent(content);
+            _hudViewFrame["resourceFrame.imgMana.lblMana"].LoadContent(content);
+            _hudViewFrame["resourceFrame.imgFood.lblFood"].LoadContent(content);
 
-            #region ResourceFrame
-            var resourceFrame = new Frame(new Vector2(10.0f, 50.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole", "resourceFrame", _hudViewFrame);
-            resourceFrame.LoadContent(content);
+            _hudViewFrame["unitFrame"].LoadContent(content);
+            _hudViewFrame["unitFrame.lblMoves"].LoadContent(content);
 
-            var imgGold = new Image(new Vector2(10.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R", "imgGold", resourceFrame);
-            imgGold.LoadContent(content);
-
-            var imgMana = new Image(imgGold.RelativeTopLeft.ToVector2() + new Vector2(0.0f, imgGold.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R", "imgMana", resourceFrame);
-            imgMana.LoadContent(content);
-
-            var imgFood = new Image(imgMana.RelativeTopLeft.ToVector2() + new Vector2(0.0f, imgMana.Height) + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R", "imgFood", resourceFrame);
-            imgFood.LoadContent(content);
-
-            string GetTextFuncForGold() => $"{_worldView.World.PlayerFaction.GoldInTreasury} GP (+{_worldView.World.PlayerFaction.GoldPerTurn})";
-            var lblGold = new LabelAutoSized(imgGold.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, GetTextFuncForGold, "CrimsonText-Regular-12", Color.Yellow, "lblGold", resourceFrame);
-            lblGold.LoadContent(content);
-
-            string GetTextFuncForMana() => "5 MP (+1)";
-            var lblMana = new LabelAutoSized(imgMana.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, GetTextFuncForMana, "CrimsonText-Regular-12", Color.Yellow, "lblMana", resourceFrame);
-            lblMana.LoadContent(content);
-
-            string GetTextFuncForFood() => $"{_worldView.World.PlayerFaction.FoodPerTurn} Food";
-            var lblFood = new LabelAutoSized(imgFood.RelativeMiddleRight.ToVector2() + new Vector2(20.0f, 0.0f), Alignment.MiddleLeft, GetTextFuncForFood, "CrimsonText-Regular-12", Color.Yellow, "lblFood", resourceFrame);
-            lblFood.LoadContent(content);
-            #endregion
-
-            #region UnitFrame
-            var unitFrame = new Frame(new Vector2(10.0f, 500.0f), Alignment.TopLeft, new Vector2(_area.Width - 20.0f, _area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole", "unitFrame", _hudViewFrame);
-            unitFrame.LoadContent(content);
-
-            string GetTextFuncForMoves() => SelectedStackView == null ? string.Empty : $"Moves: {SelectedStackView.MovementPoints}";
-            var lblMoves = new LabelAutoSized(new Vector2(10.0f, 270.0f), Alignment.TopLeft, GetTextFuncForMoves, "CrimsonText-Regular-12", Color.White, "lblMoves", unitFrame);
-            lblMoves.LoadContent(content);
-            #endregion
-
-            //var json = _hudViewFrame.Serialize();
-            //_hudViewFrame.Deserialize(json);
-            //var newFrame = new Frame(json);
-
-            var pos = new Vector2(1920.0f, 1080.0f);
-            var btnEndTurn = new Button(pos, Alignment.BottomRight, new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h", "btnEndTurn");
-            btnEndTurn.LoadContent(content);
-            btnEndTurn.Click += BtnEndTurnClick;
-
-            var lblEndTurn = new LabelSized(btnEndTurn.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, btnEndTurn.Size.ToVector2(), Alignment.MiddleCenter, "Next Turn", "CrimsonText-Regular-12", Color.White, "lblEndTurn", Color.Blue, btnEndTurn);
-            lblEndTurn.LoadContent(content);
-
-            _hudViewFrame.AddControl(btnEndTurn);
-            #endregion
+            _hudViewFrame["btnEndTurn"].LoadContent(content);
+            _hudViewFrame["btnEndTurn.lblEndTurn"].LoadContent(content);
 
             _actionButtons = _worldView.ActionButtons;
 
-            _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, null, null, Color.Blue);
-            _test.Click += delegate { _test.MoveTopLeftPosition(10, -10); };
             _test.LoadContent(content);
         }
 
@@ -171,7 +176,7 @@ namespace PhoenixGamePresentationLibrary
             var y = 806 - 12 - 20;
             foreach (var imgMovementType in imgMovementTypes)
             {
-                imgMovementType.SetTopLeftPosition(x - 19 * i, y);
+                imgMovementType.SetTopLeftPosition(new Utilities.Point(x - 19 * i, y));
                 imgMovementType.Draw(spriteBatch);
                 i++;
             }
@@ -232,7 +237,7 @@ namespace PhoenixGamePresentationLibrary
             }
         }
 
-        private void BtnEndTurnClick(object sender, EventArgs e)
+        private void EndTurnButtonClick(object sender, EventArgs e)
         {
             _worldView.EndTurn();
         }

@@ -8,18 +8,31 @@ namespace GuiControls
     public class Slot : Control
     {
         public Slot(
-            int x,
-            int y,
-            int width,
-            int height,
+            string name,
+            Vector2 size,
+            string textureAtlas,
+            string textureName) :
+            this(
+                Vector2.Zero,
+                size,
+                textureAtlas,
+                textureName,
+                name,
+                null)
+        {
+        }
+
+        public Slot(
+            Vector2 position,
+            Vector2 size,
             string textureAtlas,
             string textureName,
             string name,
             IControl parent) :
             base(
-                new Vector2(x, y),
+                position,
                 Alignment.TopLeft,
-                new Vector2(width, height),
+                size,
                 textureAtlas,
                 textureName,
                 textureName,
