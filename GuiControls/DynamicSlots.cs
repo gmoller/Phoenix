@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Utilities;
 using Point = Utilities.Point;
 
 namespace GuiControls
@@ -46,8 +45,7 @@ namespace GuiControls
             int numberOfSlotsX,
             int numberOfSlotsY,
             float slotPadding,
-            string name,
-            IControl parent = null) :
+            string name) :
             this(
                 position,
                 positionAlignment,
@@ -58,8 +56,7 @@ namespace GuiControls
                 numberOfSlotsY,
                 slotPadding,
                 name,
-                0.0f,
-                parent)
+                0.0f)
         {
         }
 
@@ -73,8 +70,7 @@ namespace GuiControls
             int numberOfSlotsY, 
             float slotPadding,
             string name,
-            float layerDepth = 0.0f,
-            IControl parent = null) :
+            float layerDepth = 0.0f) :
             base(
                 position,
                 positionAlignment,
@@ -86,8 +82,7 @@ namespace GuiControls
                 null,
                 null,
                 name,
-                layerDepth,
-                parent)
+                layerDepth)
         {
             _numberOfSlotsX = numberOfSlotsX;
             _numberOfSlotsY = numberOfSlotsY;

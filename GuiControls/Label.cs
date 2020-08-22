@@ -38,8 +38,7 @@ namespace GuiControls
             Color? textShadowColor = null,
             Color? backColor = null,
             Color? borderColor = null,
-            float layerDepth = 0.0f,
-            IControl parent = null) : 
+            float layerDepth = 0.0f) : 
             base(
                 position, 
                 positionAlignment, 
@@ -51,8 +50,7 @@ namespace GuiControls
                 null, 
                 null,
                 name,
-                layerDepth, 
-                parent)
+                layerDepth)
         {
             Text = text;
             _getTextFunc = getTextFunc;
@@ -417,8 +415,7 @@ namespace GuiControls
             string fontName,
             Color textColor,
             string name,
-            Color? textShadowColor = null,
-            IControl parent = null) :
+            Color? textShadowColor = null) :
             this(
                 position,
                 positionAlignment,
@@ -429,11 +426,7 @@ namespace GuiControls
                 fontName,
                 textColor,
                 name,
-                textShadowColor,
-                null,
-                null,
-                0.0f,
-                parent)
+                textShadowColor)
         {
         }
 
@@ -450,8 +443,7 @@ namespace GuiControls
             Color? textShadowColor = null,
             Color? backColor = null,
             Color? borderColor = null,
-            float layerDepth = 0.0f,
-            IControl parent = null) :
+            float layerDepth = 0.0f) :
             base(
                 position,
                 positionAlignment,
@@ -464,8 +456,7 @@ namespace GuiControls
                 textShadowColor,
                 backColor,
                 borderColor,
-                layerDepth,
-                parent)
+                layerDepth)
         {
             _contentAlignment = contentAlignment;
             DetermineArea(position, positionAlignment, size);

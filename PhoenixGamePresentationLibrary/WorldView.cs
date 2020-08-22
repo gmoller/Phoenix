@@ -173,9 +173,9 @@ namespace PhoenixGamePresentationLibrary
                 var button = new Button(position, Alignment.TopLeft, buttonSize, "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_a", "simpleb_h", actionType.Name);
                 button.LoadContent(content);
                 button.Click += (o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name));
-                var label = new LabelSized(button.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black, $"label{i}", null, button);
+                var label = new LabelSized(button.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black, $"label{i}", null);
+                button.AddControl(label);
                 label.LoadContent(content);
-                //var test = button.ChildControls[label.Name];
 
                 actionButtons.Add(actionType.Name, button);
             }

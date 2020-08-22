@@ -82,10 +82,8 @@ namespace GuiControls
         {
         }
 
-        protected Control(Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, string textureNormal, string textureActive, string textureHover, string textureDisabled, string name, float layerDepth = 0.0f, IControl parent = null)
+        protected Control(Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, string textureNormal, string textureActive, string textureHover, string textureDisabled, string name, float layerDepth = 0.0f)
         {
-            Parent = parent;
-
             Name = name;
             TextureAtlas = textureAtlas;
             TextureName = textureName;
@@ -102,8 +100,6 @@ namespace GuiControls
             Enabled = true;
 
             _childControls = new Dictionary<string, IControl>();
-
-            Parent?.AddControl(this, Alignment.TopLeft, Alignment.TopLeft, Point.Zero);
         }
 
         protected Control(Control copyThis) : this()
@@ -123,62 +119,22 @@ namespace GuiControls
         /// /// <param name="parentAlignment">Used to determine the position of the child control in relation to the parent</param>
         /// <param name="childAlignment">Used to determine the position of the child control in relation to the parent</param>
         /// <param name="offset">Offset to be added to the child control's top left position</param>
-        public void AddControl(IControl childControl, Alignment parentAlignment, Alignment childAlignment, Point offset = new Point())
+        public void AddControl(IControl childControl, Alignment parentAlignment = Alignment.TopLeft, Alignment childAlignment = Alignment.None, Point offset = new Point())
         {
-            if (childControl.Parent == null)
+            if (childAlignment == Alignment.None)
             {
-                ((Control)childControl).Parent = this;
+                childAlignment = parentAlignment;
             }
+
+            //if (childControl.Parent == null)
+            //{
+            ((Control)childControl).Parent = this;
+            //}
 
             var topLeft = DetermineTopLeft(childControl, parentAlignment, childAlignment, offset);
 
             childControl.SetTopLeftPosition(topLeft);
             _childControls.Add(childControl.Name, childControl);
-        }
-
-        private Point DetermineTopLeft(IControl childControl, Alignment parentAlignment, Alignment childAlignment, Point offset)
-        {
-            Point topLeft;
-            switch (parentAlignment)
-            {
-                case Alignment.TopLeft when childAlignment == Alignment.TopLeft:
-                    topLeft = new Point(Left, Top);
-                    break;
-                case Alignment.TopCenter when childAlignment == Alignment.TopCenter:
-                    topLeft = new Point(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Top);
-                    break;
-                case Alignment.TopRight when childAlignment == Alignment.TopRight:
-                    topLeft = new Point(Right - childControl.Size.X, Top);
-                    break;
-
-                case Alignment.MiddleCenter when childAlignment == Alignment.MiddleCenter:
-                    topLeft = new Point(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
-                    break;
-                case Alignment.MiddleRight when childAlignment == Alignment.MiddleLeft:
-                    topLeft = new Point(Right, Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
-                    break;
-
-                case Alignment.BottomLeft when childAlignment == Alignment.BottomLeft:
-                    topLeft = new Point(Left, Bottom - childControl.Size.Y);
-                    break;
-                case Alignment.BottomLeft when childAlignment == Alignment.TopLeft:
-                    topLeft = new Point(Left, Bottom);
-                    break;
-                case Alignment.BottomCenter when childAlignment == Alignment.BottomCenter:
-                    topLeft = new Point(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Bottom - childControl.Size.Y);
-                    break;
-                case Alignment.BottomCenter when childAlignment == Alignment.TopCenter:
-                    topLeft = new Point(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Bottom);
-                    break;
-                case Alignment.BottomRight when childAlignment == Alignment.BottomRight:
-                    topLeft = new Point(Right - childControl.Size.X, Bottom - childControl.Size.Y);
-                    break;
-                default:
-                    throw new Exception($"ParentAlignment [{parentAlignment}] with ChildAlignment [{childAlignment}] not implemented.");
-            }
-            topLeft += offset;
-
-            return topLeft;
         }
 
         public void AddControls(params IControl[] controls)
@@ -332,6 +288,57 @@ namespace GuiControls
                 var y = (int)(Parent.TopLeft.Y + topLeft.Y);
                 ActualDestinationRectangle = new Rectangle(x, y, (int)size.X, (int)size.Y);
             }
+        }
+
+        private Point DetermineTopLeft(IControl childControl, Alignment parentAlignment, Alignment childAlignment, Point offset)
+        {
+            Point topLeft;
+            switch (parentAlignment)
+            {
+                case Alignment.TopLeft when childAlignment == Alignment.TopLeft:
+                    topLeft = new Point(Left, Top);
+                    break;
+                case Alignment.TopCenter when childAlignment == Alignment.TopCenter:
+                    topLeft = new Point(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Top);
+                    break;
+                case Alignment.TopRight when childAlignment == Alignment.TopRight:
+                    topLeft = new Point(Right - childControl.Size.X, Top);
+                    break;
+
+                case Alignment.MiddleLeft when childAlignment == Alignment.MiddleLeft:
+                    topLeft = new Point(Left, Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
+                    break;
+                case Alignment.MiddleCenter when childAlignment == Alignment.MiddleCenter:
+                    topLeft = new Point(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
+                    break;
+                case Alignment.MiddleRight when childAlignment == Alignment.MiddleRight:
+                    topLeft = new Point(Right, Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
+                    break;
+                case Alignment.MiddleRight when childAlignment == Alignment.MiddleLeft:
+                    topLeft = new Point(Right, Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
+                    break;
+
+                case Alignment.BottomLeft when childAlignment == Alignment.BottomLeft:
+                    topLeft = new Point(Left, Bottom - childControl.Size.Y);
+                    break;
+                case Alignment.BottomLeft when childAlignment == Alignment.TopLeft:
+                    topLeft = new Point(Left, Bottom);
+                    break;
+                case Alignment.BottomCenter when childAlignment == Alignment.BottomCenter:
+                    topLeft = new Point(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Bottom - childControl.Size.Y);
+                    break;
+                case Alignment.BottomCenter when childAlignment == Alignment.TopCenter:
+                    topLeft = new Point(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Bottom);
+                    break;
+                case Alignment.BottomRight when childAlignment == Alignment.BottomRight:
+                    topLeft = new Point(Right - childControl.Size.X, Bottom - childControl.Size.Y);
+                    break;
+                default:
+                    throw new Exception($"ParentAlignment [{parentAlignment}] with ChildAlignment [{childAlignment}] not implemented.");
+            }
+            topLeft += offset;
+
+            return topLeft;
         }
 
         private Vector2 DetermineTopLeft(Vector2 position, Alignment alignment, Vector2 size)

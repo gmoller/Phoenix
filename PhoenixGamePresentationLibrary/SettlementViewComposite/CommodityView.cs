@@ -18,8 +18,8 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
         //protected Rectangle Area2;
         #endregion
 
-        internal CommodityView(Vector2 position, Alignment positionAlignment, SettlementView settlementView, string imageTextureName1, string imageTextureName2, string name, IControl parent = null) :
-            base(position, positionAlignment, new Vector2(100.0f, 30.0f), "Icons_1", string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, name, 0.0f, parent)
+        internal CommodityView(Vector2 position, Alignment positionAlignment, SettlementView settlementView, string imageTextureName1, string imageTextureName2, string name) :
+            base(position, positionAlignment, new Vector2(100.0f, 30.0f), "Icons_1", string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, name, 0.0f)
         {
             SettlementView = settlementView;
 

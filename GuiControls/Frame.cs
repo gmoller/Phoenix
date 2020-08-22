@@ -35,8 +35,7 @@ namespace GuiControls
                 0,
                 0,
                 name,
-                0.0f,
-                null)
+                0.0f)
         {
         }
 
@@ -60,8 +59,7 @@ namespace GuiControls
                 leftPadding,
                 rightPadding,
                 name,
-                0.0f,
-                null)
+                0.0f)
         {
         }
 
@@ -71,8 +69,7 @@ namespace GuiControls
             Vector2 size,
             string textureAtlas,
             string textureName,
-            string name,
-            IControl parent = null) :
+            string name) :
             this(
                 position,
                 positionAlignment,
@@ -84,8 +81,7 @@ namespace GuiControls
                 0,
                 0,
                 name,
-                0.0f,
-                parent)
+                0.0f)
         {
         }
 
@@ -99,8 +95,7 @@ namespace GuiControls
             int bottomPadding,
             int leftPadding,
             int rightPadding,
-            string name,
-            IControl parent = null) :
+            string name) :
             this(
                 position,
                 positionAlignment,
@@ -112,8 +107,7 @@ namespace GuiControls
                 leftPadding,
                 rightPadding,
                 name,
-                0.0f,
-                parent)
+                0.0f)
         {
         }
 
@@ -128,8 +122,7 @@ namespace GuiControls
             int leftPadding,
             int rightPadding,
             string name,
-            float layerDepth = 0.0f,
-            IControl parent = null) :
+            float layerDepth = 0.0f) :
             base(
                 position, 
                 positionAlignment, 
@@ -141,8 +134,7 @@ namespace GuiControls
                 null, 
                 null,
                 name,
-                layerDepth, 
-                parent)
+                layerDepth)
         {
             _topPadding = topPadding;
             _bottomPadding = bottomPadding;

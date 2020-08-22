@@ -17,18 +17,16 @@ namespace GuiControls
                 size,
                 textureAtlas,
                 textureName,
-                name,
-                null)
+                name)
         {
         }
 
-        public Slot(
+        private Slot(
             Vector2 position,
             Vector2 size,
             string textureAtlas,
             string textureName,
-            string name,
-            IControl parent) :
+            string name) :
             base(
                 position,
                 Alignment.TopLeft,
@@ -39,9 +37,7 @@ namespace GuiControls
                 textureName,
                 textureName,
                 textureName,
-                name,
-                0.0f,
-                parent)
+                name)
         {
         }
 

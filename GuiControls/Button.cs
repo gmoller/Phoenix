@@ -40,8 +40,7 @@ namespace GuiControls
             string textureDisabled,
             string textureHover,
             string name,
-            float layerDepth = 0.0f,
-            IControl parent = null) :
+            float layerDepth = 0.0f) :
             base(
                 position,
                 positionAlignment,
@@ -53,8 +52,7 @@ namespace GuiControls
                 textureHover,
                 textureDisabled,
                 name,
-                layerDepth,
-                parent)
+                layerDepth)
         {
         }
 

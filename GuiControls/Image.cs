@@ -20,9 +20,8 @@ namespace GuiControls
                 textureAtlas,
                 textureName,
                 textureName,
-                0.0f,
-                null,
-                name)
+                name,
+                0.0f)
         {
         }
 
@@ -32,8 +31,7 @@ namespace GuiControls
             Vector2 size,
             string textureAtlas,
             string textureName,
-            string name,
-            IControl parent = null) :
+            string name) :
             this(
                 position,
                 positionAlignment,
@@ -41,30 +39,8 @@ namespace GuiControls
                 textureAtlas,
                 textureName,
                 textureName,
-                0.0f,
-                parent,
-                name)
-        {
-        }
-
-        public Image(
-            Vector2 position, 
-            Alignment positionAlignment, 
-            Vector2 size, 
-            string textureName, 
-            float layerDepth = 0.0f, 
-            IControl parent = null, 
-            string name = "") : 
-            this(
-                position,
-                positionAlignment,
-                size,
-                string.Empty,
-                textureName,
-                textureName,
-                layerDepth,
-                parent,
-                name)
+                name,
+                0.0f)
         {
         }
 
@@ -72,12 +48,30 @@ namespace GuiControls
             Vector2 position,
             Alignment positionAlignment,
             Vector2 size,
+            string textureName,
+            string name = null,
+            float layerDepth = 0.0f) :
+            this(
+                position,
+                positionAlignment,
+                size,
+                string.Empty,
+                textureName,
+                textureName,
+                name,
+                layerDepth)
+        {
+        }
+
+        private Image(
+            Vector2 position,
+            Alignment positionAlignment,
+            Vector2 size,
             string textureAtlas,
             string textureName,
             string textureNormal,
-            float layerDepth,
-            IControl parent = null,
-            string name = "") :
+            string name,
+            float layerDepth) :
             base(
                 position,
                 positionAlignment,
@@ -89,8 +83,7 @@ namespace GuiControls
                 textureName,
                 textureName,
                 name,
-                layerDepth,
-                parent)
+                layerDepth)
         {
         }
 
