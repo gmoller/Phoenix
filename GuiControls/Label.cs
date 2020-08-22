@@ -326,6 +326,20 @@ namespace GuiControls
         private readonly Alignment _contentAlignment;
         #endregion
 
+        /// <summary>
+        /// Use this constructor if Label is to be used as a child of another control.
+        /// When a control is a child of another control, it's position will be relative
+        /// to the parent control. Therefore there is no need to pass in a position.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="size"></param>
+        /// <param name="contentAlignment"></param>
+        /// <param name="text"></param>
+        /// <param name="fontName"></param>
+        /// <param name="textColor"></param>
+        /// <param name="textShadowColor"></param>
+        /// <param name="backColor"></param>
+        /// <param name="borderColor"></param>
         public LabelSized(
             string name,
             Vector2 size,
@@ -352,6 +366,20 @@ namespace GuiControls
         {
         }
 
+        /// <summary>
+        /// Use this constructor if Label is to be used as a child of another control.
+        /// When a control is a child of another control, it's position will be relative
+        /// to the parent control. Therefore there is no need to pass in a position.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="size"></param>
+        /// <param name="contentAlignment"></param>
+        /// <param name="getTextFunc"></param>
+        /// <param name="fontName"></param>
+        /// <param name="textColor"></param>
+        /// <param name="textShadowColor"></param>
+        /// <param name="backColor"></param>
+        /// <param name="borderColor"></param>
         public LabelSized(
             string name,
             Vector2 size,
@@ -378,6 +406,20 @@ namespace GuiControls
         {
         }
 
+        /// <summary>
+        /// Use this constructor if Label is expected to be stand alone (have no parent).
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="positionAlignment"></param>
+        /// <param name="size"></param>
+        /// <param name="contentAlignment"></param>
+        /// <param name="text"></param>
+        /// <param name="fontName"></param>
+        /// <param name="textColor"></param>
+        /// <param name="name"></param>
+        /// <param name="textShadowColor"></param>
+        /// <param name="backColor"></param>
+        /// <param name="borderColor"></param>
         public LabelSized(
             Vector2 position,
             Alignment positionAlignment,
@@ -406,6 +448,18 @@ namespace GuiControls
         {
         }
 
+        /// <summary>
+        /// Use this constructor if Label is expected to be stand alone (have no parent).
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="positionAlignment"></param>
+        /// <param name="size"></param>
+        /// <param name="contentAlignment"></param>
+        /// <param name="text"></param>
+        /// <param name="fontName"></param>
+        /// <param name="textColor"></param>
+        /// <param name="name"></param>
+        /// <param name="textShadowColor"></param>
         public LabelSized(
             Vector2 position,
             Alignment positionAlignment,

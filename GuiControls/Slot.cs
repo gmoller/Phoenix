@@ -7,6 +7,15 @@ namespace GuiControls
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Slot : Control
     {
+        /// <summary>
+        /// Use this constructor if Slot is to be used as a child of another control.
+        /// When a control is a child of another control, it's position will be relative
+        /// to the parent control. Therefore there is no need to pass in a position.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="size"></param>
+        /// <param name="textureAtlas"></param>
+        /// <param name="textureName"></param>
         public Slot(
             string name,
             Vector2 size,

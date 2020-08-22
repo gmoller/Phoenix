@@ -126,10 +126,7 @@ namespace GuiControls
                 childAlignment = parentAlignment;
             }
 
-            //if (childControl.Parent == null)
-            //{
             ((Control)childControl).Parent = this;
-            //}
 
             var topLeft = DetermineTopLeft(childControl, parentAlignment, childAlignment, offset);
 
