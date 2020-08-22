@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -25,6 +25,10 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 
             _frmSecondary = new Frame(topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), TextureAtlas, "frame_main", "frmSecondary");
 
+            _frmSecondary.AddControl(new Frame("frmBuildings", new Vector2(515.0f, 450.0f), TextureAtlas, "frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 50));
+            _frmSecondary["frmBuildings"].AddControl(new LabelSized("lblBuildings", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Buildings", "CrimsonText-Regular-12", Color.Orange, Color.DarkBlue), Alignment.TopLeft, Alignment.TopLeft, new Point(20, 0));
+            _frmSecondary["frmBuildings"].AddControl(new BuildingsView("buildingsView", settlementView, TextureAtlas), Alignment.TopCenter);
+
             _frmSecondary.AddControl(new Frame("frmUnits", new Vector2(515.0f, 75.0f), TextureAtlas, "frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 535));
             _frmSecondary["frmUnits"].AddControl(new LabelSized("lblUnits", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Units", "CrimsonText-Regular-12", Color.Orange, Color.DarkBlue), Alignment.TopLeft, Alignment.TopLeft, new Point(20, 0));
             _frmSecondary["frmUnits"].AddControl(new DynamicSlots("slots20", new Vector2(515.0f, 65.0f), TextureAtlas, "slot", 10, 2, 10.0f), Alignment.TopLeft, Alignment.TopLeft, new Point(0, 5));
@@ -42,6 +46,9 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
         {
             _frmSecondary.LoadContent(content);
             _frmSecondary["frmUnits"].LoadContent(content);
+            _frmSecondary["frmBuildings"].LoadContent(content);
+            _frmSecondary["frmBuildings.lblBuildings"].LoadContent(content);
+            _frmSecondary["frmBuildings.buildingsView"].LoadContent(content);
             _frmSecondary["frmUnits.lblUnits"].LoadContent(content);
             _frmSecondary["frmUnits.slots20"].LoadContent(content, true);
             _frmSecondary["frmOther"].LoadContent(content);
@@ -64,14 +71,15 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
             var unitTypes = context.GameMetadata.UnitTypes;
-            int i = 0;
+            var i = 0;
             foreach (var unit in unitTypes)
             {
                 if (_settlementView.Settlement.UnitCanBeBuilt(unit.Name))
                 {
-                    var lbl = new LabelSized(unit.Name, new Vector2(42.0f, 20.0f), Alignment.MiddleCenter, unit.ShortName, "CrimsonText-Regular-6", Color.Red, null, Color.PowderBlue);
-                    lbl.Click += UnitClick;
-                    slots[i++].AddControl(lbl, Alignment.TopLeft, Alignment.TopLeft);
+                    slots[i].AddControl(new LabelSized(unit.Name, new Vector2(42.0f, 20.0f), Alignment.MiddleCenter, unit.ShortName, "CrimsonText-Regular-6", Color.Red, null, Color.PowderBlue), Alignment.TopLeft, Alignment.TopLeft);
+                    slots[i][unit.Name].Click += UnitClick;
+
+                    i++;
                 }
             }
         }

@@ -10,10 +10,10 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
     internal abstract class CommodityView : Control
     {
         #region State
+        protected readonly SettlementView SettlementView;
+
         private Image _image1;
         private Image _image2;
-
-        protected readonly SettlementView SettlementView;
         //protected ToolTip ToolTip;
         //protected Rectangle Area2;
         #endregion

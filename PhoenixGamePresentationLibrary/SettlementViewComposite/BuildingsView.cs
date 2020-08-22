@@ -10,39 +10,34 @@ using PhoenixGameLibrary;
 
 namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 {
-    internal class BuildingsFrame
+    internal class BuildingsView : Control
     {
-        private readonly SettlementView _parent;
-        private readonly Vector2 _topLeftPosition;
+        #region State
+        private readonly SettlementView _settlementView;
+
+        private readonly IControl _slots;
 
         private Texture2D _texture;
         private AtlasSpec2 _atlas;
+        #endregion
 
-        private LabelSized _lblBuildings;
-        private Frame _smallFrameBuildings;
-
-        internal BuildingsFrame(SettlementView parent, Vector2 topLeftPosition)
+        internal BuildingsView(string name, SettlementView settlementView, string textureAtlas) :
+            base(Vector2.Zero, Alignment.TopLeft, new Vector2(515.0f, 450.0f), textureAtlas, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, name)
         {
-            _parent = parent;
-            _topLeftPosition = topLeftPosition;
+            _settlementView = settlementView;
+
+            _slots = new DynamicSlots(new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515.0f, 450.0f), textureAtlas, "slot", 10, 13, 10.0f, "slots");
         }
 
-        internal void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
-            _lblBuildings = new LabelSized(_topLeftPosition - new Vector2(0.0f, 5.0f), Alignment.TopLeft, new Vector2(10.0f, 10.0f), Alignment.TopLeft, "Buildings", "CrimsonText-Regular-12", Color.Orange, "lblBuildings", Color.Red, null);
-            _lblBuildings.LoadContent(content);
-
-            var slots = new DynamicSlots(_topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 450), "GUI_Textures_1", "slot", 10, 13, 10.0f, "slots");
-            slots.LoadContent(content);
-            _smallFrameBuildings = new Frame(_topLeftPosition + new Vector2(0.0f, 10.0f), Alignment.TopLeft, new Vector2(515, 450), "GUI_Textures_1", "frame2_whole", 50, 50, 50, 50, "smallFrameBuildings");
-            slots.AddControl(_smallFrameBuildings);
-            _smallFrameBuildings.LoadContent(content);
+            _slots.LoadContent(content);
 
             _texture = AssetsManager.Instance.GetTexture("Buildings");
             _atlas = AssetsManager.Instance.GetAtlas("Buildings");
         }
 
-        internal void Update(InputHandler input, float deltaTime)
+        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
         {
             if (input.IsLeftMouseButtonReleased)
             {
@@ -50,8 +45,8 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
                 var buildingTypes = context.GameMetadata.BuildingTypes;
 
                 // determine where mouse pointer is (is it over a slot? which slot?)
-                var baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
-                var baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
+                var baseTopLeftX = Left + 15;
+                var baseTopLeftY = Top + 25;
                 foreach (var building in buildingTypes)
                 {
                     var topLeftX = baseTopLeftX + building.Slot.X * 49;
@@ -60,20 +55,17 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
                     if (slotRectangle.Contains(input.MousePosition))
                     {
                         // can building be built? requirements met? not already built?
-                        if (_parent.Settlement.BuildingReadyToBeBeBuilt(building.Name))
+                        if (_settlementView.Settlement.BuildingReadyToBeBeBuilt(building.Name))
                         {
-                            _parent.Settlement.AddToProductionQueue(building);
+                            _settlementView.Settlement.AddToProductionQueue(building);
                         }
                     }
                 }
             }
         }
 
-        internal void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            _lblBuildings.Draw(spriteBatch);
-            _smallFrameBuildings.Draw(spriteBatch);
-
             DrawBuildings(spriteBatch);
             DrawArrows(spriteBatch);
         }
@@ -83,8 +75,8 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
             var buildingTypes = context.GameMetadata.BuildingTypes;
 
-            var baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
-            var baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
+            var baseTopLeftX = Left + 15;
+            var baseTopLeftY = Top + 25;
             foreach (var building in buildingTypes)
             {
                 var topLeftX = baseTopLeftX + building.Slot.X * 49;
@@ -97,15 +89,15 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
         {
             var rect = new Rectangle(topLeftX, topLeftY, 40, 20);
             Color color;
-            if (_parent.Settlement.BuildingCanNotBeBuilt(buildingName))
+            if (_settlementView.Settlement.BuildingCanNotBeBuilt(buildingName))
             {
                 color = Color.Red;
             }
-            else if (_parent.Settlement.BuildingHasBeenBuilt(buildingName))
+            else if (_settlementView.Settlement.BuildingHasBeenBuilt(buildingName))
             {
                 color = Color.ForestGreen;
             }
-            else if (_parent.Settlement.BuildingReadyToBeBeBuilt(buildingName))
+            else if (_settlementView.Settlement.BuildingReadyToBeBeBuilt(buildingName))
             {
                 color = Color.LightGreen;
             }
@@ -120,8 +112,8 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 
         private void DrawArrows(SpriteBatch spriteBatch)
         {
-            var baseTopLeftX = (int)(_topLeftPosition.X + 15.0f);
-            var baseTopLeftY = (int)(_topLeftPosition.Y + 25.0f);
+            var baseTopLeftX = Left + 15;
+            var baseTopLeftY = Top + 25;
 
             var topLeftX = baseTopLeftX;
             var topLeftY = baseTopLeftY;

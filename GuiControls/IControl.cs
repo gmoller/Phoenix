@@ -42,7 +42,7 @@ namespace GuiControls
 
         event EventHandler Click;
 
-        void AddControl(IControl control, Alignment parentAlignment, Alignment childAlignment, Point offset = new Point());
+        void AddControl(IControl childControl, Alignment parentAlignment = Alignment.TopLeft, Alignment childAlignment = Alignment.None, Point offset = new Point());
         void AddControls(params IControl[] controls);
         void SetTopLeftPosition(Point point);
         void MoveTopLeftPosition(Point point);

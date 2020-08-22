@@ -18,9 +18,9 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
         private Button _btnSubtractWorker;
         private Button _btnAddWorker;
 
-        private Image _imgFarmer;
-        private Image _imgWorker;
-        private Image _imgRebel;
+        private IControl _imgFarmer;
+        private IControl _imgWorker;
+        private IControl _imgRebel;
         #endregion
 
         internal CitizenView(string name, Vector2 position, Alignment positionAlignment, SettlementView settlementView, string textureAtlas) :
@@ -79,7 +79,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             _btnAddWorker.Draw(spriteBatch);
         }
 
-        private void DrawCitizens(SpriteBatch spriteBatch, Vector2 position, Image image, int citizenCount)
+        private void DrawCitizens(SpriteBatch spriteBatch, Vector2 position, IControl image, int citizenCount)
         {
             var x = (int)position.X;
             var y = (int)position.Y;
