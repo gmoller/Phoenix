@@ -92,7 +92,6 @@ namespace PhoenixGamePresentationLibrary.Views
         internal void LoadContent(ContentManager content)
         {
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
-
             _hudViewFrame.LoadContent(content);
             _hudViewFrame["lblCurrentDate"].LoadContent(content);
 
