@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
+using PhoenixGamePresentationLibrary.ExtensionMethods;
 using Utilities;
 using Point = Utilities.Point;
 
@@ -155,7 +156,7 @@ namespace PhoenixGamePresentationLibrary.Views
             var stackViews = SelectedStackView.GetStackViewsSharingSameLocation();
 
             var x = _area.X + 20.0f;
-            var y = _area.Y + _area.Height * 0.5f + 10.0f;
+            var y = _area.Y + _area.Height * Constants.ONE_HALF + 10.0f;
             int i = 0;
             foreach (var stackView in stackViews)
             {

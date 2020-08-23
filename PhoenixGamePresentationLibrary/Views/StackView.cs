@@ -89,7 +89,7 @@ namespace PhoenixGamePresentationLibrary.Views
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            if (_worldView.GameStatus == GameStatus.CityView) return;
+            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
 
             SelectionHandler.HandleSelection(input, this, SelectStack);
 
@@ -290,13 +290,13 @@ namespace PhoenixGamePresentationLibrary.Views
             // draw background
             var destinationRectangle = new Rectangle((int)_currentPositionOnScreen.X, (int)_currentPositionOnScreen.Y, 60, 60);
             var sourceRectangle = _stackViews.SquareGreenFrame.ToRectangle();
-            spriteBatch.Draw(_stackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(_stackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
 
             // draw unit icon
             destinationRectangle = new Rectangle((int)_currentPositionOnScreen.X, (int)_currentPositionOnScreen.Y, 36, 32);
             var frame = _stackViews.UnitAtlas.Frames[_stack[0].UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
-            spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
 
         private void DrawMovementPath(SpriteBatch spriteBatch, List<Point> movementPath, Color color, float radius, float thickness)
@@ -324,8 +324,8 @@ namespace PhoenixGamePresentationLibrary.Views
 
         internal void DrawBadges(SpriteBatch spriteBatch, Vector2 topLeftPosition, int index = 0, bool isSelected = true)
         {
-            var x = topLeftPosition.X + 60.0f * 0.5f;
-            var y = topLeftPosition.Y + 60.0f * 0.5f;
+            var x = topLeftPosition.X + 60.0f * Constants.ONE_HALF;
+            var y = topLeftPosition.Y + 60.0f * Constants.ONE_HALF;
             foreach (var unit in _stack)
             {
                 var indexMod3 = index % 3;
@@ -342,13 +342,13 @@ namespace PhoenixGamePresentationLibrary.Views
             // draw background
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 60, 60);
             var sourceRectangle = isSelected ? _stackViews.SquareGreenFrame.ToRectangle() : _stackViews.SquareGrayFrame.ToRectangle();
-            spriteBatch.Draw(_stackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.FlipVertically, 0.0f);
+            spriteBatch.Draw(_stackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.FlipVertically, 0.0f);
 
             // draw unit icon
             destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 36, 32);
             var frame = _stackViews.UnitAtlas.Frames[unit.UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
-            spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.None, 0.0f);
         }
 
         public override string ToString()

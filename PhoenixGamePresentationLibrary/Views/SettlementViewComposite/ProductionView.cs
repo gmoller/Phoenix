@@ -1,9 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GuiControls;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using GuiControls;
-using PhoenixGamePresentationLibrary.Views;
 
-namespace PhoenixGamePresentationLibrary.SettlementViewComposite
+namespace PhoenixGamePresentationLibrary.Views.SettlementViewComposite
 {
     internal class ProductionView : CommodityView
     {

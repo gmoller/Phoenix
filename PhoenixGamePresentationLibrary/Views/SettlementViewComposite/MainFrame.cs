@@ -1,14 +1,13 @@
 ﻿using System;
+using GuiControls;
+using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using GuiControls;
-using Input;
 using MonoGameUtilities.ExtensionMethods;
-using PhoenixGamePresentationLibrary.Views;
 using Point = Utilities.Point;
 
-namespace PhoenixGamePresentationLibrary.SettlementViewComposite
+namespace PhoenixGamePresentationLibrary.Views.SettlementViewComposite
 {
     internal class MainFrame : Control
     {

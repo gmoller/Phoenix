@@ -2,7 +2,7 @@
 using Input;
 using Utilities;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.ExtensionMethods
 {
     public static class EnumerableDictionaryExtensions
     {

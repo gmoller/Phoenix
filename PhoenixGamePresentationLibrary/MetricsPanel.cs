@@ -105,7 +105,7 @@ namespace PhoenixGamePresentationLibrary
         private Label CreateControl(Vector2 position, Alignment contentAlignment, string text, string name)
         {
             var size = new Vector2(160.0f, 20.0f);
-            var control = new LabelSized(position, Alignment.TopLeft, size, contentAlignment, text, "CrimsonText-Regular-12", Color.LawnGreen, name, Color.DarkRed, Color.DarkSlateGray * 0.5f, Color.White);
+            var control = new LabelSized(position, Alignment.TopLeft, size, contentAlignment, text, "CrimsonText-Regular-12", Color.LawnGreen, name, Color.DarkRed, Color.DarkSlateGray * Constants.ONE_HALF, Color.White);
 
             return control;
         }

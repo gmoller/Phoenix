@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
-using PhoenixGamePresentationLibrary.SettlementViewComposite;
+using PhoenixGamePresentationLibrary.Views.SettlementViewComposite;
 
 namespace PhoenixGamePresentationLibrary.Views
 {

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using GuiControls;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.ExtensionMethods
 {
     public static class DictionaryExtensions
     {

@@ -1,15 +1,14 @@
 ﻿using System.Runtime.Remoting.Messaging;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
 using Input;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGameUtilities;
 using PhoenixGameLibrary;
-using PhoenixGamePresentationLibrary.Views;
 
-namespace PhoenixGamePresentationLibrary.SettlementViewComposite
+namespace PhoenixGamePresentationLibrary.Views.SettlementViewComposite
 {
     internal class BuildingsView : Control
     {
