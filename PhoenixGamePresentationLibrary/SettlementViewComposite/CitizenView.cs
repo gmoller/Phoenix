@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
+using PhoenixGamePresentationLibrary.Views;
 using Point = Utilities.Point;
 
 namespace PhoenixGamePresentationLibrary.SettlementViewComposite
@@ -28,13 +29,13 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
         {
             _settlementView = settlementView;
 
-            _btnSubtractFarmer = new Button(position + new Vector2(Area.X, Area.Y), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h", "btnSubtractFarmer");
+            _btnSubtractFarmer = new Button(position + new Vector2(Area.X, Area.Y), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_h", "minus_a", "btnSubtractFarmer");
             _btnSubtractFarmer.Click += SubtractFarmerButtonClick;
-            _btnAddFarmer = new Button(position + new Vector2(Area.X + 20.0f, Area.Y), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h", "btnAddFarmer");
+            _btnAddFarmer = new Button(position + new Vector2(Area.X + 20.0f, Area.Y), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_h", "plus_a", "btnAddFarmer");
             _btnAddFarmer.Click += AddFarmerButtonClick;
-            _btnSubtractWorker = new Button(position + new Vector2(Area.X, Area.Y + 30.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_a", "minus_h", "btnSubtractWorker");
+            _btnSubtractWorker = new Button(position + new Vector2(Area.X, Area.Y + 30.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_h", "minus_a", "btnSubtractWorker");
             _btnSubtractWorker.Click += SubtractWorkerButtonClick;
-            _btnAddWorker = new Button(position + new Vector2(Area.X + 20.0f, Area.Y + 30.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_a", "plus_h", "btnAddWorker");
+            _btnAddWorker = new Button(position + new Vector2(Area.X + 20.0f, Area.Y + 30.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_h", "plus_a", "btnAddWorker");
             _btnAddWorker.Click += AddWorkerButtonClick;
 
             _imgFarmer = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 30.0f), textureAtlas, $"Citizen_{settlementView.Settlement.RaceType.Name}_Farmer", "imgFarmer");

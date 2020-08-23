@@ -2,13 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using Input;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using PhoenixGameLibrary;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.Views
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     internal class StackViews : IEnumerable<StackView>

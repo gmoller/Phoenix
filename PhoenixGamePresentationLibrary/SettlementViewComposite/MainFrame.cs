@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
 using MonoGameUtilities.ExtensionMethods;
+using PhoenixGamePresentationLibrary.Views;
 using Point = Utilities.Point;
 
 namespace PhoenixGamePresentationLibrary.SettlementViewComposite
@@ -27,7 +28,7 @@ namespace PhoenixGamePresentationLibrary.SettlementViewComposite
             _frmMain.AddControl(new Frame("frmHeader", new Vector2(560.0f, 146.0f), TextureAtlas, "frame_big_heading"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, -100));
             _frmMain["frmHeader"].AddControl(new LabelSized("lblSettlementName1", new Vector2(100.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForSettlementType, "Carolingia-Regular-24", Color.Purple, Color.DarkBlue), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 45));
             _frmMain["frmHeader"].AddControl(new LabelSized("lblSettlementName2", new Vector2(100.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForSettlementName, "Carolingia-Regular-24", Color.Purple, Color.DarkBlue), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 75));
-            _frmMain["frmHeader"].AddControl(new Button("btnClose", new Vector2(43.0f, 44.0f), TextureAtlas, "close_button_n", "close_button_a", "close_button_a", "close_button_h"), Alignment.TopRight, Alignment.TopRight, new Point(-8, 8));
+            _frmMain["frmHeader"].AddControl(new Button("btnClose", new Vector2(43.0f, 44.0f), TextureAtlas, "close_button_n", "close_button_a", "close_button_h", "close_button_a"), Alignment.TopRight, Alignment.TopRight, new Point(-8, 8));
             _frmMain["frmHeader.btnClose"].Click += CloseButtonClick;
 
             _frmMain.AddControl(new Frame("frmPopulation", new Vector2(515.0f, 120.0f), TextureAtlas, "frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 50));

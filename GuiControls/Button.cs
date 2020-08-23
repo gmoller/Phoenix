@@ -17,8 +17,8 @@ namespace GuiControls
         /// <param name="textureAtlas"></param>
         /// <param name="textureNormal"></param>
         /// <param name="textureActive"></param>
+        /// /// <param name="textureHover"></param>
         /// <param name="textureDisabled"></param>
-        /// <param name="textureHover"></param>
         /// <param name="layerDepth"></param>
         public Button(
             string name,
@@ -26,8 +26,8 @@ namespace GuiControls
             string textureAtlas,
             string textureNormal,
             string textureActive,
-            string textureDisabled,
             string textureHover,
+            string textureDisabled,
             float layerDepth = 0.0f) :
             this(
                 Vector2.Zero,
@@ -36,8 +36,8 @@ namespace GuiControls
                 textureAtlas,
                 textureNormal,
                 textureActive,
-                textureDisabled,
                 textureHover,
+                textureDisabled,
                 name,
                 layerDepth)
         {
@@ -52,8 +52,8 @@ namespace GuiControls
         /// <param name="textureAtlas"></param>
         /// <param name="textureNormal"></param>
         /// <param name="textureActive"></param>
+        /// /// <param name="textureHover"></param>
         /// <param name="textureDisabled"></param>
-        /// <param name="textureHover"></param>
         /// <param name="name"></param>
         public Button(
             Vector2 position,
@@ -62,8 +62,8 @@ namespace GuiControls
             string textureAtlas,
             string textureNormal,
             string textureActive,
-            string textureDisabled,
             string textureHover,
+            string textureDisabled,
             string name) :
             this(
                 position,
@@ -86,8 +86,8 @@ namespace GuiControls
             string textureAtlas,
             string textureNormal,
             string textureActive,
-            string textureDisabled,
             string textureHover,
+            string textureDisabled,
             string name,
             float layerDepth = 0.0f) :
             base(

@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using HexLibrary;
 using Input;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGameUtilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using Utilities;
+using Point = Utilities.Point;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.Views
 {
     public class WorldView
     {
@@ -25,14 +26,16 @@ namespace PhoenixGamePresentationLibrary
         private readonly StackViews _stackViews;
         private readonly SettlementView _settlementView;
         private readonly HudView _hudView;
-        private readonly Dictionary<string, Image> _movementTypeImages;
-        private readonly Dictionary<string, Button> _actionButtons;
+        private readonly Dictionary<string, IControl> _movementTypeImages;
+        private readonly Dictionary<string, IControl> _actionButtons;
 
         public Camera Camera { get; }
+
+        public GameStatus GameStatus { get; set; }
         #endregion 
 
-        public EnumerableDictionary<Image> MovementTypeImages => new EnumerableDictionary<Image>(_movementTypeImages);
-        public EnumerableDictionary<Button> ActionButtons => new EnumerableDictionary<Button>(_actionButtons);
+        public EnumerableDictionary<IControl> MovementTypeImages => new EnumerableDictionary<IControl>(_movementTypeImages);
+        public EnumerableDictionary<IControl> ActionButtons => new EnumerableDictionary<IControl>(_actionButtons);
 
         internal WorldView(World world)
         {
@@ -48,28 +51,20 @@ namespace PhoenixGamePresentationLibrary
             _actionButtons = InitializeActionButtons();
 
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
-            Camera = new Camera(new Rectangle(0, 0, context.ActualResolution.X, context.ActualResolution.Y));
+            Camera = new Camera(this, new Rectangle(0, 0, context.ActualResolution.X, context.ActualResolution.Y));
         }
 
         internal void LoadContent(ContentManager content)
         {
-            _settlementView.LoadContent(content);
-            _overlandSettlementsView.LoadContent(content);
             Camera.LoadContent(content);
+            _overlandMapView.LoadContent(content);
+            _overlandSettlementsView.LoadContent(content);
             _stackViews.LoadContent(content);
+            _settlementView.LoadContent(content);
             _hudView.LoadContent(content);
 
-            // TODO: _movementTypeImages.LoadContent(content);
-            foreach (var movementTypeImage in _movementTypeImages.Values)
-            {
-                movementTypeImage.LoadContent(content);
-            }
-
-            // TODO: _actionButtons.LoadContent(content);
-            foreach (var button in _actionButtons.Values)
-            {
-                button.LoadContent(content, true);
-            }
+            _movementTypeImages.LoadContent(content);
+            _actionButtons.LoadContent(content, true);
         }
 
         internal void Update(InputHandler input, float deltaTime)
@@ -115,18 +110,18 @@ namespace PhoenixGamePresentationLibrary
             spriteBatch.End();
         }
 
-        private Utilities.Point GetWorldPositionPointedAtByMouseCursor(Camera camera, Microsoft.Xna.Framework.Point mousePosition)
+        private Point GetWorldPositionPointedAtByMouseCursor(Camera camera, Microsoft.Xna.Framework.Point mousePosition)
         {
             var worldPosPointedAtByMouseCursor = camera.ScreenToWorld(new Vector2(mousePosition.X, mousePosition.Y));
 
-            return new Utilities.Point((int)worldPosPointedAtByMouseCursor.X, (int)worldPosPointedAtByMouseCursor.Y);
+            return new Point((int)worldPosPointedAtByMouseCursor.X, (int)worldPosPointedAtByMouseCursor.Y);
         }
 
-        private Utilities.Point GetWorldHexPointedAtByMouseCursor(Utilities.Point worldPositionPointedAtByMouseCursor)
+        private Point GetWorldHexPointedAtByMouseCursor(Point worldPositionPointedAtByMouseCursor)
         {
             var worldHex = HexOffsetCoordinates.FromPixel(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
 
-            return new Utilities.Point(worldHex.Col, worldHex.Row);
+            return new Point(worldHex.Col, worldHex.Row);
         }
 
         public void BeginTurn()
@@ -148,12 +143,12 @@ namespace PhoenixGamePresentationLibrary
             BeginTurn();
         }
 
-        private Dictionary<string, Image> InitializeMovementTypeImages()
+        private Dictionary<string, IControl> InitializeMovementTypeImages()
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
             var movementTypes = context.GameMetadata.MovementTypes;
 
-            var movementTypeImages = new Dictionary<string, Image>();
+            var movementTypeImages = new Dictionary<string, IControl>();
             foreach (var movementType in movementTypes)
             {
                 var image = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(18.0f, 12.0f), "MovementTypes", movementType.Name, "image");
@@ -163,12 +158,12 @@ namespace PhoenixGamePresentationLibrary
             return movementTypeImages;
         }
 
-        private Dictionary<string, Button> InitializeActionButtons()
+        private Dictionary<string, IControl> InitializeActionButtons()
         {
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
             var actionTypes = context.GameMetadata.ActionTypes;
 
-            var actionButtons = new Dictionary<string, Button>();
+            var actionButtons = new Dictionary<string, IControl>();
             var i = 0;
             var x = 1680; // position of unitFrame BottomRight: (1680;806)
             var y = 806;
@@ -180,7 +175,7 @@ namespace PhoenixGamePresentationLibrary
                 var position = new Vector2(x + xOffset, y + yOffset);
                 i++;
 
-                var button = new Button(position, Alignment.TopLeft, buttonSize, "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_a", "simpleb_h", actionType.Name);
+                var button = new Button(position, Alignment.TopLeft, buttonSize, "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_h", "simpleb_a", actionType.Name);
                 button.Click += (o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name));
                 var label = new LabelSized(button.Size.ToVector2() * 0.5f, Alignment.MiddleCenter, button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black, $"label{i}", null);
                 button.AddControl(label);

@@ -1,26 +1,32 @@
-﻿using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using AssetsLibrary;
+﻿using AssetsLibrary;
 using Input;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.Views
 {
     public class PhoenixGameView
     {
-        private readonly PhoenixGame _phoenixGame;
-
         #region State
-        private WorldView _worldView;
-        private CursorView _cursorView;
-        private Cursor _cursor;
-        private InputHandler _input;
+        //private readonly PhoenixGame _phoenixGame;
+
+        private readonly WorldView _worldView;
+        private readonly Cursor _cursor;
+        private readonly CursorView _cursorView;
+        private readonly InputHandler _input;
         #endregion
 
         public PhoenixGameView(PhoenixGame phoenixGame)
         {
-            _phoenixGame = phoenixGame;
+            //_phoenixGame = phoenixGame;
+
+            _worldView = new WorldView(phoenixGame.World);
+            _cursor = new Cursor();
+            _cursorView = new CursorView(_cursor);
+            _input = new InputHandler();
+            _input.Initialize();
         }
 
         public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
@@ -91,13 +97,6 @@ namespace PhoenixGamePresentationLibrary
 
             AssetsManager.Instance.AddTexture("Squares_Transparent", "TextureAtlases\\Squares_Transparent");
             AssetsManager.Instance.AddAtlas("Squares_Transparent", "TextureAtlases\\Squares_Transparent");
-
-            _worldView = new WorldView(_phoenixGame.World);
-            _cursor = new Cursor();
-            _cursorView = new CursorView(_cursor);
-
-            _input = new InputHandler();
-            _input.Initialize();
 
             _worldView.LoadContent(content);
             _cursorView.LoadContent(content);

@@ -7,6 +7,7 @@ using GuiControls;
 using Input;
 using MonoGameUtilities;
 using PhoenixGameLibrary;
+using PhoenixGamePresentationLibrary.Views;
 
 namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 {

@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using GuiControls;
-using Microsoft.Xna.Framework.Graphics;
 using HexLibrary;
 using Input;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
+using PhoenixGamePresentationLibrary.Handlers;
 using Utilities;
 using Point = Utilities.Point;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.Views
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     internal class StackView
@@ -88,6 +89,8 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Update(InputHandler input, float deltaTime)
         {
+            if (_worldView.GameStatus == GameStatus.CityView) return;
+
             SelectionHandler.HandleSelection(input, this, SelectStack);
 
             if (!IsSelected) return;
@@ -354,16 +357,5 @@ namespace PhoenixGamePresentationLibrary
         } 
 
         private string DebuggerDisplay => $"{{Id={Id},UnitsInStack={_stack.Count}}}";
-    }
-
-    public static class EnumerableListExtensions
-    {
-        public static void Update(this EnumerableList<IControl> list, InputHandler input, float deltaTime)
-        {
-            foreach (var item in list)
-            {
-                item.Update(input, deltaTime);
-            }
-        }
     }
 }

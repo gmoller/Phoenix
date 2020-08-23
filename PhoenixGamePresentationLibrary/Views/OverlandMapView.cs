@@ -1,33 +1,57 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
+using GuiControls;
 using HexLibrary;
 using Input;
+using Microsoft.Xna.Framework.Content;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using Utilities.ExtensionMethods;
+using Point = Utilities .Point;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.Views
 {
     internal class OverlandMapView
     {
         private readonly WorldView _worldView;
         private readonly OverlandMap _overlandMap;
 
+        private readonly Label _test;
+
         internal OverlandMapView(WorldView worldView, OverlandMap overlandMap)
         {
             _worldView = worldView;
             _overlandMap = overlandMap;
+
+            _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, "test", null, Color.Blue);
+            _test.Click += delegate { _test.MoveTopLeftPosition(new Point(10, -10)); };
+        }
+
+        internal void LoadContent(ContentManager content)
+        {
+            _test.LoadContent(content);
         }
 
         internal void Update(InputHandler input, float deltaTime)
         {
+            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
+
+            // Causes
+
+            // Actions
+
+            _test.Update(input, deltaTime);
+
+            // Status change?
         }
 
         internal void Draw(SpriteBatch spriteBatch)
         {
             DrawCellGrid(spriteBatch, _overlandMap.CellGrid, _worldView.Camera);
+
+            _test.Draw(spriteBatch);
         }
 
         private void DrawCellGrid(SpriteBatch spriteBatch, CellGrid cellGrid, Camera camera)

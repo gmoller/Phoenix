@@ -6,7 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
 using PhoenixGameLibrary;
-using Point = Utilities.Point;
+ using PhoenixGamePresentationLibrary.Views;
+ using Point = Utilities.Point;
 
 namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 {

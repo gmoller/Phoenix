@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
+using PhoenixGamePresentationLibrary.Views;
 using Point = Utilities.Point;
 
 namespace PhoenixGamePresentationLibrary.SettlementViewComposite

@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Runtime.Remoting.Messaging;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using GuiControls;
 using Input;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using Utilities;
 using Point = Utilities.Point;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.Views
 {
     internal class HudView
     {
@@ -23,9 +23,7 @@ namespace PhoenixGamePresentationLibrary
         private readonly Rectangle _area;
 
         private readonly Frame _hudViewFrame;
-        private EnumerableDictionary<Button> _actionButtons;
-
-        private Label _test;
+        private EnumerableDictionary<IControl> _actionButtons;
 
         private readonly StackViews _stackViews;
         #endregion
@@ -73,7 +71,7 @@ namespace PhoenixGamePresentationLibrary
 
             #endregion
 
-            var btnEndTurn = new Button("btnEndTurn", new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_a", "reg_button_h");
+            var btnEndTurn = new Button("btnEndTurn", new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_h", "reg_button_a");
             btnEndTurn.Click += EndTurnButtonClick;
 
             btnEndTurn.AddControl(new LabelSized("lblEndTurn", btnEndTurn.Size.ToVector2(), Alignment.MiddleCenter, "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue), Alignment.MiddleCenter, Alignment.MiddleCenter);
@@ -81,9 +79,6 @@ namespace PhoenixGamePresentationLibrary
             _hudViewFrame.AddControl(btnEndTurn, Alignment.BottomCenter, Alignment.TopCenter, Point.Zero);
 
             #endregion
-
-            _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, "test", null, Color.Blue);
-            _test.Click += delegate { _test.MoveTopLeftPosition(new Point(10, -10)); };
 
             _worldView = worldView;
             _stackViews = stackViews;
@@ -115,23 +110,26 @@ namespace PhoenixGamePresentationLibrary
             _hudViewFrame["btnEndTurn.lblEndTurn"].LoadContent(content);
 
             _actionButtons = _worldView.ActionButtons;
-
-            _test.LoadContent(content);
         }
 
         public void Update(InputHandler input, float deltaTime)
         {
-            var mouseOver = _area.Contains(input.MousePosition) || _hudViewFrame.ChildControls["btnEndTurn"].Area.Contains(input.MousePosition);
-            _hudViewFrame.Enabled = mouseOver;
+            if (_worldView.GameStatus == GameStatus.CityView) return;
+
+            // Causes
+            var mouseOverHudView = _area.Contains(input.MousePosition) || _hudViewFrame.ChildControls["btnEndTurn"].Area.Contains(input.MousePosition);
+
+            // Actions
+            _hudViewFrame.Enabled = mouseOverHudView;
 
             _hudViewFrame.Update(input, deltaTime);
+            _actionButtons.Update(input, deltaTime);
 
-            foreach (var actionButton in _actionButtons)
+            // Status change?
+            if (_worldView.GameStatus != GameStatus.CityView)
             {
-                actionButton.Update(input, deltaTime);
+                _worldView.GameStatus = mouseOverHudView ? GameStatus.InHudView : GameStatus.OverlandMap;
             }
-
-            _test.Update(input, deltaTime);
         }
 
         internal void Draw(SpriteBatch spriteBatch)
@@ -141,8 +139,6 @@ namespace PhoenixGamePresentationLibrary
             DrawUnits(spriteBatch);
             DrawNotifications(spriteBatch);
             DrawTileInfo(spriteBatch);
-
-            _test.Draw(spriteBatch);
         }
 
         private void DrawUnits(SpriteBatch spriteBatch)
@@ -176,7 +172,7 @@ namespace PhoenixGamePresentationLibrary
             var y = 806 - 12 - 20;
             foreach (var imgMovementType in imgMovementTypes)
             {
-                imgMovementType.SetTopLeftPosition(new Utilities.Point(x - 19 * i, y));
+                imgMovementType.SetTopLeftPosition(new Point(x - 19 * i, y));
                 imgMovementType.Draw(spriteBatch);
                 i++;
             }
@@ -229,7 +225,7 @@ namespace PhoenixGamePresentationLibrary
                     if (terrainType.CanSettleOn)
                     {
                         var catchment = cellGrid.GetCatchment(hexPoint.X, hexPoint.Y, 2);
-                        var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Utilities.Point(hexPoint.X, hexPoint.Y), catchment);
+                        var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new Point(hexPoint.X, hexPoint.Y), catchment);
                         var text2 = $"Maximum Pop - {maxPop}";
                         spriteBatch.DrawString(_font, text2, new Vector2(x, y + 15.0f), Color.White);
                     }

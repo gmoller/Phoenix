@@ -38,7 +38,7 @@ namespace GuiControls
         int Height { get; }
         Point Size { get; }
 
-        bool Enabled { get; }
+        bool Enabled { get; set; }
 
         event EventHandler Click;
 

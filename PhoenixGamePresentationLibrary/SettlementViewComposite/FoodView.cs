@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
+using PhoenixGamePresentationLibrary.Views;
 
 namespace PhoenixGamePresentationLibrary.SettlementViewComposite
 {

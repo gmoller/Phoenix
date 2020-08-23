@@ -13,6 +13,7 @@ namespace Input
         public bool MouseWheelUp => MouseHandler.MouseWheelUp();
         public bool MouseWheelDown => MouseHandler.MouseWheelDown();
         public bool IsLeftMouseButtonDown => MouseHandler.IsLeftButtonDown();
+        public bool IsRightMouseButtonDown => MouseHandler.IsRightButtonDown();
         public bool IsLeftMouseButtonReleased => MouseHandler.IsLeftButtonReleased();
         public bool IsRightMouseButtonReleased => MouseHandler.IsRightButtonReleased();
 

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using HexLibrary;
 using PhoenixGameLibrary;
+using PhoenixGamePresentationLibrary.Views;
 using Utilities;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.Handlers
 {
     internal static class MovementPathDeterminer
     {

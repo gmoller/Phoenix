@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGamePresentationLibrary;
+using PhoenixGamePresentationLibrary.Views;
 using Utilities;
 using Point = Utilities.Point;
  
@@ -13,6 +14,7 @@ namespace Phoenix
 {
     public class MainGame : Game
     {
+        #region State
         private readonly GraphicsDeviceManager _graphicsDeviceManager;
 
         private SpriteBatch _spriteBatch;
@@ -21,6 +23,7 @@ namespace Phoenix
         private PhoenixGame _phoenixGame;
         private PhoenixGameView _phoenixGameView;
         private MetricsPanel _metricsPanel;
+        #endregion
 
         public MainGame()
         {

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Runtime.Remoting.Messaging;
-using Microsoft.Xna.Framework.Input;
 using HexLibrary;
 using Input;
+using Microsoft.Xna.Framework.Input;
 using PhoenixGameLibrary;
-using Utilities;
+using PhoenixGamePresentationLibrary.Views;
 using Utilities.ExtensionMethods;
 using Point = Utilities.Point;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.Handlers
 {
     internal static class MovementHandler
     {

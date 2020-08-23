@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using Input;
 using PhoenixGameLibrary;
+using PhoenixGamePresentationLibrary.Views;
 using Utilities;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.Handlers
 {
     internal static class PotentialMovementHandler
     {

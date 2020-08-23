@@ -1,15 +1,14 @@
 ﻿using System.Runtime.Remoting.Messaging;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using AssetsLibrary;
 using HexLibrary;
 using Input;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
-using Utilities;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.Views
 {
     public class OverlandSettlementView
     {
@@ -35,12 +34,24 @@ namespace PhoenixGamePresentationLibrary
 
         public void Update(InputHandler input, float deltaTime)
         {
-            if (input.IsRightMouseButtonReleased && CursorIsOnThisSettlement(Settlement))
+            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
+
+            // Causes
+            var openSettlement = input.IsRightMouseButtonReleased && CursorIsOnThisSettlement(Settlement);
+
+            // Actions
+            if (openSettlement)
             {
                 Command openSettlementCommand = new OpenSettlementCommand { Payload = (Settlement, _worldView.World.Settlements) };
                 openSettlementCommand.Execute();
 
                 _worldView.Camera.LookAtCell(Settlement.Location);
+            }
+
+            // Status change?
+            if (openSettlement)
+            {
+                _worldView.GameStatus = GameStatus.CityView;
             }
         }
 

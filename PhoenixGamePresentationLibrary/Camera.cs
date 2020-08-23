@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Input;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
+using PhoenixGamePresentationLibrary.Views;
 using Utilities.ExtensionMethods;
 using MathHelper = Microsoft.Xna.Framework.MathHelper;
 
@@ -14,6 +15,8 @@ namespace PhoenixGamePresentationLibrary
     public class Camera
     {
         #region State
+        private readonly WorldView _worldView;
+
         private readonly Rectangle _viewport;
 
         private float _rotation;
@@ -31,8 +34,9 @@ namespace PhoenixGamePresentationLibrary
         public int Width => _viewport.Width;
         public int Height => _viewport.Height;
 
-        public Camera(Rectangle viewport)
+        public Camera(WorldView worldView, Rectangle viewport)
         {
+            _worldView = worldView;
             _viewport = viewport;
 
             _centerPosition = Vector2.Zero;
@@ -97,24 +101,27 @@ namespace PhoenixGamePresentationLibrary
 
         public void Update(InputHandler input, float deltaTime)
         {
+            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
+
+            // Causes
             var zoomAmount = input.MouseWheelUp ? 0.05f : 0.0f;
-            zoomAmount = input.MouseWheelDown ? -0.05f : zoomAmount;
+            zoomAmount += input.MouseWheelDown ? -0.05f : zoomAmount;
+
+            var panCameraDistance = input.IsRightMouseButtonDown && input.HasMouseMoved ? input.MouseMovement.ToVector2() : Vector2.Zero;
+            // TODO: adjust speed depending on zoom level
+            panCameraDistance += input.MouseIsAtTopOfScreen ? new Vector2(0.0f, -1.0f) * deltaTime : Vector2.Zero;
+            panCameraDistance += input.MouseIsAtBottomOfScreen ? new Vector2(0.0f, 1.0f) * deltaTime : Vector2.Zero;
+            panCameraDistance += input.MouseIsAtLeftOfScreen ? new Vector2(-1.0f, 0.0f) * deltaTime : Vector2.Zero;
+            panCameraDistance += input.MouseIsAtRightOfScreen ? new Vector2(1.0f, 0.0f) * deltaTime : Vector2.Zero;
+
+            // Actions
             AdjustZoom(zoomAmount);
-
-            var panCameraDistance = input.IsLeftMouseButtonDown && input.HasMouseMoved ? input.MouseMovement.ToVector2() : Vector2.Zero;
-            MoveCamera(panCameraDistance);
-
-            panCameraDistance = input.MouseIsAtTopOfScreen ? new Vector2(0.0f, -1.0f) * deltaTime : Vector2.Zero;
-            MoveCamera(panCameraDistance);
-            panCameraDistance = input.MouseIsAtBottomOfScreen ? new Vector2(0.0f, 1.0f) * deltaTime : Vector2.Zero;
-            MoveCamera(panCameraDistance);
-            panCameraDistance = input.MouseIsAtLeftOfScreen ? new Vector2(-1.0f, 0.0f) * deltaTime : Vector2.Zero;
-            MoveCamera(panCameraDistance);
-            panCameraDistance = input.MouseIsAtRightOfScreen ? new Vector2(1.0f, 0.0f) * deltaTime : Vector2.Zero;
             MoveCamera(panCameraDistance);
 
             ClampCamera(Zoom);
             UpdateMatrix();
+
+            // Status change?
         }
 
         private void AdjustZoom(float zoomAmount)
@@ -122,7 +129,7 @@ namespace PhoenixGamePresentationLibrary
             if (zoomAmount.AboutEquals(0.0f)) return;
 
             Zoom += zoomAmount;
-            Zoom = MathHelper.Clamp(Zoom, 0.35f, 5.0f); // 0.1 - 5.0f
+            Zoom = MathHelper.Clamp(Zoom, 0.35f, 5.0f);
             CalculateNumberOfHexesFromCenter(_viewport, Zoom);
         }
 
@@ -145,7 +152,6 @@ namespace PhoenixGamePresentationLibrary
                         Matrix.CreateRotationZ(_rotation) *
                         Matrix.CreateScale(Zoom) *
                         Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0.0f));
-            //UpdateVisibleArea();
         }
 
         private void UpdateVisibleArea()
@@ -163,8 +169,6 @@ namespace PhoenixGamePresentationLibrary
             var max = new Vector2(
                 MathHelper.Max(tl.X, MathHelper.Max(tr.X, MathHelper.Max(bl.X, br.X))),
                 MathHelper.Max(tl.Y, MathHelper.Max(tr.Y, MathHelper.Max(bl.Y, br.Y))));
-
-            //VisibleArea = new Rectangle((int)min.X - (int)HexLibrary.Constants.HEX_WIDTH, (int)min.Y - 96, (int)(max.X - min.X) + (int)HexLibrary.Constants.HEX_WIDTH * 2, (int)(max.Y - min.Y) + 192); // 60, 92
         }
     }
 }

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
+using GuiControls;
+using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using GuiControls;
-using Input;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentationLibrary.SettlementViewComposite;
 
-namespace PhoenixGamePresentationLibrary
+namespace PhoenixGamePresentationLibrary.Views
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     internal class SettlementView
@@ -42,8 +42,16 @@ namespace PhoenixGamePresentationLibrary
 
         internal void Update(InputHandler input, float deltaTime)
         {
+            if (_worldView.GameStatus != GameStatus.CityView) return;
+
+            // Causes
+
+            // Actions
+
             _mainFrame.Update(input, deltaTime);
             _secondaryFrame.Update(input, deltaTime);
+
+            // Status change?
         }
 
         internal void Draw(SpriteBatch spriteBatch)
@@ -56,6 +64,7 @@ namespace PhoenixGamePresentationLibrary
         {
             Command closeSettlementCommand = new CloseSettlementCommand { Payload = (Settlement, _worldView.World.Settlements) };
             closeSettlementCommand.Execute();
+            _worldView.GameStatus = GameStatus.OverlandMap;
         }
 
         public override string ToString()
