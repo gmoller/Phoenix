@@ -77,6 +77,11 @@ namespace PhoenixGamePresentationLibrary.Views
             return imgMovementTypes;
         }
 
+        internal bool HasNoMovementPath()
+        {
+            return MovementPath.Count == 0;
+        }
+
         internal GetCostToMoveIntoResult GetCostToMoveInto(Point location)
         {
             return _stack.GetCostToMoveInto(location);
@@ -89,45 +94,80 @@ namespace PhoenixGamePresentationLibrary.Views
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
+            if (_worldView.GameStatus == GameStatus.CityView) return;
 
-            SelectionHandler.HandleSelection(input, this, SelectStack);
+            // Causes
+            var selectUnit = SelectionHandler.CheckForUnitSelection(input, this);
+            var changeBlinkState = CheckForBlinkStateChange(deltaTime);
+            var mustFindNewExploreLocation = ExploreHandler.MustFindNewExploreLocation(this);
+            var mustStartMovement = MovementHandler.CheckForStartOfMovement(input, this, _worldView.World);
+            var mustRestartMovement = MovementHandler.CheckForRestartOfMovement(this); // not in moving state, has a path and has movement points
+            var mustContinueMovement = MovementHandler.MustContinueMovement(this);
+            var mustMoveUnitToNextCell = MovementHandler.MustMoveUnitToNextCell(this);
+
+            // Actions
+            if (selectUnit)
+            {
+                SelectionHandler.SelectStack(this);
+            }
 
             if (!IsSelected) return;
 
-            _blink = DetermineBlinkState(_blink, deltaTime);
-             
-            ExploreHandler.HandleExplore(this, SetMovementPath, _worldView.World);
+            if (changeBlinkState)
+            {
+                _blink = !_blink;
+                _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
+            }
+
+            if (mustFindNewExploreLocation)
+            {
+                ExploreHandler.SetMovementPathToNewExploreLocation(this, _worldView.World);
+            }
+
+            if (mustStartMovement)
+            {
+                var hexToMoveTo = MovementHandler.GetHexToMoveTo(input, this, _worldView.World);
+                StartUnitMovement(hexToMoveTo);
+            }
+
+            if (mustRestartMovement)
+            {
+                RestartUnitMovement();
+            }
+
+            if (mustContinueMovement)
+            {
+                MoveStack(deltaTime);
+            }
+
+            if (mustMoveUnitToNextCell)
+            {
+                MoveStackToCell();
+            }
+
             PotentialMovementHandler.HandlePotentialMovement(input, this, _worldView.World, SetPotentialMovementPath);
-            MovementHandler.HandleMovement(input, this, deltaTime, RestartUnitMovement, StartUnitMovement, MoveStack, MoveStackToCell, _worldView.World);
+
+            // Status change?
         }
 
-        private void SelectStack()
+        internal void SetAsCurrent()
         {
             _blink = true;
+            _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             _stackViews.SetCurrent(this);
         }
 
-        private bool DetermineBlinkState(bool blink, float deltaTime)
+        private bool CheckForBlinkStateChange(float deltaTime)
         {
-            if (!IsMovingState)
-            {
-                _blinkCooldownInMilliseconds -= deltaTime;
-                if (_blinkCooldownInMilliseconds > 0.0f) return blink;
+            if (IsMovingState) return false;
 
-                // flip blink state
-                blink = !blink;
-                _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
-            }
-            else
-            {
-                return false;
-            }
+            _blinkCooldownInMilliseconds -= deltaTime;
+            if (_blinkCooldownInMilliseconds > 0.0f) return false;
 
-            return blink;
+            return true;
         }
 
-        private void SetMovementPath(List<Point> path)
+        internal void SetMovementPath(List<Point> path)
         {
             _movementPath = path;
         }
@@ -140,6 +180,8 @@ namespace PhoenixGamePresentationLibrary.Views
         private void RestartUnitMovement()
         {
             IsMovingState = true;
+            _blink = false;
+            _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
         }
 
@@ -149,6 +191,8 @@ namespace PhoenixGamePresentationLibrary.Views
             SetMovementPath(path);
 
             IsMovingState = true;
+            _blink = false;
+            _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
         }
 
@@ -166,7 +210,7 @@ namespace PhoenixGamePresentationLibrary.Views
             {
                 // if exploring: pick new path
                 SetMovementPath(new List<Point>());
-                ExploreHandler.HandleExplore(this, SetMovementPath, _worldView.World);
+                ExploreHandler.SetMovementPathToNewExploreLocation(this, _worldView.World);
             }
 
             MovementCountdownTime -= deltaTime;

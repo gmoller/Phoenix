@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Remoting.Messaging;
+﻿using System.Runtime.Remoting.Messaging;
 using Input;
 using PhoenixGameLibrary;
 using PhoenixGamePresentationLibrary.Views;
@@ -8,20 +7,13 @@ namespace PhoenixGamePresentationLibrary.Handlers
 {
     internal static class SelectionHandler
     {
-        internal static void HandleSelection(InputHandler input, StackView stackView, Action action)
+        internal static bool CheckForUnitSelection(InputHandler input, StackView stackView)
         {
-            if (stackView.IsSelected) return;
+            if (stackView.IsSelected) return false;
 
-            var selectUnit = CheckForUnitSelection(input, stackView);
-            if (selectUnit)
-            {
-                action();
-            }
-        }
+            var selectUnit = input.IsRightMouseButtonReleased && CursorIsOnThisStack(stackView);
 
-        private static bool CheckForUnitSelection(InputHandler input, StackView stackView)
-        {
-            return input.IsRightMouseButtonReleased && CursorIsOnThisStack(stackView);
+            return selectUnit;
         }
 
         private static bool CursorIsOnThisStack(StackView stackView)
@@ -30,6 +22,11 @@ namespace PhoenixGamePresentationLibrary.Handlers
             var hexPoint = context.WorldHexPointedAtByMouseCursor;
 
             return stackView.Location == hexPoint;
+        }
+
+        internal static void SelectStack(StackView stackView)
+        {
+            stackView.SetAsCurrent();
         }
     }
 }

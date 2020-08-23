@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Remoting.Messaging;
+﻿using System.Runtime.Remoting.Messaging;
 using HexLibrary;
 using Input;
 using Microsoft.Xna.Framework.Input;
@@ -12,34 +11,7 @@ namespace PhoenixGamePresentationLibrary.Handlers
 {
     internal static class MovementHandler
     {
-        internal static void HandleMovement(InputHandler input, StackView stackView, float deltaTime, Action restartUnitMovement, Action<Point> startUnitMovement, Action<float> moveStack, Action moveStackToCell, World world)
-        {
-            var restartMovement = CheckForRestartOfMovement(stackView);
-            if (restartMovement)
-            {
-                restartUnitMovement();
-            }
-
-            var (startMovementKeyboard, hexToMoveToKeyboard) = CheckForUnitMovementFromKeyboardInitiation(input, stackView);
-            var (startMovementMouse, hexToMoveToMouse) = CheckForUnitMovementFromMouseInitiation(input, stackView, world);
-
-            if (startMovementKeyboard || startMovementMouse)
-            {
-                startUnitMovement(startMovementKeyboard ? hexToMoveToKeyboard : hexToMoveToMouse);
-            }
-
-            if (UnitIsMoving(stackView))
-            {
-                moveStack(deltaTime);
-                var unitHasReachedNextCell = CheckIfUnitHasReachedNextCell(stackView);
-                if (unitHasReachedNextCell)
-                {
-                    moveStackToCell();
-                }
-            }
-        }
-
-        private static bool CheckForRestartOfMovement(StackView stackView)
+        internal static bool CheckForRestartOfMovement(StackView stackView)
         {
             if (stackView.IsMovingState == false && stackView.MovementPath.Count > 0 && stackView.MovementPoints > 0.0f)
             {
@@ -47,6 +19,37 @@ namespace PhoenixGamePresentationLibrary.Handlers
             }
 
             return false;
+        }
+
+        internal static bool CheckForStartOfMovement(InputHandler input, StackView stackView, World world)
+        {
+            var (startMovementKeyboard, hexToMoveToKeyboard) = CheckForUnitMovementFromKeyboardInitiation(input, stackView);
+            var (startMovementMouse, hexToMoveToMouse) = CheckForUnitMovementFromMouseInitiation(input, stackView, world);
+
+            if (startMovementKeyboard || startMovementMouse)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        internal static bool MustContinueMovement(StackView stackView)
+        {
+            return UnitIsMoving(stackView);
+        }
+
+        internal static bool MustMoveUnitToNextCell(StackView stackView)
+        {
+            return UnitIsMoving(stackView) && CheckIfUnitHasReachedNextCell(stackView);
+        }
+
+        internal static Point GetHexToMoveTo(InputHandler input, StackView stackView, World world)
+        {
+            var (startMovementKeyboard, hexToMoveToKeyboard) = CheckForUnitMovementFromKeyboardInitiation(input, stackView);
+            var (startMovementMouse, hexToMoveToMouse) = CheckForUnitMovementFromMouseInitiation(input, stackView, world);
+
+            return startMovementKeyboard ? hexToMoveToKeyboard : hexToMoveToMouse;
         }
 
         private static (bool startMovement, Point hexToMoveTo) CheckForUnitMovementFromKeyboardInitiation(InputHandler input, StackView stackView)
