@@ -10,6 +10,7 @@ using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using PhoenixGamePresentationLibrary.ExtensionMethods;
+using PhoenixGamePresentationLibrary.Handlers;
 using Utilities;
 using Point = Utilities.Point;
 
@@ -63,6 +64,11 @@ namespace PhoenixGamePresentationLibrary.Views
 
             #endregion
 
+            #region MiniMapFrame
+            _hudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 250));
+            _hudViewFrame["miniMapFrame"].AddControl(new Image("mapImage", new Vector2(200.0f, 170.0f)), Alignment.MiddleCenter, Alignment.MiddleCenter);
+            #endregion
+
             #region UnitFrame
 
             _hudViewFrame.AddControl(new Frame("unitFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 500));
@@ -103,6 +109,8 @@ namespace PhoenixGamePresentationLibrary.Views
             _hudViewFrame["resourceFrame.imgMana.lblMana"].LoadContent(content);
             _hudViewFrame["resourceFrame.imgFood.lblFood"].LoadContent(content);
 
+            _hudViewFrame["miniMapFrame"].LoadContent(content);
+
             _hudViewFrame["unitFrame"].LoadContent(content);
             _hudViewFrame["unitFrame.lblMoves"].LoadContent(content);
 
@@ -118,9 +126,18 @@ namespace PhoenixGamePresentationLibrary.Views
 
             // Causes
             var mouseOverHudView = _area.Contains(input.MousePosition) || _hudViewFrame.ChildControls["btnEndTurn"].Area.Contains(input.MousePosition);
+            var redrawMiniMap = true;
 
             // Actions
             _hudViewFrame.Enabled = mouseOverHudView;
+
+            if (redrawMiniMap)
+            {
+                // call minimap creator
+                var createdImage = MinimapHandler.Create(_worldView.World);
+                var mapImage = (Image)_hudViewFrame["miniMapFrame.mapImage"];
+                mapImage.SetTexture(createdImage);
+            }
 
             _hudViewFrame.Update(input, deltaTime);
             _actionButtons.Update(input, deltaTime);

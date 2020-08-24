@@ -402,6 +402,12 @@ namespace GuiControls
             }
         }
 
+        public void SetTexture(Texture2D texture)
+        {
+            Texture = texture;
+            SourceRectangle = Texture.Bounds;
+        }
+
         public string Serialize()
         {
             var json = JsonConvert.SerializeObject(this);

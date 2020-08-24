@@ -6,6 +6,7 @@ using HexLibrary;
 using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
@@ -105,6 +106,7 @@ namespace PhoenixGamePresentationLibrary.Views
             var mustContinueMovement = MovementHandler.MustContinueMovement(this);
             var mustMoveUnitToNextCell = MovementHandler.MustMoveUnitToNextCell(this);
             var mustDeterminePotentialMovementPath = PotentialMovementHandler.MustDeterminePotentialMovementPath(input, this);
+            var centerOnUnit = input.IsKeyReleased(Keys.C);
 
             // Actions
             if (selectUnit)
@@ -154,6 +156,11 @@ namespace PhoenixGamePresentationLibrary.Views
             else
             {
                 SetPotentialMovementPath(new List<Point>());
+            }
+
+            if (centerOnUnit)
+            {
+                _worldView.Camera.LookAtCell(Location);
             }
 
             // Status change?

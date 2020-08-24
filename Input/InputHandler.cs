@@ -48,9 +48,44 @@ namespace Input
             MouseHandler.Update();
         }
 
+        /// <summary>
+        ///  Is the key currently not being pressed?
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public bool IsKeyUp(Keys key)
+        {
+            return KeyboardHandler.IsKeyUp(key);
+        }
+
+        /// <summary>
+        /// Is the key currently being pressed?
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public bool IsKeyDown(Keys key)
         {
             return KeyboardHandler.IsKeyDown(key);
+        }
+
+        /// <summary>
+        /// Has the key just been pressed?
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public bool IsKeyPressed(Keys key)
+        {
+            return KeyboardHandler.IsKeyPressed(key);
+        }
+
+        /// <summary>
+        /// Has the key just been released?
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public bool IsKeyReleased(Keys key)
+        {
+            return KeyboardHandler.IsKeyReleased(key);
         }
     }
 }

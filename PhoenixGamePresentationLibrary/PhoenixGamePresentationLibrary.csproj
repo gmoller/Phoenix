@@ -45,6 +45,7 @@
     <Compile Include="ExtensionMethods\DictionaryExtensions.cs" />
     <Compile Include="ExtensionMethods\EnumerableDictionaryExtensions.cs" />
     <Compile Include="ExtensionMethods\EnumerableListExtensions.cs" />
+    <Compile Include="Handlers\MinimapHandler.cs" />
     <Compile Include="Views\CursorView.cs" />
     <Compile Include="Handlers\ExploreHandler.cs" />
     <Compile Include="FramesPerSecondCounter.cs" />

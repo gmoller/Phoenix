@@ -19,8 +19,8 @@ namespace GuiControls
         public Image(
             string name,
             Vector2 size,
-            string textureAtlas,
-            string textureName) :
+            string textureAtlas = null,
+            string textureName = null) :
             this(
                 Vector2.Zero, 
                 Alignment.TopLeft,

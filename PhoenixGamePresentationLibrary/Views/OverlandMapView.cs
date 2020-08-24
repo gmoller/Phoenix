@@ -5,6 +5,7 @@ using GuiControls;
 using HexLibrary;
 using Input;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
@@ -39,8 +40,13 @@ namespace PhoenixGamePresentationLibrary.Views
             if (_worldView.GameStatus != GameStatus.OverlandMap) return;
 
             // Causes
+            var endTurn = input.IsKeyReleased(Keys.Enter);
 
             // Actions
+            if (endTurn)
+            {
+                _worldView.EndTurn();
+            }
 
             _test.Update(input, deltaTime);
 
