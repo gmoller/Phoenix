@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Remoting.Messaging;
+﻿using System.Runtime.Remoting.Messaging;
 using HexLibrary;
 using Input;
 using Microsoft.Xna.Framework.Input;
