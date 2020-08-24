@@ -104,6 +104,7 @@ namespace PhoenixGamePresentationLibrary.Views
             var mustRestartMovement = MovementHandler.CheckForRestartOfMovement(this); // not in moving state, has a path and has movement points
             var mustContinueMovement = MovementHandler.MustContinueMovement(this);
             var mustMoveUnitToNextCell = MovementHandler.MustMoveUnitToNextCell(this);
+            var mustDeterminePotentialMovementPath = PotentialMovementHandler.MustDeterminePotentialMovementPath(input, this);
 
             // Actions
             if (selectUnit)
@@ -145,7 +146,15 @@ namespace PhoenixGamePresentationLibrary.Views
                 MoveStackToCell();
             }
 
-            PotentialMovementHandler.HandlePotentialMovement(input, this, _worldView.World, SetPotentialMovementPath);
+            if (mustDeterminePotentialMovementPath)
+            {
+                var path = PotentialMovementHandler.GetPotentialMovementPath(this, _worldView.World);
+                SetPotentialMovementPath(path);
+            }
+            else
+            {
+                SetPotentialMovementPath(new List<Point>());
+            }
 
             // Status change?
         }
@@ -154,6 +163,7 @@ namespace PhoenixGamePresentationLibrary.Views
         {
             _blink = true;
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
+            _movementPath = new List<Point>();
             _stackViews.SetCurrent(this);
         }
 

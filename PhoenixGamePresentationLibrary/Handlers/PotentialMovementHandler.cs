@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using Input;
 using PhoenixGameLibrary;
@@ -10,16 +9,14 @@ namespace PhoenixGamePresentationLibrary.Handlers
 {
     internal static class PotentialMovementHandler
     {
-        internal static void HandlePotentialMovement(InputHandler input, StackView stackView, World world, Action<List<Point>> action)
+        internal static bool MustDeterminePotentialMovementPath(InputHandler input, StackView stackView)
         {
-            if (stackView.Status == UnitStatus.Explore || stackView.IsMovingState || !input.MouseIsWithinScreen) return;
+            if (stackView.Status == UnitStatus.Explore || stackView.IsMovingState || !input.MouseIsWithinScreen || !input.IsRightMouseButtonDown) return false;
 
-            var path = GetPotentialMovementPath(stackView, world);
-
-            action(path);
+            return true;
         }
 
-        private static List<Point> GetPotentialMovementPath(StackView stackView, World world)
+        internal static List<Point> GetPotentialMovementPath(StackView stackView, World world)
         {
             var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(stackView, world);
             if (!potentialMovement) return new List<Point>();
