@@ -32,7 +32,7 @@ namespace GuiControls
 
         protected string TextureAtlas { get; private set; }
         protected string TextureName { get; private set; }
-        protected Color Color { get; private set; }
+        protected Microsoft.Xna.Framework.Color Color { get; private set; }
         protected float LayerDepth { get; private set; }
 
         protected Texture2D Texture { get; set; }
@@ -87,7 +87,7 @@ namespace GuiControls
             Name = name;
             TextureAtlas = textureAtlas;
             TextureName = textureName;
-            Color = Color.White;
+            Color = Microsoft.Xna.Framework.Color.White;
             LayerDepth = layerDepth;
 
             _textureNormal = textureNormal;

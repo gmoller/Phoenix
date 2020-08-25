@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="AStarSearch.cs" />
     <Compile Include="BreadthFirstSearch.cs" />
+    <Compile Include="Color.cs" />
     <Compile Include="ExtensionMethods\ByteExtensions.cs" />
     <Compile Include="ExtensionMethods\IntegerExtensions.cs" />
     <Compile Include="GetCostToMoveIntoResult.cs" />

@@ -12,6 +12,7 @@ using PhoenixGameLibrary;
 using PhoenixGamePresentationLibrary.ExtensionMethods;
 using PhoenixGamePresentationLibrary.Handlers;
 using Utilities;
+using Color = Microsoft.Xna.Framework.Color;
 using Point = Utilities.Point;
 
 namespace PhoenixGamePresentationLibrary.Views

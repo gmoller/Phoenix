@@ -13,6 +13,7 @@ using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentationLibrary.Handlers;
 using Utilities;
+using Color = Microsoft.Xna.Framework.Color;
 using Point = Utilities.Point;
 
 namespace PhoenixGamePresentationLibrary.Views

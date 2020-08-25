@@ -27,8 +27,8 @@ namespace PhoenixGamePresentationLibrary.Handlers
                 {
                     var cell = cellGrid.GetCell(column, row);
                     var terrainTypeId = cell.TerrainTypeId;
-                    var color = cell.SeenState == SeenState.NeverSeen ? new byte[] { 0, 0, 0, 0 } :  terrainTypes[terrainTypeId].MinimapColor;
-                    colors[i] = new Color(color[0], color[1], color[2], color[3]);
+                    var color = cell.SeenState == SeenState.NeverSeen ? Utilities.Color.Black :  terrainTypes[terrainTypeId].MinimapColor;
+                    colors[i] = new Color(color.R, color.G, color.B, color.A);
                     i++;
                 }
             }

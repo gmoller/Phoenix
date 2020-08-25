@@ -131,7 +131,7 @@ namespace Phoenix
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
 
             _phoenixGameView.Draw(_spriteBatch, _viewportAdapter);
 
