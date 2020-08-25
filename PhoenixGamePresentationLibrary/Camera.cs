@@ -4,6 +4,7 @@ using HexLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Input;
+using Microsoft.Xna.Framework.Input;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using PhoenixGamePresentationLibrary.Views;
@@ -106,6 +107,7 @@ namespace PhoenixGamePresentationLibrary
             // Causes
             var zoomAmount = input.MouseWheelUp ? 0.05f : 0.0f;
             zoomAmount += input.MouseWheelDown ? -0.05f : zoomAmount;
+            var resetZoom = input.IsKeyReleased(Keys.OemTilde);
 
             var panCameraDistance = input.IsRightMouseButtonDown && input.HasMouseMoved ? input.MouseMovement.ToVector2() : Vector2.Zero;
             // TODO: adjust speed depending on zoom level
@@ -115,6 +117,7 @@ namespace PhoenixGamePresentationLibrary
             panCameraDistance += input.MouseIsAtRightOfScreen ? new Vector2(1.0f, 0.0f) * deltaTime : Vector2.Zero;
 
             // Actions
+            ResetZoom(resetZoom);
             AdjustZoom(zoomAmount);
             MoveCamera(panCameraDistance);
 
@@ -124,12 +127,22 @@ namespace PhoenixGamePresentationLibrary
             // Status change?
         }
 
+        private void ResetZoom(bool resetZoom)
+        {
+            if (resetZoom)
+            {
+                Zoom = 1.0f;
+                CalculateNumberOfHexesFromCenter(_viewport, Zoom);
+            }
+        }
+
         private void AdjustZoom(float zoomAmount)
         {
             if (zoomAmount.AboutEquals(0.0f)) return;
 
             Zoom += zoomAmount;
             Zoom = MathHelper.Clamp(Zoom, 0.35f, 5.0f);
+
             CalculateNumberOfHexesFromCenter(_viewport, Zoom);
         }
 

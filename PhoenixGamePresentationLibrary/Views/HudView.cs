@@ -48,9 +48,16 @@ namespace PhoenixGamePresentationLibrary.Views
             string GetTextFuncForDate() => _worldView.World.CurrentDate;
             _hudViewFrame.AddControl(new LabelSized("lblCurrentDate", new Vector2(150.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForDate, "Maleficio-Regular-18", Color.Aquamarine), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 20));
 
+            #region MiniMapFrame
+
+            _hudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 50));
+            _hudViewFrame["miniMapFrame"].AddControl(new Image("mapImage", new Vector2(200.0f, 170.0f)), Alignment.MiddleCenter, Alignment.MiddleCenter);
+
+            #endregion
+
             #region ResourceFrame
 
-            _hudViewFrame.AddControl(new Frame("resourceFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 50));
+            _hudViewFrame.AddControl(new Frame("resourceFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 250));
             _hudViewFrame["resourceFrame"].AddControl(new Image("imgGold", new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R"), Alignment.TopLeft, Alignment.TopLeft, new Point(10, 10));
             _hudViewFrame["resourceFrame"].AddControl(new Image("imgMana", new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R"), Alignment.TopLeft, Alignment.TopLeft, new Point(10, 70));
             _hudViewFrame["resourceFrame"].AddControl(new Image("imgFood", new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R"), Alignment.TopLeft, Alignment.TopLeft, new Point(10, 130));
@@ -62,11 +69,6 @@ namespace PhoenixGamePresentationLibrary.Views
             string GetTextFuncForFood() => $"{_worldView.World.PlayerFaction.FoodPerTurn} Food";
             _hudViewFrame["resourceFrame.imgFood"].AddControl(new LabelSized("lblFood", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForFood, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new Point(20, 0));
 
-            #endregion
-
-            #region MiniMapFrame
-            _hudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 250));
-            _hudViewFrame["miniMapFrame"].AddControl(new Image("mapImage", new Vector2(200.0f, 170.0f)), Alignment.MiddleCenter, Alignment.MiddleCenter);
             #endregion
 
             #region UnitFrame

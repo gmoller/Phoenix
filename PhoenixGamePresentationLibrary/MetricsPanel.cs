@@ -38,11 +38,12 @@ namespace PhoenixGamePresentationLibrary
                 ("Viewport:", "lblResolution21"), (string.Empty, "lblResolution22"),
                 ("DisplayMode:", "lblResolution31"), (string.Empty, "lblResolution32"),
                 ("CurrentDisplayMode:", "lblResolution41"), (string.Empty, "lblResolution42"),
+                ("Zoom:", "lblZoom1"), (string.Empty, "lblZoom2")
             };
 
             _labels = new List<Label>();
             var y = -30.0f;
-            for (var i = 0; i < 20; i++)
+            for (var i = 0; i < metrics.Count; i++)
             {
                 var x = i % 2 == 0 ? 0.0f : 160.0f;
                 if (i % 2 == 0)
@@ -86,6 +87,7 @@ namespace PhoenixGamePresentationLibrary
             _labels[15].Text = $"{viewportAdapter.Viewport.Width}x{viewportAdapter.Viewport.Height}";
             _labels[17].Text = $"{graphicsDevice.DisplayMode.Width}x{graphicsDevice.DisplayMode.Height}";
             _labels[19].Text = $"{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width}x{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height}";
+            //_labels[21].Text = $"{context.Zoom}";
         }
 
         public void Draw(SpriteBatch spriteBatch)

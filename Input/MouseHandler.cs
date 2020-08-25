@@ -43,6 +43,16 @@ namespace Input
             return _previousState.LeftButton == ButtonState.Pressed && _currentState.LeftButton == ButtonState.Released;
         }
 
+        internal static bool IsMiddleButtonPressed()
+        {
+            return _previousState.MiddleButton == ButtonState.Released && _currentState.MiddleButton == ButtonState.Pressed;
+        }
+
+        internal static bool IMiddleButtonReleased()
+        {
+            return _previousState.MiddleButton == ButtonState.Pressed && _currentState.MiddleButton == ButtonState.Released;
+        }
+
         internal static bool IsRightButtonPressed()
         {
             return _previousState.RightButton == ButtonState.Released && _currentState.RightButton == ButtonState.Pressed;

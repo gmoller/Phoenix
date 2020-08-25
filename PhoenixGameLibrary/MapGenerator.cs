@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.GameData;
 
@@ -45,16 +46,16 @@ namespace PhoenixGameLibrary
 
         private static TerrainType[,] TurnNoiseIntoTerrain(float[,] noise)
         {
-            int numberOfColumns = noise.GetLength(0);
-            int numberOfRows = noise.GetLength(1);
+            var numberOfColumns = noise.GetLength(0);
+            var numberOfRows = noise.GetLength(1);
             var terrain = new TerrainType[numberOfColumns, numberOfRows];
 
-            for (int y = 0; y < numberOfRows; ++y)
+            for (var y = 0; y < numberOfRows; ++y)
             {
-                for (int x = 0; x < numberOfColumns; ++x)
+                for (var x = 0; x < numberOfColumns; ++x)
                 {
-                    float val = noise[x, y];
-                    TerrainType terrainType = DetermineTerrainTypeId(val);
+                    var val = noise[x, y];
+                    var terrainType = DetermineTerrainTypeId(val);
                     terrain[x, y] = terrainType;
                 }
             }
@@ -67,34 +68,32 @@ namespace PhoenixGameLibrary
             var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
             var terrainTypes = context.GameMetadata.TerrainTypes;
 
-            TerrainType terrainType;
+            var ranges = new List<(float from, float to, string terrainTypeName)>
+            {
+                (float.MinValue, 0.0f, "Ocean"),
+                (0.0f, 0.4f, "Grassland"),
+                (0.4f, 0.5f, "Forest"),
+                (0.5f, 0.7f, "Hill"),
+                (0.7f, float.MaxValue, "Mountain")
+            };
 
-            if (IsOcean(val))
-            {
-                terrainType = terrainTypes[11];
-            }
-            else if (IsGrassland(val))
-            {
-                terrainType = terrainTypes[0];
-            }
-            else if (IsForest(val))
-            {
-                terrainType = terrainTypes[1];
-            }
-            else if (IsHill(val))
-            {
-                terrainType = terrainTypes[6];
-            }
-            else if (IsMountain(val))
-            {
-                terrainType = terrainTypes[7];
-            }
-            else
-            {
-                throw new Exception($"That was unexpected! Val of {val} not supported.");
-            }
+            var terrainTypeName = GetTerrainTypeName(val, ranges);
+            var terrainType = terrainTypes[terrainTypeName];
 
             return terrainType;
+        }
+
+        private static string GetTerrainTypeName(float val, List<(float from, float to, string terrainTypeName)> ranges)
+        {
+            foreach (var range in ranges)
+            {
+                if (val >= range.from && val < range.to)
+                {
+                    return range.terrainTypeName;
+                }
+            }
+
+            throw new Exception($"That was unexpected! Val of {val} not supported.");
         }
 
         private static bool IsOcean(float val)
