@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.Remoting.Messaging;
-using HexLibrary;
+using Hex;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -40,7 +39,7 @@ namespace PhoenixGameLibrary
             }
             else
             {
-                var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+                var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
                 var terrainTypes = context.GameMetadata.TerrainTypes;
 
                 var terrainType = terrainTypes[terrainTypeId];

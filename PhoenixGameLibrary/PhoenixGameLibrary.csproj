@@ -1,101 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{21921023-2B2B-4B3D-82A3-7F335F24C644}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PhoenixGameLibrary</RootNamespace>
-    <AssemblyName>PhoenixGameLibrary</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
+    <ProjectReference Include="..\Hex\Hex.csproj" />
+    <ProjectReference Include="..\Noise\Noise.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Commands\AddNewOutpostCommand.cs" />
-    <Compile Include="Commands\AddUnitCommand.cs" />
-    <Compile Include="Commands\BeginTurnCommand.cs" />
-    <Compile Include="Commands\CloseSettlementCommand.cs" />
-    <Compile Include="Commands\Command.cs" />
-    <Compile Include="Commands\EndTurnCommand.cs" />
-    <Compile Include="Commands\MoveUnitCommand.cs" />
-    <Compile Include="Commands\OpenSettlementCommand.cs" />
-    <Compile Include="Faction.cs" />
-    <Compile Include="GameData\ActionType.cs" />
-    <Compile Include="GameData\BuildingFoodOutputIncreaseType.cs" />
-    <Compile Include="GameData\BuildingMaximumPopulationIncreaseType.cs" />
-    <Compile Include="GameData\BuildingPopulationGrowthType.cs" />
-    <Compile Include="GameData\BuildingType.cs" />
-    <Compile Include="GameMetadata.cs" />
-    <Compile Include="GameData\MovementCost.cs" />
-    <Compile Include="GameData\MovementType.cs" />
-    <Compile Include="GameData\RaceType.cs" />
-    <Compile Include="GameData\TerrainCanSettleOnType.cs" />
-    <Compile Include="GameData\TerrainFoodOutputType.cs" />
-    <Compile Include="GameData\TerrainProductionPercentageType.cs" />
-    <Compile Include="GameData\UnitType.cs" />
-    <Compile Include="GlobalContext.cs" />
-    <Compile Include="Helpers\BaseFoodLevel.cs" />
-    <Compile Include="Helpers\PopulationGrowthRate.cs" />
-    <Compile Include="Helpers\SettlementFoodProduction.cs" />
-    <Compile Include="Helpers\SettlementProduction.cs" />
-    <Compile Include="NotificationList.cs" />
-    <Compile Include="SeenState.cs" />
-    <Compile Include="UnitStatus.cs" />
-    <Compile Include="SettlementCitizens.cs" />
-    <Compile Include="GameData\TerrainType.cs" />
-    <Compile Include="GameData\Texture.cs" />
-    <Compile Include="MapGenerator.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Cell.cs" />
-    <Compile Include="CellGrid.cs" />
-    <Compile Include="OverlandMap.cs" />
-    <Compile Include="PhoenixGame.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settlement.cs" />
-    <Compile Include="Settlements.cs" />
-    <Compile Include="Unit.cs" />
-    <Compile Include="Units.cs" />
-    <Compile Include="Stack.cs" />
-    <Compile Include="Stacks.cs" />
-    <Compile Include="World.cs" />
+    <Folder Include="GameData\" />
+    <Folder Include="Commands\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HexLibrary\HexLibrary.csproj">
-      <Project>{8f48f47a-ed5a-4cc6-b54c-996689fc7422}</Project>
-      <Name>HexLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Noise\Noise.csproj">
-      <Project>{aec160e5-c4db-4b2c-a16c-edeb6b1bd2c4}</Project>
-      <Name>Noise</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{5320ff4a-6c80-4627-9b74-9e7cb1a109fd}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

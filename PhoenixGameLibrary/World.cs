@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using Utilities;
@@ -33,7 +32,7 @@ namespace PhoenixGameLibrary
 
         internal void AddSettlement(Point location, string raceTypeName)
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var raceTypes = context.GameMetadata.RaceTypes;
 
             var raceType = raceTypes[raceTypeName];

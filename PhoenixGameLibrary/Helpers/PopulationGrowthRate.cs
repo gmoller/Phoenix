@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.GameData;
+using Utilities;
 
 namespace PhoenixGameLibrary.Helpers
 {
@@ -19,7 +19,7 @@ namespace PhoenixGameLibrary.Helpers
             int adjustedGrowthRate = baseGrowthRateRoundedUp * 10;
 
             // buildings
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var buildingPopulationGrowthTypes = context.GameMetadata.BuildingPopulationGrowthTypes;
 
             foreach (var item in buildingPopulationGrowthTypes)

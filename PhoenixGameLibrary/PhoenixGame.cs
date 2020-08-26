@@ -1,5 +1,4 @@
-﻿using System.Runtime.Remoting.Messaging;
-using Utilities;
+﻿using Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -11,7 +10,7 @@ namespace PhoenixGameLibrary
         {
             World = new World(Constants.WORLD_MAP_COLUMNS, Constants.WORLD_MAP_ROWS);
 
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var unitTypes = context.GameMetadata.UnitTypes;
 
             World.AddSettlement(new Point(12, 9), "Barbarians");

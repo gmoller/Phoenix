@@ -9,8 +9,10 @@ namespace Utilities
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct GetCostToMoveIntoResult
     {
+        #region State
         public bool CanMoveInto { get; }
         public float CostToMoveInto { get; }
+        #endregion
 
         public GetCostToMoveIntoResult(bool canMoveInto)
         {

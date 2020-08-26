@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.Remoting.Messaging;
 using Utilities;
 
 namespace PhoenixGameLibrary.GameData
@@ -13,6 +12,7 @@ namespace PhoenixGameLibrary.GameData
     {
         public static readonly TerrainType Invalid = new TerrainType(-1, "None", null, Color.White);
 
+        #region State
         public int Id { get; }
         public string Name { get; }
         public MovementCosts MovementCosts { get; }
@@ -21,6 +21,7 @@ namespace PhoenixGameLibrary.GameData
         public bool CanSettleOn => GetCanSettleOn();
         public Color MinimapColor { get; }
         public List<Texture> PossibleTextures { get; }
+        #endregion
 
         private TerrainType(int id, string name, MovementCosts movementCosts, Color minimapColor, params Texture[] possibleTextures)
         {
@@ -48,7 +49,7 @@ namespace PhoenixGameLibrary.GameData
 
         private float GetFoodOutput()
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var terrainFoodOutputTypes = context.GameMetadata.TerrainFoodOutputTypes;
 
             return terrainFoodOutputTypes.Contains(Id) ? terrainFoodOutputTypes[Id].FoodOutput : 0.0f;
@@ -56,7 +57,7 @@ namespace PhoenixGameLibrary.GameData
 
         private float GetProductionPercentage()
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var terrainProductionPercentageTypes = context.GameMetadata.TerrainProductionPercentageTypes;
 
             return terrainProductionPercentageTypes.Contains(Id) ? terrainProductionPercentageTypes[Id].ProductionPercentage : 0.0f;
@@ -64,7 +65,7 @@ namespace PhoenixGameLibrary.GameData
 
         private bool GetCanSettleOn()
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var terrainCanSettleOnTypes = context.GameMetadata.TerrainCanSettleOnTypes;
 
             return terrainCanSettleOnTypes.Contains(Id);

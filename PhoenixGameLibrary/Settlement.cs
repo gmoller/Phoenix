@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using PhoenixGameLibrary.Helpers;
@@ -51,7 +50,7 @@ namespace PhoenixGameLibrary
 
         internal Settlement(World world, string name, string raceTypeName, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var raceTypes = context.GameMetadata.RaceTypes;
             var buildingTypes = context.GameMetadata.BuildingTypes;
 
@@ -91,7 +90,7 @@ namespace PhoenixGameLibrary
 
         public bool BuildingHasBeenBuilt(string buildingName)
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var buildingTypes = context.GameMetadata.BuildingTypes;
             var building = buildingTypes[buildingName];
 
@@ -100,7 +99,7 @@ namespace PhoenixGameLibrary
 
         public bool BuildingCanBeBuilt(string buildingName)
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var buildingTypes = context.GameMetadata.BuildingTypes;
             var building = buildingTypes[buildingName];
 
@@ -109,7 +108,7 @@ namespace PhoenixGameLibrary
 
         public bool BuildingCanNotBeBuilt(string buildingName)
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var buildingTypes = context.GameMetadata.BuildingTypes;
             var building = buildingTypes[buildingName];
 
@@ -118,7 +117,7 @@ namespace PhoenixGameLibrary
 
         public bool BuildingReadyToBeBeBuilt(string buildingName)
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var buildingTypes = context.GameMetadata.BuildingTypes;
             var building = buildingTypes[buildingName];
             var isReadyToBeBuilt = building.IsReadyToBeBuilt(_buildingsBuilt);
@@ -128,7 +127,7 @@ namespace PhoenixGameLibrary
 
         public bool UnitCanBeBuilt(string unitName)
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var unitTypes = context.GameMetadata.UnitTypes;
             var unit = unitTypes[unitName];
             if (unit.CanBeBuiltBy(RaceType.Name) && unit.IsReadyToBeBuilt(_buildingsBuilt))
@@ -165,7 +164,7 @@ namespace PhoenixGameLibrary
 
             if (_currentlyBuilding.BuildingId >= 0)
             {
-                var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+                var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
                 var buildingTypes = context.GameMetadata.BuildingTypes;
 
                 _currentlyBuilding = new CurrentlyBuilding(_currentlyBuilding.BuildingId, -1, _currentlyBuilding.ProductionAccrued + SettlementProduction);
@@ -182,7 +181,7 @@ namespace PhoenixGameLibrary
             }
             if (_currentlyBuilding.UnitId >= 0)
             {
-                var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+                var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
                 var unitTypes = context.GameMetadata.UnitTypes;
 
                 _currentlyBuilding = new CurrentlyBuilding(-1, _currentlyBuilding.UnitId, _currentlyBuilding.ProductionAccrued + SettlementProduction);
@@ -214,14 +213,14 @@ namespace PhoenixGameLibrary
         {
             if (_currentlyBuilding.BuildingId >= 0)
             {
-                var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+                var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
                 var buildingTypes = context.GameMetadata.BuildingTypes;
                 var building = buildingTypes[_currentlyBuilding.BuildingId];
                 return $"Current: {building.Name} ({_currentlyBuilding.ProductionAccrued}/{building.ConstructionCost})";
             }
             if (_currentlyBuilding.UnitId >= 0)
             {
-                var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+                var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
                 var unitTypes = context.GameMetadata.UnitTypes;
                 var unit = unitTypes[_currentlyBuilding.UnitId];
                 return $"Current: {unit.Name} ({_currentlyBuilding.ProductionAccrued}/{unit.ConstructionCost})";
@@ -254,7 +253,7 @@ namespace PhoenixGameLibrary
             int baseFoodLevel = BaseFoodLevel;
 
             // buildings
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var buildingMaximumPopulationIncreaseTypes = context.GameMetadata.BuildingMaximumPopulationIncreaseTypes;
             foreach (var item in buildingMaximumPopulationIncreaseTypes)
             {

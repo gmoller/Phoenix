@@ -1,65 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5320FF4A-6C80-4627-9B74-9E7CB1A109FD}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Utilities</RootNamespace>
-    <AssemblyName>Utilities</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AStarSearch.cs" />
-    <Compile Include="BreadthFirstSearch.cs" />
-    <Compile Include="Color.cs" />
-    <Compile Include="ExtensionMethods\ByteExtensions.cs" />
-    <Compile Include="ExtensionMethods\IntegerExtensions.cs" />
-    <Compile Include="GetCostToMoveIntoResult.cs" />
-    <Compile Include="DataDictionary.cs" />
-    <Compile Include="DataList.cs" />
-    <Compile Include="EnumerableDictionary.cs" />
-    <Compile Include="EnumerableList.cs" />
-    <Compile Include="ExtensionMethods\FloatExtensions.cs" />
-    <Compile Include="Graph.cs" />
-    <Compile Include="IIdentifiedById.cs" />
-    <Compile Include="IIdentifiedByIdAndName.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="MapSolver.cs" />
-    <Compile Include="MathHelper.cs" />
-    <Compile Include="NamedDataDictionary.cs" />
-    <Compile Include="NamedDataList.cs" />
-    <Compile Include="ObjectPool.cs" />
-    <Compile Include="Point.cs" />
-    <Compile Include="PointF.cs" />
-    <Compile Include="PriorityQueue.cs" />
-    <Compile Include="RandomNumberGenerator.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ExtensionMethods\StringExtensions.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

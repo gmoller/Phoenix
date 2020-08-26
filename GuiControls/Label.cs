@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using AssetsLibrary;
+using Assets;
 using Input;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;

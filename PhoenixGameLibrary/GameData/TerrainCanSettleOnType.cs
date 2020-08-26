@@ -10,7 +10,9 @@ namespace PhoenixGameLibrary.GameData
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct TerrainCanSettleOnType : IIdentifiedById
     {
+        #region State
         public int Id { get; }
+        #endregion
 
         private TerrainCanSettleOnType(int terrainId)
         {

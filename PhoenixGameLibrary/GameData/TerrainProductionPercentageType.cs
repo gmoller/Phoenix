@@ -10,8 +10,10 @@ namespace PhoenixGameLibrary.GameData
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct TerrainProductionPercentageType : IIdentifiedById
     {
+        #region State
         public int Id { get; }
         public float ProductionPercentage { get; }
+        #endregion
 
         private TerrainProductionPercentageType(int terrainId, float productionPercentage)
         {

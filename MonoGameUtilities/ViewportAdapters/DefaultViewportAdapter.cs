@@ -5,7 +5,9 @@ namespace MonoGameUtilities.ViewportAdapters
 {
     public class DefaultViewportAdapter : ViewportAdapter
     {
+        #region State
         private readonly GraphicsDevice _graphicsDevice;
+        #endregion
 
         protected override int VirtualWidth => _graphicsDevice.Viewport.Width;
         protected override int VirtualHeight => _graphicsDevice.Viewport.Height;

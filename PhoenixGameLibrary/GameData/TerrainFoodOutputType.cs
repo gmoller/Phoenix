@@ -10,8 +10,10 @@ namespace PhoenixGameLibrary.GameData
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct TerrainFoodOutputType : IIdentifiedById
     {
+        #region State
         public int Id { get; }
         public float FoodOutput { get; }
+        #endregion
 
         private TerrainFoodOutputType(int terrainId, float foodOutput)
         {

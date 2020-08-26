@@ -8,8 +8,10 @@ namespace PhoenixGameLibrary.GameData
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct Texture
     {
+        #region State
         public string TexturePalette { get; }
         public byte TextureId { get; }
+        #endregion
 
         public Texture(string texturePalette, byte textureId)
         {

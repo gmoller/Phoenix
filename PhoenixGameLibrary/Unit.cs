@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.Remoting.Messaging;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -103,7 +102,7 @@ namespace PhoenixGameLibrary
             if (cell == Cell.Empty) return new GetCostToMoveIntoResult(false);
             if (cell.SeenState == SeenState.NeverSeen) return new GetCostToMoveIntoResult(true, 9999999.9f);
 
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var terrainTypes = context.GameMetadata.TerrainTypes;
             var terrainType = terrainTypes[cell.TerrainTypeId];
 
@@ -164,7 +163,7 @@ namespace PhoenixGameLibrary
 
         private int GetScoutingRange()
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var movementTypes = context.GameMetadata.MovementTypes;
 
             var scoutingRange = 1;

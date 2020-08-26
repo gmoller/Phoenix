@@ -12,6 +12,7 @@ namespace PhoenixGameLibrary.GameData
     {
         public static readonly RaceType Invalid = new RaceType(-1, "None", 0.0f, 0, 0.0f, 0.0f, null);
 
+        #region State
         public int Id { get; }
         public string Name { get; }
         public float FarmingRate { get; }
@@ -19,6 +20,7 @@ namespace PhoenixGameLibrary.GameData
         public float WorkerProductionRate { get; }
         public float FarmerProductionRate { get; }
         public string[] TownNames { get; }
+        #endregion
 
         private RaceType(int id, string name, float farmingRate, int growthRateModifier, float workerProductionRate, float farmerProductionRate, string[] townNames)
         {

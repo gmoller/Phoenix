@@ -10,8 +10,10 @@ namespace PhoenixGameLibrary.GameData
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct BuildingPopulationGrowthType : IIdentifiedById
     {
+        #region State
         public int Id { get; }
         public int PopulationGrowthRateIncrease { get; }
+        #endregion
 
         private BuildingPopulationGrowthType(int buildingId, int populationGrowthRateIncrease)
         {

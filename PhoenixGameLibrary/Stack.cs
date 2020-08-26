@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using HexLibrary;
+using Hex;
 using PhoenixGameLibrary.GameData;
 using Utilities;
 
@@ -101,7 +100,7 @@ namespace PhoenixGameLibrary
             if (cell == Cell.Empty) return new GetCostToMoveIntoResult(false);
             if (cell.SeenState == SeenState.NeverSeen) return new GetCostToMoveIntoResult(true, 9999999.9f);
 
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var terrainTypes = context.GameMetadata.TerrainTypes;
             var terrainType = terrainTypes[cell.TerrainTypeId];
 
@@ -205,7 +204,7 @@ namespace PhoenixGameLibrary
 
         private List<string> DetermineActions(Units units)
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var actionTypes = context.GameMetadata.ActionTypes;
 
             // first add actions that apply to all
@@ -248,7 +247,7 @@ namespace PhoenixGameLibrary
 
         private bool CanSettleOnTerrain(Point thisLocation)
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var terrainTypes = context.GameMetadata.TerrainTypes;
 
             // if terrain is settle-able

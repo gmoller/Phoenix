@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
+using Utilities;
 
 namespace PhoenixGameLibrary.Helpers
 {
@@ -21,7 +21,7 @@ namespace PhoenixGameLibrary.Helpers
             foodBreakdown.Add("Farmers", foodFromFarmers);
 
             // buildings
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var buildingFoodOutputIncreaseTypes = context.GameMetadata.BuildingFoodOutputIncreaseTypes;
             var buildingTypes = context.GameMetadata.BuildingTypes;
             foreach (var item in buildingFoodOutputIncreaseTypes)

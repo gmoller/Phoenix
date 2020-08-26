@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.Remoting.Messaging;
 using Utilities;
 using Utilities.ExtensionMethods;
 
@@ -12,6 +11,7 @@ namespace PhoenixGameLibrary.GameData
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct UnitType : IIdentifiedByIdAndName
     {
+        #region State
         public int Id { get; }
         public string Name { get; }
         public string ShortName { get; }
@@ -24,6 +24,7 @@ namespace PhoenixGameLibrary.GameData
 
         private readonly List<string> _whichRacesCanBuild;
         private readonly List<string> _dependsOnBuildings;
+        #endregion
 
         private UnitType(int id, string name, string shortName, float constructionCost, float movementPoints, List<string> movementTypes, string textureName, List<string> whichRacesCanBuild, List<string> dependsOnBuildings, List<string> actions)
         {
@@ -51,7 +52,7 @@ namespace PhoenixGameLibrary.GameData
 
         public bool IsReadyToBeBuilt(List<int> buildingsAlreadyBuilt)
         {
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var buildingTypes = context.GameMetadata.BuildingTypes;
 
             foreach (var building in _dependsOnBuildings)

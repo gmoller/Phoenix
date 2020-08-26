@@ -10,10 +10,12 @@ namespace PhoenixGameLibrary.GameData
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct ActionType : IIdentifiedByIdAndName
     {
+        #region State
         public int Id { get; }
         public string Name { get; }
         public string ButtonName { get; }
         public bool AppliesToAll { get; }
+        #endregion
 
         private ActionType(int id, string name, string buttonName, bool appliesToAll)
         {

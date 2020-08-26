@@ -5,10 +5,12 @@ namespace MonoGameUtilities.ViewportAdapters
 {
     public class ScalingViewportAdapter : ViewportAdapter
     {
+        #region State
         protected override int VirtualWidth { get; }
         protected override int VirtualHeight { get; }
         protected override int ViewportWidth => GraphicsDevice.Viewport.Width;
         protected override int ViewportHeight => GraphicsDevice.Viewport.Height;
+        #endregion
 
         public ScalingViewportAdapter(GraphicsDevice graphicsDevice, int virtualWidth, int virtualHeight)
             : base(graphicsDevice)

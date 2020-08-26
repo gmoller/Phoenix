@@ -10,8 +10,10 @@ namespace PhoenixGameLibrary.GameData
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct BuildingFoodOutputIncreaseType : IIdentifiedById
     {
+        #region State
         public int Id { get; }
         public float FoodOutputIncrease { get; }
+        #endregion
 
         private BuildingFoodOutputIncreaseType(int buildingId, float foodOutputIncrease)
         {

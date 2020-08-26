@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AssetsLibrary;
+using Assets;
 using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;

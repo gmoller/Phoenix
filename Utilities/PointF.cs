@@ -29,12 +29,12 @@ namespace Utilities
             return obj is PointF point && this == point;
         }
 
-        public static bool operator == (PointF a, PointF b)
+        public static bool operator ==(PointF a, PointF b)
         {
             return a.X.AboutEquals(b.X) && a.Y.AboutEquals(b.Y);
         }
 
-        public static bool operator != (PointF a, PointF b)
+        public static bool operator !=(PointF a, PointF b)
         {
             return !(a == b);
         }

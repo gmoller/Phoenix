@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.Remoting.Messaging;
 using Utilities;
 
 namespace PhoenixGameLibrary.GameData
@@ -11,6 +10,7 @@ namespace PhoenixGameLibrary.GameData
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct BuildingType : IIdentifiedByIdAndName
     {
+        #region State
         public int Id { get; }
         public string Name { get; }
         public Point Slot { get; }
@@ -20,6 +20,7 @@ namespace PhoenixGameLibrary.GameData
 
         private readonly List<string> _whichRacesCanNotBuild;
         private readonly List<string> _dependsOnBuildings;
+        #endregion
 
         private BuildingType(int id, string name, float constructionCost, float upkeepGold, float upkeepMana, List<string> whichRacesCanNotBuild, List<string> dependsOnBuildings, Point slot)
         {
@@ -53,7 +54,7 @@ namespace PhoenixGameLibrary.GameData
         {
             if (buildingsAlreadyBuilt.Contains(Id)) return false;
 
-            var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             var buildingTypes = context.GameMetadata.BuildingTypes;
 
             foreach (var building in _dependsOnBuildings)

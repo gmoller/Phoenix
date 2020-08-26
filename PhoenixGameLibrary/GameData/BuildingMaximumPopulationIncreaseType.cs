@@ -10,8 +10,10 @@ namespace PhoenixGameLibrary.GameData
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct BuildingMaximumPopulationIncreaseType : IIdentifiedById
     {
+        #region State
         public int Id { get; }
         public int MaximumPopulationIncrease { get; }
+        #endregion
 
         private BuildingMaximumPopulationIncreaseType(int buildingId, int maximumPopulationIncrease)
         {

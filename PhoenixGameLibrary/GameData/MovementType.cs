@@ -10,9 +10,11 @@ namespace PhoenixGameLibrary.GameData
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public struct MovementType : IIdentifiedByIdAndName
     {
+        #region State
         public int Id { get; }
         public string Name { get; }
         public int IncrementSightBy { get; }
+        #endregion
 
         private MovementType(int id, string name, int incrementSightBy)
         {
