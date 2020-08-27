@@ -50,8 +50,10 @@ namespace PhoenixGamePresentation.Views
 
             #region MiniMapFrame
 
-            _hudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 50));
-            _hudViewFrame["miniMapFrame"].AddControl(new Image("mapImage", new Vector2(200.0f, 170.0f)), Alignment.MiddleCenter, Alignment.MiddleCenter);
+            _hudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.15f /* 15% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 50));
+            var image = new Image("mapImage", new Vector2(200.0f, 115.0f));
+            image.Click += MiniMapClick;
+            _hudViewFrame["miniMapFrame"].AddControl(image, Alignment.MiddleCenter, Alignment.MiddleCenter);
 
             #endregion
 
@@ -155,6 +157,13 @@ namespace PhoenixGamePresentation.Views
         {
             _hudViewFrame.Draw(spriteBatch);
 
+            var worldPosition = _worldView.Camera.CameraTopLeftPostionInWorld;
+
+            var ratio = new Vector2(_worldView.Camera.WorldViewport.Width / (float)_worldView.WorldViewport.Width, _worldView.Camera.WorldViewport.Height / (float)_worldView.WorldViewport.Height);
+            var size = new Vector2(200 * ratio.X, 115 * ratio.Y);
+            var topLeft = new Vector2(worldPosition.X / 200.0f, worldPosition.Y / 115.0f) / ratio;
+            spriteBatch.DrawRectangle(new Rectangle(1695 + (int)topLeft.X, 69 + (int)topLeft.Y, (int)size.X, (int)size.Y), Color.White, 0.0f);
+
             DrawUnits(spriteBatch);
             DrawNotifications(spriteBatch);
             DrawTileInfo(spriteBatch);
@@ -250,6 +259,12 @@ namespace PhoenixGamePresentation.Views
                     }
                 }
             }
+        }
+
+        private void MiniMapClick(object sender, EventArgs e)
+        {
+            // TODO: determine pixel to look at in world
+            _worldView.Camera.LookAtPixel(new Vector2(6545, 3776));
         }
 
         private void EndTurnButtonClick(object sender, EventArgs e)

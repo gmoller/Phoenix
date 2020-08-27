@@ -35,6 +35,9 @@ namespace PhoenixGamePresentation.Views
         public GameStatus GameStatus { get; set; }
         #endregion 
 
+        public Rectangle WorldViewport => new Rectangle(0, 0, Constants.WORLD_MAP_WIDTH_IN_PIXELS, Constants.WORLD_MAP_HEIGHT_IN_PIXELS);
+        public int WorldWidthInPixels => Constants.WORLD_MAP_WIDTH_IN_PIXELS;
+        public int WorldHeightInPixels => Constants.WORLD_MAP_HEIGHT_IN_PIXELS;
         public EnumerableDictionary<IControl> MovementTypeImages => new EnumerableDictionary<IControl>(_movementTypeImages);
         public EnumerableDictionary<IControl> ActionButtons => new EnumerableDictionary<IControl>(_actionButtons);
 
@@ -52,7 +55,7 @@ namespace PhoenixGamePresentation.Views
             _actionButtons = InitializeActionButtons();
 
             var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            Camera = new Camera(this, new Rectangle(0, 0, context.ActualResolution.X, context.ActualResolution.Y));
+            Camera = new Camera(this, new Rectangle(0, 0, 1670, 1080));
         }
 
         internal void LoadContent(ContentManager content)
@@ -74,9 +77,8 @@ namespace PhoenixGamePresentation.Views
 
             var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
 
-            var worldPositionPointedAtByMouseCursor = GetWorldPositionPointedAtByMouseCursor(Camera, input.MousePosition);
-            context.WorldPositionPointedAtByMouseCursor = worldPositionPointedAtByMouseCursor;
-            context.WorldHexPointedAtByMouseCursor = GetWorldHexPointedAtByMouseCursor(worldPositionPointedAtByMouseCursor);
+            context.WorldPositionPointedAtByMouseCursor = GetWorldPositionPointedAtByMouseCursor(Camera, input.MousePosition);
+            context.WorldHexPointedAtByMouseCursor = GetWorldHexPointedAtByMouseCursor(context.WorldPositionPointedAtByMouseCursor);
 
             _overlandMapView.Update(input, deltaTime);
             _overlandSettlementsView.Update(input, deltaTime);

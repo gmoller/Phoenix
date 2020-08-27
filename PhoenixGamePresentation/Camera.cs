@@ -32,6 +32,13 @@ namespace PhoenixGamePresentation
         public int NumberOfHexesBelow { get; private set; }
         #endregion
 
+        public Vector2 CameraPostionInWorld => _centerPosition;
+        public Vector2 CameraTopLeftPostionInWorld => new Vector2(_centerPosition.X - Width * Constants.ONE_HALF, _centerPosition.Y - Height * Constants.ONE_HALF);
+        public Vector2 CameraTopRightPostionInWorld => new Vector2(_centerPosition.X + Width * Constants.ONE_HALF, _centerPosition.Y - Height * Constants.ONE_HALF);
+        public Vector2 CameraBottomLeftPostionInWorld => new Vector2(_centerPosition.X - Width * Constants.ONE_HALF, _centerPosition.Y + Height * Constants.ONE_HALF);
+        public Vector2 CameraBottomRightPostionInWorld => new Vector2(_centerPosition.X + Width * Constants.ONE_HALF, _centerPosition.Y + Height * Constants.ONE_HALF);
+        public Rectangle WorldViewport => new Rectangle((int)CameraTopLeftPostionInWorld.X, (int)CameraTopLeftPostionInWorld.Y, _viewport.Width, _viewport.Height);
+
         public int Width => _viewport.Width;
         public int Height => _viewport.Height;
 
@@ -102,7 +109,12 @@ namespace PhoenixGamePresentation
 
         public void Update(InputHandler input, float deltaTime)
         {
-            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
+            if (_worldView.GameStatus != GameStatus.OverlandMap)
+            {
+                ClampCamera(Zoom);
+                UpdateMatrix();
+                return;
+            }
 
             // Causes
             var zoomAmount = input.MouseWheelUp ? 0.05f : 0.0f;

@@ -228,19 +228,7 @@ namespace MonoGameUtilities
         #region DrawRectangle
 
         /// <summary>
-        /// Draws a rectangle with the thickness provided
-        /// </summary>
-        /// <param name="spriteBatch">The destination drawing surface</param>
-        /// <param name="rect">The rectangle to draw</param>
-        /// <param name="color">The color to draw the rectangle in</param>
-        /// <param name="layerDepth">The layer depth</param>
-        public static void DrawRectangle(this SpriteBatch spriteBatch, Rectangle rect, Color color, float layerDepth)
-        {
-            DrawRectangle(spriteBatch, rect, color, 1.0f, layerDepth);
-        }
-
-        /// <summary>
-        /// Draws a rectangle with the thickness provided
+        /// Draws a rectangle
         /// </summary>
         /// <param name="spriteBatch">The destination drawing surface</param>
         /// <param name="location">Where to draw</param>
@@ -264,6 +252,18 @@ namespace MonoGameUtilities
         public static void DrawRectangle(this SpriteBatch spriteBatch, Vector2 location, Vector2 size, Color color, float thickness, float layerDepth)
         {
             DrawRectangle(spriteBatch, new Rectangle((int)location.X, (int)location.Y, (int)size.X, (int)size.Y), color, thickness, layerDepth);
+        }
+
+        /// <summary>
+        /// Draws a rectangle
+        /// </summary>
+        /// <param name="spriteBatch">The destination drawing surface</param>
+        /// <param name="rect">The rectangle to draw</param>
+        /// <param name="color">The color to draw the rectangle in</param>
+        /// <param name="layerDepth">The layer depth</param>
+        public static void DrawRectangle(this SpriteBatch spriteBatch, Rectangle rect, Color color, float layerDepth)
+        {
+            DrawRectangle(spriteBatch, rect, color, 1.0f, layerDepth);
         }
 
         /// <summary>
