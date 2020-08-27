@@ -26,21 +26,26 @@ namespace PhoenixGamePresentation.Handlers
             var i = 0;
             for (var row = 0; row < height; row++)
             {
+                var evenLine = (row % 2) == 0;
                 for (var column = 0; column < width; column++)
                 {
+                    var lastColumnOnLine = column == (width - 1);
                     var cell = cellGrid.GetCell(column, row);
                     var terrainTypeId = cell.TerrainTypeId;
                     var color = cell.SeenState == SeenState.NeverSeen ? Utilities.Color.Black :  terrainTypes[terrainTypeId].MinimapColor;
 
                     var index = i;
                     colors[index] = new Color(color.R, color.G, color.B, color.A);
-                    index = i + 1;
-                    colors[index] = new Color(color.R, color.G, color.B, color.A);
+                    if (evenLine || !lastColumnOnLine)
+                    {
+                        index = i + 1;
+                        colors[index] = new Color(color.R, color.G, color.B, color.A);
+                    }
 
                     index = i + scaledWidth;
-                    if (index < colors.Length)
+                    colors[index] = new Color(color.R, color.G, color.B, color.A);
+                    if (evenLine || !lastColumnOnLine)
                     {
-                        colors[index] = new Color(color.R, color.G, color.B, color.A);
                         index = i + 1 + scaledWidth;
                         colors[index] = new Color(color.R, color.G, color.B, color.A);
                     }
@@ -48,7 +53,7 @@ namespace PhoenixGamePresentation.Handlers
                     i += scalingFactor;
                 }
 
-                i += scaledWidth + (row % 2 == 0 ? 1 : 0);
+                i += scaledWidth + (evenLine ? 1 : -1);
             }
 
             minimap.SetData(colors);
