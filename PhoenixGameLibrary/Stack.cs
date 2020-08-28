@@ -100,8 +100,8 @@ namespace PhoenixGameLibrary
             if (cell == Cell.Empty) return new GetCostToMoveIntoResult(false);
             if (cell.SeenState == SeenState.NeverSeen) return new GetCostToMoveIntoResult(true, 9999999.9f);
 
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var terrainTypes = context.GameMetadata.TerrainTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var terrainTypes = gameMetadata.TerrainTypes;
             var terrainType = terrainTypes[cell.TerrainTypeId];
 
             return GetCostToMoveInto(terrainType);
@@ -204,8 +204,8 @@ namespace PhoenixGameLibrary
 
         private List<string> DetermineActions(Units units)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var actionTypes = context.GameMetadata.ActionTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var actionTypes = gameMetadata.ActionTypes;
 
             // first add actions that apply to all
             var filteredActionTypes = (from actionType in actionTypes where actionType.AppliesToAll select actionType).ToList();
@@ -247,8 +247,8 @@ namespace PhoenixGameLibrary
 
         private bool CanSettleOnTerrain(Point thisLocation)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var terrainTypes = context.GameMetadata.TerrainTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var terrainTypes = gameMetadata.TerrainTypes;
 
             // if terrain is settle-able
             var cell = _world.OverlandMap.CellGrid.GetCell(thisLocation);

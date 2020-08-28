@@ -54,7 +54,6 @@ namespace PhoenixGamePresentation.Views
             _movementTypeImages = InitializeMovementTypeImages();
             _actionButtons = InitializeActionButtons();
 
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
             Camera = new Camera(this, new Rectangle(0, 0, 1670, 1080));
         }
 
@@ -75,7 +74,7 @@ namespace PhoenixGamePresentation.Views
         {
             Camera.Update(input, deltaTime);
 
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
 
             context.WorldPositionPointedAtByMouseCursor = GetWorldPositionPointedAtByMouseCursor(Camera, input.MousePosition);
             context.WorldHexPointedAtByMouseCursor = GetWorldHexPointedAtByMouseCursor(context.WorldPositionPointedAtByMouseCursor);
@@ -96,21 +95,30 @@ namespace PhoenixGamePresentation.Views
 
         internal void Draw(SpriteBatch spriteBatch, ViewportAdapter viewportAdapter)
         {
+            //var originalViewport = spriteBatch.GraphicsDevice.Viewport;
+            //spriteBatch.GraphicsDevice.Viewport = new Viewport(0, 0, 1670, 1080, 0.0f, 1.0f);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform * viewportAdapter.GetScaleMatrix()); // FrontToBack
+
             _overlandMapView.Draw(spriteBatch);
             _overlandSettlementsView.Draw(spriteBatch);
 
             _stackViews.Draw(spriteBatch);
             spriteBatch.End();
+            //spriteBatch.GraphicsDevice.Viewport = originalViewport;
 
+            //originalViewport = spriteBatch.GraphicsDevice.Viewport;
+            //spriteBatch.GraphicsDevice.Viewport = new Viewport(1670, 0, 250, 1080, 0.0f, 1.0f);
             spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: viewportAdapter.GetScaleMatrix());
             _hudView.Draw(spriteBatch);
-            if (_settlementView.Settlement != null)
-            {
-                _settlementView.Draw(spriteBatch);
-            }
-
             spriteBatch.End();
+            //spriteBatch.GraphicsDevice.Viewport = originalViewport;
+
+            //originalViewport = spriteBatch.GraphicsDevice.Viewport;
+            //spriteBatch.GraphicsDevice.Viewport = new Viewport(0, 0, 1920, 1080, 0.0f, 1.0f);
+            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: viewportAdapter.GetScaleMatrix());
+            _settlementView.Draw(spriteBatch);
+            spriteBatch.End();
+            //spriteBatch.GraphicsDevice.Viewport = originalViewport;
         }
 
         private Point GetWorldPositionPointedAtByMouseCursor(Camera camera, Microsoft.Xna.Framework.Point mousePosition)
@@ -148,8 +156,8 @@ namespace PhoenixGamePresentation.Views
 
         private Dictionary<string, IControl> InitializeMovementTypeImages()
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var movementTypes = context.GameMetadata.MovementTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var movementTypes = gameMetadata.MovementTypes;
 
             var movementTypeImages = new Dictionary<string, IControl>();
             foreach (var movementType in movementTypes)
@@ -163,8 +171,8 @@ namespace PhoenixGamePresentation.Views
 
         private Dictionary<string, IControl> InitializeActionButtons()
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var actionTypes = context.GameMetadata.ActionTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var actionTypes = gameMetadata.ActionTypes;
 
             var actionButtons = new Dictionary<string, IControl>();
             var i = 0;

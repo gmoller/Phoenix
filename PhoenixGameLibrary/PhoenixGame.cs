@@ -10,8 +10,8 @@ namespace PhoenixGameLibrary
         {
             World = new World(Constants.WORLD_MAP_COLUMNS, Constants.WORLD_MAP_ROWS);
 
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var unitTypes = context.GameMetadata.UnitTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var unitTypes = gameMetadata.UnitTypes;
 
             World.AddSettlement(new Point(12, 9), "Barbarians");
             World.AddUnit(new Point(12, 9), unitTypes["Test Dude"]);

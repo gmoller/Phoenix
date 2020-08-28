@@ -1,10 +1,10 @@
 ﻿using System;
-using Assets;
-using GuiControls;
-using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Assets;
+using GuiControls;
+using Input;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
@@ -238,14 +238,15 @@ namespace PhoenixGamePresentation.Views
 
             // get tile mouse is over
             var cellGrid = _worldView.World.OverlandMap.CellGrid;
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             var hexPoint = context.WorldHexPointedAtByMouseCursor;
             if (hexPoint.X >= 0 && hexPoint.Y >= 0 && hexPoint.X < PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS && hexPoint.Y < PhoenixGameLibrary.Constants.WORLD_MAP_ROWS)
             {
                 var cell = cellGrid.GetCell(hexPoint.X, hexPoint.Y);
                 if (cell.SeenState != SeenState.NeverSeen)
                 {
-                    var terrainTypes = context.GameMetadata.TerrainTypes;
+                    var terrainTypes = gameMetadata.TerrainTypes;
                     var terrainType = terrainTypes[cell.TerrainTypeId];
                     var text1 = $"{terrainType.Name} - {terrainType.FoodOutput} food";
                     spriteBatch.DrawString(_font, text1, new Vector2(x, y), Color.White);

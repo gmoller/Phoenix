@@ -37,9 +37,7 @@ namespace Phoenix
             Window.Position = new Microsoft.Xna.Framework.Point(0, 0);
             VariableTimeStep();
 
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-
-            context.GameMetadata = new GameMetadata();
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
 
             context.GraphicsDevice = GraphicsDevice;
             context.GraphicsDeviceManager = _graphicsDeviceManager;
@@ -77,7 +75,7 @@ namespace Phoenix
 
         private void SetScreenResolution(GraphicsDeviceManager graphicsDeviceManager, int width, int height)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
 
             graphicsDeviceManager.PreferredBackBufferWidth = width;
             graphicsDeviceManager.PreferredBackBufferHeight = height;

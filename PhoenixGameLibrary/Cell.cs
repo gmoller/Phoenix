@@ -39,8 +39,8 @@ namespace PhoenixGameLibrary
             }
             else
             {
-                var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-                var terrainTypes = context.GameMetadata.TerrainTypes;
+                var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+                var terrainTypes = gameMetadata.TerrainTypes;
 
                 var terrainType = terrainTypes[terrainTypeId];
                 Texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];

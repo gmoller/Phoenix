@@ -72,7 +72,7 @@ namespace PhoenixGamePresentation.Handlers
             if (stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.IsLeftMouseButtonReleased) return (false, new Point(0, 0));
 
             // unit is selected, left mouse button released and unit is not already moving
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             var hexToMoveTo = context.WorldHexPointedAtByMouseCursor;
             if (hexToMoveTo == stackView.Location) return (false, new Point(0, 0));
             var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);

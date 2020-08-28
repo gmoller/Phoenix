@@ -19,8 +19,8 @@ namespace PhoenixGameLibrary.Helpers
             int adjustedGrowthRate = baseGrowthRateRoundedUp * 10;
 
             // buildings
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var buildingPopulationGrowthTypes = context.GameMetadata.BuildingPopulationGrowthTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var buildingPopulationGrowthTypes = gameMetadata.BuildingPopulationGrowthTypes;
 
             foreach (var item in buildingPopulationGrowthTypes)
             {

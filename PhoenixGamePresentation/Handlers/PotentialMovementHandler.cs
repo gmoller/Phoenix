@@ -28,7 +28,7 @@ namespace PhoenixGamePresentation.Handlers
 
         private static (bool potentialMovement, Point hexToMoveTo) CheckForPotentialUnitMovement(StackView stackView, World world)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             var hexToMoveTo = context.WorldHexPointedAtByMouseCursor;
             var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new Point(0, 0));

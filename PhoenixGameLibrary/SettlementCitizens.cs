@@ -71,8 +71,8 @@ namespace PhoenixGameLibrary
             // TODO: wild game not being factored in
 
             // buildings
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var buildingFoodOutputIncreaseTypes = context.GameMetadata.BuildingFoodOutputIncreaseTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var buildingFoodOutputIncreaseTypes = gameMetadata.BuildingFoodOutputIncreaseTypes;
 
             var freeFood = 0.0;
             foreach (var item in buildingFoodOutputIncreaseTypes)

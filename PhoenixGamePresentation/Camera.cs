@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Input;
 using Input;
 using Hex;
 using MonoGameUtilities.ExtensionMethods;
-using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
 using Utilities;
 using Utilities.ExtensionMethods;
@@ -74,7 +73,7 @@ namespace PhoenixGamePresentation
 
         public void LookAtCellPointedAtByMouse()
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             var hexPoint = context.WorldHexPointedAtByMouseCursor;
             var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y);
             _centerPosition = newPosition.ToVector2();
@@ -101,9 +100,9 @@ namespace PhoenixGamePresentation
 
         private void CalculateNumberOfHexesFromCenter(Rectangle viewport, float zoom)
         {
-            NumberOfHexesToLeft = (int)(Math.Ceiling(viewport.Width / Hex.Constants.HexWidth * (1 / zoom)) / 2.0f) + 1;
+            NumberOfHexesToLeft = (int)(Math.Ceiling(viewport.Width / Hex.Constants.HexWidth * (1 / zoom)) * Constants.ONE_HALF) + 1;
             NumberOfHexesToRight = NumberOfHexesToLeft;
-            NumberOfHexesAbove = (int)(Math.Ceiling(viewport.Height / Hex.Constants.HexThreeQuarterHeight * (1 / zoom)) / 2.0f) + 1;
+            NumberOfHexesAbove = (int)(Math.Ceiling(viewport.Height / Hex.Constants.HexThreeQuarterHeight * (1 / zoom)) * Constants.ONE_HALF) + 1;
             NumberOfHexesBelow = NumberOfHexesAbove;
         }
 

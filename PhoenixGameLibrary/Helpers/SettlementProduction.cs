@@ -9,8 +9,8 @@ namespace PhoenixGameLibrary.Helpers
         public static int DetermineProduction(Settlement settlement, List<Cell> catchmentCells)
         {
             // TODO: Trade Goods, Shared Terrain, Corruption, Gaia's Blessing, Inspirations, Cursed Lands, Sawmill, Forester's Guild, Miner's Guild, Mechanicians' Guild
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var terrainTypes = context.GameMetadata.TerrainTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var terrainTypes = gameMetadata.TerrainTypes;
 
             float farmerProduction = settlement.RaceType.FarmerProductionRate * settlement.Citizens.Farmers;
             float workerProduction = settlement.RaceType.WorkerProductionRate * settlement.Citizens.Workers;

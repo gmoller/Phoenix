@@ -64,7 +64,7 @@ namespace PhoenixGamePresentation.Views
 
         private bool CursorIsOnThisSettlement(Settlement settlement)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             var hexToMoveTo = context.WorldHexPointedAtByMouseCursor;
             var cursorIsOnThisSettlement = settlement.Location == hexToMoveTo;
 

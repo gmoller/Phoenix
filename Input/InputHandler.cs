@@ -23,7 +23,7 @@ namespace Input
         public bool MouseIsAtTopOfScreen => MousePosition.Y < 20.0f && MousePosition.Y >= 0.0f;
         public bool MouseIsAtBottomOfScreen => MousePosition.Y > 1080 - 20.0f && MousePosition.Y <= 1080.0f;
         public bool MouseIsAtLeftOfScreen => MousePosition.X < 20.0f && MousePosition.X >= 0.0f;
-        public bool MouseIsAtRightOfScreen => MousePosition.X > 1920.0f - 20.0f && MousePosition.X <= 1920.0f;
+        public bool MouseIsAtRightOfScreen => MousePosition.X > 1670.0f - 20.0f && MousePosition.X <= 1670.0f;
 
         public bool MouseIsWithinScreen => MousePosition.X >= 0.0f &&
                                            MousePosition.X <= 1920.0f &&

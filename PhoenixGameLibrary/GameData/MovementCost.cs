@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Utilities;
 using Utilities.ExtensionMethods;
 
@@ -29,8 +26,8 @@ namespace PhoenixGameLibrary.GameData
 
         private MovementType GetMovementType()
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var movementTypes = context.GameMetadata.MovementTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var movementTypes = gameMetadata.MovementTypes;
 
             return movementTypes[_movementType];
         }
@@ -65,58 +62,5 @@ namespace PhoenixGameLibrary.GameData
         private string DebuggerDisplay => $"{{MovementType={_movementType},Cost={Cost}}}";
 
         #endregion
-    }
-
-    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class MovementCosts : IEnumerable<MovementCost>
-    {
-        #region State
-        private readonly List<MovementCost> _movementCosts;
-        #endregion
-
-        public MovementCosts(params MovementCost[] movementCosts)
-        {
-            _movementCosts = new List<MovementCost>();
-            foreach (var item in movementCosts)
-            {
-                _movementCosts.Add(item);
-            }
-        }
-
-        public MovementCost this[string movementTypeName]
-        {
-            get
-            {
-                foreach (var item in _movementCosts)
-                {
-                    if (item.MovementType.Name == movementTypeName)
-                    {
-                        return item;
-                    }
-                }
-
-                throw new Exception($"Item {movementTypeName} not found in _movementCosts");
-            }
-        }
-
-        public IEnumerator<MovementCost> GetEnumerator()
-        {
-            foreach (var item in _movementCosts)
-            {
-                yield return item;
-            }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public override string ToString()
-        {
-            return DebuggerDisplay;
-        }
-
-        private string DebuggerDisplay => $"{{Count={_movementCosts.Count}}}";
     }
 }

@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using MonoGameUtilities.ViewportAdapters;
-using PhoenixGameLibrary;
 using Utilities;
 using Color = Microsoft.Xna.Framework.Color;
 
@@ -70,9 +69,9 @@ namespace PhoenixGamePresentation
 
         public void Update(GameTime gameTime, ViewportAdapter viewportAdapter)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var gameWindow = (GameWindow)context.GameWindow;
-            var graphicsDevice = (GraphicsDevice)context.GraphicsDevice;
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            var gameWindow = context.GameWindow;
+            var graphicsDevice = context.GraphicsDevice;
 
             _fps.Update(gameTime);
 
@@ -115,8 +114,8 @@ namespace PhoenixGamePresentation
 
         private void SetViewport(Viewport newViewport)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var graphicsDevice = (GraphicsDevice)context.GraphicsDevice;
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            var graphicsDevice = context.GraphicsDevice;
 
             _viewports.Push(graphicsDevice.Viewport);
             graphicsDevice.Viewport = newViewport;
@@ -124,8 +123,8 @@ namespace PhoenixGamePresentation
 
         private void ResetViewport()
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var graphicsDevice = (GraphicsDevice)context.GraphicsDevice;
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            var graphicsDevice = context.GraphicsDevice;
 
             var previousViewport = _viewports.Pop();
             graphicsDevice.Viewport = previousViewport;
@@ -133,8 +132,8 @@ namespace PhoenixGamePresentation
 
         private Viewport GetViewport()
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var graphicsDevice = (GraphicsDevice)context.GraphicsDevice;
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            var graphicsDevice = context.GraphicsDevice;
 
             return new Viewport(graphicsDevice.Viewport.X, graphicsDevice.Viewport.Y, 300, 201, 0, 1);
         }

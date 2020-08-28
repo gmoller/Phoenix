@@ -1,5 +1,4 @@
 ﻿using Input;
-using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
 using Utilities;
 
@@ -18,7 +17,7 @@ namespace PhoenixGamePresentation.Handlers
 
         private static bool CursorIsOnThisStack(StackView stackView)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             var hexPoint = context.WorldHexPointedAtByMouseCursor;
 
             return stackView.Location == hexPoint;

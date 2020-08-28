@@ -56,8 +56,11 @@ namespace PhoenixGamePresentation.Views
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            _mainFrame.Draw(spriteBatch);
-            _secondaryFrame.Draw(spriteBatch);
+            if (Settlement != null)
+            {
+                _mainFrame.Draw(spriteBatch);
+                _secondaryFrame.Draw(spriteBatch);
+            }
         }
 
         internal void CloseButtonClick(object sender, EventArgs e)

@@ -42,8 +42,8 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         {
             if (input.IsLeftMouseButtonReleased)
             {
-                var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-                var buildingTypes = context.GameMetadata.BuildingTypes;
+                var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+                var buildingTypes = gameMetadata.BuildingTypes;
 
                 // determine where mouse pointer is (is it over a slot? which slot?)
                 var baseTopLeftX = Left + 15;
@@ -73,8 +73,8 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 
         private void DrawBuildings(SpriteBatch spriteBatch)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var buildingTypes = context.GameMetadata.BuildingTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var buildingTypes = gameMetadata.BuildingTypes;
 
             var baseTopLeftX = Left + 15;
             var baseTopLeftY = Top + 25;

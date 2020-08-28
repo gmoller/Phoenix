@@ -21,9 +21,9 @@ namespace PhoenixGameLibrary.Helpers
             foodBreakdown.Add("Farmers", foodFromFarmers);
 
             // buildings
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var buildingFoodOutputIncreaseTypes = context.GameMetadata.BuildingFoodOutputIncreaseTypes;
-            var buildingTypes = context.GameMetadata.BuildingTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var buildingFoodOutputIncreaseTypes = gameMetadata.BuildingFoodOutputIncreaseTypes;
+            var buildingTypes = gameMetadata.BuildingTypes;
             foreach (var item in buildingFoodOutputIncreaseTypes)
             {
                 if (buildingsBuilt.Contains(item.Id))

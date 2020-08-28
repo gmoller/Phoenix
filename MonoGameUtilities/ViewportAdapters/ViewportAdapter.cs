@@ -16,7 +16,7 @@ namespace MonoGameUtilities.ViewportAdapters
 
         public Viewport Viewport => GraphicsDevice.Viewport;
         private Rectangle BoundingRectangle => new Rectangle(0, 0, VirtualWidth, VirtualHeight);
-        public Microsoft.Xna.Framework.Point Center => BoundingRectangle.Center;
+        public Point Center => BoundingRectangle.Center;
 
         protected ViewportAdapter(GraphicsDevice graphicsDevice)
         {
@@ -25,12 +25,12 @@ namespace MonoGameUtilities.ViewportAdapters
 
         public abstract Matrix GetScaleMatrix();
 
-        public Microsoft.Xna.Framework.Point PointToScreen(Microsoft.Xna.Framework.Point point)
+        public Point PointToScreen(Point point)
         {
             return PointToScreen(point.X, point.Y);
         }
 
-        protected virtual Microsoft.Xna.Framework.Point PointToScreen(int x, int y)
+        protected virtual Point PointToScreen(int x, int y)
         {
             var scaleMatrix = GetScaleMatrix();
             var invertedMatrix = Matrix.Invert(scaleMatrix);

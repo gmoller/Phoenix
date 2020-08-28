@@ -65,8 +65,8 @@ namespace PhoenixGameLibrary
 
         private static TerrainType DetermineTerrainTypeId(float val)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var terrainTypes = context.GameMetadata.TerrainTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var terrainTypes = gameMetadata.TerrainTypes;
 
             var ranges = new List<(float from, float to, string terrainTypeName)>
             {

@@ -102,8 +102,8 @@ namespace PhoenixGameLibrary
             if (cell == Cell.Empty) return new GetCostToMoveIntoResult(false);
             if (cell.SeenState == SeenState.NeverSeen) return new GetCostToMoveIntoResult(true, 9999999.9f);
 
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var terrainTypes = context.GameMetadata.TerrainTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var terrainTypes = gameMetadata.TerrainTypes;
             var terrainType = terrainTypes[cell.TerrainTypeId];
 
             return CostToMoveInto(terrainType);
@@ -163,8 +163,8 @@ namespace PhoenixGameLibrary
 
         private int GetScoutingRange()
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var movementTypes = context.GameMetadata.MovementTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var movementTypes = gameMetadata.MovementTypes;
 
             var scoutingRange = 1;
 

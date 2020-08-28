@@ -17,6 +17,7 @@ namespace PhoenixGameLibrary
     public class Settlement
     {
         #region State
+        private readonly GameMetadata _gameMetadata;
         private readonly World _world;
 
         private readonly int _id;
@@ -50,9 +51,9 @@ namespace PhoenixGameLibrary
 
         internal Settlement(World world, string name, string raceTypeName, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var raceTypes = context.GameMetadata.RaceTypes;
-            var buildingTypes = context.GameMetadata.BuildingTypes;
+            _gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var raceTypes = _gameMetadata.RaceTypes;
+            var buildingTypes = _gameMetadata.BuildingTypes;
 
             _world = world;
             _id = location.Y * Constants.WORLD_MAP_COLUMNS + location.X;
@@ -90,8 +91,7 @@ namespace PhoenixGameLibrary
 
         public bool BuildingHasBeenBuilt(string buildingName)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var buildingTypes = context.GameMetadata.BuildingTypes;
+            var buildingTypes = _gameMetadata.BuildingTypes;
             var building = buildingTypes[buildingName];
 
             return _buildingsBuilt.Contains(building.Id);
@@ -99,8 +99,7 @@ namespace PhoenixGameLibrary
 
         public bool BuildingCanBeBuilt(string buildingName)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var buildingTypes = context.GameMetadata.BuildingTypes;
+            var buildingTypes = _gameMetadata.BuildingTypes;
             var building = buildingTypes[buildingName];
 
             return building.CanBeBuiltBy(RaceType.Name);
@@ -108,8 +107,7 @@ namespace PhoenixGameLibrary
 
         public bool BuildingCanNotBeBuilt(string buildingName)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var buildingTypes = context.GameMetadata.BuildingTypes;
+            var buildingTypes = _gameMetadata.BuildingTypes;
             var building = buildingTypes[buildingName];
 
             return building.CanNotBeBuiltBy(RaceType.Name);
@@ -117,8 +115,7 @@ namespace PhoenixGameLibrary
 
         public bool BuildingReadyToBeBeBuilt(string buildingName)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var buildingTypes = context.GameMetadata.BuildingTypes;
+            var buildingTypes = _gameMetadata.BuildingTypes;
             var building = buildingTypes[buildingName];
             var isReadyToBeBuilt = building.IsReadyToBeBuilt(_buildingsBuilt);
 
@@ -127,8 +124,7 @@ namespace PhoenixGameLibrary
 
         public bool UnitCanBeBuilt(string unitName)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var unitTypes = context.GameMetadata.UnitTypes;
+            var unitTypes = _gameMetadata.UnitTypes;
             var unit = unitTypes[unitName];
             if (unit.CanBeBuiltBy(RaceType.Name) && unit.IsReadyToBeBuilt(_buildingsBuilt))
             {
@@ -164,8 +160,7 @@ namespace PhoenixGameLibrary
 
             if (_currentlyBuilding.BuildingId >= 0)
             {
-                var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-                var buildingTypes = context.GameMetadata.BuildingTypes;
+                var buildingTypes = _gameMetadata.BuildingTypes;
 
                 _currentlyBuilding = new CurrentlyBuilding(_currentlyBuilding.BuildingId, -1, _currentlyBuilding.ProductionAccrued + SettlementProduction);
                 if (_currentlyBuilding.ProductionAccrued >= buildingTypes[_currentlyBuilding.BuildingId].ConstructionCost)
@@ -181,8 +176,7 @@ namespace PhoenixGameLibrary
             }
             if (_currentlyBuilding.UnitId >= 0)
             {
-                var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-                var unitTypes = context.GameMetadata.UnitTypes;
+                var unitTypes = _gameMetadata.UnitTypes;
 
                 _currentlyBuilding = new CurrentlyBuilding(-1, _currentlyBuilding.UnitId, _currentlyBuilding.ProductionAccrued + SettlementProduction);
                 if (_currentlyBuilding.ProductionAccrued >= unitTypes[_currentlyBuilding.UnitId].ConstructionCost)
@@ -213,15 +207,13 @@ namespace PhoenixGameLibrary
         {
             if (_currentlyBuilding.BuildingId >= 0)
             {
-                var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-                var buildingTypes = context.GameMetadata.BuildingTypes;
+                var buildingTypes = _gameMetadata.BuildingTypes;
                 var building = buildingTypes[_currentlyBuilding.BuildingId];
                 return $"Current: {building.Name} ({_currentlyBuilding.ProductionAccrued}/{building.ConstructionCost})";
             }
             if (_currentlyBuilding.UnitId >= 0)
             {
-                var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-                var unitTypes = context.GameMetadata.UnitTypes;
+                var unitTypes = _gameMetadata.UnitTypes;
                 var unit = unitTypes[_currentlyBuilding.UnitId];
                 return $"Current: {unit.Name} ({_currentlyBuilding.ProductionAccrued}/{unit.ConstructionCost})";
             }
@@ -253,8 +245,7 @@ namespace PhoenixGameLibrary
             int baseFoodLevel = BaseFoodLevel;
 
             // buildings
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var buildingMaximumPopulationIncreaseTypes = context.GameMetadata.BuildingMaximumPopulationIncreaseTypes;
+            var buildingMaximumPopulationIncreaseTypes = _gameMetadata.BuildingMaximumPopulationIncreaseTypes;
             foreach (var item in buildingMaximumPopulationIncreaseTypes)
             {
                 if (_buildingsBuilt.Contains(item.Id))

@@ -70,8 +70,8 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 
         private void CreateUnitLabels(IControl slots)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var unitTypes = context.GameMetadata.UnitTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var unitTypes = gameMetadata.UnitTypes;
             var i = 0;
             foreach (var unit in unitTypes)
             {
@@ -87,8 +87,8 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 
         private void UnitClick(object sender, EventArgs e)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var unitTypes = context.GameMetadata.UnitTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var unitTypes = gameMetadata.UnitTypes;
 
             var unit = (LabelSized)sender;
             var unitType = unitTypes[unit.Name];

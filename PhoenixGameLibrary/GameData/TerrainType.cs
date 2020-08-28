@@ -49,24 +49,24 @@ namespace PhoenixGameLibrary.GameData
 
         private float GetFoodOutput()
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var terrainFoodOutputTypes = context.GameMetadata.TerrainFoodOutputTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var terrainFoodOutputTypes = gameMetadata.TerrainFoodOutputTypes;
 
             return terrainFoodOutputTypes.Contains(Id) ? terrainFoodOutputTypes[Id].FoodOutput : 0.0f;
         }
 
         private float GetProductionPercentage()
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var terrainProductionPercentageTypes = context.GameMetadata.TerrainProductionPercentageTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var terrainProductionPercentageTypes = gameMetadata.TerrainProductionPercentageTypes;
 
             return terrainProductionPercentageTypes.Contains(Id) ? terrainProductionPercentageTypes[Id].ProductionPercentage : 0.0f;
         }
 
         private bool GetCanSettleOn()
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var terrainCanSettleOnTypes = context.GameMetadata.TerrainCanSettleOnTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var terrainCanSettleOnTypes = gameMetadata.TerrainCanSettleOnTypes;
 
             return terrainCanSettleOnTypes.Contains(Id);
         }

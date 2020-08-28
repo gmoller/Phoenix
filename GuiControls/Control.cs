@@ -230,7 +230,7 @@ namespace GuiControls
             else
             {
                 mousePosition = new Point(input.MousePosition.X, input.MousePosition.Y);
-                //var context = (GlobalContext)CallContext.LogicalGetData("AmbientGlobalContext");
+                //var context = (GlobalContext)CallContext.LogicalGetData("GameMetadata");
                 //var worldPosition = context.WorldPositionPointedAtByMouseCursor;
                 //mousePosition = new Point(worldPosition.X, worldPosition.Y);
             }

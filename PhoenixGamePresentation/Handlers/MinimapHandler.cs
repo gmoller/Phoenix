@@ -9,10 +9,11 @@ namespace PhoenixGamePresentation.Handlers
     {
         internal static Texture2D Create(World world)
         {
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
 
-            var graphicsDevice = (GraphicsDevice)context.GraphicsDevice;
-            var terrainTypes = context.GameMetadata.TerrainTypes;
+            var graphicsDevice = context.GraphicsDevice;
+            var terrainTypes = gameMetadata.TerrainTypes;
 
             var scalingFactor = 2;
             var cellGrid = world.OverlandMap.CellGrid;

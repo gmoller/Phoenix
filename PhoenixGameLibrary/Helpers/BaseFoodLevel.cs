@@ -9,8 +9,8 @@ namespace PhoenixGameLibrary.Helpers
         {
             // https://masterofmagic.fandom.com/wiki/Food#Base_Food_Level
             // TODO: Shared tiles halved, Corruption, Gaia's Blessing
-            var context = CallContext<GlobalContext>.GetData("AmbientGlobalContext");
-            var terrainTypes = context.GameMetadata.TerrainTypes;
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var terrainTypes = gameMetadata.TerrainTypes;
 
             float foodOutput = 0.0f;
             foreach (var cell in catchmentCells)
