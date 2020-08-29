@@ -21,10 +21,12 @@ namespace PhoenixGamePresentation.Handlers
             return false;
         }
 
-        internal static bool CheckForStartOfMovement(InputHandler input, StackView stackView, World world)
+        internal static bool CheckForStartOfMovement(InputHandler input, StackView stackView, WorldView worldView)
         {
+            if (worldView.GameStatus == GameStatus.InHudView) return false;
+
             var (startMovementKeyboard, hexToMoveToKeyboard) = CheckForUnitMovementFromKeyboardInitiation(input, stackView);
-            var (startMovementMouse, hexToMoveToMouse) = CheckForUnitMovementFromMouseInitiation(input, stackView, world);
+            var (startMovementMouse, hexToMoveToMouse) = CheckForUnitMovementFromMouseInitiation(input, stackView, worldView.World);
 
             if (startMovementKeyboard || startMovementMouse)
             {

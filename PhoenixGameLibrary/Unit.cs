@@ -28,6 +28,7 @@ namespace PhoenixGameLibrary
         public EnumerableList<string> Actions => new EnumerableList<string>(_unitType.Actions);
         public EnumerableList<string> UnitTypeMovementTypes => new EnumerableList<string>(_unitType.MovementTypes);
         public string UnitTypeTextureName => _unitType.TextureName;
+        public int SightRange => GetSightRange();
 
         public Unit(World world, UnitType unitType, Point location)
         {
@@ -153,7 +154,7 @@ namespace PhoenixGameLibrary
         internal void SetSeenCells(Point location)
         {
             var cellGrid = _world.OverlandMap.CellGrid;
-            _seenCells = cellGrid.GetCatchment(location.X, location.Y, GetScoutingRange());
+            _seenCells = cellGrid.GetCatchment(location.X, location.Y, GetSightRange());
             foreach (var item in _seenCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
@@ -161,7 +162,7 @@ namespace PhoenixGameLibrary
             }
         }
 
-        private int GetScoutingRange()
+        private int GetSightRange()
         {
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var movementTypes = gameMetadata.MovementTypes;

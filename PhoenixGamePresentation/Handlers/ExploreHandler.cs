@@ -1,4 +1,5 @@
 ﻿using PhoenixGameLibrary;
+using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Views;
 
 namespace PhoenixGamePresentation.Handlers
@@ -24,6 +25,7 @@ namespace PhoenixGamePresentation.Handlers
 
                 if (path.Count > 0)
                 {
+                    path = path.RemoveLast(stackView.SightRange);
                     stackView.SetMovementPath(path);
                 }
                 else

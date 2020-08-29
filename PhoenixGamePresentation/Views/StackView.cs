@@ -51,6 +51,7 @@ namespace PhoenixGamePresentation.Views
 
         public Point Location => _stack.Location;
         public float MovementPoints => _stack.MovementPoints;
+        public int SightRange => _stack.SightRange;
 
         public int Count => _stack.Count;
 
@@ -102,7 +103,7 @@ namespace PhoenixGamePresentation.Views
             var selectUnit = SelectionHandler.CheckForUnitSelection(input, this);
             var changeBlinkState = CheckForBlinkStateChange(deltaTime);
             var mustFindNewExploreLocation = ExploreHandler.MustFindNewExploreLocation(this);
-            var mustStartMovement = MovementHandler.CheckForStartOfMovement(input, this, _worldView.World);
+            var mustStartMovement = MovementHandler.CheckForStartOfMovement(input, this, _worldView);
             var mustRestartMovement = MovementHandler.CheckForRestartOfMovement(this); // not in moving state, has a path and has movement points
             var mustContinueMovement = MovementHandler.MustContinueMovement(this);
             var mustMoveUnitToNextCell = MovementHandler.MustMoveUnitToNextCell(this);

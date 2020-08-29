@@ -21,6 +21,8 @@ namespace PhoenixGameLibrary
 
         public Point Location => _units.Count > 0 ?_units[0].Location : Point.Empty;
 
+        public int SightRange => GetSightRange();
+
         public float MovementPoints => DetermineMovementPoints();
         public EnumerableList<string> MovementTypes => new EnumerableList<string>(DetermineMovementTypes());
         public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(_units));
@@ -105,6 +107,21 @@ namespace PhoenixGameLibrary
             var terrainType = terrainTypes[cell.TerrainTypeId];
 
             return GetCostToMoveInto(terrainType);
+        }
+
+        private int GetSightRange()
+        {
+            var sightRange = 0;
+            foreach (var unit in _units)
+            {
+                if (unit.SightRange > sightRange)
+                {
+                    sightRange = unit.SightRange;
+                }
+
+            }
+
+            return sightRange;
         }
 
         private GetCostToMoveIntoResult GetCostToMoveInto(TerrainType terrainType)
