@@ -7,7 +7,6 @@ using GuiControls;
 using Hex;
 using Input;
 using MonoGameUtilities.ExtensionMethods;
-using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentation.ExtensionMethods;
@@ -33,7 +32,7 @@ namespace PhoenixGamePresentation.Views
         public Camera Camera { get; }
 
         public GameStatus GameStatus { get; set; }
-        #endregion 
+        #endregion State
 
         public Rectangle WorldViewport => new Rectangle(0, 0, Constants.WORLD_MAP_WIDTH_IN_PIXELS, Constants.WORLD_MAP_HEIGHT_IN_PIXELS);
         public int WorldWidthInPixels => Constants.WORLD_MAP_WIDTH_IN_PIXELS;
@@ -86,39 +85,22 @@ namespace PhoenixGamePresentation.Views
             _settlementView.Settlement = World.Settlements.Selected;
             if (_settlementView.Settlement != null)
             {
-                _settlementView.Update(input, deltaTime);
+                _settlementView.Update(input, deltaTime, null);
             }
 
             _hudView.Update(input, deltaTime);
             _stackViews.RemoveDeadUnits();
         }
 
-        internal void Draw(SpriteBatch spriteBatch, ViewportAdapter viewportAdapter)
+        internal void Draw(SpriteBatch spriteBatch)
         {
-            //var originalViewport = spriteBatch.GraphicsDevice.Viewport;
-            //spriteBatch.GraphicsDevice.Viewport = new Viewport(0, 0, 1670, 1080, 0.0f, 1.0f);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Camera.Transform * viewportAdapter.GetScaleMatrix()); // FrontToBack
+            _overlandMapView.Draw(spriteBatch, Camera);
+            _overlandSettlementsView.Draw(spriteBatch, Camera);
+            _stackViews.Draw(spriteBatch, Camera);
 
-            _overlandMapView.Draw(spriteBatch);
-            _overlandSettlementsView.Draw(spriteBatch);
-
-            _stackViews.Draw(spriteBatch);
-            spriteBatch.End();
-            //spriteBatch.GraphicsDevice.Viewport = originalViewport;
-
-            //originalViewport = spriteBatch.GraphicsDevice.Viewport;
-            //spriteBatch.GraphicsDevice.Viewport = new Viewport(1670, 0, 250, 1080, 0.0f, 1.0f);
-            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: viewportAdapter.GetScaleMatrix());
             _hudView.Draw(spriteBatch);
-            spriteBatch.End();
-            //spriteBatch.GraphicsDevice.Viewport = originalViewport;
 
-            //originalViewport = spriteBatch.GraphicsDevice.Viewport;
-            //spriteBatch.GraphicsDevice.Viewport = new Viewport(0, 0, 1920, 1080, 0.0f, 1.0f);
-            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: viewportAdapter.GetScaleMatrix());
             _settlementView.Draw(spriteBatch);
-            spriteBatch.End();
-            //spriteBatch.GraphicsDevice.Viewport = originalViewport;
         }
 
         private Point GetWorldPositionPointedAtByMouseCursor(Camera camera, Microsoft.Xna.Framework.Point mousePosition)
@@ -176,7 +158,8 @@ namespace PhoenixGamePresentation.Views
 
             var actionButtons = new Dictionary<string, IControl>();
             var i = 0;
-            var x = 1680; // position of unitFrame BottomRight: (1680;806)
+            //var x = 1680; // position of unitFrame BottomRight: (1680;806)
+            var x = 10;
             var y = 806;
             var buttonSize = new Vector2(115.0f, 30.0f);
             foreach (var actionType in actionTypes)

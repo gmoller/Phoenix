@@ -6,7 +6,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Assets;
 using Input;
+using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
+using Utilities;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -29,6 +31,9 @@ namespace PhoenixGamePresentation.Views
         internal AtlasSpec2 UnitAtlas { get; private set; }
 
         internal StackView Current { get; private set; }
+
+        private Viewport _viewport;
+        private ViewportAdapter _viewportAdapter;
         #endregion
 
         public int Count => _stackViews.Count;
@@ -43,6 +48,15 @@ namespace PhoenixGamePresentation.Views
             Current = null;
             _ordersQueue = new Queue<StackView>();
             _selectedThisTurn = new List<Guid>();
+
+            SetupViewport(0, 0, 1670, 1080);
+        }
+
+        private void SetupViewport(int x, int y, int width, int height)
+        {
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            _viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
+            _viewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
         }
 
         internal void LoadContent(ContentManager content)
@@ -84,12 +98,19 @@ namespace PhoenixGamePresentation.Views
             }
         }
 
-        internal void Draw(SpriteBatch spriteBatch)
+        internal void Draw(SpriteBatch spriteBatch, Camera camera)
         {
+            var originalViewport = spriteBatch.GraphicsDevice.Viewport;
+            spriteBatch.GraphicsDevice.Viewport = _viewport;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform * _viewportAdapter.GetScaleMatrix()); // FrontToBack
+
             foreach (var stackView in _stackViews)
             {
                 stackView.Draw(spriteBatch);
             }
+
+            spriteBatch.End();
+            spriteBatch.GraphicsDevice.Viewport = originalViewport;
         }
 
         internal void BeginTurn()

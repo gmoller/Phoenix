@@ -36,7 +36,7 @@ namespace GuiControls
         protected float LayerDepth { get; private set; }
 
         protected Texture2D Texture { get; set; }
-        protected Rectangle ActualDestinationRectangle { get; private set; }
+        protected Rectangle ActualDestinationRectangle { get; set; }
         protected Rectangle SourceRectangle { get; private set; }
         protected AtlasSpec2 Atlas { get; private set; }
 
@@ -51,7 +51,7 @@ namespace GuiControls
         public bool MouseOver { get; private set; }
 
         public event EventHandler Click;
-        #endregion
+        #endregion State
 
         public int Top => ActualDestinationRectangle.Top;
         public int Bottom => ActualDestinationRectangle.Bottom;
@@ -95,7 +95,7 @@ namespace GuiControls
             _textureHover = textureHover;
             _textureDisabled = textureDisabled;
 
-            DetermineArea(position, positionAlignment, size);
+            ActualDestinationRectangle = DetermineArea(position, positionAlignment, size);
 
             Enabled = true;
 
@@ -184,9 +184,9 @@ namespace GuiControls
             }
         }
 
-        public virtual void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        public virtual void Update(InputHandler input, float deltaTime, Viewport? viewport)
         {
-            var mousePosition = GetMousePosition(input, transform);
+            var mousePosition = GetMousePosition(input, viewport);
             MouseOver = ActualDestinationRectangle.Contains(mousePosition.X, mousePosition.Y);
 
             if (Enabled)
@@ -209,31 +209,39 @@ namespace GuiControls
                 return;
             }
 
-            if (MouseOver && input.IsLeftMouseButtonReleased)
+            if (Click != null)
             {
-                OnClick(new EventArgs());
+                if (MouseOver)
+                {
+                    if (input.IsLeftMouseButtonReleased)
+                    {
+                        OnClick(new EventArgs());
+                    }
+                }
             }
 
             foreach (var childControl in ChildControls)
             {
-                childControl.Update(input, deltaTime, transform);
+                childControl.Update(input, deltaTime, viewport);
             }
         }
 
-        private Point GetMousePosition(InputHandler input, Matrix? transform)
+        private Point GetMousePosition(InputHandler input, Viewport? viewport)
         {
             Point mousePosition;
-            if (transform == null)
+            if (viewport.HasValue)
             {
-                mousePosition = new Point(input.MousePosition.X, input.MousePosition.Y);
+                mousePosition = new Point(input.MousePosition.X - viewport.Value.X, input.MousePosition.Y - viewport.Value.Y);
             }
             else
             {
                 mousePosition = new Point(input.MousePosition.X, input.MousePosition.Y);
-                //var context = (GlobalContext)CallContext.LogicalGetData("GameMetadata");
-                //var worldPosition = context.WorldPositionPointedAtByMouseCursor;
-                //mousePosition = new Point(worldPosition.X, worldPosition.Y);
             }
+
+            //mousePosition = new Point(input.MousePosition.X, input.MousePosition.Y);
+            //var context = (GlobalContext)CallContext.LogicalGetData("GameMetadata");
+            //var worldPosition = context.WorldPositionPointedAtByMouseCursor;
+            //mousePosition = new Point(worldPosition.X, worldPosition.Y);
 
             return mousePosition;
         }
@@ -279,20 +287,12 @@ namespace GuiControls
             }
         }
 
-        protected void DetermineArea(Vector2 position, Alignment alignment, Vector2 size)
+        protected Rectangle DetermineArea(Vector2 position, Alignment alignment, Vector2 size)
         {
             var topLeft = DetermineTopLeft(position, alignment, size);
-            if (Parent == null)
-            {
-                ActualDestinationRectangle = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)size.X, (int)size.Y);
-            }
-            else
-            {
-                // offset from parent's position
-                var x = (int)(Parent.TopLeft.X + topLeft.X);
-                var y = (int)(Parent.TopLeft.Y + topLeft.Y);
-                ActualDestinationRectangle = new Rectangle(x, y, (int)size.X, (int)size.Y);
-            }
+            var actualDestinationRectangle = new Rectangle((int)topLeft.X, (int)topLeft.Y, (int)size.X, (int)size.Y);
+
+            return actualDestinationRectangle;
         }
 
         private Point DetermineTopLeft(IControl childControl, Alignment parentAlignment, Alignment childAlignment, Point offset)

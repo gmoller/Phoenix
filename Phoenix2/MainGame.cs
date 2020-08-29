@@ -17,7 +17,6 @@ namespace Phoenix
         private readonly GraphicsDeviceManager _graphicsDeviceManager;
 
         private SpriteBatch _spriteBatch;
-        private ViewportAdapter _viewportAdapter;
 
         private PhoenixGame _phoenixGame;
         private PhoenixGameView _phoenixGameView;
@@ -54,6 +53,7 @@ namespace Phoenix
 
             _phoenixGame = new PhoenixGame();
             _phoenixGameView = new PhoenixGameView(_phoenixGame);
+            _metricsPanel = new MetricsPanel();
 
             Logger.Instance.LogComplete();
 
@@ -92,12 +92,9 @@ namespace Phoenix
         {
             Logger.Instance.Log("Loading content...");
 
-            _viewportAdapter = new ScalingViewportAdapter(GraphicsDevice, 1920, 1080);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _phoenixGameView.LoadContent(GraphicsDevice, Content);
-
-            _metricsPanel = new MetricsPanel(new Vector2(0.0f, 200.0f));
             _metricsPanel.LoadContent(Content);
 
             Logger.Instance.LogComplete();
@@ -121,20 +118,17 @@ namespace Phoenix
 
             _phoenixGame.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             _phoenixGameView.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds); // here for controls updates
-            _metricsPanel.Update(gameTime, _viewportAdapter);
+            _metricsPanel.Update(gameTime);
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
+            GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.DarkBlue);
 
-            _phoenixGameView.Draw(_spriteBatch, _viewportAdapter);
-
-            _spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: _viewportAdapter.GetScaleMatrix());
+            _phoenixGameView.Draw(_spriteBatch);
             _metricsPanel.Draw(_spriteBatch);
-            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

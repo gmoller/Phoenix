@@ -17,7 +17,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         private readonly SettlementView _settlementView;
 
         private Frame _frmSecondary;
-        #endregion
+        #endregion State
 
         internal SecondaryFrame(SettlementView settlementView, Vector2 topLeftPosition, string textureAtlas) :
             base(topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), textureAtlas, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, "SecondaryFrame")
@@ -58,9 +58,9 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             _frmSecondary["frmFooter"].LoadContent(content);
         }
 
-        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
         {
-            _frmSecondary.Update(input, deltaTime, transform);
+            _frmSecondary.Update(input, deltaTime, viewport);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -101,13 +101,15 @@ namespace GuiControls
 
         bool Enabled { get; set; }
 
+        bool MouseOver { get; }
+
         event EventHandler Click;
 
         void AddControl(IControl childControl, Alignment parentAlignment = Alignment.TopLeft, Alignment childAlignment = Alignment.None, Point offset = new Point());
         void SetTopLeftPosition(Point point);
         void MoveTopLeftPosition(Point point);
         void LoadContent(ContentManager content, bool loadChildrenContent = false);
-        void Update(InputHandler input, float deltaTime, Matrix? transform = null);
+        void Update(InputHandler input, float deltaTime, Viewport? viewport);
         void Draw(Matrix? transform = null);
         void Draw(SpriteBatch spriteBatch);
 

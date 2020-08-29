@@ -8,24 +8,23 @@ using GuiControls;
 using MonoGameUtilities.ViewportAdapters;
 using Utilities;
 using Color = Microsoft.Xna.Framework.Color;
+using Utilities.ExtensionMethods;
 
 namespace PhoenixGamePresentation
 {
     public class MetricsPanel
     {
-        private readonly Vector2 _position;
-
+        #region State
         private FramesPerSecondCounter _fps;
 
         private readonly List<Label> _labels;
 
-        private readonly Stack<Viewport> _viewports;
+        private Viewport _viewport;
+        private ViewportAdapter _viewportAdapter;
+        #endregion
 
-        public MetricsPanel(Vector2 position)
+        public MetricsPanel()
         {
-            _position = position;
-            _viewports = new Stack<Viewport>();
-
             List<(string text, string name)> metrics = new List<(string, string)>
             {
                 ("GC COUNT:", "lblGcCount1"), (string.Empty, "lblGcCount2"),
@@ -42,19 +41,28 @@ namespace PhoenixGamePresentation
             };
 
             _labels = new List<Label>();
-            var y = -30.0f;
+            var y0 = -30.0f;
             for (var i = 0; i < metrics.Count; i++)
             {
-                var x = i % 2 == 0 ? 0.0f : 160.0f;
-                if (i % 2 == 0)
+                var x0 = i.IsEven() ? 0.0f : 160.0f;
+                if (i.IsEven())
                 {
-                    y += 30.0f;
+                    y0 += 30.0f;
                 }
-                var pos = new Vector2(x, y);
-                var contentAlignment = i % 2 == 0 ? Alignment.MiddleLeft : Alignment.MiddleRight;
+                var pos = new Vector2(x0, y0);
+                var contentAlignment = i.IsEven() ? Alignment.MiddleLeft : Alignment.MiddleRight;
                 var label = CreateControl(pos, contentAlignment, metrics[i].text, metrics[i].name);
                 _labels.Add(label);
             }
+
+            SetupViewport(0, 0, 320, 330);
+        }
+
+        private void SetupViewport(int x, int y, int width, int height)
+        {
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            _viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
+            _viewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
         }
 
         public void LoadContent(ContentManager content)
@@ -67,13 +75,13 @@ namespace PhoenixGamePresentation
             }
         }
 
-        public void Update(GameTime gameTime, ViewportAdapter viewportAdapter)
+        public void Update(GameTime gameTime)
         {
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             var gameWindow = context.GameWindow;
             var graphicsDevice = context.GraphicsDevice;
 
-            _fps.Update(gameTime);
+            _fps.Update(gameTime, _viewport);
 
             var mouseState = Mouse.GetState();
 
@@ -84,7 +92,7 @@ namespace PhoenixGamePresentation
             _labels[9].Text = $"{GC.GetTotalMemory(false) / 1024} KB";
             _labels[11].Text = $"{_fps.UpdateFramesPerSecond}/{_fps.DrawFramesPerSecond}";
             _labels[13].Text = $"{gameWindow.ClientBounds.Width}x{gameWindow.ClientBounds.Height}";
-            _labels[15].Text = $"{viewportAdapter.Viewport.Width}x{viewportAdapter.Viewport.Height}";
+            _labels[15].Text = $"{_viewportAdapter.Viewport.Width}x{_viewportAdapter.Viewport.Height}";
             _labels[17].Text = $"{graphicsDevice.DisplayMode.Width}x{graphicsDevice.DisplayMode.Height}";
             _labels[19].Text = $"{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width}x{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height}";
             //_labels[21].Text = $"{context.Zoom}";
@@ -92,16 +100,19 @@ namespace PhoenixGamePresentation
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            SetViewport(GetViewport());
+            var originalViewport = spriteBatch.GraphicsDevice.Viewport;
+            spriteBatch.GraphicsDevice.Viewport = _viewport;
+            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: _viewportAdapter.GetScaleMatrix());
 
             foreach (var label in _labels)
             {
                 label.Draw(spriteBatch);
             }
 
-            ResetViewport();
-
             _fps.Draw();
+
+            spriteBatch.End();
+            spriteBatch.GraphicsDevice.Viewport = originalViewport;
         }
 
         private Label CreateControl(Vector2 position, Alignment contentAlignment, string text, string name)
@@ -110,32 +121,6 @@ namespace PhoenixGamePresentation
             var control = new LabelSized(position, Alignment.TopLeft, size, contentAlignment, text, "CrimsonText-Regular-12", Color.LawnGreen, name, Color.DarkRed, Color.DarkSlateGray * Constants.ONE_HALF, Color.White);
 
             return control;
-        }
-
-        private void SetViewport(Viewport newViewport)
-        {
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            var graphicsDevice = context.GraphicsDevice;
-
-            _viewports.Push(graphicsDevice.Viewport);
-            graphicsDevice.Viewport = newViewport;
-        }
-
-        private void ResetViewport()
-        {
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            var graphicsDevice = context.GraphicsDevice;
-
-            var previousViewport = _viewports.Pop();
-            graphicsDevice.Viewport = previousViewport;
-        }
-
-        private Viewport GetViewport()
-        {
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            var graphicsDevice = context.GraphicsDevice;
-
-            return new Viewport(graphicsDevice.Viewport.X, graphicsDevice.Viewport.Y, 300, 201, 0, 1);
         }
     }
 }

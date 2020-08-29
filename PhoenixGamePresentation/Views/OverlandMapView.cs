@@ -10,16 +10,24 @@ using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using Utilities.ExtensionMethods;
-using Point = Utilities .Point;
+using MonoGameUtilities.ViewportAdapters;
+using Utilities;
+using Point = Utilities.Point;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace PhoenixGamePresentation.Views
 {
     internal class OverlandMapView
     {
+        #region State
         private readonly WorldView _worldView;
         private readonly OverlandMap _overlandMap;
 
         private readonly Label _test;
+
+        private Viewport _viewport;
+        private ViewportAdapter _viewportAdapter;
+        #endregion State
 
         internal OverlandMapView(WorldView worldView, OverlandMap overlandMap)
         {
@@ -28,6 +36,15 @@ namespace PhoenixGamePresentation.Views
 
             _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, "test", null, Color.Blue);
             _test.Click += delegate { _test.MoveTopLeftPosition(new Point(10, -10)); };
+
+            SetupViewport(0, 0, 1670, 1080);
+        }
+
+        private void SetupViewport(int x, int y, int width, int height)
+        {
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            _viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
+            _viewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
         }
 
         internal void LoadContent(ContentManager content)
@@ -48,16 +65,23 @@ namespace PhoenixGamePresentation.Views
                 _worldView.EndTurn();
             }
 
-            _test.Update(input, deltaTime);
+            _test.Update(input, deltaTime, _viewport);
 
             // Status change?
         }
 
-        internal void Draw(SpriteBatch spriteBatch)
+        internal void Draw(SpriteBatch spriteBatch, Camera camera)
         {
+            var originalViewport = spriteBatch.GraphicsDevice.Viewport;
+            spriteBatch.GraphicsDevice.Viewport = _viewport;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform * _viewportAdapter.GetScaleMatrix()); // FrontToBack
+
             DrawCellGrid(spriteBatch, _overlandMap.CellGrid, _worldView.Camera);
 
-            _test.Draw(spriteBatch);
+            spriteBatch.End();
+            spriteBatch.GraphicsDevice.Viewport = originalViewport;
+
+            //_test.Draw(spriteBatch);
         }
 
         private void DrawCellGrid(SpriteBatch spriteBatch, CellGrid cellGrid, Camera camera)

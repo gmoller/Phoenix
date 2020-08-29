@@ -20,7 +20,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 
         private Texture2D _texture;
         private AtlasSpec2 _atlas;
-        #endregion
+        #endregion State
 
         internal BuildingsView(string name, SettlementView settlementView, string textureAtlas) :
             base(Vector2.Zero, Alignment.TopLeft, new Vector2(515.0f, 450.0f), textureAtlas, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, name)
@@ -38,7 +38,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             _atlas = AssetsManager.Instance.GetAtlas("Buildings");
         }
 
-        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
         {
             if (input.IsLeftMouseButtonReleased)
             {

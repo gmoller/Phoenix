@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace PhoenixGamePresentation
 {
@@ -14,7 +15,7 @@ namespace PhoenixGamePresentation
         public int UpdateFramesPerSecond { get; private set; }
         public int DrawFramesPerSecond { get; private set; }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Viewport viewport)
         {
             _updateFramesCounter++;
 

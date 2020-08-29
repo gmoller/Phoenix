@@ -14,6 +14,7 @@ namespace Phoenix2
             var gameMetadata = new GameMetadata();
             var presentationContext = new GlobalContextPresentation();
 
+            //--resolution 800x600
             if (args.Length == 2 && args[0].ToLower() == "--resolution")
             {
                 var splitString = args[1].Split('x');

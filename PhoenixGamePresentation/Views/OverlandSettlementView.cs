@@ -12,6 +12,7 @@ namespace PhoenixGamePresentation.Views
 {
     public class OverlandSettlementView
     {
+        #region State
         private readonly WorldView _worldView;
 
         private Texture2D _texture;
@@ -19,6 +20,7 @@ namespace PhoenixGamePresentation.Views
         //private AtlasSpec _atlas;
 
         public Settlement Settlement { get; set; }
+        #endregion
 
         public OverlandSettlementView(WorldView worldView)
         {

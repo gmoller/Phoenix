@@ -7,6 +7,7 @@ using GuiControls;
 using Input;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
+using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
@@ -28,7 +29,10 @@ namespace PhoenixGamePresentation.Views
         private EnumerableDictionary<IControl> _actionButtons;
 
         private readonly StackViews _stackViews;
-        #endregion
+
+        private Viewport _viewport;
+        private ViewportAdapter _viewportAdapter;
+        #endregion State
 
         private StackView SelectedStackView => _stackViews.Current;
 
@@ -38,12 +42,11 @@ namespace PhoenixGamePresentation.Views
             var height = (int)(1080 * 0.945f); // 94.5% of screen height
             var x = 1920 - width;
             var y = 0;
-            _area = new Rectangle(x, y, width, height); // 250x1020
+            _area = new Rectangle(x, y, width, height); // 1670,0,250,1020
 
             #region HudViewFrame
 
-            var topLeftPosition = new Vector2(_area.X, _area.Y);
-            _hudViewFrame = new Frame(topLeftPosition, Alignment.TopLeft, new Vector2(_area.Width, _area.Height), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame");
+            _hudViewFrame = new Frame(Vector2.Zero, Alignment.TopLeft, new Vector2(_area.Width, _area.Height), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame");
 
             string GetTextFuncForDate() => _worldView.World.CurrentDate;
             _hudViewFrame.AddControl(new LabelSized("lblCurrentDate", new Vector2(150.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForDate, "Maleficio-Regular-18", Color.Aquamarine), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 20));
@@ -97,6 +100,15 @@ namespace PhoenixGamePresentation.Views
             //var json = _hudViewFrame.Serialize();
             //_hudViewFrame.Deserialize(json);
             //var newFrame = new Frame(json);
+
+            SetupViewport(_area.X, _area.Y, _area.Width, _area.Height + btnEndTurn.Height);
+        }
+
+        private void SetupViewport(int x, int y, int width, int height)
+        {
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            _viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
+            _viewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
         }
 
         internal void LoadContent(ContentManager content)
@@ -129,7 +141,7 @@ namespace PhoenixGamePresentation.Views
             if (_worldView.GameStatus == GameStatus.CityView) return;
 
             // Causes
-            var mouseOverHudView = _area.Contains(input.MousePosition) || _hudViewFrame.ChildControls["btnEndTurn"].Area.Contains(input.MousePosition);
+            var mouseOverHudView = _area.Contains(input.MousePosition) || _hudViewFrame.ChildControls["btnEndTurn"].MouseOver;
             var redrawMiniMap = true;
 
             // Actions
@@ -143,8 +155,8 @@ namespace PhoenixGamePresentation.Views
                 mapImage.SetTexture(createdImage);
             }
 
-            _hudViewFrame.Update(input, deltaTime);
-            _actionButtons.Update(input, deltaTime);
+            _hudViewFrame.Update(input, deltaTime, _viewport);
+            _actionButtons.Update(input, deltaTime, _viewport);
 
             // Status change?
             if (_worldView.GameStatus != GameStatus.CityView)
@@ -155,6 +167,10 @@ namespace PhoenixGamePresentation.Views
 
         internal void Draw(SpriteBatch spriteBatch)
         {
+            var originalViewport = spriteBatch.GraphicsDevice.Viewport;
+            spriteBatch.GraphicsDevice.Viewport = _viewport;
+            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: _viewportAdapter.GetScaleMatrix());
+
             _hudViewFrame.Draw(spriteBatch);
 
             var worldPosition = _worldView.Camera.CameraTopLeftPostionInWorld;
@@ -162,11 +178,14 @@ namespace PhoenixGamePresentation.Views
             var ratio = new Vector2(_worldView.Camera.WorldViewport.Width / (float)_worldView.WorldViewport.Width, _worldView.Camera.WorldViewport.Height / (float)_worldView.WorldViewport.Height);
             var size = new Vector2(200 * ratio.X, 115 * ratio.Y);
             var topLeft = new Vector2(worldPosition.X / 200.0f, worldPosition.Y / 115.0f) / ratio;
-            spriteBatch.DrawRectangle(new Rectangle(1695 + (int)topLeft.X, 69 + (int)topLeft.Y, (int)size.X, (int)size.Y), Color.White, 0.0f);
+            spriteBatch.DrawRectangle(new Rectangle(25 + (int)topLeft.X, 69 + (int)topLeft.Y, (int)size.X, (int)size.Y), Color.White, 0.0f);
 
             DrawUnits(spriteBatch);
             DrawNotifications(spriteBatch);
             DrawTileInfo(spriteBatch);
+
+            spriteBatch.End();
+            spriteBatch.GraphicsDevice.Viewport = originalViewport;
         }
 
         private void DrawUnits(SpriteBatch spriteBatch)
@@ -182,8 +201,8 @@ namespace PhoenixGamePresentation.Views
         {
             var stackViews = SelectedStackView.GetStackViewsSharingSameLocation();
 
-            var x = _area.X + 20.0f;
-            var y = _area.Y + _area.Height * Constants.ONE_HALF + 10.0f;
+            var x = 20.0f;
+            var y = _area.Height * Constants.ONE_HALF + 10.0f;
             int i = 0;
             foreach (var stackView in stackViews)
             {
@@ -196,8 +215,9 @@ namespace PhoenixGamePresentation.Views
         {
             var imgMovementTypes = SelectedStackView.GetMovementTypeImages();
             var i = 0;
-            var x = 1910 - 18 - 12; // position of unitFrame BottomRight: (1910;806) : size: (18;12)
-            var y = 806 - 12 - 20;
+            //size: (18;12)
+            var x = _hudViewFrame["unitFrame"].BottomRight.X - 18 - 12;
+            var y = _hudViewFrame["unitFrame"].BottomRight.Y - 12 - 20;
             foreach (var imgMovementType in imgMovementTypes)
             {
                 imgMovementType.SetTopLeftPosition(new Point(x - 19 * i, y));
@@ -218,11 +238,11 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawNotifications(SpriteBatch spriteBatch)
         {
-            var x = _area.X + 10.0f;
-            var y = _area.Y + 400.0f;
+            var x = 10.0f;
+            var y = 460.0f;
             foreach (var item in _worldView.World.NotificationList)
             {
-                var lines = TextWrapper.WrapText(item, 150, _font);
+                var lines = TextWrapper.WrapText(item, 150.0f, _font);
                 foreach (var line in lines)
                 {
                     spriteBatch.DrawString(_font, line, new Vector2(x, y), Color.Pink);
@@ -233,8 +253,8 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawTileInfo(SpriteBatch spriteBatch)
         {
-            var x = _area.X + 10.0f;
-            var y = _area.Y + _area.Height * 0.96f;
+            var x = 10.0f;
+            var y = _area.Height * 0.96f;
 
             // get tile mouse is over
             var cellGrid = _worldView.World.OverlandMap.CellGrid;

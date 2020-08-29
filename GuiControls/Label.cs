@@ -68,14 +68,14 @@ namespace GuiControls
 
         protected abstract Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text);
 
-        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
         {
             if (_getTextFunc != null)
             {
                 Text = _getTextFunc();
             }
 
-            base.Update(input, deltaTime, transform);
+            base.Update(input, deltaTime, viewport);
         }
 
         protected override void InDraw(SpriteBatch spriteBatch)
@@ -324,7 +324,7 @@ namespace GuiControls
     {
         #region State
         private readonly Alignment _contentAlignment;
-        #endregion
+        #endregion State
 
         /// <summary>
         /// Use this constructor if Label is to be used as a child of another control.
@@ -513,7 +513,7 @@ namespace GuiControls
                 layerDepth)
         {
             _contentAlignment = contentAlignment;
-            DetermineArea(position, positionAlignment, size);
+            ActualDestinationRectangle = DetermineArea(position, positionAlignment, size);
         }
 
         protected override Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text)

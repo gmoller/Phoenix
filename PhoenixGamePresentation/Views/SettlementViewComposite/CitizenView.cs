@@ -21,7 +21,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         private IControl _imgFarmer;
         private IControl _imgWorker;
         private IControl _imgRebel;
-        #endregion
+        #endregion State
 
         internal CitizenView(string name, Vector2 position, Alignment positionAlignment, SettlementView settlementView, string textureAtlas) :
             base(position, positionAlignment, new Vector2(100.0f, 30.0f), textureAtlas, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, name)
@@ -54,14 +54,14 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             _imgRebel.LoadContent(content);
         }
 
-        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
         {
             EnableOrDisableButtons();
 
-            _btnSubtractFarmer.Update(input, deltaTime);
-            _btnAddFarmer.Update(input, deltaTime);
-            _btnSubtractWorker.Update(input, deltaTime);
-            _btnAddWorker.Update(input, deltaTime);
+            _btnSubtractFarmer.Update(input, deltaTime, viewport);
+            _btnAddFarmer.Update(input, deltaTime, viewport);
+            _btnSubtractWorker.Update(input, deltaTime, viewport);
+            _btnAddWorker.Update(input, deltaTime, viewport);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

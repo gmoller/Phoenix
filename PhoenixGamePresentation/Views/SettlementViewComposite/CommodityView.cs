@@ -16,7 +16,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         private Image _image2;
         //protected ToolTip ToolTip;
         //protected Rectangle Area2;
-        #endregion
+        #endregion State
 
         internal CommodityView(Vector2 position, Alignment positionAlignment, SettlementView settlementView, string imageTextureName1, string imageTextureName2, string name) :
             base(position, positionAlignment, new Vector2(100.0f, 30.0f), "Icons_1", string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, name, 0.0f)
@@ -35,7 +35,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             _image2.LoadContent(content);
         }
 
-        public override void Update(InputHandler input, float deltaTime, Matrix? transform = null)
+        public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
         {
             //if (Area2.Contains(input.MousePosition))
             //{

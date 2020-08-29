@@ -29,7 +29,7 @@ namespace PhoenixGamePresentation
         public int NumberOfHexesToRight { get; private set; }
         public int NumberOfHexesAbove { get; private set; }
         public int NumberOfHexesBelow { get; private set; }
-        #endregion
+        #endregion State
 
         public Vector2 CameraPostionInWorld => _centerPosition;
         public Vector2 CameraTopLeftPostionInWorld => new Vector2(_centerPosition.X - Width * Constants.ONE_HALF, _centerPosition.Y - Height * Constants.ONE_HALF);

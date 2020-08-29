@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Assets;
 using Input;
-using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 
 namespace PhoenixGamePresentation.Views
@@ -10,8 +9,6 @@ namespace PhoenixGamePresentation.Views
     public class PhoenixGameView
     {
         #region State
-        //private readonly PhoenixGame _phoenixGame;
-
         private readonly WorldView _worldView;
         private readonly Cursor _cursor;
         private readonly CursorView _cursorView;
@@ -20,8 +17,6 @@ namespace PhoenixGamePresentation.Views
 
         public PhoenixGameView(PhoenixGame phoenixGame)
         {
-            //_phoenixGame = phoenixGame;
-
             _worldView = new WorldView(phoenixGame.World);
             _cursor = new Cursor();
             _cursorView = new CursorView(_cursor);
@@ -112,10 +107,10 @@ namespace PhoenixGamePresentation.Views
             _cursorView.Update(_input, deltaTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch, ViewportAdapter viewportAdapter)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            _worldView.Draw(spriteBatch, viewportAdapter);
-            _cursorView.Draw(spriteBatch, viewportAdapter);
+            _worldView.Draw(spriteBatch);
+            _cursorView.Draw(spriteBatch);
         }
     }
 }
