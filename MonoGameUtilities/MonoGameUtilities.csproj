@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ExtensionMethods\" />
     <Folder Include="ViewportAdapters\" />
   </ItemGroup>
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Utilities;
 
-namespace PhoenixGamePresentation.ExtensionMethods
+namespace Utilities.ExtensionMethods
 {
     public static class ListExtensions
     {

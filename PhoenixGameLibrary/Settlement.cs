@@ -49,7 +49,7 @@ namespace PhoenixGameLibrary
         public string CurrentlyBuilding => GetCurrentlyBuilding();
         public SettlementType SettlementType => GetSettlementType();
 
-        internal Settlement(World world, string name, string raceTypeName, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
+        public Settlement(World world, string name, string raceTypeName, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
         {
             _gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var raceTypes = _gameMetadata.RaceTypes;

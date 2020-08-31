@@ -10,5 +10,10 @@ namespace Utilities.ExtensionMethods
 
             return Math.Abs(value1 - value2) <= epsilon;
         }
+
+        public static int Round(this float value)
+        {
+            return (int)Math.Round(value);
+        }
     }
 }

@@ -261,7 +261,7 @@ namespace MonoGameUtilities
         /// <param name="rect">The rectangle to draw</param>
         /// <param name="color">The color to draw the rectangle in</param>
         /// <param name="layerDepth">The layer depth</param>
-        public static void DrawRectangle(this SpriteBatch spriteBatch, Rectangle rect, Color color, float layerDepth)
+        public static void DrawRectangle(this SpriteBatch spriteBatch, Rectangle rect, Color color, float layerDepth = 0.0f)
         {
             DrawRectangle(spriteBatch, rect, color, 1.0f, layerDepth);
         }
@@ -449,14 +449,14 @@ namespace MonoGameUtilities
 
         #endregion
 
-        #region PutPixel
+        #region DrawPoint
 
-        public static void PutPixel(this SpriteBatch spriteBatch, float x, float y, Color color, float layerDepth)
+        public static void DrawPoint(this SpriteBatch spriteBatch, float x, float y, Color color, float layerDepth = 0.0f)
         {
-            PutPixel(spriteBatch, new Vector2(x, y), color, layerDepth);
+            DrawPoint(spriteBatch, new Vector2(x, y), color, layerDepth);
         }
 
-        public static void PutPixel(this SpriteBatch spriteBatch, Vector2 position, Color color, float layerDepth)
+        public static void DrawPoint(this SpriteBatch spriteBatch, Vector2 position, Color color, float layerDepth = 0.0f)
         {
             if (_pixel == null)
             {

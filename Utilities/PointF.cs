@@ -7,10 +7,10 @@ namespace Utilities
     /// This struct is immutable.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public struct PointF
+    public readonly struct PointF
     {
         #region State
-        public float X { get; }
+        public float X { get;  }
         public float Y { get; }
         #endregion
 
@@ -21,6 +21,11 @@ namespace Utilities
         }
 
         public static PointF Empty => new PointF(0.0f, 0.0f);
+
+        public Point ToPoint()
+        {
+            return new Point((X.Round()), Y.Round());
+        }
 
         #region Overrides and Overloads
 

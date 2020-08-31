@@ -6,7 +6,7 @@ namespace Utilities
     /// This struct is immutable.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public struct Point
+    public readonly struct Point
     {
         #region State
         public int X { get; }

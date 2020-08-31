@@ -1,6 +1,6 @@
 ﻿using PhoenixGameLibrary;
-using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Views;
+using Utilities.ExtensionMethods;
 
 namespace PhoenixGamePresentation.Handlers
 {

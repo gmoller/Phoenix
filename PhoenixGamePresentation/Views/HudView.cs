@@ -54,7 +54,7 @@ namespace PhoenixGamePresentation.Views
             #region MiniMapFrame
 
             _hudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.15f /* 15% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 50));
-            var image = new Image("mapImage", new Vector2(200.0f, 115.0f));
+            var image = new Image("mapImage", new Vector2(200.0f, 116.0f));
             image.Click += MiniMapClick;
             _hudViewFrame["miniMapFrame"].AddControl(image, Alignment.MiddleCenter, Alignment.MiddleCenter);
 
@@ -173,12 +173,14 @@ namespace PhoenixGamePresentation.Views
 
             _hudViewFrame.Draw(spriteBatch);
 
-            var worldPosition = _worldView.Camera.CameraTopLeftPostionInWorld;
+            var minimapImage = _hudViewFrame["miniMapFrame.mapImage"];
+            var minimapViewedRectangle = MinimapHandler.GetViewedRectangle(_worldView, minimapImage.Size);
 
-            var ratio = new Vector2(_worldView.Camera.WorldViewport.Width / (float)_worldView.WorldViewport.Width, _worldView.Camera.WorldViewport.Height / (float)_worldView.WorldViewport.Height);
-            var size = new Vector2(200 * ratio.X, 115 * ratio.Y);
-            var topLeft = new Vector2(worldPosition.X / 200.0f, worldPosition.Y / 115.0f) / ratio;
-            spriteBatch.DrawRectangle(new Rectangle(25 + (int)topLeft.X, 69 + (int)topLeft.Y, (int)size.X, (int)size.Y), Color.White, 0.0f);
+            minimapViewedRectangle.X += minimapImage.Left;
+            minimapViewedRectangle.Y += minimapImage.Top;
+
+            spriteBatch.DrawRectangle(minimapViewedRectangle, Color.White);
+            spriteBatch.DrawPoint(minimapViewedRectangle.Center.ToVector2(), Color.White);
 
             DrawUnits(spriteBatch);
             DrawNotifications(spriteBatch);
@@ -284,8 +286,19 @@ namespace PhoenixGamePresentation.Views
 
         private void MiniMapClick(object sender, EventArgs e)
         {
-            // TODO: determine pixel to look at in world
-            _worldView.Camera.LookAtPixel(new Vector2(6545, 3776));
+            // Where on the minimap is clicked?
+            // Convert that to world pixel
+            if (!(e is MouseEventArgs mouseEventArgs)) return;
+
+            var minimapImage = _hudViewFrame["miniMapFrame.mapImage"];
+            var minimapPosition = mouseEventArgs.Location - new Point(_viewport.X + minimapImage.Left, _viewport.Y + minimapImage.Top);
+            var normalizedX = minimapPosition.X / (float) minimapImage.Size.X;
+            var normalizedY = minimapPosition.Y / (float) minimapImage.Size.Y;
+
+            var x = (int) (_worldView.WorldWidthInPixels * normalizedX);
+            var y = (int) (_worldView.WorldHeightInPixels * normalizedY);
+
+            _worldView.Camera.LookAtPixel(new Point(x, y));
         }
 
         private void EndTurnButtonClick(object sender, EventArgs e)

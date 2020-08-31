@@ -40,20 +40,20 @@ namespace PhoenixGamePresentation.Views
         public EnumerableDictionary<IControl> MovementTypeImages => new EnumerableDictionary<IControl>(_movementTypeImages);
         public EnumerableDictionary<IControl> ActionButtons => new EnumerableDictionary<IControl>(_actionButtons);
 
-        internal WorldView(World world)
+        public WorldView(World world)
         {
             World = world;
 
             _overlandMapView = new OverlandMapView(this, World.OverlandMap);
             _overlandSettlementsView = new OverlandSettlementViews(this, World.Settlements);
             _stackViews = new StackViews(this, World.Stacks);
-            _settlementView = new SettlementView(this, World.Settlements[0]);
+            _settlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", Point.Zero, 1, World.OverlandMap.CellGrid));
             _hudView = new HudView(this, _stackViews);
 
             _movementTypeImages = InitializeMovementTypeImages();
             _actionButtons = InitializeActionButtons();
 
-            Camera = new Camera(this, new Rectangle(0, 0, 1670, 1080));
+            Camera = new Camera(this, new Rectangle(0, 0, 1670, 1080), CameraClampMode.AutoClamp);
         }
 
         internal void LoadContent(ContentManager content)

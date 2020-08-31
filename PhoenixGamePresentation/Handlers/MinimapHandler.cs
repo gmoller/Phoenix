@@ -1,12 +1,35 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using MonogameUtilities;
 using PhoenixGameLibrary;
+using PhoenixGamePresentation.Views;
 using Utilities;
+using Utilities.ExtensionMethods;
 using Color = Microsoft.Xna.Framework.Color;
+using Point = Utilities.Point;
 
 namespace PhoenixGamePresentation.Handlers
 {
     public static class MinimapHandler
     {
+        public static Rectangle GetViewedRectangle(WorldView worldView, Point minimapSize)
+        {
+            var normalized = new Vector2(worldView.Camera.CameraFocusPointInWorld.X / (float)worldView.WorldWidthInPixels, worldView.Camera.CameraFocusPointInWorld.Y / (float)worldView.WorldHeightInPixels);
+            var minimapViewedRectangleCenter = new Vector2(normalized.X * minimapSize.X, normalized.Y * minimapSize.Y);
+
+            var percentageOfEntireWorldCameraIsLookingAt = new Vector2(worldView.Camera.CameraRectangleInWorld.Width / (float)worldView.WorldWidthInPixels, worldView.Camera.CameraRectangleInWorld.Height / (float)worldView.WorldHeightInPixels);
+            var minimapViewedRectangleSize = new Vector2(minimapSize.X * percentageOfEntireWorldCameraIsLookingAt.X, minimapSize.Y * percentageOfEntireWorldCameraIsLookingAt.Y);
+
+            var minimapViewedRectangle = new Rectangle(
+                (int)minimapViewedRectangleCenter.X - (int)(minimapViewedRectangleSize.X * Constants.ONE_HALF),
+                (int)minimapViewedRectangleCenter.Y - (int)(minimapViewedRectangleSize.Y * Constants.ONE_HALF),
+                (int)minimapViewedRectangleSize.X,
+                (int)minimapViewedRectangleSize.Y);
+
+            return minimapViewedRectangle;
+        }
+
         internal static Texture2D Create(World world)
         {
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
@@ -15,51 +38,97 @@ namespace PhoenixGamePresentation.Handlers
             var graphicsDevice = context.GraphicsDevice;
             var terrainTypes = gameMetadata.TerrainTypes;
 
-            var scalingFactor = 2;
+            var scalingFactorX = 7;
+            var scalingFactorY = 6;
             var cellGrid = world.OverlandMap.CellGrid;
             var width = cellGrid.NumberOfColumns;
-            var scaledWidth = width * scalingFactor;
             var height = cellGrid.NumberOfRows;
-            var scaledHeight = height * scalingFactor;
-            var minimap = new Texture2D(graphicsDevice, scaledWidth, scaledHeight, false, SurfaceFormat.Color);
+            var scaledWidth = (width * scalingFactorX) + 4; // Math.Ceiling(scalingFactorX * Constants.ONE_HALF)
+            var scaledHeight = (height * scalingFactorY) + 4; // scalingFactorY * Constants.ONE_HALF
 
-            var colors = new Color[scaledWidth * scaledHeight];
-            var i = 0;
-            for (var row = 0; row < height; row++)
+            var colors = new Color[scaledWidth, scaledHeight];
+            for (var row1 = 0; row1 < height; row1++)
             {
-                var evenLine = (row % 2) == 0;
-                for (var column = 0; column < width; column++)
+                var evenLine = row1.IsEven();
+                for (var column1 = 0; column1 < width; column1++)
                 {
-                    var lastColumnOnLine = column == (width - 1);
-                    var cell = cellGrid.GetCell(column, row);
+                    var cell = cellGrid.GetCell(column1, row1);
                     var terrainTypeId = cell.TerrainTypeId;
-                    var color = cell.SeenState == SeenState.NeverSeen ? Utilities.Color.Black :  terrainTypes[terrainTypeId].MinimapColor;
+                    var color = terrainTypes[terrainTypeId].MinimapColor.ToMonogameColor();
 
-                    var index = i;
-                    colors[index] = new Color(color.R, color.G, color.B, color.A);
-                    if (evenLine || !lastColumnOnLine)
+                    var hexColors = GetHexColors(color, Color.DarkSlateGray, cell.SeenState);
+
+                    for (var row2 = 0; row2 < 8; row2++)
                     {
-                        index = i + 1;
-                        colors[index] = new Color(color.R, color.G, color.B, color.A);
-                    }
+                        for (var column2 = 0; column2 < 7; column2++)
+                        {
+                            var col = (column1 * 7) + column2 + (evenLine ? 0 : 3);
+                            var row = (row1 * 6) + row2;
 
-                    index = i + scaledWidth;
-                    colors[index] = new Color(color.R, color.G, color.B, color.A);
-                    if (evenLine || !lastColumnOnLine)
-                    {
-                        index = i + 1 + scaledWidth;
-                        colors[index] = new Color(color.R, color.G, color.B, color.A);
+                            if (colors[col, row] == Color.Transparent)
+                            {
+                                colors[col, row] = hexColors[column2, row2];
+                            }
+                        }
                     }
-
-                    i += scalingFactor;
                 }
-
-                i += scaledWidth + (evenLine ? 1 : -1);
             }
 
-            minimap.SetData(colors);
+            var colors1D = colors.To1DArray();
+            var minimap = new Texture2D(graphicsDevice, scaledWidth, scaledHeight, false, SurfaceFormat.Color);
+            minimap.SetData(colors1D);
 
             return minimap;
+        }
+
+        private static Color[,] GetHexColors(Color seenColor, Color unseenColor, SeenState seenState)
+        {
+            Color[,] colors = new Color[7, 8];
+            for (var row = 0; row < 8; row++)
+            {
+                for (var column = 0; column < 7; column++)
+                {
+                    Color colorToSet;
+                    if (seenState == SeenState.NeverSeen)
+                    {
+                        colorToSet = unseenColor;
+                    }
+                    else if (row >= 2 && row <= 5)
+                    {
+                        colorToSet = seenColor;
+                    }
+                    else if (row == 0 || row == 7)
+                    {
+                        if (column == 3)
+                        {
+                            colorToSet = seenColor;
+                        }
+                        else
+                        {
+                            colorToSet = Color.Transparent;
+                        }
+                    }
+                    else if (row == 1 || row == 6)
+                    {
+                        if (column == 0 || column == 6)
+                        {
+                            colorToSet = Color.Transparent;
+                        }
+                        else
+                        {
+                            colorToSet = seenColor;
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+
+                    colors[column, row] = colorToSet;
+                }
+            }
+
+            return colors;
         }
     }
 }

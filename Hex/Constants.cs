@@ -22,6 +22,7 @@ namespace Hex
         public const double ONE_HALF = 1 / 2.0f;
         public const double ONE_THIRD = 1 / 3.0f;
         public const double TWO_THIRDS = 2 / 3.0f;
+        public const double ONE_QUARTER = 1 / 4.0f;
         public const double THREE_QUARTERS = 3 / 4.0f;
         public static readonly double SquareRootOf3 = Math.Sqrt(3);
         public static readonly double OneThirdOfSquareRootOf3 = SquareRootOf3 / 3.0f;
@@ -44,6 +45,7 @@ namespace Hex
         public static readonly double HexHeight = HexActualHeight * HEX_SCALE; // 128.0f
         public static readonly double HexThreeQuarterHeight = HexHeight * THREE_QUARTERS;
         public static readonly double HexHalfHeight = HexHeight * ONE_HALF; // 64.0f
+        public static readonly double HexQuarterHeight = HexHeight * ONE_QUARTER; // 32.0f
         public static readonly double HexWidth = HexActualWidth * HEX_SCALE; // 110.85125f
         public static readonly double HexHalfWidth = HexWidth * ONE_HALF; // 55.425625f
 

@@ -4,51 +4,94 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Input;
 using Hex;
-using MonoGameUtilities.ExtensionMethods;
 using PhoenixGamePresentation.Views;
 using Utilities;
 using Utilities.ExtensionMethods;
 using MathHelper = Microsoft.Xna.Framework.MathHelper;
+using Point = Utilities.Point;
 
 namespace PhoenixGamePresentation
 {
+    public enum CameraClampMode
+    {
+        NoClamp,
+        AutoClamp,
+        ClampOnUpdate
+    }
+
     public class Camera
     {
         #region State
         private readonly WorldView _worldView;
-
         private readonly Rectangle _viewport;
 
-        private float _rotation;
-        private Vector2 _centerPosition;
+        private readonly CameraClampMode _clampMode;
+        //private float _rotation;
 
-        public Matrix Transform { get; private set; }
-        public float Zoom { get; private set; }
+        private Point _cameraFocusPointInWorld;
+        public Point CameraFocusPointInWorld
+        {
+            get => _cameraFocusPointInWorld;
+            private set
+            {
+                _cameraFocusPointInWorld = value;
+                if (_clampMode == CameraClampMode.AutoClamp)
+                {
+                    _cameraFocusPointInWorld = ClampCamera(Zoom);
+                }
+            }
+        }
+
+        private float _zoom;
+        public float Zoom
+        {
+            get => _zoom; 
+            set
+            {
+                _zoom = value;
+                _zoom = ClampZoom(Zoom);
+                CalculateNumberOfHexesFromCenter(_viewport, _zoom);
+            }
+        }
 
         public int NumberOfHexesToLeft { get; private set; }
         public int NumberOfHexesToRight { get; private set; }
         public int NumberOfHexesAbove { get; private set; }
         public int NumberOfHexesBelow { get; private set; }
-        #endregion State
+        #endregion End State
 
-        public Vector2 CameraPostionInWorld => _centerPosition;
-        public Vector2 CameraTopLeftPostionInWorld => new Vector2(_centerPosition.X - Width * Constants.ONE_HALF, _centerPosition.Y - Height * Constants.ONE_HALF);
-        public Vector2 CameraTopRightPostionInWorld => new Vector2(_centerPosition.X + Width * Constants.ONE_HALF, _centerPosition.Y - Height * Constants.ONE_HALF);
-        public Vector2 CameraBottomLeftPostionInWorld => new Vector2(_centerPosition.X - Width * Constants.ONE_HALF, _centerPosition.Y + Height * Constants.ONE_HALF);
-        public Vector2 CameraBottomRightPostionInWorld => new Vector2(_centerPosition.X + Width * Constants.ONE_HALF, _centerPosition.Y + Height * Constants.ONE_HALF);
-        public Rectangle WorldViewport => new Rectangle((int)CameraTopLeftPostionInWorld.X, (int)CameraTopLeftPostionInWorld.Y, _viewport.Width, _viewport.Height);
+        public Matrix Transform => GetTransform();
 
-        public int Width => _viewport.Width;
-        public int Height => _viewport.Height;
+        public Point CameraFocusCellInWorld
+        {
+            get
+            {
+                var hexOffsetCoordinates = HexOffsetCoordinates.FromPixel(CameraFocusPointInWorld.X, CameraFocusPointInWorld.Y);
 
-        public Camera(WorldView worldView, Rectangle viewport)
+                return new Point(hexOffsetCoordinates.Col, hexOffsetCoordinates.Row);
+            }
+        }
+
+        public Rectangle CameraRectangleInWorld
+        {
+            get
+            {
+                var frustum = GetBoundingFrustum();
+                var rectangle = new Rectangle(frustum.Left.D.Round(), frustum.Top.D.Round(), _viewport.Width, _viewport.Height);
+
+                return rectangle;
+            }
+        }
+
+        public Camera(WorldView worldView, Rectangle viewport, CameraClampMode clampMode)
         {
             _worldView = worldView;
             _viewport = viewport;
+            _clampMode = clampMode;
 
-            _centerPosition = Vector2.Zero;
-            _rotation = 0.0f;
             Zoom = 1.0f;
+            CameraFocusPointInWorld = Point.Zero;
+            //_rotation = 0.0f;
             CalculateNumberOfHexesFromCenter(viewport, Zoom);
         }
 
@@ -76,33 +119,33 @@ namespace PhoenixGamePresentation
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             var hexPoint = context.WorldHexPointedAtByMouseCursor;
             var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y);
-            _centerPosition = newPosition.ToVector2();
+            CameraFocusPointInWorld = newPosition.ToPoint();
         }
 
         /// <summary>
         /// Center camera on cell.
         /// </summary>
         /// <param name="hexPoint"></param>
-        public void LookAtCell(Utilities.Point hexPoint)
+        public void LookAtCell(Point hexPoint)
         {
             var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y); // in world
-            _centerPosition = newPosition.ToVector2();
+            CameraFocusPointInWorld = newPosition.ToPoint();
         }
 
         /// <summary>
         /// Center camera on pixel.
         /// </summary>
         /// <param name="newPosition"></param>
-        public void LookAtPixel(Vector2 newPosition)
+        public void LookAtPixel(Point newPosition)
         {
-            _centerPosition = newPosition;
+            CameraFocusPointInWorld = newPosition;
         }
 
         private void CalculateNumberOfHexesFromCenter(Rectangle viewport, float zoom)
         {
-            NumberOfHexesToLeft = (int)(Math.Ceiling(viewport.Width / Hex.Constants.HexWidth * (1 / zoom)) * Constants.ONE_HALF) + 1;
+            NumberOfHexesToLeft = (int)(Math.Ceiling(viewport.Width / Hex.Constants.HexWidth * (1 / zoom) * Constants.ONE_HALF)) + 1;
             NumberOfHexesToRight = NumberOfHexesToLeft;
-            NumberOfHexesAbove = (int)(Math.Ceiling(viewport.Height / Hex.Constants.HexThreeQuarterHeight * (1 / zoom)) * Constants.ONE_HALF) + 1;
+            NumberOfHexesAbove = (int)(Math.Ceiling(viewport.Height / Hex.Constants.HexThreeQuarterHeight * (1 / zoom) * Constants.ONE_HALF)) + 1;
             NumberOfHexesBelow = NumberOfHexesAbove;
         }
 
@@ -110,8 +153,7 @@ namespace PhoenixGamePresentation
         {
             if (_worldView.GameStatus != GameStatus.OverlandMap)
             {
-                ClampCamera(Zoom);
-                UpdateMatrix();
+                CameraFocusPointInWorld = ClampCamera(Zoom);
                 return;
             }
 
@@ -130,21 +172,19 @@ namespace PhoenixGamePresentation
             // Actions
             ResetZoom(resetZoom);
             AdjustZoom(zoomAmount);
-            MoveCamera(panCameraDistance);
+            MoveCamera(new Utilities.Point((int)panCameraDistance.X, (int)panCameraDistance.Y));
 
-            ClampCamera(Zoom);
-            UpdateMatrix();
+            CameraFocusPointInWorld = ClampCamera(Zoom);
 
             // Status change?
         }
 
         private void ResetZoom(bool resetZoom)
         {
-            if (resetZoom)
-            {
-                Zoom = 1.0f;
-                CalculateNumberOfHexesFromCenter(_viewport, Zoom);
-            }
+            if (!resetZoom) return;
+
+            Zoom = 1.0f;
+            CalculateNumberOfHexesFromCenter(_viewport, Zoom);
         }
 
         private void AdjustZoom(float zoomAmount)
@@ -152,47 +192,62 @@ namespace PhoenixGamePresentation
             if (zoomAmount.AboutEquals(0.0f)) return;
 
             Zoom += zoomAmount;
-            Zoom = MathHelper.Clamp(Zoom, 0.35f, 5.0f);
+            Zoom = ClampZoom(Zoom);
 
             CalculateNumberOfHexesFromCenter(_viewport, Zoom);
         }
 
-        private void MoveCamera(Vector2 movePosition)
+        private void MoveCamera(Point movePosition)
         {
-            var newPosition = _centerPosition + movePosition;
+            var newPosition = CameraFocusPointInWorld + movePosition;
 
-            _centerPosition = newPosition;
+            CameraFocusPointInWorld = newPosition;
         }
 
-        private void ClampCamera(float zoom)
+        private Point ClampCamera(float zoom)
         {
-            _centerPosition.X = MathHelper.Clamp(_centerPosition.X, _viewport.Center.X * (1 / zoom), Constants.WORLD_MAP_WIDTH_IN_PIXELS - _viewport.Center.X * (1 / zoom));
-            _centerPosition.Y = MathHelper.Clamp(_centerPosition.Y, _viewport.Center.Y * (1 / zoom), Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _viewport.Center.Y * (1 / zoom));
+            if (_clampMode == CameraClampMode.ClampOnUpdate || _clampMode == CameraClampMode.AutoClamp)
+            {
+                var x = (int) MathHelper.Clamp(CameraFocusPointInWorld.X, _viewport.Center.X * (1 / zoom),
+                    Constants.WORLD_MAP_WIDTH_IN_PIXELS - _viewport.Center.X * (1 / zoom));
+                var y = (int) MathHelper.Clamp(CameraFocusPointInWorld.Y, _viewport.Center.Y * (1 / zoom),
+                    Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _viewport.Center.Y * (1 / zoom));
+
+                return new Point(x, y);
+            }
+
+            return CameraFocusPointInWorld;
         }
 
-        private void UpdateMatrix()
+        private float ClampZoom(float zoom)
         {
-            Transform = Matrix.CreateTranslation(new Vector3(-_centerPosition.X, -_centerPosition.Y, 0.0f)) *
-                        Matrix.CreateRotationZ(_rotation) *
+            return MathHelper.Clamp(zoom, 0.5f, 2.0f);
+        }
+
+        private Matrix GetTransform()
+        {
+            var transform = Matrix.CreateTranslation(new Vector3(-CameraFocusPointInWorld.X, -CameraFocusPointInWorld.Y, 0.0f)) *
+                        //Matrix.CreateRotationZ(_rotation) *
                         Matrix.CreateScale(Zoom) *
                         Matrix.CreateTranslation(new Vector3(_viewport.Width * Constants.ONE_HALF, _viewport.Height * Constants.ONE_HALF, 0.0f));
+
+            return transform;
         }
 
-        private void UpdateVisibleArea()
+        private BoundingFrustum GetBoundingFrustum()
         {
-            var inverseViewMatrix = Matrix.Invert(Transform);
+            var projectionMatrix = GetProjectionMatrix(Transform);
+            var boundingFrustum = new BoundingFrustum(projectionMatrix);
 
-            var tl = Vector2.Transform(Vector2.Zero, inverseViewMatrix);
-            var tr = Vector2.Transform(new Vector2(_viewport.X, 0), inverseViewMatrix);
-            var bl = Vector2.Transform(new Vector2(0, _viewport.Y), inverseViewMatrix);
-            var br = Vector2.Transform(new Vector2(_viewport.Width, _viewport.Height), inverseViewMatrix);
+            return boundingFrustum;
+        }
 
-            var min = new Vector2(
-                MathHelper.Min(tl.X, MathHelper.Min(tr.X, MathHelper.Min(bl.X, br.X))),
-                MathHelper.Min(tl.Y, MathHelper.Min(tr.Y, MathHelper.Min(bl.Y, br.Y))));
-            var max = new Vector2(
-                MathHelper.Max(tl.X, MathHelper.Max(tr.X, MathHelper.Max(bl.X, br.X))),
-                MathHelper.Max(tl.Y, MathHelper.Max(tr.Y, MathHelper.Max(bl.Y, br.Y))));
+        private Matrix GetProjectionMatrix(Matrix viewMatrix)
+        {
+            var projection = Matrix.CreateOrthographicOffCenter(0, _viewport.Width, _viewport.Height, 0, -1, 0);
+            Matrix.Multiply(ref viewMatrix, ref projection, out projection);
+
+            return projection;
         }
     }
 }

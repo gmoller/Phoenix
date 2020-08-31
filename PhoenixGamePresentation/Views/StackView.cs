@@ -243,7 +243,7 @@ namespace PhoenixGamePresentation.Views
             var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
 
             _currentPositionOnScreen = newPosition;
-            _worldView.Camera.LookAtPixel(newPosition);
+            _worldView.Camera.LookAtPixel(new Point((int)newPosition.X, (int)newPosition.Y));
         }
 
         private void MoveStackToCell()

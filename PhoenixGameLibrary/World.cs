@@ -20,7 +20,7 @@ namespace PhoenixGameLibrary
 
         public string CurrentDate => GetCurrentDate();
 
-        internal World(int numberOfColumns, int numberOfRows)
+        public World(int numberOfColumns, int numberOfRows)
         {
             PlayerFaction = new Faction();
             OverlandMap = new OverlandMap(this, numberOfColumns, numberOfRows);
