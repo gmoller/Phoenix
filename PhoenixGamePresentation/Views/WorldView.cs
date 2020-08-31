@@ -32,7 +32,7 @@ namespace PhoenixGamePresentation.Views
         public Camera Camera { get; }
 
         public GameStatus GameStatus { get; set; }
-        #endregion State
+        #endregion End State
 
         public Rectangle WorldViewport => new Rectangle(0, 0, Constants.WORLD_MAP_WIDTH_IN_PIXELS, Constants.WORLD_MAP_HEIGHT_IN_PIXELS);
         public int WorldWidthInPixels => Constants.WORLD_MAP_WIDTH_IN_PIXELS;

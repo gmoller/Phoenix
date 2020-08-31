@@ -18,6 +18,8 @@ namespace PhoenixGameLibrary
 
         public int NumberOfColumns { get; }
         public int NumberOfRows { get; }
+
+        public event EventHandler NewCellSeen;
         #endregion
 
         public CellGrid(int numberOfColumns, int numberOfRows)
@@ -64,7 +66,18 @@ namespace PhoenixGameLibrary
             if (cell.Equals(Cell.Empty)) return;
 
             var newCell = new Cell(cell, seenState, controlledByFaction, cell.Borders);
+            if (cell.SeenState != newCell.SeenState)
+            {
+                // raise event
+                OnNewCellSeen(new EventArgs());
+            }
+
             _cellGrid[cell.Column, cell.Row] = newCell;
+        }
+
+        private void OnNewCellSeen(EventArgs e)
+        {
+            NewCellSeen?.Invoke(this, e);
         }
 
         public void CellFactionChange(List<Cell> cells)

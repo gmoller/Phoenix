@@ -97,6 +97,8 @@ namespace PhoenixGamePresentation.Views
             _worldView = worldView;
             _stackViews = stackViews;
 
+            worldView.World.OverlandMap.CellGrid.NewCellSeen += NewCellSeen;
+
             //var json = _hudViewFrame.Serialize();
             //_hudViewFrame.Deserialize(json);
             //var newFrame = new Frame(json);
@@ -133,6 +135,10 @@ namespace PhoenixGamePresentation.Views
             _hudViewFrame["btnEndTurn"].LoadContent(content);
             _hudViewFrame["btnEndTurn.lblEndTurn"].LoadContent(content);
 
+            var createdImage = MinimapHandler.Create(_worldView.World);
+            var mapImage = (Image)_hudViewFrame["miniMapFrame.mapImage"];
+            mapImage.SetTexture(createdImage);
+
             _actionButtons = _worldView.ActionButtons;
         }
 
@@ -142,18 +148,9 @@ namespace PhoenixGamePresentation.Views
 
             // Causes
             var mouseOverHudView = _area.Contains(input.MousePosition) || _hudViewFrame.ChildControls["btnEndTurn"].MouseOver;
-            var redrawMiniMap = true;
 
             // Actions
             _hudViewFrame.Enabled = mouseOverHudView;
-
-            if (redrawMiniMap)
-            {
-                // call minimap creator
-                var createdImage = MinimapHandler.Create(_worldView.World);
-                var mapImage = (Image)_hudViewFrame["miniMapFrame.mapImage"];
-                mapImage.SetTexture(createdImage);
-            }
 
             _hudViewFrame.Update(input, deltaTime, _viewport);
             _actionButtons.Update(input, deltaTime, _viewport);
@@ -282,6 +279,13 @@ namespace PhoenixGamePresentation.Views
                     }
                 }
             }
+        }
+
+        private void NewCellSeen(object sender, EventArgs e)
+        {
+            var createdImage = MinimapHandler.Create(_worldView.World);
+            var mapImage = (Image)_hudViewFrame["miniMapFrame.mapImage"];
+            mapImage.SetTexture(createdImage);
         }
 
         private void MiniMapClick(object sender, EventArgs e)
