@@ -10,18 +10,16 @@ namespace PhoenixGamePresentation.Views
     {
         #region State
         private readonly WorldView _worldView;
-        private readonly Cursor _cursor;
         private readonly CursorView _cursorView;
         private readonly InputHandler _input;
         #endregion
 
         public PhoenixGameView(PhoenixGame phoenixGame)
         {
-            _worldView = new WorldView(phoenixGame.World);
-            _cursor = new Cursor();
-            _cursorView = new CursorView(_cursor);
             _input = new InputHandler();
             _input.Initialize();
+            _worldView = new WorldView(phoenixGame.World, _input);
+            _cursorView = new CursorView();
         }
 
         public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
@@ -59,6 +57,8 @@ namespace PhoenixGamePresentation.Views
             AssetsManager.Instance.AddTexture("Cursor", "Textures\\cursor");
             AssetsManager.Instance.AddTexture("VillageSmall00", "Textures\\villageSmall00");
             AssetsManager.Instance.AddTexture("brutal-helm", "Textures\\brutal-helm");
+            AssetsManager.Instance.AddTexture("NoiseTexture", "Textures\\noiseTexture");
+
 
             AssetsManager.Instance.AddTexture("terrain_hextiles_basic_1", "TextureAtlases\\terrain_hextiles_basic_1");
             AssetsManager.Instance.AddAtlas("terrain_hextiles_basic_1", "TextureAtlases\\terrain_hextiles_basic_1");
@@ -103,7 +103,6 @@ namespace PhoenixGamePresentation.Views
         {
             _input.Update(deltaTime);
             _worldView.Update(_input, deltaTime);
-            _cursor.Update(_input, deltaTime);
             _cursorView.Update(_input, deltaTime);
         }
 

@@ -6,23 +6,24 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameUtilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
 using Utilities;
+using Point = Utilities.Point;
 
 namespace PhoenixGamePresentation.Views
 {
     internal class CursorView
     {
         #region State
-        private readonly Cursor _cursor;
+        private Point _position;
+
         private readonly Image _imgCursor;
 
         private Viewport _viewport;
         private ViewportAdapter _viewportAdapter;
-        #endregion State
+        #endregion End State
 
-        internal CursorView(Cursor cursor)
+        internal CursorView()
         {
-            _cursor = cursor;
-            _imgCursor = new Image(_cursor.Position.ToVector2(), Alignment.TopLeft, new Vector2(28.0f, 32.0f), "Cursor");
+            _imgCursor = new Image(_position.ToVector2(), Alignment.TopLeft, new Vector2(28.0f, 32.0f), "Cursor");
 
             SetupViewport(0, 0, 1920, 1080);
         }
@@ -41,7 +42,8 @@ namespace PhoenixGamePresentation.Views
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            _imgCursor.SetTopLeftPosition(_cursor.Position);
+            _position = new Point(input.MousePosition.X, input.MousePosition.Y);
+            _imgCursor.SetTopLeftPosition(_position);
         }
 
         internal void Draw(SpriteBatch spriteBatch)

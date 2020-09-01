@@ -32,7 +32,7 @@ namespace PhoenixGamePresentation.Views
 
         private Viewport _viewport;
         private ViewportAdapter _viewportAdapter;
-        #endregion State
+        #endregion End State
 
         private StackView SelectedStackView => _stackViews.Current;
 
@@ -48,13 +48,15 @@ namespace PhoenixGamePresentation.Views
 
             _hudViewFrame = new Frame(Vector2.Zero, Alignment.TopLeft, new Vector2(_area.Width, _area.Height), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame");
 
+            //_hudViewFrame.AddControl(new Image("imgBackground", new Vector2(250, 1080), "NoiseTexture"));
+
             string GetTextFuncForDate() => _worldView.World.CurrentDate;
             _hudViewFrame.AddControl(new LabelSized("lblCurrentDate", new Vector2(150.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForDate, "Maleficio-Regular-18", Color.Aquamarine), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 20));
 
             #region MiniMapFrame
 
             _hudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.15f /* 15% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new Point(0, 50));
-            var image = new Image("mapImage", new Vector2(200.0f, 116.0f));
+            var image = new Image("mapImage", new Vector2(200.0f, 116.0f), null);
             image.Click += MiniMapClick;
             _hudViewFrame["miniMapFrame"].AddControl(image, Alignment.MiddleCenter, Alignment.MiddleCenter);
 
@@ -86,7 +88,7 @@ namespace PhoenixGamePresentation.Views
             #endregion
 
             var btnEndTurn = new Button("btnEndTurn", new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_h", "reg_button_a");
-            btnEndTurn.Click += EndTurnButtonClick;
+            btnEndTurn.Click += EndTurn;
 
             btnEndTurn.AddControl(new LabelSized("lblEndTurn", btnEndTurn.Size.ToVector2(), Alignment.MiddleCenter, "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue), Alignment.MiddleCenter, Alignment.MiddleCenter);
 
@@ -117,6 +119,7 @@ namespace PhoenixGamePresentation.Views
         {
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
             _hudViewFrame.LoadContent(content);
+            //_hudViewFrame["imgBackground"].LoadContent(content);
             _hudViewFrame["lblCurrentDate"].LoadContent(content);
 
             _hudViewFrame["resourceFrame"].LoadContent(content);
@@ -147,6 +150,7 @@ namespace PhoenixGamePresentation.Views
             if (_worldView.GameStatus == GameStatus.CityView) return;
 
             // Causes
+            // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
             var mouseOverHudView = _area.Contains(input.MousePosition) || _hudViewFrame.ChildControls["btnEndTurn"].MouseOver;
 
             // Actions
@@ -288,6 +292,8 @@ namespace PhoenixGamePresentation.Views
             mapImage.SetTexture(createdImage);
         }
 
+        #region Event Handlers
+
         private void MiniMapClick(object sender, EventArgs e)
         {
             // Where on the minimap is clicked?
@@ -305,9 +311,11 @@ namespace PhoenixGamePresentation.Views
             _worldView.Camera.LookAtPixel(new Point(x, y));
         }
 
-        private void EndTurnButtonClick(object sender, EventArgs e)
+        private void EndTurn(object sender, EventArgs e)
         {
             _worldView.EndTurn();
         }
+
+        #endregion
     }
 }

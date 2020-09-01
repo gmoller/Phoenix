@@ -50,7 +50,7 @@ namespace GuiControls
         }
         public bool MouseOver { get; private set; }
 
-        public event EventHandler Click;
+        public event EventHandler<EventArgs> Click;
         #endregion State
 
         public int Top => ActualDestinationRectangle.Top;

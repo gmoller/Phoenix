@@ -20,6 +20,7 @@ namespace PhoenixGamePresentation.Views
 
         private readonly Stacks _stacks;
         private readonly List<StackView> _stackViews;
+        private readonly InputHandler _input;
 
         private Queue<StackView> _ordersQueue;
         private readonly List<Guid> _selectedThisTurn;
@@ -40,7 +41,7 @@ namespace PhoenixGamePresentation.Views
 
         public StackView this[int index] => _stackViews[index];
 
-        internal StackViews(WorldView worldView, Stacks stacks)
+        internal StackViews(WorldView worldView, Stacks stacks, InputHandler input)
         {
             _worldView = worldView;
             _stacks = stacks;
@@ -48,6 +49,7 @@ namespace PhoenixGamePresentation.Views
             Current = null;
             _ordersQueue = new Queue<StackView>();
             _selectedThisTurn = new List<Guid>();
+            _input = input;
 
             SetupViewport(0, 0, 1670, 1080);
         }
@@ -71,7 +73,7 @@ namespace PhoenixGamePresentation.Views
 
             foreach (var stack in _stacks)
             {
-                CreateNewStackView(_worldView, stack);
+                CreateNewStackView(_worldView, stack, _input);
             }
         }
 
@@ -79,7 +81,7 @@ namespace PhoenixGamePresentation.Views
         {
             while (_stackViews.Count < _stacks.Count)
             {
-                CreateNewStackView(_worldView, _stacks[_stackViews.Count]);
+                CreateNewStackView(_worldView, _stacks[_stackViews.Count], input);
             }
 
             foreach (var stackView in _stackViews)
@@ -199,9 +201,9 @@ namespace PhoenixGamePresentation.Views
             }
         }
 
-        private void CreateNewStackView(WorldView worldView, PhoenixGameLibrary.Stack stack)
+        private void CreateNewStackView(WorldView worldView, PhoenixGameLibrary.Stack stack, InputHandler input)
         {
-            var stackView = new StackView(worldView, this, stack);
+            var stackView = new StackView(worldView, this, stack, input);
             _stackViews.Add(stackView);
         }
 

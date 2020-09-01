@@ -103,7 +103,7 @@ namespace GuiControls
 
         bool MouseOver { get; }
 
-        event EventHandler Click;
+        event EventHandler<EventArgs> Click;
 
         void AddControl(IControl childControl, Alignment parentAlignment = Alignment.TopLeft, Alignment childAlignment = Alignment.None, Point offset = new Point());
         void SetTopLeftPosition(Point point);

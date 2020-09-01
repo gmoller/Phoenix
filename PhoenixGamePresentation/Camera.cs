@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Input;
 using Hex;
+using MonoGameUtilities.ExtensionMethods;
 using PhoenixGamePresentation.Views;
 using Utilities;
 using Utilities.ExtensionMethods;
@@ -28,8 +29,8 @@ namespace PhoenixGamePresentation
         private readonly CameraClampMode _clampMode;
         //private float _rotation;
 
-        private Point _cameraFocusPointInWorld;
-        public Point CameraFocusPointInWorld
+        private Vector2 _cameraFocusPointInWorld;
+        public Vector2 CameraFocusPointInWorld
         {
             get => _cameraFocusPointInWorld;
             private set
@@ -66,7 +67,7 @@ namespace PhoenixGamePresentation
         {
             get
             {
-                var hexOffsetCoordinates = HexOffsetCoordinates.FromPixel(CameraFocusPointInWorld.X, CameraFocusPointInWorld.Y);
+                var hexOffsetCoordinates = HexOffsetCoordinates.FromPixel((int)CameraFocusPointInWorld.X, (int)CameraFocusPointInWorld.Y);
 
                 return new Point(hexOffsetCoordinates.Col, hexOffsetCoordinates.Row);
             }
@@ -90,7 +91,7 @@ namespace PhoenixGamePresentation
             _clampMode = clampMode;
 
             Zoom = 1.0f;
-            CameraFocusPointInWorld = Point.Zero;
+            CameraFocusPointInWorld = Vector2.Zero;
             //_rotation = 0.0f;
             CalculateNumberOfHexesFromCenter(viewport, Zoom);
         }
@@ -119,7 +120,7 @@ namespace PhoenixGamePresentation
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             var hexPoint = context.WorldHexPointedAtByMouseCursor;
             var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y);
-            CameraFocusPointInWorld = newPosition.ToPoint();
+            CameraFocusPointInWorld = newPosition.ToVector2();
         }
 
         /// <summary>
@@ -129,7 +130,7 @@ namespace PhoenixGamePresentation
         public void LookAtCell(Point hexPoint)
         {
             var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y); // in world
-            CameraFocusPointInWorld = newPosition.ToPoint();
+            CameraFocusPointInWorld = newPosition.ToVector2();
         }
 
         /// <summary>
@@ -138,7 +139,7 @@ namespace PhoenixGamePresentation
         /// <param name="newPosition"></param>
         public void LookAtPixel(Point newPosition)
         {
-            CameraFocusPointInWorld = newPosition;
+            CameraFocusPointInWorld = newPosition.ToVector2();
         }
 
         private void CalculateNumberOfHexesFromCenter(Rectangle viewport, float zoom)
@@ -172,11 +173,9 @@ namespace PhoenixGamePresentation
             // Actions
             ResetZoom(resetZoom);
             AdjustZoom(zoomAmount);
-            MoveCamera(new Utilities.Point((int)panCameraDistance.X, (int)panCameraDistance.Y));
+            MoveCamera(panCameraDistance);
 
             CameraFocusPointInWorld = ClampCamera(Zoom);
-
-            // Status change?
         }
 
         private void ResetZoom(bool resetZoom)
@@ -197,23 +196,23 @@ namespace PhoenixGamePresentation
             CalculateNumberOfHexesFromCenter(_viewport, Zoom);
         }
 
-        private void MoveCamera(Point movePosition)
+        private void MoveCamera(Vector2 movePosition)
         {
             var newPosition = CameraFocusPointInWorld + movePosition;
 
             CameraFocusPointInWorld = newPosition;
         }
 
-        private Point ClampCamera(float zoom)
+        private Vector2 ClampCamera(float zoom)
         {
             if (_clampMode == CameraClampMode.ClampOnUpdate || _clampMode == CameraClampMode.AutoClamp)
             {
-                var x = (int) MathHelper.Clamp(CameraFocusPointInWorld.X, _viewport.Center.X * (1 / zoom),
+                var x = MathHelper.Clamp(CameraFocusPointInWorld.X, _viewport.Center.X * (1 / zoom),
                     Constants.WORLD_MAP_WIDTH_IN_PIXELS - _viewport.Center.X * (1 / zoom));
-                var y = (int) MathHelper.Clamp(CameraFocusPointInWorld.Y, _viewport.Center.Y * (1 / zoom),
+                var y = MathHelper.Clamp(CameraFocusPointInWorld.Y, _viewport.Center.Y * (1 / zoom),
                     Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _viewport.Center.Y * (1 / zoom));
 
-                return new Point(x, y);
+                return new Vector2(x, y);
             }
 
             return CameraFocusPointInWorld;

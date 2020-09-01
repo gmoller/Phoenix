@@ -55,7 +55,7 @@ namespace PhoenixGamePresentation.Views
 
         public int Count => _stack.Count;
 
-        public StackView(WorldView worldView, StackViews stackViews, Stack stack)
+        public StackView(WorldView worldView, StackViews stackViews, Stack stack, InputHandler input)
         {
             Id = Guid.NewGuid();
             _worldView = worldView;
@@ -65,6 +65,8 @@ namespace PhoenixGamePresentation.Views
             _potentialMovementPath = new List<Point>();
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             _currentPositionOnScreen = HexOffsetCoordinates.ToPixel(stack.Location.X, stack.Location.Y).ToVector2();
+
+            input.CKeyReleased += FocusCameraOnLocation;
         }
 
         internal List<IControl> GetMovementTypeImages()
@@ -108,7 +110,6 @@ namespace PhoenixGamePresentation.Views
             var mustContinueMovement = MovementHandler.MustContinueMovement(this);
             var mustMoveUnitToNextCell = MovementHandler.MustMoveUnitToNextCell(this);
             var mustDeterminePotentialMovementPath = PotentialMovementHandler.MustDeterminePotentialMovementPath(input, this);
-            var centerOnUnit = input.IsKeyReleased(Keys.C);
 
             // Actions
             if (selectUnit)
@@ -159,13 +160,6 @@ namespace PhoenixGamePresentation.Views
             {
                 SetPotentialMovementPath(new List<Point>());
             }
-
-            if (centerOnUnit)
-            {
-                _worldView.Camera.LookAtCell(Location);
-            }
-
-            // Status change?
         }
 
         internal void SetAsCurrent()
@@ -413,6 +407,18 @@ namespace PhoenixGamePresentation.Views
             sourceRectangle = frame.ToRectangle();
             spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.None, 0.0f);
         }
+
+        #region Event Handlers
+
+        private void FocusCameraOnLocation(object sender, EventArgs e)
+        {
+            if (_worldView.GameStatus == GameStatus.CityView) return;
+            if (!IsSelected) return;
+
+            _worldView.Camera.LookAtCell(Location);
+        }
+
+        #endregion
 
         public override string ToString()
         {

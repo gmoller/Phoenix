@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Assets;
 using GuiControls;
 using Hex;
 using Input;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Input;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
@@ -29,10 +29,11 @@ namespace PhoenixGamePresentation.Views
         private ViewportAdapter _viewportAdapter;
         #endregion State
 
-        internal OverlandMapView(WorldView worldView, OverlandMap overlandMap)
+        internal OverlandMapView(WorldView worldView, OverlandMap overlandMap, InputHandler input)
         {
             _worldView = worldView;
             _overlandMap = overlandMap;
+            input.EnterKeyReleased += EndTurn;
 
             _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, "test", null, Color.Blue);
             _test.Click += delegate { _test.MoveTopLeftPosition(new Point(10, -10)); };
@@ -56,18 +57,7 @@ namespace PhoenixGamePresentation.Views
         {
             if (_worldView.GameStatus != GameStatus.OverlandMap) return;
 
-            // Causes
-            var endTurn = input.IsKeyReleased(Keys.Enter);
-
-            // Actions
-            if (endTurn)
-            {
-                _worldView.EndTurn();
-            }
-
             _test.Update(input, deltaTime, _viewport);
-
-            // Status change?
         }
 
         internal void Draw(SpriteBatch spriteBatch, Camera camera)
@@ -176,5 +166,14 @@ namespace PhoenixGamePresentation.Views
             spriteBatch.DrawLine(centerPosition + point4, centerPosition + point5, color, 1.0f);
             spriteBatch.DrawLine(centerPosition + point5, centerPosition + point0, color, 1.0f);
         }
+
+        #region Event Handlers
+
+        private void EndTurn(object sender, EventArgs e)
+        {
+            _worldView.EndTurn();
+        }
+
+        #endregion
     }
 }

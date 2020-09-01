@@ -58,14 +58,8 @@ namespace PhoenixGamePresentation.Views
         {
             if (_worldView.GameStatus != GameStatus.CityView) return;
 
-            // Causes
-
-            // Actions
-
             _mainFrame.Update(input, deltaTime, viewport);
             _secondaryFrame.Update(input, deltaTime, viewport);
-
-            // Status change?
         }
 
         internal void Draw(SpriteBatch spriteBatch)
@@ -84,12 +78,16 @@ namespace PhoenixGamePresentation.Views
             spriteBatch.GraphicsDevice.Viewport = originalViewport;
         }
 
+        #region Event Handlers
+
         internal void CloseButtonClick(object sender, EventArgs e)
         {
             Command closeSettlementCommand = new CloseSettlementCommand { Payload = (Settlement, _worldView.World.Settlements) };
             closeSettlementCommand.Execute();
             _worldView.GameStatus = GameStatus.OverlandMap;
         }
+
+        #endregion
 
         public override string ToString()
         {

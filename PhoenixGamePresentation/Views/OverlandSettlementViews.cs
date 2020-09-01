@@ -19,12 +19,12 @@ namespace PhoenixGamePresentation.Views
         private ViewportAdapter _viewportAdapter;
         #endregion
 
-        public OverlandSettlementViews(WorldView worldView, Settlements settlements)
+        public OverlandSettlementViews(WorldView worldView, Settlements settlements, InputHandler input)
         {
             _worldView = worldView;
             _settlements = settlements;
 
-            _overlandSettlementView = new OverlandSettlementView(_worldView);
+            _overlandSettlementView = new OverlandSettlementView(_worldView, input);
 
             SetupViewport(0, 0, 1670, 1080);
         }
@@ -45,17 +45,11 @@ namespace PhoenixGamePresentation.Views
         {
             if (_worldView.GameStatus != GameStatus.OverlandMap) return;
 
-            // Causes
-
-            // Actions
-
             foreach (var settlement in _settlements)
             {
                 _overlandSettlementView.Settlement = settlement;
                 _overlandSettlementView.Update(input, deltaTime);
             }
-
-            // Status change?
         }
 
         public void Draw(SpriteBatch spriteBatch, Camera camera)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Assets;
@@ -22,9 +23,10 @@ namespace PhoenixGamePresentation.Views
         public Settlement Settlement { get; set; }
         #endregion
 
-        public OverlandSettlementView(WorldView worldView)
+        public OverlandSettlementView(WorldView worldView, InputHandler input)
         {
             _worldView = worldView;
+            input.RightMouseButtonReleased += OpenSettlement;
         }
 
         public void LoadContent(ContentManager content)
@@ -36,25 +38,6 @@ namespace PhoenixGamePresentation.Views
 
         public void Update(InputHandler input, float deltaTime)
         {
-            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
-
-            // Causes
-            var openSettlement = input.IsRightMouseButtonReleased && CursorIsOnThisSettlement(Settlement);
-
-            // Actions
-            if (openSettlement)
-            {
-                Command openSettlementCommand = new OpenSettlementCommand { Payload = (Settlement, _worldView.World.Settlements) };
-                openSettlementCommand.Execute();
-
-                _worldView.Camera.LookAtCell(Settlement.Location);
-            }
-
-            // Status change?
-            if (openSettlement)
-            {
-                _worldView.GameStatus = GameStatus.CityView;
-            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -81,5 +64,23 @@ namespace PhoenixGamePresentation.Views
             var layerDepth = cell.Index / 10000.0f + 0.00001f;
             spriteBatch.Draw(_texture, destinationRectangle, sourceRectangle, Microsoft.Xna.Framework.Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
         }
+
+        #region Event Handlers
+
+        private void OpenSettlement(object sender, EventArgs e)
+        {
+            if ((_worldView.GameStatus == GameStatus.OverlandMap) && CursorIsOnThisSettlement(Settlement))
+            {
+                Command openSettlementCommand = new OpenSettlementCommand { Payload = (Settlement, _worldView.World.Settlements) };
+                openSettlementCommand.Execute();
+
+                _worldView.Camera.LookAtCell(Settlement.Location);
+
+                _worldView.GameStatus = GameStatus.CityView;
+            }
+        }
+
+        #endregion
+
     }
 }
