@@ -26,7 +26,7 @@ namespace PhoenixGameLibrary
 
         public int Column => Index % Constants.WORLD_MAP_COLUMNS;
         public int Row => Index / Constants.WORLD_MAP_COLUMNS;
-        public Point ToPoint => new Point(Column, Row);
+        public PointI ToPoint => new PointI(Column, Row);
 
         public Cell(int col, int row, int terrainTypeId)
         {

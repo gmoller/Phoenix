@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using System;
+using Microsoft.Xna.Framework.Input;
+using Utilities.ExtensionMethods;
 
 namespace Input
 {
@@ -7,15 +9,34 @@ namespace Input
         private static KeyboardState _currentState;
         private static KeyboardState _previousState;
 
+        private static Func<bool>[] _keyboardActions;
+
+        internal static bool KeyboardActions(int index) => _keyboardActions[index].Invoke();
+
         internal static void Initialize()
         {
             _currentState = Keyboard.GetState();
+
+            var size = Convert.ToInt32(new InputAction().Max());
+            _keyboardActions = new Func<bool>[size + 1];
+            _keyboardActions[(int)InputAction.KeyEnterReleased] = IsKeyEnterReleased;
+            _keyboardActions[(int)InputAction.KeyCReleased] = IsKeyCReleased;
         }
 
         internal static void Update()
         {
             _previousState = _currentState;
             _currentState = Keyboard.GetState();
+        }
+
+        private static bool IsKeyEnterReleased()
+        {
+            return IsKeyReleased(Keys.Enter);
+        }
+
+        private static bool IsKeyCReleased()
+        {
+            return IsKeyReleased(Keys.C);
         }
 
         internal static bool IsKeyDown(Keys key)

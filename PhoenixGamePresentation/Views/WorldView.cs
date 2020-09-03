@@ -12,7 +12,6 @@ using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentation.ExtensionMethods;
 using Utilities;
 using Color = Microsoft.Xna.Framework.Color;
-using Point = Utilities.Point;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -46,7 +45,7 @@ namespace PhoenixGamePresentation.Views
             _overlandMapView = new OverlandMapView(this, World.OverlandMap, input);
             _overlandSettlementsView = new OverlandSettlementViews(this, World.Settlements, input);
             _stackViews = new StackViews(this, World.Stacks, input);
-            _settlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", Point.Zero, 1, World.OverlandMap.CellGrid));
+            _settlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid));
             _hudView = new HudView(this, _stackViews);
 
             _movementTypeImages = InitializeMovementTypeImages();
@@ -102,18 +101,18 @@ namespace PhoenixGamePresentation.Views
             _settlementView.Draw(spriteBatch);
         }
 
-        private Point GetWorldPositionPointedAtByMouseCursor(Camera camera, Microsoft.Xna.Framework.Point mousePosition)
+        private PointI GetWorldPositionPointedAtByMouseCursor(Camera camera, Point mousePosition)
         {
             var worldPosPointedAtByMouseCursor = camera.ScreenToWorld(new Vector2(mousePosition.X, mousePosition.Y));
 
-            return new Point((int)worldPosPointedAtByMouseCursor.X, (int)worldPosPointedAtByMouseCursor.Y);
+            return new PointI((int)worldPosPointedAtByMouseCursor.X, (int)worldPosPointedAtByMouseCursor.Y);
         }
 
-        private Point GetWorldHexPointedAtByMouseCursor(Point worldPositionPointedAtByMouseCursor)
+        private PointI GetWorldHexPointedAtByMouseCursor(PointI worldPositionPointedAtByMouseCursor)
         {
             var worldHex = HexOffsetCoordinates.FromPixel(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
 
-            return new Point(worldHex.Col, worldHex.Row);
+            return new PointI(worldHex.Col, worldHex.Row);
         }
 
         public void BeginTurn()

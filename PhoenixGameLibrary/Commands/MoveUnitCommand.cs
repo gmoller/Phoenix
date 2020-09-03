@@ -6,7 +6,7 @@ namespace PhoenixGameLibrary.Commands
     {
         public override void Execute()
         {
-            var payload = ((Stack stack, Point hexToMoveTo))Payload;
+            var payload = ((Stack stack, PointI hexToMoveTo))Payload;
             var stack = payload.stack;
             var hexToMoveTo = payload.hexToMoveTo;
 

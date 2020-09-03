@@ -9,7 +9,6 @@ using PhoenixGamePresentation.Views;
 using Utilities;
 using Utilities.ExtensionMethods;
 using MathHelper = Microsoft.Xna.Framework.MathHelper;
-using Point = Utilities.Point;
 
 namespace PhoenixGamePresentation
 {
@@ -63,13 +62,13 @@ namespace PhoenixGamePresentation
 
         public Matrix Transform => GetTransform();
 
-        public Point CameraFocusCellInWorld
+        public PointI CameraFocusCellInWorld
         {
             get
             {
                 var hexOffsetCoordinates = HexOffsetCoordinates.FromPixel((int)CameraFocusPointInWorld.X, (int)CameraFocusPointInWorld.Y);
 
-                return new Point(hexOffsetCoordinates.Col, hexOffsetCoordinates.Row);
+                return new PointI(hexOffsetCoordinates.Col, hexOffsetCoordinates.Row);
             }
         }
 
@@ -127,7 +126,7 @@ namespace PhoenixGamePresentation
         /// Center camera on cell.
         /// </summary>
         /// <param name="hexPoint"></param>
-        public void LookAtCell(Point hexPoint)
+        public void LookAtCell(PointI hexPoint)
         {
             var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y); // in world
             CameraFocusPointInWorld = newPosition.ToVector2();
@@ -137,7 +136,7 @@ namespace PhoenixGamePresentation
         /// Center camera on pixel.
         /// </summary>
         /// <param name="newPosition"></param>
-        public void LookAtPixel(Point newPosition)
+        public void LookAtPixel(PointI newPosition)
         {
             CameraFocusPointInWorld = newPosition.ToVector2();
         }

@@ -6,14 +6,13 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameUtilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
 using Utilities;
-using Point = Utilities.Point;
 
 namespace PhoenixGamePresentation.Views
 {
     internal class CursorView
     {
         #region State
-        private Point _position;
+        private PointI _position;
 
         private readonly Image _imgCursor;
 
@@ -42,7 +41,7 @@ namespace PhoenixGamePresentation.Views
 
         internal void Update(InputHandler input, float deltaTime)
         {
-            _position = new Point(input.MousePosition.X, input.MousePosition.Y);
+            _position = new PointI(input.MousePosition.X, input.MousePosition.Y);
             _imgCursor.SetTopLeftPosition(_position);
         }
 

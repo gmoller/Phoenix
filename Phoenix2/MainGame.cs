@@ -2,14 +2,12 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation;
 using PhoenixGamePresentation.Views;
 using Utilities;
-using Point = Utilities.Point;
  
-namespace Phoenix
+namespace Phoenix2
 {
     public class MainGame : Game
     {
@@ -42,7 +40,7 @@ namespace Phoenix
             context.GraphicsDeviceManager = _graphicsDeviceManager;
             context.GameWindow = Window;
 
-            if (context.DesiredResolution == Point.Empty)
+            if (context.DesiredResolution == PointI.Empty)
             {
                 SetScreenResolution(_graphicsDeviceManager, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
             }
@@ -84,7 +82,7 @@ namespace Phoenix
 
             var actualWidth = graphicsDeviceManager.GraphicsDevice.Viewport.Width;
             var actualHeight = graphicsDeviceManager.GraphicsDevice.Viewport.Height;
-            context.ActualResolution = new Point(actualWidth, actualHeight);
+            context.ActualResolution = new PointI(actualWidth, actualHeight);
             context.ScreenRatio = new PointF(actualWidth / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, actualHeight / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
         }
 

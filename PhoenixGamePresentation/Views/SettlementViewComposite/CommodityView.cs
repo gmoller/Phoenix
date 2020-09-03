@@ -3,7 +3,7 @@ using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Point = Utilities.Point;
+using PointI = Utilities.PointI;
 
 namespace PhoenixGamePresentation.Views.SettlementViewComposite
 {
@@ -59,14 +59,14 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 
             for (var i = 0; i < numberOfItem1; ++i)
             {
-                _image1.SetTopLeftPosition(new Point(x, y));
+                _image1.SetTopLeftPosition(new PointI(x, y));
                 _image1.Draw(spriteBatch);
                 x += 30;
             }
 
             for (var i = 0; i < numberOfItem2; ++i)
             {
-                _image2.SetTopLeftPosition(new Point(x, y));
+                _image2.SetTopLeftPosition(new PointI(x, y));
                 _image2.Draw(spriteBatch);
                 x += 20;
             }

@@ -31,7 +31,7 @@ namespace PhoenixGameLibrary
         public string Name { get; }
         public RaceType RaceType { get; }
 
-        public Point Location { get; }
+        public PointI Location { get; }
 
         public SettlementCitizens Citizens { get; }
         #endregion
@@ -49,7 +49,7 @@ namespace PhoenixGameLibrary
         public string CurrentlyBuilding => GetCurrentlyBuilding();
         public SettlementType SettlementType => GetSettlementType();
 
-        public Settlement(World world, string name, string raceTypeName, Point location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
+        public Settlement(World world, string name, string raceTypeName, PointI location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
         {
             _gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var raceTypes = _gameMetadata.RaceTypes;

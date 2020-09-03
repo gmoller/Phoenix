@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Point = Utilities.Point;
+using Utilities;
 
 namespace GuiControls
 {
@@ -143,7 +143,7 @@ namespace GuiControls
             {
                 for (var i = 0; i < numberOfSlotsX; ++i)
                 {
-                    AddControl(new Slot($"slot[{i}.{j}]", size, TextureAtlas, TextureName), Alignment.TopLeft, Alignment.TopLeft, new Point((int)x, (int)y));
+                    AddControl(new Slot($"slot[{i}.{j}]", size, TextureAtlas, TextureName), Alignment.TopLeft, Alignment.TopLeft, new PointI((int)x, (int)y));
                     x += size.X;
                 }
 

@@ -4,7 +4,6 @@ using Input;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Utilities;
-using Point = Utilities.Point;
 
 namespace GuiControls
 {
@@ -58,46 +57,46 @@ namespace GuiControls
         /// <summary>
         /// Position of this controls Center, relative to the top left of the screen.
         /// </summary>
-        Point Center { get; }
+        PointI Center { get; }
         /// <summary>
         /// Position of this controls TopLeft point, relative to the top left of the screen.
         /// </summary>
-        Point TopLeft { get; }
+        PointI TopLeft { get; }
         /// <summary>
         /// Position of this controls TopRight point, relative to the top left of the screen.
         /// </summary>
-        Point TopRight { get; }
+        PointI TopRight { get; }
         /// <summary>
         /// Position of this controls BottomLeft point, relative to the top left of the screen.
         /// </summary>
-        Point BottomLeft { get; }
+        PointI BottomLeft { get; }
         /// <summary>
         /// Position of this controls BottomRight point, relative to the top left of the screen.
         /// </summary>
-        Point BottomRight { get; }
+        PointI BottomRight { get; }
 
         Rectangle Area { get; }
 
         /// <summary>
         /// Position of this controls TopLeft point, relative to the TopLeft of the parent control.
         /// </summary>
-        Point RelativeTopLeft { get; }
+        PointI RelativeTopLeft { get; }
         /// <summary>
         /// Position of this controls TopRight point, relative to the TopLeft of the parent control.
         /// </summary>
-        Point RelativeTopRight { get; }
+        PointI RelativeTopRight { get; }
         /// <summary>
         /// Position of this controls MiddleRight point, relative to the TopLeft of the parent control.
         /// </summary>
-        Point RelativeMiddleRight { get; }
+        PointI RelativeMiddleRight { get; }
         /// <summary>
         /// Position of this controls BottomLeft point, relative to the TopLeft of the parent control.
         /// </summary>
-        Point RelativeBottomLeft { get; }
+        PointI RelativeBottomLeft { get; }
 
         int Width { get; }
         int Height { get; }
-        Point Size { get; }
+        PointI Size { get; }
 
         bool Enabled { get; set; }
 
@@ -105,9 +104,9 @@ namespace GuiControls
 
         event EventHandler<EventArgs> Click;
 
-        void AddControl(IControl childControl, Alignment parentAlignment = Alignment.TopLeft, Alignment childAlignment = Alignment.None, Point offset = new Point());
-        void SetTopLeftPosition(Point point);
-        void MoveTopLeftPosition(Point point);
+        void AddControl(IControl childControl, Alignment parentAlignment = Alignment.TopLeft, Alignment childAlignment = Alignment.None, PointI offset = new PointI());
+        void SetTopLeftPosition(PointI point);
+        void MoveTopLeftPosition(PointI point);
         void LoadContent(ContentManager content, bool loadChildrenContent = false);
         void Update(InputHandler input, float deltaTime, Viewport? viewport);
         void Draw(Matrix? transform = null);

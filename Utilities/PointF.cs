@@ -22,9 +22,9 @@ namespace Utilities
 
         public static PointF Empty => new PointF(0.0f, 0.0f);
 
-        public Point ToPoint()
+        public PointI ToPoint()
         {
-            return new Point((X.Round()), Y.Round());
+            return new PointI((X.Round()), Y.Round());
         }
 
         #region Overrides and Overloads

@@ -40,7 +40,7 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public Cell GetCell(Point location)
+        public Cell GetCell(PointI location)
         {
             return GetCell(location.X, location.Y);
         }
@@ -113,7 +113,7 @@ namespace PhoenixGameLibrary
             return catchmentCells;
         }
 
-        public Cell GetClosestUnexploredCell(Point location)
+        public Cell GetClosestUnexploredCell(PointI location)
         {
             var closestCells = new List<Cell>();
             var max = Math.Max(NumberOfColumns, NumberOfRows);

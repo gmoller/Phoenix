@@ -30,7 +30,7 @@ namespace PhoenixGameLibrary
             NotificationList = new NotificationList();
         }
 
-        internal void AddSettlement(Point location, string raceTypeName)
+        internal void AddSettlement(PointI location, string raceTypeName)
         {
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var raceTypes = gameMetadata.RaceTypes;
@@ -46,7 +46,7 @@ namespace PhoenixGameLibrary
             addNewOutpostCommand.Execute();
         }
 
-        internal void AddUnit(Point location, UnitType unitType)
+        internal void AddUnit(PointI location, UnitType unitType)
         {
             var addUnitCommand = new AddUnitCommand { Payload = (location, unitType, Stacks, this) };
             addUnitCommand.Execute();

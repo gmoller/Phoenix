@@ -1,5 +1,4 @@
 ﻿using System;
-using Phoenix;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation;
 using Utilities;
@@ -20,7 +19,7 @@ namespace Phoenix2
                 var splitString = args[1].Split('x');
                 var width = Convert.ToInt32(splitString[0]);
                 var height = Convert.ToInt32(splitString[1]);
-                var desiredResolution = new Point(width, height);
+                var desiredResolution = new PointI(width, height);
                 presentationContext.DesiredResolution = desiredResolution;
             }
 

@@ -7,15 +7,14 @@ using PhoenixGamePresentation.Views;
 using Utilities;
 using Utilities.ExtensionMethods;
 using Color = Microsoft.Xna.Framework.Color;
-using Point = Utilities.Point;
 
 namespace PhoenixGamePresentation.Handlers
 {
     public static class MinimapHandler
     {
-        public static Rectangle GetViewedRectangle(WorldView worldView, Point minimapSize)
+        public static Rectangle GetViewedRectangle(WorldView worldView, PointI minimapSize)
         {
-            var normalized = new Vector2(worldView.Camera.CameraFocusPointInWorld.X / (float)worldView.WorldWidthInPixels, worldView.Camera.CameraFocusPointInWorld.Y / (float)worldView.WorldHeightInPixels);
+            var normalized = new Vector2(worldView.Camera.CameraFocusPointInWorld.X / worldView.WorldWidthInPixels, worldView.Camera.CameraFocusPointInWorld.Y / worldView.WorldHeightInPixels);
             var minimapViewedRectangleCenter = new Vector2(normalized.X * minimapSize.X, normalized.Y * minimapSize.Y);
 
             var percentageOfEntireWorldCameraIsLookingAt = new Vector2(worldView.Camera.CameraRectangleInWorld.Width / (float)worldView.WorldWidthInPixels, worldView.Camera.CameraRectangleInWorld.Height / (float)worldView.WorldHeightInPixels);
@@ -99,14 +98,7 @@ namespace PhoenixGamePresentation.Handlers
                     }
                     else if (row == 0 || row == 7)
                     {
-                        if (column == 3)
-                        {
-                            colorToSet = seenColor;
-                        }
-                        else
-                        {
-                            colorToSet = Color.Transparent;
-                        }
+                        colorToSet = column == 3 ? seenColor : Color.Transparent;
                     }
                     else if (row == 1 || row == 6)
                     {

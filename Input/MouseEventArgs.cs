@@ -1,13 +1,13 @@
 ﻿using System;
 using Utilities;
 
-namespace GuiControls
+namespace Input
 {
     public class MouseEventArgs : EventArgs
     {
-        public Point Location { get; }
+        public PointI Location { get; }
 
-        public MouseEventArgs(Point location)
+        public MouseEventArgs(PointI location)
         {
             Location = location;
         }

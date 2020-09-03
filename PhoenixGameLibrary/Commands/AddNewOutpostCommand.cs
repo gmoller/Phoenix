@@ -6,7 +6,7 @@ namespace PhoenixGameLibrary.Commands
     {
         public override void Execute()
         {
-            var payload = ((Point position, string name, string raceTypeName, Settlements settlements, World world))Payload;
+            var payload = ((PointI position, string name, string raceTypeName, Settlements settlements, World world))Payload;
 
             var settlements = payload.settlements;
 

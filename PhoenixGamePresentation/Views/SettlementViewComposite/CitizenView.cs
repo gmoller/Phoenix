@@ -4,7 +4,7 @@ using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Point = Utilities.Point;
+using PointI = Utilities.PointI;
 
 namespace PhoenixGamePresentation.Views.SettlementViewComposite
 {
@@ -85,7 +85,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             var y = (int)position.Y;
             for (var i = 0; i < citizenCount; ++i)
             {
-                image.SetTopLeftPosition(new Point(x, y));
+                image.SetTopLeftPosition(new PointI(x, y));
                 image.Draw(spriteBatch);
 
                 x += image.Width;

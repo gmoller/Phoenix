@@ -8,45 +8,45 @@ namespace PhoenixGamePresentation.Handlers
 {
     internal static class MovementPathDeterminer
     {
-        internal static List<Point> DetermineMovementPath(StackView stackView, Point from, Point to, World world)
+        internal static List<PointI> DetermineMovementPath(StackView stackView, PointI from, PointI to, World world)
         {
-            if (from.Equals(to)) return new List<Point>();
+            if (from.Equals(to)) return new List<PointI>();
 
-            AStarSearch<Point, Cost> mapSolver = new MapSolver();
+            AStarSearch<PointI, Cost> mapSolver = new MapSolver();
             mapSolver.GetAllNeighbors = GetAllNeighbors;
             mapSolver.GetDistance = GetDistance;
-            var openList = new PriorityQueue<AStarSearch<Point, Cost>.Node>();
-            var closedList = new Dictionary<Point, Cost>();
+            var openList = new PriorityQueue<AStarSearch<PointI, Cost>.Node>();
+            var closedList = new Dictionary<PointI, Cost>();
 
             var cellGrid = world.OverlandMap.CellGrid;
-            mapSolver.Solve(GetCostToMoveIntoFunc, new Point(cellGrid.NumberOfColumns, cellGrid.NumberOfRows), from, to, openList, closedList);
+            mapSolver.Solve(GetCostToMoveIntoFunc, new PointI(cellGrid.NumberOfColumns, cellGrid.NumberOfRows), from, to, openList, closedList);
 
             var path = mapSolver.Solution;
 
             return path;
 
-            GetCostToMoveIntoResult GetCostToMoveIntoFunc(Point point)
+            GetCostToMoveIntoResult GetCostToMoveIntoFunc(PointI point)
             {
                 return stackView.GetCostToMoveInto(point);
             }
         }
 
-        private static int GetDistance(Point source, Point destination)
+        private static int GetDistance(PointI source, PointI destination)
         {
             var distance = HexOffsetCoordinates.GetDistance(source.X, source.Y, destination.X, destination.Y);
 
             return distance;
         }
          
-        private static Point[] GetAllNeighbors(Point point)
+        private static PointI[] GetAllNeighbors(PointI point)
         {
             var allNeighborsHexOffsetCoordinates =  HexOffsetCoordinates.GetAllNeighbors(point.X, point.Y);
 
-            var allNeighbors  = new Point[allNeighborsHexOffsetCoordinates.Length];
+            var allNeighbors  = new PointI[allNeighborsHexOffsetCoordinates.Length];
             for (int i = 0; i < allNeighborsHexOffsetCoordinates.Length; ++i)
             {
                 var allNeighborsHexOffsetCoordinate = allNeighborsHexOffsetCoordinates[i];
-                allNeighbors[i] = new Point(allNeighborsHexOffsetCoordinate.Col, allNeighborsHexOffsetCoordinate.Row);
+                allNeighbors[i] = new PointI(allNeighborsHexOffsetCoordinate.Col, allNeighborsHexOffsetCoordinate.Row);
             }
 
             return allNeighbors;

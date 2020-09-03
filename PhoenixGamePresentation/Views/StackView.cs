@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using GuiControls;
 using Hex;
 using Input;
@@ -14,12 +13,11 @@ using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentation.Handlers;
 using Utilities;
 using Color = Microsoft.Xna.Framework.Color;
-using Point = Utilities.Point;
 
 namespace PhoenixGamePresentation.Views
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    internal class StackView
+    internal class StackView : IDisposable
     {
         #region State
         private const float BLINK_TIME_IN_MILLISECONDS = 250.0f;
@@ -30,8 +28,8 @@ namespace PhoenixGamePresentation.Views
         private readonly Stack _stack;
 
         private Vector2 _currentPositionOnScreen;
-        private List<Point> _movementPath;
-        private List<Point> _potentialMovementPath;
+        private List<PointI> _movementPath;
+        private List<PointI> _potentialMovementPath;
 
         private float _blinkCooldownInMilliseconds;
         private bool _blink;
@@ -39,17 +37,20 @@ namespace PhoenixGamePresentation.Views
         public Guid Id { get; }
         public bool IsMovingState { get; private set; }
         public float MovementCountdownTime { get; private set; }
-        #endregion
+
+        private readonly InputHandler _input;
+        private bool _disposedValue;
+        #endregion End State
 
         public bool IsBusy => _stack.IsBusy;
         public UnitStatus Status => _stack.Status;
 
-        public EnumerableList<Point> MovementPath => new EnumerableList<Point>(_movementPath);
+        public EnumerableList<PointI> MovementPath => new EnumerableList<PointI>(_movementPath);
         public bool IsSelected => _stackViews.Current == this;
 
         public EnumerableList<string> Actions => _stack.Actions;
 
-        public Point Location => _stack.Location;
+        public PointI Location => _stack.Location;
         public float MovementPoints => _stack.MovementPoints;
         public int SightRange => _stack.SightRange;
 
@@ -61,12 +62,18 @@ namespace PhoenixGamePresentation.Views
             _worldView = worldView;
             _stackViews = stackViews;
             _stack = stack;
-            _movementPath = new List<Point>();
-            _potentialMovementPath = new List<Point>();
+            _movementPath = new List<PointI>();
+            _potentialMovementPath = new List<PointI>();
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             _currentPositionOnScreen = HexOffsetCoordinates.ToPixel(stack.Location.X, stack.Location.Y).ToVector2();
 
-            input.CKeyReleased += FocusCameraOnLocation;
+            //input.AddCommandHandler(InputAction.LeftMouseButtonReleased, StartMovement);
+            input.AddCommandHandler(Id.ToString(), 0, InputAction.RightMouseButtonPressed, DrawPotentialMovementPath);
+            input.AddCommandHandler(Id.ToString(), 0, InputAction.RightMouseButtonReleased, SelectStack);
+            input.AddCommandHandler(Id.ToString(), 1, InputAction.RightMouseButtonReleased, ResetPotentialMovementPath);
+            input.AddCommandHandler(Id.ToString(), 0, InputAction.KeyCReleased, FocusCameraOnLocation);
+
+            _input = input;
         }
 
         internal List<IControl> GetMovementTypeImages()
@@ -87,7 +94,7 @@ namespace PhoenixGamePresentation.Views
             return MovementPath.Count == 0;
         }
 
-        internal GetCostToMoveIntoResult GetCostToMoveInto(Point location)
+        internal GetCostToMoveIntoResult GetCostToMoveInto(PointI location)
         {
             return _stack.GetCostToMoveInto(location);
         }
@@ -102,20 +109,12 @@ namespace PhoenixGamePresentation.Views
             if (_worldView.GameStatus == GameStatus.CityView) return;
 
             // Causes
-            var selectUnit = SelectionHandler.CheckForUnitSelection(input, this);
             var changeBlinkState = CheckForBlinkStateChange(deltaTime);
             var mustFindNewExploreLocation = ExploreHandler.MustFindNewExploreLocation(this);
             var mustStartMovement = MovementHandler.CheckForStartOfMovement(input, this, _worldView);
-            var mustRestartMovement = MovementHandler.CheckForRestartOfMovement(this); // not in moving state, has a path and has movement points
+            var mustRestartMovementAtStartOfTurn = MovementHandler.CheckForRestartOfMovement(this); // not in moving state, has a path and has movement points
             var mustContinueMovement = MovementHandler.MustContinueMovement(this);
             var mustMoveUnitToNextCell = MovementHandler.MustMoveUnitToNextCell(this);
-            var mustDeterminePotentialMovementPath = PotentialMovementHandler.MustDeterminePotentialMovementPath(input, this);
-
-            // Actions
-            if (selectUnit)
-            {
-                SelectionHandler.SelectStack(this);
-            }
 
             if (!IsSelected) return;
 
@@ -136,7 +135,7 @@ namespace PhoenixGamePresentation.Views
                 StartUnitMovement(hexToMoveTo);
             }
 
-            if (mustRestartMovement)
+            if (mustRestartMovementAtStartOfTurn)
             {
                 RestartUnitMovement();
             }
@@ -150,23 +149,13 @@ namespace PhoenixGamePresentation.Views
             {
                 MoveStackToCell();
             }
-
-            if (mustDeterminePotentialMovementPath)
-            {
-                var path = PotentialMovementHandler.GetPotentialMovementPath(this, _worldView.World);
-                SetPotentialMovementPath(path);
-            }
-            else
-            {
-                SetPotentialMovementPath(new List<Point>());
-            }
         }
 
-        internal void SetAsCurrent()
+        private void SetAsCurrent()
         {
             _blink = true;
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
-            _movementPath = new List<Point>();
+            _movementPath = new List<PointI>();
             _stackViews.SetCurrent(this);
         }
 
@@ -180,29 +169,26 @@ namespace PhoenixGamePresentation.Views
             return true;
         }
 
-        internal void SetMovementPath(List<Point> path)
+        internal void SetMovementPath(List<PointI> path)
         {
             _movementPath = path;
         }
 
-        private void SetPotentialMovementPath(List<Point> path)
-        {
-            _potentialMovementPath = path;
-        }
-
         private void RestartUnitMovement()
         {
-            IsMovingState = true;
-            _blink = false;
-            _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
-            MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
+            StartUnitMovement();
         }
 
-        private void StartUnitMovement(Point hexToMoveTo)
+        private void StartUnitMovement(PointI hexToMoveTo)
         {
             var path = MovementPathDeterminer.DetermineMovementPath(this, Location, hexToMoveTo, _worldView.World);
             SetMovementPath(path);
 
+            StartUnitMovement();
+        }
+
+        private void StartUnitMovement()
+        {
             IsMovingState = true;
             _blink = false;
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
@@ -222,7 +208,7 @@ namespace PhoenixGamePresentation.Views
             if (!cost.CanMoveInto && Status == UnitStatus.Explore)
             {
                 // if exploring: pick new path
-                SetMovementPath(new List<Point>());
+                SetMovementPath(new List<PointI>());
                 ExploreHandler.SetMovementPathToNewExploreLocation(this, _worldView.World);
             }
 
@@ -237,7 +223,7 @@ namespace PhoenixGamePresentation.Views
             var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
 
             _currentPositionOnScreen = newPosition;
-            _worldView.Camera.LookAtPixel(new Point((int)newPosition.X, (int)newPosition.Y));
+            _worldView.Camera.LookAtPixel(new PointI((int)newPosition.X, (int)newPosition.Y));
         }
 
         private void MoveStackToCell()
@@ -356,7 +342,7 @@ namespace PhoenixGamePresentation.Views
             spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
 
-        private void DrawMovementPath(SpriteBatch spriteBatch, List<Point> movementPath, Color color, float radius, float thickness)
+        private void DrawMovementPath(SpriteBatch spriteBatch, List<PointI> movementPath, Color color, float radius, float thickness)
         {
             foreach (var item in movementPath)
             {
@@ -410,15 +396,51 @@ namespace PhoenixGamePresentation.Views
 
         #region Event Handlers
 
+        private void StartMovement(object sender, MouseEventArgs e)
+        {
+            var hexToMoveTo = MovementHandler.GetHexToMoveTo(_input, this, _worldView.World);
+            StartUnitMovement(hexToMoveTo);
+        }
+
+        private void SelectStack(object sender, EventArgs e)
+        {
+            if (IsSelected) return;
+            if (!CursorIsOnThisStack(this)) return;
+
+            SetAsCurrent();
+        }
+
         private void FocusCameraOnLocation(object sender, EventArgs e)
         {
-            if (_worldView.GameStatus == GameStatus.CityView) return;
             if (!IsSelected) return;
+            if (_worldView.GameStatus == GameStatus.CityView) return;
 
             _worldView.Camera.LookAtCell(Location);
         }
 
+        private void DrawPotentialMovementPath(object sender, EventArgs e)
+        {
+            if (!IsSelected) return;
+            if (Status == UnitStatus.Explore || IsMovingState) return;
+
+            var path = PotentialMovementHandler.GetPotentialMovementPath(this, _worldView.World);
+            _potentialMovementPath = path;
+        }
+
+        private void ResetPotentialMovementPath(object sender, EventArgs e)
+        {
+            _potentialMovementPath = new List<PointI>();
+        }
+
         #endregion
+
+        private bool CursorIsOnThisStack(StackView stackView)
+        {
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            var hexPoint = context.WorldHexPointedAtByMouseCursor;
+
+            return stackView.Location == hexPoint;
+        }
 
         public override string ToString()
         {
@@ -426,5 +448,25 @@ namespace PhoenixGamePresentation.Views
         } 
 
         private string DebuggerDisplay => $"{{Id={Id},UnitsInStack={_stack.Count}}}";
+
+        public void Dispose()
+        {
+            if (!_disposedValue)
+            {
+                // TODO: dispose managed state (managed objects)
+                _input.RemoveCommandHandler(Id.ToString(), 0, InputAction.RightMouseButtonPressed);
+                _input.RemoveCommandHandler(Id.ToString(), 0, InputAction.RightMouseButtonReleased);
+                _input.RemoveCommandHandler(Id.ToString(), 1, InputAction.RightMouseButtonReleased);
+                _input.RemoveCommandHandler(Id.ToString(), 0, InputAction.KeyCReleased);
+
+                // TODO: set large fields to null
+                _movementPath = null;
+                _potentialMovementPath = null;
+
+                _disposedValue = true;
+            }
+
+            GC.SuppressFinalize(this);
+        }
     }
 }

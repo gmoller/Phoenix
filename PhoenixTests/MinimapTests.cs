@@ -5,7 +5,6 @@ using PhoenixGamePresentation;
 using PhoenixGamePresentation.Handlers;
 using PhoenixGamePresentation.Views;
 using Utilities;
-using Point = Utilities.Point;
 
 namespace PhoenixTests
 {
@@ -32,9 +31,9 @@ namespace PhoenixTests
         [Test]
         public void MinimapViewedRectangle_will_be_set__correctly_when_looking_at_cell_0_0()
         {
-            _worldView.Camera.LookAtCell(new Point(0, 0));
+            _worldView.Camera.LookAtCell(new PointI(0, 0));
 
-            var minimapSize = new Point(200, 116);
+            var minimapSize = new PointI(200, 116);
             var minimapViewedRectangle = MinimapHandler.GetViewedRectangle(_worldView, minimapSize);
 
                 Assert.AreEqual(0, minimapViewedRectangle.X);
@@ -46,9 +45,9 @@ namespace PhoenixTests
         [Test]
         public void MinimapViewedRectangle_will_be_set__correctly_when_looking_at_cell_0_0_()
         {
-            _worldView.Camera.LookAtCell(new Point(0, 0));
+            _worldView.Camera.LookAtCell(new PointI(0, 0));
 
-            var minimapSize = new Point(100, 100);
+            var minimapSize = new PointI(100, 100);
             var minimapViewedRectangle = MinimapHandler.GetViewedRectangle(_worldView, minimapSize);
 
             Assert.AreEqual(0, minimapViewedRectangle.X);
@@ -60,9 +59,9 @@ namespace PhoenixTests
         [Test]
         public void MinimapViewedRectangle_will_be_set__correctly_when_looking_at_cell_60_40()
         {
-            _worldView.Camera.LookAtCell(new Point(60, 40));
+            _worldView.Camera.LookAtCell(new PointI(60, 40));
 
-            var minimapSize = new Point(200, 116);
+            var minimapSize = new PointI(200, 116);
             var minimapViewedRectangle = MinimapHandler.GetViewedRectangle(_worldView, minimapSize);
 
             Assert.AreEqual(149, minimapViewedRectangle.X);
@@ -74,9 +73,9 @@ namespace PhoenixTests
         [Test]
         public void MinimapViewedRectangle_will_be_set__correctly_when_looking_at_cell_60_40_()
         {
-            _worldView.Camera.LookAtCell(new Point(60, 40));
+            _worldView.Camera.LookAtCell(new PointI(60, 40));
 
-            var minimapSize = new Point(100, 100);
+            var minimapSize = new PointI(100, 100);
             var minimapViewedRectangle = MinimapHandler.GetViewedRectangle(_worldView, minimapSize);
 
             Assert.AreEqual(75, minimapViewedRectangle.X);

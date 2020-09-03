@@ -3,25 +3,25 @@ using System.Collections.Generic;
 
 namespace Utilities
 {
-    public class MapSolver : AStarSearch<Point, Cost>
+    public class MapSolver : AStarSearch<PointI, Cost>
     {
-        private Func<Point, GetCostToMoveIntoResult> _getCostToMoveIntoFunc;
-        private Point _gridSize;
-        private Point _destination;
-        private Dictionary<Point, Cost> _closedList;
+        private Func<PointI, GetCostToMoveIntoResult> _getCostToMoveIntoFunc;
+        private PointI _gridSize;
+        private PointI _destination;
+        private Dictionary<PointI, Cost> _closedList;
 
         private Node? _solution;
 
-        public override List<Point> Solution
+        public override List<PointI> Solution
         {
             get
             {
-                if (!_solution.HasValue) return new List<Point>();
+                if (!_solution.HasValue) return new List<PointI>();
 
                 var pos = _solution.Value.Position;
                 var cost = _solution.Value.Cost;
 
-                var result = new List<Point> { pos };
+                var result = new List<PointI> { pos };
                 do
                 {
                     pos = ToPosition(cost.ParentIndex);
@@ -36,7 +36,7 @@ namespace Utilities
             }
         }
 
-        public override void Solve(Func<Point, GetCostToMoveIntoResult> getCostToMoveIntoFunc, Point gridSize, Point start, Point destination, PriorityQueue<Node> openList, Dictionary<Point, Cost> closedList)
+        public override void Solve(Func<PointI, GetCostToMoveIntoResult> getCostToMoveIntoFunc, PointI gridSize, PointI start, PointI destination, PriorityQueue<Node> openList, Dictionary<PointI, Cost> closedList)
         {
             _getCostToMoveIntoFunc = getCostToMoveIntoFunc;
             _gridSize = gridSize;
@@ -45,9 +45,9 @@ namespace Utilities
             Solve(new Node(start, new Cost(-1, 0, GetDistance(start, _destination))), openList, closedList);
         }
 
-        private int ToIndex(Point position) { return position.Y * _gridSize.X + position.X; }
+        private int ToIndex(PointI position) { return position.Y * _gridSize.X + position.X; }
 
-        private Point ToPosition(int index) { return new Point(index % _gridSize.X, index / _gridSize.X); }
+        private PointI ToPosition(int index) { return new PointI(index % _gridSize.X, index / _gridSize.X); }
 
         protected override void AddNeighbors(Node node, PriorityQueue<Node> openList)
         {
@@ -56,7 +56,7 @@ namespace Utilities
             var neighbors = GetAllNeighbors(node.Position);
             foreach (var neighbor in neighbors)
             {
-                var point = new Point(neighbor.X, neighbor.Y);
+                var point = new PointI(neighbor.X, neighbor.Y);
                 var costToMoveIntoResult = _getCostToMoveIntoFunc(point);
                 if (!costToMoveIntoResult.CanMoveInto)
                 {
@@ -69,7 +69,7 @@ namespace Utilities
             }
         }
 
-        protected override bool IsDestination(Point position)
+        protected override bool IsDestination(PointI position)
         {
             var isSolved = position == _destination;
             if (isSolved) _solution = new Node(position, _closedList[position]);

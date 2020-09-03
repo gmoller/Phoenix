@@ -1,27 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Utilities;
 
 namespace Input
 {
     public class InputHandler
     {
         #region State
-        public event EventHandler<EventArgs> RightMouseButtonReleased;
-        public event EventHandler<EventArgs> EnterKeyReleased;
-        public event EventHandler<EventArgs> CKeyReleased;
+        private Dictionary<int, Dictionary<string, Action<object, EventArgs>>> _eventHandlers;
+        private InputAction[] _mouseInputActionsToCheck;
+        private InputAction[] _keyboardInputActionsToCheck;
         #endregion
 
         public Point MousePosition => MouseHandler.MousePosition;
         public Point MouseMovement => MouseHandler.MouseMovement;
         public bool MouseWheelUp => MouseHandler.MouseWheelUp();
         public bool MouseWheelDown => MouseHandler.MouseWheelDown();
-        public bool IsLeftMouseButtonDown => MouseHandler.IsLeftButtonDown();
-        public bool IsMiddleMouseButtonDown => MouseHandler.IsLeftButtonDown();
         public bool IsRightMouseButtonDown => MouseHandler.IsRightButtonDown();
         public bool IsLeftMouseButtonReleased => MouseHandler.IsLeftButtonReleased();
-        public bool IsMiddleMouseButtonReleased => MouseHandler.IsLeftButtonReleased();
-        public bool IsRightMouseButtonReleased => MouseHandler.IsRightButtonReleased();
 
         public bool HasMouseMoved => MouseHandler.HasMouseMoved();
         public bool MouseIsAtTopOfScreen => MousePosition.Y < 20.0f && MousePosition.Y >= 0.0f;
@@ -46,6 +44,47 @@ namespace Input
         {
             KeyboardHandler.Initialize();
             MouseHandler.Initialize();
+
+            _eventHandlers = new Dictionary<int, Dictionary<string, Action<object, EventArgs>>>();
+
+            _mouseInputActionsToCheck = new[]
+            {
+                InputAction.LeftMouseButtonDown,
+                InputAction.LeftMouseButtonPressed,
+                InputAction.LeftMouseButtonReleased,
+                InputAction.RightMouseButtonDown,
+                InputAction.RightMouseButtonPressed,
+                InputAction.RightMouseButtonReleased
+            };
+
+            _keyboardInputActionsToCheck = new[]
+            {
+                InputAction.KeyEnterReleased,
+                InputAction.KeyCReleased
+            };
+        }
+
+        public void AddCommandHandler(string source, int id, InputAction inputAction, Action<object, EventArgs> commandHandler)
+        {
+            var firstKey = (int)inputAction;
+            var secondKey = $"{source}.{id}";
+            if (_eventHandlers.ContainsKey(firstKey))
+            {
+                _eventHandlers[firstKey].Add(secondKey, commandHandler);
+            }
+            else
+            {
+                _eventHandlers.Add(firstKey, new Dictionary<string, Action<object, EventArgs>>());
+                _eventHandlers[firstKey].Add(secondKey, commandHandler);
+            }
+        }
+
+        public void RemoveCommandHandler(string source, int id, InputAction inputAction)
+        {
+            var firstKey = (int)inputAction;
+            var secondKey = $"{source}.{id}";
+            var eventHandlers = _eventHandlers[firstKey];
+            eventHandlers.Remove(secondKey);
         }
 
         public void Update(float deltaTime)
@@ -53,19 +92,38 @@ namespace Input
             KeyboardHandler.Update();
             MouseHandler.Update();
 
-            if (IsRightMouseButtonReleased)
+            if (!MouseIsWithinScreen) return;
+
+            foreach (var inputActionToCheck in _mouseInputActionsToCheck)
             {
-                OnRightMouseButtonReleased(new EventArgs());
+                var index = (int)inputActionToCheck;
+                if (MouseHandler.MouseActions(index))
+                {
+                    if (_eventHandlers.ContainsKey(index))
+                    {
+                        var eventHandlers = _eventHandlers[index];
+                        foreach (var eventHandler in eventHandlers.Values)
+                        {
+                            eventHandler.Invoke(this, new MouseEventArgs(new PointI(MousePosition.X, MousePosition.Y)));
+                        }
+                    }
+                }
             }
 
-            if (IsKeyReleased(Keys.Enter))
+            foreach (var inputActionToCheck in _keyboardInputActionsToCheck)
             {
-                OnEnterKeyReleased(new EventArgs());
-            }
-
-            if (IsKeyReleased(Keys.C))
-            {
-                OnCKeyReleased(new EventArgs());
+                var index = (int)inputActionToCheck;
+                if (KeyboardHandler.KeyboardActions(index))
+                {
+                    if (_eventHandlers.ContainsKey(index))
+                    {
+                        var eventHandlers = _eventHandlers[index];
+                        foreach (var eventHandler in eventHandlers.Values)
+                        {
+                            eventHandler.Invoke(this, new KeyboardEventArgs(Keys.C));
+                        }
+                    }
+                }
             }
         }
 
@@ -107,21 +165,6 @@ namespace Input
         public bool IsKeyReleased(Keys key)
         {
             return KeyboardHandler.IsKeyReleased(key);
-        }
-
-        private void OnRightMouseButtonReleased(EventArgs e)
-        {
-            RightMouseButtonReleased?.Invoke(this, e);
-        }
-
-        private void OnEnterKeyReleased(EventArgs e)
-        {
-            EnterKeyReleased?.Invoke(this, e);
-        }
-
-        private void OnCKeyReleased(EventArgs e)
-        {
-            CKeyReleased?.Invoke(this, e);
         }
     }
 }

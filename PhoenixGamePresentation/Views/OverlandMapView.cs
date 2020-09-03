@@ -12,12 +12,11 @@ using PhoenixGameLibrary;
 using Utilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
 using Utilities;
-using Point = Utilities.Point;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace PhoenixGamePresentation.Views
 {
-    internal class OverlandMapView
+    internal class OverlandMapView : IDisposable
     {
         #region State
         private readonly WorldView _worldView;
@@ -27,18 +26,24 @@ namespace PhoenixGamePresentation.Views
 
         private Viewport _viewport;
         private ViewportAdapter _viewportAdapter;
+
+        private readonly InputHandler _input;
+        private bool _disposedValue;
         #endregion State
 
         internal OverlandMapView(WorldView worldView, OverlandMap overlandMap, InputHandler input)
         {
             _worldView = worldView;
             _overlandMap = overlandMap;
-            input.EnterKeyReleased += EndTurn;
+
+            input.AddCommandHandler("OverlandMapView", 0, InputAction.KeyEnterReleased, EndTurn);
 
             _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, "test", null, Color.Blue);
-            _test.Click += delegate { _test.MoveTopLeftPosition(new Point(10, -10)); };
+            _test.Click += delegate { _test.MoveTopLeftPosition(new PointI(10, -10)); };
 
             SetupViewport(0, 0, 1670, 1080);
+
+            _input = input;
         }
 
         private void SetupViewport(int x, int y, int width, int height)
@@ -175,5 +180,21 @@ namespace PhoenixGamePresentation.Views
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            if (!_disposedValue)
+            {
+                // TODO: dispose managed state (managed objects)
+                _input.RemoveCommandHandler("OverlandMapView", 0, InputAction.KeyEnterReleased);
+
+                // TODO: set large fields to null
+                _viewportAdapter = null;
+
+                _disposedValue = true;
+            }
+
+            GC.SuppressFinalize(this);
+        }
     }
 }

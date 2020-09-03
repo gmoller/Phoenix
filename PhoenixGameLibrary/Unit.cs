@@ -20,7 +20,7 @@ namespace PhoenixGameLibrary
         private UnitStatus _status;
 
         private Guid Id { get; }
-        public Point Location { get; internal set; } // hex cell the unit is in
+        public PointI Location { get; internal set; } // hex cell the unit is in
         public float MovementPoints { get; internal set; }
         #endregion
 
@@ -30,7 +30,7 @@ namespace PhoenixGameLibrary
         public string UnitTypeTextureName => _unitType.TextureName;
         public int SightRange => GetSightRange();
 
-        public Unit(World world, UnitType unitType, Point location)
+        public Unit(World world, UnitType unitType, PointI location)
         {
             _world = world;
             Id = Guid.NewGuid();
@@ -91,7 +91,7 @@ namespace PhoenixGameLibrary
             return false;
         }
 
-        public GetCostToMoveIntoResult CostToMoveInto(Point location)
+        public GetCostToMoveIntoResult CostToMoveInto(PointI location)
         {
             var cellToMoveTo = _world.OverlandMap.CellGrid.GetCell(location.X, location.Y);
 
@@ -151,7 +151,7 @@ namespace PhoenixGameLibrary
             return potentialMovementCosts;
         }
 
-        internal void SetSeenCells(Point location)
+        internal void SetSeenCells(PointI location)
         {
             var cellGrid = _world.OverlandMap.CellGrid;
             _seenCells = cellGrid.GetCatchment(location.X, location.Y, GetSightRange());

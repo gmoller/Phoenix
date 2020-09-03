@@ -19,7 +19,7 @@ namespace PhoenixGameLibrary
         public UnitStatus Status { get; private set; }
         #endregion
 
-        public Point Location => _units.Count > 0 ?_units[0].Location : Point.Empty;
+        public PointI Location => _units.Count > 0 ?_units[0].Location : PointI.Empty;
 
         public int SightRange => GetSightRange();
 
@@ -72,7 +72,7 @@ namespace PhoenixGameLibrary
             _units.SetStatusToNone();
         }
 
-        internal void MoveTo(Point locationToMoveTo)
+        internal void MoveTo(PointI locationToMoveTo)
         {
             var cellToMoveTo = _world.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
             var movementCost = GetCostToMoveInto(cellToMoveTo);
@@ -90,7 +90,7 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public GetCostToMoveIntoResult GetCostToMoveInto(Point location)
+        public GetCostToMoveIntoResult GetCostToMoveInto(PointI location)
         {
             var cellToMoveTo = _world.OverlandMap.CellGrid.GetCell(location.X, location.Y);
 
@@ -262,7 +262,7 @@ namespace PhoenixGameLibrary
             return actionsNames;
         }
 
-        private bool CanSettleOnTerrain(Point thisLocation)
+        private bool CanSettleOnTerrain(PointI thisLocation)
         {
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var terrainTypes = gameMetadata.TerrainTypes;

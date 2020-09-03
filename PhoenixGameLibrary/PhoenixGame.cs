@@ -13,10 +13,10 @@ namespace PhoenixGameLibrary
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var unitTypes = gameMetadata.UnitTypes;
 
-            World.AddSettlement(new Point(12, 9), "Barbarians");
-            World.AddUnit(new Point(12, 9), unitTypes["Test Dude"]);
-            World.AddUnit(new Point(15, 7), unitTypes["Barbarian Settlers"]);
-            World.AddUnit(new Point(12, 9), unitTypes["Barbarian Spearmen"]);
+            World.AddSettlement(new PointI(12, 9), "Barbarians");
+            World.AddUnit(new PointI(12, 9), unitTypes["Test Dude"]);
+            World.AddUnit(new PointI(15, 7), unitTypes["Barbarian Settlers"]);
+            World.AddUnit(new PointI(12, 9), unitTypes["Barbarian Spearmen"]);
         }
 
         public void Update(float deltaTime)

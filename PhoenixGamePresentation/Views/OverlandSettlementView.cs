@@ -11,7 +11,7 @@ using Utilities;
 
 namespace PhoenixGamePresentation.Views
 {
-    public class OverlandSettlementView
+    public class OverlandSettlementView : IDisposable
     {
         #region State
         private readonly WorldView _worldView;
@@ -21,12 +21,17 @@ namespace PhoenixGamePresentation.Views
         //private AtlasSpec _atlas;
 
         public Settlement Settlement { get; set; }
-        #endregion
+
+        private readonly InputHandler _input;
+        private bool _disposedValue;
+        #endregion End State
 
         public OverlandSettlementView(WorldView worldView, InputHandler input)
         {
             _worldView = worldView;
-            input.RightMouseButtonReleased += OpenSettlement;
+            input.AddCommandHandler("OverlandSettlementView", 0, InputAction.RightMouseButtonReleased, OpenSettlement);
+
+            _input = input;
         }
 
         public void LoadContent(ContentManager content)
@@ -69,7 +74,7 @@ namespace PhoenixGamePresentation.Views
 
         private void OpenSettlement(object sender, EventArgs e)
         {
-            if ((_worldView.GameStatus == GameStatus.OverlandMap) && CursorIsOnThisSettlement(Settlement))
+            if (_worldView.GameStatus == GameStatus.OverlandMap && CursorIsOnThisSettlement(Settlement))
             {
                 Command openSettlementCommand = new OpenSettlementCommand { Payload = (Settlement, _worldView.World.Settlements) };
                 openSettlementCommand.Execute();
@@ -82,5 +87,21 @@ namespace PhoenixGamePresentation.Views
 
         #endregion
 
+        public void Dispose()
+        {
+            if (!_disposedValue)
+            {
+                // TODO: dispose managed state (managed objects)
+                _input.RemoveCommandHandler("OverlandMapView", 0, InputAction.KeyEnterReleased);
+
+                // TODO: set large fields to null
+                _texture = null;
+                Settlement = null;
+
+                _disposedValue = true;
+            }
+
+            GC.SuppressFinalize(this);
+        }
     }
 }

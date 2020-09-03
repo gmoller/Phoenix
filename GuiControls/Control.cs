@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using Utilities;
 using Utilities.ExtensionMethods;
-using Point = Utilities.Point;
 
 namespace GuiControls
 {
@@ -57,22 +56,22 @@ namespace GuiControls
         public int Bottom => ActualDestinationRectangle.Bottom;
         public int Left => ActualDestinationRectangle.Left;
         public int Right => ActualDestinationRectangle.Right;
-        public Point Center => new Point(ActualDestinationRectangle.Center.X, ActualDestinationRectangle.Center.Y);
-        public Point TopLeft => new Point(Left, Top);
-        public Point TopRight => new Point(Right, Top);
-        public Point BottomLeft => new Point(Left, Bottom);
-        public Point BottomRight => new Point(Right, Bottom);
+        public PointI Center => new PointI(ActualDestinationRectangle.Center.X, ActualDestinationRectangle.Center.Y);
+        public PointI TopLeft => new PointI(Left, Top);
+        public PointI TopRight => new PointI(Right, Top);
+        public PointI BottomLeft => new PointI(Left, Bottom);
+        public PointI BottomRight => new PointI(Right, Bottom);
 
         public Rectangle Area => new Rectangle(TopLeft.X, TopLeft.Y, Size.X, Size.Y);
 
-        public Point RelativeTopLeft => new Point(Left - (Parent?.Left ?? 0), Top - (Parent?.Top ?? 0));
-        public Point RelativeTopRight => new Point(RelativeTopLeft.X + Width, RelativeTopLeft.Y);
-        public Point RelativeMiddleRight => new Point(RelativeTopLeft.X + Width, RelativeTopLeft.Y + (int)(Height * 0.5f));
-        public Point RelativeBottomLeft => new Point(RelativeTopLeft.X, RelativeTopLeft.Y + Height);
+        public PointI RelativeTopLeft => new PointI(Left - (Parent?.Left ?? 0), Top - (Parent?.Top ?? 0));
+        public PointI RelativeTopRight => new PointI(RelativeTopLeft.X + Width, RelativeTopLeft.Y);
+        public PointI RelativeMiddleRight => new PointI(RelativeTopLeft.X + Width, RelativeTopLeft.Y + (int)(Height * 0.5f));
+        public PointI RelativeBottomLeft => new PointI(RelativeTopLeft.X, RelativeTopLeft.Y + Height);
 
         public int Width => ActualDestinationRectangle.Width;
         public int Height => ActualDestinationRectangle.Height;
-        public Point Size => new Point(ActualDestinationRectangle.Size.X, ActualDestinationRectangle.Size.Y);
+        public PointI Size => new PointI(ActualDestinationRectangle.Size.X, ActualDestinationRectangle.Size.Y);
 
         public EnumerableDictionary<IControl> ChildControls => new EnumerableDictionary<IControl>(_childControls);
         public IControl this[int index] => _childControls.Values.ElementAt(index);
@@ -119,7 +118,7 @@ namespace GuiControls
         /// /// <param name="parentAlignment">Used to determine the position of the child control in relation to the parent</param>
         /// <param name="childAlignment">Used to determine the position of the child control in relation to the parent</param>
         /// <param name="offset">Offset to be added to the child control's top left position</param>
-        public void AddControl(IControl childControl, Alignment parentAlignment = Alignment.TopLeft, Alignment childAlignment = Alignment.None, Point offset = new Point())
+        public void AddControl(IControl childControl, Alignment parentAlignment = Alignment.TopLeft, Alignment childAlignment = Alignment.None, PointI offset = new PointI())
         {
             if (childAlignment == Alignment.None)
             {
@@ -138,11 +137,11 @@ namespace GuiControls
         {
             foreach (var control in controls)
             {
-                AddControl(control, Alignment.TopLeft, Alignment.TopLeft, Point.Zero);
+                AddControl(control, Alignment.TopLeft, Alignment.TopLeft, PointI.Zero);
             }
         }
 
-        public void SetTopLeftPosition(Point point)
+        public void SetTopLeftPosition(PointI point)
         {
             foreach (var child in ChildControls)
             {
@@ -152,7 +151,7 @@ namespace GuiControls
             ActualDestinationRectangle = new Rectangle(point.X, point.Y, ActualDestinationRectangle.Width, ActualDestinationRectangle.Height);
         }
 
-        public void MoveTopLeftPosition(Point point)
+        public void MoveTopLeftPosition(PointI point)
         {
             foreach (var child in ChildControls)
             {
@@ -215,7 +214,7 @@ namespace GuiControls
                 {
                     if (input.IsLeftMouseButtonReleased)
                     {
-                        OnClick(new MouseEventArgs(new Point(input.MousePosition.X, input.MousePosition.Y)));
+                        OnClick(new MouseEventArgs(new PointI(input.MousePosition.X, input.MousePosition.Y)));
                     }
                 }
             }
@@ -226,16 +225,16 @@ namespace GuiControls
             }
         }
 
-        private Point GetMousePosition(InputHandler input, Viewport? viewport)
+        private PointI GetMousePosition(InputHandler input, Viewport? viewport)
         {
-            Point mousePosition;
+            PointI mousePosition;
             if (viewport.HasValue)
             {
-                mousePosition = new Point(input.MousePosition.X - viewport.Value.X, input.MousePosition.Y - viewport.Value.Y);
+                mousePosition = new PointI(input.MousePosition.X - viewport.Value.X, input.MousePosition.Y - viewport.Value.Y);
             }
             else
             {
-                mousePosition = new Point(input.MousePosition.X, input.MousePosition.Y);
+                mousePosition = new PointI(input.MousePosition.X, input.MousePosition.Y);
             }
 
             //mousePosition = new Point(input.MousePosition.X, input.MousePosition.Y);
@@ -295,48 +294,48 @@ namespace GuiControls
             return actualDestinationRectangle;
         }
 
-        private Point DetermineTopLeft(IControl childControl, Alignment parentAlignment, Alignment childAlignment, Point offset)
+        private PointI DetermineTopLeft(IControl childControl, Alignment parentAlignment, Alignment childAlignment, PointI offset)
         {
-            Point topLeft;
+            PointI topLeft;
             switch (parentAlignment)
             {
                 case Alignment.TopLeft when childAlignment == Alignment.TopLeft:
-                    topLeft = new Point(Left, Top);
+                    topLeft = new PointI(Left, Top);
                     break;
                 case Alignment.TopCenter when childAlignment == Alignment.TopCenter:
-                    topLeft = new Point(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Top);
+                    topLeft = new PointI(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Top);
                     break;
                 case Alignment.TopRight when childAlignment == Alignment.TopRight:
-                    topLeft = new Point(Right - childControl.Size.X, Top);
+                    topLeft = new PointI(Right - childControl.Size.X, Top);
                     break;
 
                 case Alignment.MiddleLeft when childAlignment == Alignment.MiddleLeft:
-                    topLeft = new Point(Left, Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
+                    topLeft = new PointI(Left, Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
                     break;
                 case Alignment.MiddleCenter when childAlignment == Alignment.MiddleCenter:
-                    topLeft = new Point(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
+                    topLeft = new PointI(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
                     break;
                 case Alignment.MiddleRight when childAlignment == Alignment.MiddleRight:
-                    topLeft = new Point(Right, Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
+                    topLeft = new PointI(Right, Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
                     break;
                 case Alignment.MiddleRight when childAlignment == Alignment.MiddleLeft:
-                    topLeft = new Point(Right, Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
+                    topLeft = new PointI(Right, Top + (int)((Size.Y - childControl.Size.Y) * 0.5f));
                     break;
 
                 case Alignment.BottomLeft when childAlignment == Alignment.BottomLeft:
-                    topLeft = new Point(Left, Bottom - childControl.Size.Y);
+                    topLeft = new PointI(Left, Bottom - childControl.Size.Y);
                     break;
                 case Alignment.BottomLeft when childAlignment == Alignment.TopLeft:
-                    topLeft = new Point(Left, Bottom);
+                    topLeft = new PointI(Left, Bottom);
                     break;
                 case Alignment.BottomCenter when childAlignment == Alignment.BottomCenter:
-                    topLeft = new Point(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Bottom - childControl.Size.Y);
+                    topLeft = new PointI(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Bottom - childControl.Size.Y);
                     break;
                 case Alignment.BottomCenter when childAlignment == Alignment.TopCenter:
-                    topLeft = new Point(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Bottom);
+                    topLeft = new PointI(Left + (int)((Size.X - childControl.Size.X) * 0.5f), Bottom);
                     break;
                 case Alignment.BottomRight when childAlignment == Alignment.BottomRight:
-                    topLeft = new Point(Right - childControl.Size.X, Bottom - childControl.Size.Y);
+                    topLeft = new PointI(Right - childControl.Size.X, Bottom - childControl.Size.Y);
                     break;
                 default:
                     throw new Exception($"ParentAlignment [{parentAlignment}] with ChildAlignment [{childAlignment}] not implemented.");
