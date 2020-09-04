@@ -10,8 +10,6 @@
         LeftMouseButtonReleased,
         RightMouseButtonDown,
         RightMouseButtonPressed,
-        RightMouseButtonReleased,
-        KeyCReleased,
-        KeyEnterReleased
+        RightMouseButtonReleased
     }
 }

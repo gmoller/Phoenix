@@ -51,7 +51,7 @@ namespace PhoenixGamePresentation.Views
             _movementTypeImages = InitializeMovementTypeImages();
             _actionButtons = InitializeActionButtons();
 
-            Camera = new Camera(this, new Rectangle(0, 0, 1670, 1080), CameraClampMode.AutoClamp);
+            Camera = new Camera(this, new Rectangle(0, 0, 1670, 1080), CameraClampMode.AutoClamp, input);
         }
 
         internal void LoadContent(ContentManager content)

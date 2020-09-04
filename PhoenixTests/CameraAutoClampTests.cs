@@ -24,7 +24,7 @@ namespace PhoenixTests
             var world = new World(60, 40);
             var worldView = new WorldView(world, null);
             var viewport = new Rectangle(0, 0, 1670, 1080);
-            _camera = new Camera(worldView, viewport, CameraClampMode.AutoClamp);
+            _camera = new Camera(worldView, viewport, CameraClampMode.AutoClamp, null);
         }
 
         [Test]

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Assets;
 using GuiControls;
 using Hex;
@@ -36,13 +37,12 @@ namespace PhoenixGamePresentation.Views
             _worldView = worldView;
             _overlandMap = overlandMap;
 
-            input.AddCommandHandler("OverlandMapView", 0, InputAction.KeyEnterReleased, EndTurn);
-
             _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, "test", null, Color.Blue);
             _test.Click += delegate { _test.MoveTopLeftPosition(new PointI(10, -10)); };
 
             SetupViewport(0, 0, 1670, 1080);
 
+            input.AddCommandHandler("OverlandMapView", 0, new KeyboardInputAction(Keys.Enter, KeyboardInputActionType.Released, EndTurn));
             _input = input;
         }
 
@@ -186,7 +186,7 @@ namespace PhoenixGamePresentation.Views
             if (!_disposedValue)
             {
                 // TODO: dispose managed state (managed objects)
-                _input.RemoveCommandHandler("OverlandMapView", 0, InputAction.KeyEnterReleased);
+                _input.RemoveCommandHandler("OverlandMapView", 0, new KeyboardInputAction(Keys.Enter, KeyboardInputActionType.Released, EndTurn));
 
                 // TODO: set large fields to null
                 _viewportAdapter = null;

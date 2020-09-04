@@ -1,89 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Utilities;
 
 namespace Input
 {
     public class InputHandler
     {
         #region State
-        private Dictionary<int, Dictionary<string, Action<object, EventArgs>>> _eventHandlers;
-        private InputAction[] _mouseInputActionsToCheck;
-        private InputAction[] _keyboardInputActionsToCheck;
+        private Dictionary<string, Dictionary<string, KeyboardInputAction>> _keyboardEventHandlers;
+        private Dictionary<string, Dictionary<string, MouseInputAction>> _mouseEventHandlers;
         #endregion
 
         public Point MousePosition => MouseHandler.MousePosition;
         public Point MouseMovement => MouseHandler.MouseMovement;
-        public bool MouseWheelUp => MouseHandler.MouseWheelUp();
-        public bool MouseWheelDown => MouseHandler.MouseWheelDown();
         public bool IsRightMouseButtonDown => MouseHandler.IsRightButtonDown();
         public bool IsLeftMouseButtonReleased => MouseHandler.IsLeftButtonReleased();
-
-        public bool HasMouseMoved => MouseHandler.HasMouseMoved();
-        public bool MouseIsAtTopOfScreen => MousePosition.Y < 20.0f && MousePosition.Y >= 0.0f;
-        public bool MouseIsAtBottomOfScreen => MousePosition.Y > (1080 - 20.0f) && MousePosition.Y <= 1080.0f;
-        public bool MouseIsAtLeftOfScreen => MousePosition.X < 20.0f && MousePosition.X >= 0.0f;
-        public bool MouseIsAtRightOfScreen => MousePosition.X > (1670.0f - 20.0f) && MousePosition.X <= 1670.0f;
 
         public bool MouseIsWithinScreen => MousePosition.X >= 0.0f &&
                                            MousePosition.X <= 1920.0f &&
                                            MousePosition.Y >= 0.0f &&
                                            MousePosition.Y <= 1080.0f;
 
-        public bool AreAnyNumPadKeysDown =>
-            KeyboardHandler.IsKeyDown(Keys.NumPad4) ||
-            KeyboardHandler.IsKeyDown(Keys.NumPad6) ||
-            KeyboardHandler.IsKeyDown(Keys.NumPad7) ||
-            KeyboardHandler.IsKeyDown(Keys.NumPad9) ||
-            KeyboardHandler.IsKeyDown(Keys.NumPad1) ||
-            KeyboardHandler.IsKeyDown(Keys.NumPad3);
-
         public void Initialize()
         {
             KeyboardHandler.Initialize();
             MouseHandler.Initialize();
 
-            _eventHandlers = new Dictionary<int, Dictionary<string, Action<object, EventArgs>>>();
-
-            _mouseInputActionsToCheck = new[]
-            {
-                InputAction.LeftMouseButtonDown,
-                InputAction.LeftMouseButtonPressed,
-                InputAction.LeftMouseButtonReleased,
-                InputAction.RightMouseButtonDown,
-                InputAction.RightMouseButtonPressed,
-                InputAction.RightMouseButtonReleased
-            };
-
-            _keyboardInputActionsToCheck = new[]
-            {
-                InputAction.KeyEnterReleased,
-                InputAction.KeyCReleased
-            };
+            _keyboardEventHandlers = new Dictionary<string, Dictionary<string, KeyboardInputAction>>();
+            _mouseEventHandlers = new Dictionary<string, Dictionary<string, MouseInputAction>>();
         }
 
-        public void AddCommandHandler(string source, int id, InputAction inputAction, Action<object, EventArgs> commandHandler)
+        public void AddCommandHandler(string source, int id, KeyboardInputAction keyboardInputAction)
         {
-            var firstKey = (int)inputAction;
+            var firstKey = keyboardInputAction.DictionaryKey;
             var secondKey = $"{source}.{id}";
-            if (_eventHandlers.ContainsKey(firstKey))
+            if (!_keyboardEventHandlers.ContainsKey(firstKey))
             {
-                _eventHandlers[firstKey].Add(secondKey, commandHandler);
+                _keyboardEventHandlers.Add(firstKey, new Dictionary<string, KeyboardInputAction>());
             }
-            else
-            {
-                _eventHandlers.Add(firstKey, new Dictionary<string, Action<object, EventArgs>>());
-                _eventHandlers[firstKey].Add(secondKey, commandHandler);
-            }
+
+            _keyboardEventHandlers[firstKey].Add(secondKey, keyboardInputAction);
         }
 
-        public void RemoveCommandHandler(string source, int id, InputAction inputAction)
+        public void AddCommandHandler(string source, int id, MouseInputAction mouseInputAction)
         {
-            var firstKey = (int)inputAction;
+            var firstKey = mouseInputAction.DictionaryKey;
             var secondKey = $"{source}.{id}";
-            var eventHandlers = _eventHandlers[firstKey];
+            if (!_mouseEventHandlers.ContainsKey(firstKey))
+            {
+                _mouseEventHandlers.Add(firstKey, new Dictionary<string, MouseInputAction>());
+            }
+
+            _mouseEventHandlers[firstKey].Add(secondKey, mouseInputAction);
+        }
+
+        public void RemoveCommandHandler(string source, int id, KeyboardInputAction keyboardInputAction)
+        {
+            var firstKey = keyboardInputAction.DictionaryKey;
+            var secondKey = $"{source}.{id}";
+            var eventHandlers = _keyboardEventHandlers[firstKey];
+            eventHandlers.Remove(secondKey);
+        }
+
+        public void RemoveCommandHandler(string source, int id, MouseInputAction mouseInputAction)
+        {
+            var firstKey = mouseInputAction.DictionaryKey;
+            var secondKey = $"{source}.{id}";
+            var eventHandlers = _mouseEventHandlers[firstKey];
             eventHandlers.Remove(secondKey);
         }
 
@@ -94,77 +77,212 @@ namespace Input
 
             if (!MouseIsWithinScreen) return;
 
-            foreach (var inputActionToCheck in _mouseInputActionsToCheck)
+            HandleKeyboard(_keyboardEventHandlers);
+            HandleMouse(_mouseEventHandlers, deltaTime);
+        }
+
+        private void HandleKeyboard(Dictionary<string, Dictionary<string, KeyboardInputAction>> keyboardEventHandlers)
+        {
+            //TODO: replace switch with dictionary
+            foreach (var item in keyboardEventHandlers.Values)
             {
-                var index = (int)inputActionToCheck;
-                if (MouseHandler.MouseActions(index))
+                foreach (var keyboardInputAction in item.Values)
                 {
-                    if (_eventHandlers.ContainsKey(index))
+                    var invoke = false;
+                    switch (keyboardInputAction.InputActionType)
                     {
-                        var eventHandlers = _eventHandlers[index];
-                        foreach (var eventHandler in eventHandlers.Values)
-                        {
-                            eventHandler.Invoke(this, new MouseEventArgs(new PointI(MousePosition.X, MousePosition.Y)));
-                        }
+                        case KeyboardInputActionType.Up:
+                            if (KeyboardHandler.IsKeyUp(keyboardInputAction.Key))
+                            {
+                                invoke = true;
+                            }
+                            break;
+                        case KeyboardInputActionType.Down:
+                            if (KeyboardHandler.IsKeyDown(keyboardInputAction.Key))
+                            {
+                                invoke = true;
+                            }
+                            break;
+                        case KeyboardInputActionType.Pressed:
+                            if (KeyboardHandler.IsKeyPressed(keyboardInputAction.Key))
+                            {
+                                invoke = true;
+                            }
+                            break;
+                        case KeyboardInputActionType.Released:
+                            if (KeyboardHandler.IsKeyReleased(keyboardInputAction.Key))
+                            {
+                                invoke = true;
+                            }
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    if (invoke)
+                    {
+                        keyboardInputAction.Invoke();
                     }
                 }
             }
+        }
 
-            foreach (var inputActionToCheck in _keyboardInputActionsToCheck)
+        private void HandleMouse(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, float deltaTime)
+        {
+            //TODO: replace switch with dictionary
+            foreach (var item in mouseEventHandlers.Values)
             {
-                var index = (int)inputActionToCheck;
-                if (KeyboardHandler.KeyboardActions(index))
+                foreach (var mouseInputAction in item.Values)
                 {
-                    if (_eventHandlers.ContainsKey(index))
+                    var invoke = false;
+                    switch (mouseInputAction.InputActionType)
                     {
-                        var eventHandlers = _eventHandlers[index];
-                        foreach (var eventHandler in eventHandlers.Values)
-                        {
-                            eventHandler.Invoke(this, new KeyboardEventArgs(Keys.C));
-                        }
+                        case MouseInputActionType.Moved:
+                            switch (mouseInputAction.MouseWidget)
+                            {
+                                case MouseButtons.None:
+                                    invoke = true;
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                            break;
+                        case MouseInputActionType.ButtonDown:
+                            switch (mouseInputAction.MouseWidget)
+                            {
+                                case MouseButtons.LeftButton:
+                                    if (MouseHandler.IsLeftButtonDown())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                case MouseButtons.MiddleButton:
+                                    if (MouseHandler.IsMiddleButtonDown())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                case MouseButtons.RightButton:
+                                    if (MouseHandler.IsRightButtonDown())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                            break;
+                        case MouseInputActionType.ButtonPressed:
+                            switch (mouseInputAction.MouseWidget)
+                            {
+                                case MouseButtons.LeftButton:
+                                    if (MouseHandler.IsLeftButtonPressed())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                case MouseButtons.MiddleButton:
+                                    if (MouseHandler.IsMiddleButtonPressed())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                case MouseButtons.RightButton:
+                                    if (MouseHandler.IsRightButtonPressed())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                            break;
+                        case MouseInputActionType.ButtonReleased:
+                            switch (mouseInputAction.MouseWidget)
+                            {
+                                case MouseButtons.LeftButton:
+                                    if (MouseHandler.IsLeftButtonReleased())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                case MouseButtons.MiddleButton:
+                                    if (MouseHandler.IsMiddleButtonReleased())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                case MouseButtons.RightButton:
+                                    if (MouseHandler.IsRightButtonReleased())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                            break;
+                        case MouseInputActionType.WheelUp:
+                            switch (mouseInputAction.MouseWidget)
+                            {
+                                case MouseButtons.Wheel:
+                                    if (MouseHandler.MouseWheelUp())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                            break;
+                        case MouseInputActionType.WheelDown:
+                            switch (mouseInputAction.MouseWidget)
+                            {
+                                case MouseButtons.Wheel:
+                                    if (MouseHandler.MouseWheelDown())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                            break;
+                        case MouseInputActionType.ButtonDrag:
+                            switch (mouseInputAction.MouseWidget)
+                            {
+                                case MouseButtons.LeftButton:
+                                    if (MouseHandler.IsLeftButtonDown() && MouseHandler.HasMouseMoved())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                case MouseButtons.MiddleButton:
+                                    if (MouseHandler.IsMiddleButtonDown() && MouseHandler.HasMouseMoved())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                case MouseButtons.RightButton:
+                                    if (MouseHandler.IsRightButtonDown() && MouseHandler.HasMouseMoved())
+                                    {
+                                        invoke = true;
+                                    }
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    if (invoke)
+                    {
+                        mouseInputAction.Invoke(this, deltaTime);
                     }
                 }
             }
-        }
-
-        /// <summary>
-        ///  Is the key currently not being pressed?
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public bool IsKeyUp(Keys key)
-        {
-            return KeyboardHandler.IsKeyUp(key);
-        }
-
-        /// <summary>
-        /// Is the key currently being pressed?
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public bool IsKeyDown(Keys key)
-        {
-            return KeyboardHandler.IsKeyDown(key);
-        }
-
-        /// <summary>
-        /// Has the key just been pressed?
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public bool IsKeyPressed(Keys key)
-        {
-            return KeyboardHandler.IsKeyPressed(key);
-        }
-
-        /// <summary>
-        /// Has the key just been released?
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public bool IsKeyReleased(Keys key)
-        {
-            return KeyboardHandler.IsKeyReleased(key);
         }
     }
 }

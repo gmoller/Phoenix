@@ -12,14 +12,7 @@ using MathHelper = Microsoft.Xna.Framework.MathHelper;
 
 namespace PhoenixGamePresentation
 {
-    public enum CameraClampMode
-    {
-        NoClamp,
-        AutoClamp,
-        ClampOnUpdate
-    }
-
-    public class Camera
+    public class Camera : IDisposable
     {
         #region State
         private readonly WorldView _worldView;
@@ -43,13 +36,13 @@ namespace PhoenixGamePresentation
         }
 
         private float _zoom;
+
         public float Zoom
         {
             get => _zoom; 
             set
             {
-                _zoom = value;
-                _zoom = ClampZoom(Zoom);
+                _zoom = MathHelper.Clamp(value, 0.5f, 2.0f);
                 CalculateNumberOfHexesFromCenter(_viewport, _zoom);
             }
         }
@@ -58,6 +51,9 @@ namespace PhoenixGamePresentation
         public int NumberOfHexesToRight { get; private set; }
         public int NumberOfHexesAbove { get; private set; }
         public int NumberOfHexesBelow { get; private set; }
+
+        private readonly InputHandler _input;
+        private bool _disposedValue;
         #endregion End State
 
         public Matrix Transform => GetTransform();
@@ -83,7 +79,7 @@ namespace PhoenixGamePresentation
             }
         }
 
-        public Camera(WorldView worldView, Rectangle viewport, CameraClampMode clampMode)
+        public Camera(WorldView worldView, Rectangle viewport, CameraClampMode clampMode, InputHandler input)
         {
             _worldView = worldView;
             _viewport = viewport;
@@ -92,7 +88,13 @@ namespace PhoenixGamePresentation
             Zoom = 1.0f;
             CameraFocusPointInWorld = Vector2.Zero;
             //_rotation = 0.0f;
-            CalculateNumberOfHexesFromCenter(viewport, Zoom);
+
+            input.AddCommandHandler("Camera", 0, new KeyboardInputAction(Keys.OemTilde, KeyboardInputActionType.Released, ResetZoom));
+            input.AddCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.Wheel, MouseInputActionType.WheelUp, IncreaseZoom));
+            input.AddCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.Wheel, MouseInputActionType.WheelDown, DecreaseZoom));
+            input.AddCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.RightButton, MouseInputActionType.ButtonDrag, DragCamera));
+            input.AddCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.None, MouseInputActionType.Moved, MoveCamera));
+            _input = input;
         }
 
         internal void LoadContent(ContentManager content)
@@ -157,49 +159,7 @@ namespace PhoenixGamePresentation
                 return;
             }
 
-            // Causes
-            var zoomAmount = input.MouseWheelUp ? 0.05f : 0.0f;
-            zoomAmount += input.MouseWheelDown ? -0.05f : zoomAmount;
-            var resetZoom = input.IsKeyReleased(Keys.OemTilde);
-
-            var panCameraDistance = input.IsRightMouseButtonDown && input.HasMouseMoved ? input.MouseMovement.ToVector2() : Vector2.Zero;
-            // TODO: adjust speed depending on zoom level
-            panCameraDistance += input.MouseIsAtTopOfScreen ? new Vector2(0.0f, -1.0f) * deltaTime : Vector2.Zero;
-            panCameraDistance += input.MouseIsAtBottomOfScreen ? new Vector2(0.0f, 1.0f) * deltaTime : Vector2.Zero;
-            panCameraDistance += input.MouseIsAtLeftOfScreen ? new Vector2(-1.0f, 0.0f) * deltaTime : Vector2.Zero;
-            panCameraDistance += input.MouseIsAtRightOfScreen ? new Vector2(1.0f, 0.0f) * deltaTime : Vector2.Zero;
-
-            // Actions
-            ResetZoom(resetZoom);
-            AdjustZoom(zoomAmount);
-            MoveCamera(panCameraDistance);
-
             CameraFocusPointInWorld = ClampCamera(Zoom);
-        }
-
-        private void ResetZoom(bool resetZoom)
-        {
-            if (!resetZoom) return;
-
-            Zoom = 1.0f;
-            CalculateNumberOfHexesFromCenter(_viewport, Zoom);
-        }
-
-        private void AdjustZoom(float zoomAmount)
-        {
-            if (zoomAmount.AboutEquals(0.0f)) return;
-
-            Zoom += zoomAmount;
-            Zoom = ClampZoom(Zoom);
-
-            CalculateNumberOfHexesFromCenter(_viewport, Zoom);
-        }
-
-        private void MoveCamera(Vector2 movePosition)
-        {
-            var newPosition = CameraFocusPointInWorld + movePosition;
-
-            CameraFocusPointInWorld = newPosition;
         }
 
         private Vector2 ClampCamera(float zoom)
@@ -215,11 +175,6 @@ namespace PhoenixGamePresentation
             }
 
             return CameraFocusPointInWorld;
-        }
-
-        private float ClampZoom(float zoom)
-        {
-            return MathHelper.Clamp(zoom, 0.5f, 2.0f);
         }
 
         private Matrix GetTransform()
@@ -246,6 +201,106 @@ namespace PhoenixGamePresentation
             Matrix.Multiply(ref viewMatrix, ref projection, out projection);
 
             return projection;
+        }
+
+        #region Event Handlers
+
+        private void ResetZoom(object sender, EventArgs e)
+        {
+            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
+
+            Zoom = 1.0f;
+        }
+
+        private void IncreaseZoom(object sender, EventArgs e)
+        {
+            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
+
+            Zoom += 0.05f;
+        }
+
+        private void DecreaseZoom(object sender, EventArgs e)
+        {
+            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
+
+            Zoom -= 0.05f;
+        }
+
+        private void DragCamera(object sender, EventArgs e)
+        {
+            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
+
+            var mouseEventArgs = (MouseEventArgs)e;
+
+            var panCameraDistance = mouseEventArgs.MouseMovement.ToVector2();
+
+            MoveCamera(panCameraDistance);
+
+            // TODO: adjust speed depending on zoom level
+        }
+
+        private void MoveCamera(object sender, EventArgs e)
+        {
+            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
+
+            var mouseEventArgs = (MouseEventArgs)e;
+
+            var panCameraDistance = IsMouseIsAtTopOfScreen(mouseEventArgs) ? new Vector2(0.0f, -1.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
+            panCameraDistance += MouseIsAtBottomOfScreen(mouseEventArgs) ? new Vector2(0.0f, 1.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
+            panCameraDistance += MouseIsAtLeftOfScreen(mouseEventArgs) ? new Vector2(-1.0f, 0.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
+            panCameraDistance += MouseIsAtRightOfScreen(mouseEventArgs) ? new Vector2(1.0f, 0.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
+
+            MoveCamera(panCameraDistance);
+
+            // TODO: adjust speed depending on zoom level
+        }
+
+        private bool IsMouseIsAtTopOfScreen(MouseEventArgs mouseEventArgs)
+        {
+            return mouseEventArgs.Y < 20.0f && mouseEventArgs.Y >= 0.0f;
+        }
+
+        public bool MouseIsAtBottomOfScreen(MouseEventArgs mouseEventArgs)
+        {
+            return mouseEventArgs.Y > 1080 - 20.0f && mouseEventArgs.Y <= 1080.0f;
+        }
+
+        public bool MouseIsAtLeftOfScreen(MouseEventArgs mouseEventArgs)
+        {
+            return mouseEventArgs.X < 20.0f && mouseEventArgs.X >= 0.0f;;
+        }
+
+        public bool MouseIsAtRightOfScreen(MouseEventArgs mouseEventArgs)
+        {
+            return mouseEventArgs.X > 1670.0f - 20.0f && mouseEventArgs.X <= 1670.0f;
+        }
+
+        private void MoveCamera(Vector2 movePosition)
+        {
+            var newPosition = CameraFocusPointInWorld + movePosition;
+
+            CameraFocusPointInWorld = newPosition;
+        }
+
+        #endregion
+
+        public void Dispose()
+        {
+            if (!_disposedValue)
+            {
+                // TODO: dispose managed state (managed objects)
+                _input.RemoveCommandHandler("Camera", 0, new KeyboardInputAction(Keys.OemTilde, KeyboardInputActionType.Released, ResetZoom));
+                _input.RemoveCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.Wheel, MouseInputActionType.WheelUp, IncreaseZoom));
+                _input.RemoveCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.Wheel, MouseInputActionType.WheelDown, DecreaseZoom));
+                _input.RemoveCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.RightButton, MouseInputActionType.ButtonDrag, DragCamera));
+                _input.RemoveCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.None, MouseInputActionType.Moved, MoveCamera));
+
+                // TODO: set large fields to null
+
+                _disposedValue = true;
+            }
+
+            GC.SuppressFinalize(this);
         }
     }
 }
