@@ -41,7 +41,7 @@ namespace PhoenixGamePresentation.Views
             //_atlas = AssetsManager.Instance.GetAtlas("GUI_Textures_1");
         }
 
-        public void Update(InputHandler input, float deltaTime)
+        public void Update(float deltaTime)
         {
         }
 

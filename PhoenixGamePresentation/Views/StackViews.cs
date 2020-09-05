@@ -13,14 +13,13 @@ using Utilities;
 namespace PhoenixGamePresentation.Views
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    internal class StackViews : IEnumerable<StackView>
+    internal class StackViews : IEnumerable<StackView>, IDisposable
     {
         #region State
         private readonly WorldView _worldView;
 
         private readonly Stacks _stacks;
         private readonly List<StackView> _stackViews;
-        private readonly InputHandler _input;
 
         private Queue<StackView> _ordersQueue;
         private readonly List<Guid> _selectedThisTurn;
@@ -35,7 +34,10 @@ namespace PhoenixGamePresentation.Views
 
         private Viewport _viewport;
         private ViewportAdapter _viewportAdapter;
-        #endregion
+
+        private readonly InputHandler _input;
+        private bool _disposedValue;
+        #endregion End State
 
         public int Count => _stackViews.Count;
 
@@ -49,9 +51,10 @@ namespace PhoenixGamePresentation.Views
             Current = null;
             _ordersQueue = new Queue<StackView>();
             _selectedThisTurn = new List<Guid>();
-            _input = input;
 
             SetupViewport(0, 0, 1670, 1080);
+
+            _input = input;
         }
 
         private void SetupViewport(int x, int y, int width, int height)
@@ -77,16 +80,16 @@ namespace PhoenixGamePresentation.Views
             }
         }
 
-        internal void Update(InputHandler input, float deltaTime)
+        internal void Update(float deltaTime)
         {
             while (_stackViews.Count < _stacks.Count)
             {
-                CreateNewStackView(_worldView, _stacks[_stackViews.Count], input);
+                CreateNewStackView(_worldView, _stacks[_stackViews.Count], _input);
             }
 
             foreach (var stackView in _stackViews)
             {
-                stackView.Update(input, deltaTime);
+                stackView.Update(deltaTime);
             }
         }
 
@@ -226,5 +229,20 @@ namespace PhoenixGamePresentation.Views
         }
 
         private string DebuggerDisplay => $"{{Count={_stackViews.Count}}}";
+
+        public void Dispose()
+        {
+            if (!_disposedValue)
+            {
+                // TODO: dispose managed state (managed objects)
+
+                // TODO: set large fields to null
+                _viewportAdapter = null;
+
+                _disposedValue = true;
+            }
+
+            GC.SuppressFinalize(this);
+        }
     }
 }

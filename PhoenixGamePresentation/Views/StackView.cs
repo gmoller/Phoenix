@@ -111,14 +111,14 @@ namespace PhoenixGamePresentation.Views
             return _stack.GetCostToMoveInto(location);
         }
 
-        internal void Update(InputHandler input, float deltaTime)
+        internal void Update(float deltaTime)
         {
             if (_worldView.GameStatus == GameStatus.CityView) return;
 
             // Causes
             var changeBlinkState = CheckForBlinkStateChange(deltaTime);
             var mustFindNewExploreLocation = ExploreHandler.MustFindNewExploreLocation(this);
-            var mustStartMovement = MovementHandler.CheckForStartOfMovement(input, this, _worldView);
+            var mustStartMovement = MovementHandler.CheckForStartOfMovement(_input, this, _worldView);
             var mustRestartMovementAtStartOfTurn = MovementHandler.CheckForRestartOfMovement(this); // not in moving state, has a path and has movement points
             var mustContinueMovement = MovementHandler.MustContinueMovement(this);
             var mustMoveUnitToNextCell = MovementHandler.MustMoveUnitToNextCell(this);
@@ -138,7 +138,7 @@ namespace PhoenixGamePresentation.Views
 
             if (mustStartMovement)
             {
-                var hexToMoveTo = MovementHandler.GetHexToMoveTo(input, this, _worldView.World);
+                var hexToMoveTo = MovementHandler.GetHexToMoveTo(_input, this, _worldView.World);
                 StartUnitMovement(hexToMoveTo);
             }
 

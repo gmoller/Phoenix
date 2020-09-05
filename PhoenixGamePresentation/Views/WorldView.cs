@@ -15,7 +15,7 @@ using Color = Microsoft.Xna.Framework.Color;
 
 namespace PhoenixGamePresentation.Views
 {
-    public class WorldView
+    public class WorldView : IDisposable
     {
         #region State
         public World World { get; }
@@ -31,6 +31,9 @@ namespace PhoenixGamePresentation.Views
         public Camera Camera { get; }
 
         public GameStatus GameStatus { get; set; }
+
+        private readonly InputHandler _input;
+        private bool _disposedValue;
         #endregion End State
 
         public int WorldWidthInPixels => Constants.WORLD_MAP_WIDTH_IN_PIXELS;
@@ -45,13 +48,15 @@ namespace PhoenixGamePresentation.Views
             _overlandMapView = new OverlandMapView(this, World.OverlandMap, input);
             _overlandSettlementsView = new OverlandSettlementViews(this, World.Settlements, input);
             _stackViews = new StackViews(this, World.Stacks, input);
-            _settlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid));
+            _settlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid), input);
             _hudView = new HudView(this, _stackViews, input);
 
             _movementTypeImages = InitializeMovementTypeImages();
             _actionButtons = InitializeActionButtons();
 
             Camera = new Camera(this, new Rectangle(0, 0, 1670, 1080), CameraClampMode.AutoClamp, input);
+
+            _input = input;
         }
 
         internal void LoadContent(ContentManager content)
@@ -67,26 +72,27 @@ namespace PhoenixGamePresentation.Views
             _actionButtons.LoadContent(content, true);
         }
 
-        internal void Update(InputHandler input, float deltaTime)
+        internal void Update(float deltaTime)
         {
-            Camera.Update(input, deltaTime);
+            Camera.Update(deltaTime);
 
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
 
-            context.WorldPositionPointedAtByMouseCursor = GetWorldPositionPointedAtByMouseCursor(Camera, input.MousePosition);
+            //TODO: change this
+            context.WorldPositionPointedAtByMouseCursor = GetWorldPositionPointedAtByMouseCursor(Camera, _input.MousePosition);
             context.WorldHexPointedAtByMouseCursor = GetWorldHexPointedAtByMouseCursor(context.WorldPositionPointedAtByMouseCursor);
 
-            _overlandMapView.Update(input, deltaTime);
-            _overlandSettlementsView.Update(input, deltaTime);
-            _stackViews.Update(input, deltaTime);
+            _overlandMapView.Update(deltaTime);
+            _overlandSettlementsView.Update(deltaTime);
+            _stackViews.Update(deltaTime);
 
             _settlementView.Settlement = World.Settlements.Selected;
             if (_settlementView.Settlement != null)
             {
-                _settlementView.Update(input, deltaTime, null);
+                _settlementView.Update(deltaTime, null);
             }
 
-            _hudView.Update(input, deltaTime);
+            _hudView.Update(deltaTime);
             _stackViews.RemoveDeadUnits();
         }
 
@@ -178,8 +184,11 @@ namespace PhoenixGamePresentation.Views
             return actionButtons;
         }
 
+        #region Event Handlers
+
         private void BtnClick(object sender, ButtonClickEventArgs e)
         {
+            //TODO: ToDictionary
             switch (e.Action)
             {
                 case "Done":
@@ -203,6 +212,22 @@ namespace PhoenixGamePresentation.Views
                 default:
                     throw new Exception($"Action [{e.Action}] is not implemented.");
             }
+        }
+
+        #endregion
+
+        public void Dispose()
+        {
+            if (!_disposedValue)
+            {
+                // TODO: dispose managed state (managed objects)
+
+                // TODO: set large fields to null
+
+                _disposedValue = true;
+            }
+
+            GC.SuppressFinalize(this);
         }
     }
 }

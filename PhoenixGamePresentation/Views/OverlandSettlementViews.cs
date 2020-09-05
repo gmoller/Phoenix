@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using System;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Input;
 using MonoGameUtilities.ViewportAdapters;
@@ -7,7 +8,7 @@ using Utilities;
 
 namespace PhoenixGamePresentation.Views
 {
-    public class OverlandSettlementViews
+    public class OverlandSettlementViews : IDisposable
     {
         #region State
         private readonly WorldView _worldView;
@@ -17,6 +18,9 @@ namespace PhoenixGamePresentation.Views
 
         private Viewport _viewport;
         private ViewportAdapter _viewportAdapter;
+
+        private readonly InputHandler _input;
+        private bool _disposedValue;
         #endregion
 
         public OverlandSettlementViews(WorldView worldView, Settlements settlements, InputHandler input)
@@ -27,6 +31,8 @@ namespace PhoenixGamePresentation.Views
             _overlandSettlementView = new OverlandSettlementView(_worldView, input);
 
             SetupViewport(0, 0, 1670, 1080);
+
+            _input = input;
         }
 
         private void SetupViewport(int x, int y, int width, int height)
@@ -41,14 +47,14 @@ namespace PhoenixGamePresentation.Views
             _overlandSettlementView.LoadContent(content);
         }
 
-        public void Update(InputHandler input, float deltaTime)
+        public void Update(float deltaTime)
         {
             if (_worldView.GameStatus != GameStatus.OverlandMap) return;
 
             foreach (var settlement in _settlements)
             {
                 _overlandSettlementView.Settlement = settlement;
-                _overlandSettlementView.Update(input, deltaTime);
+                _overlandSettlementView.Update(deltaTime);
             }
         }
 
@@ -66,6 +72,22 @@ namespace PhoenixGamePresentation.Views
 
             spriteBatch.End();
             spriteBatch.GraphicsDevice.Viewport = originalViewport;
+        }
+
+        public void Dispose()
+        {
+            if (!_disposedValue)
+            {
+                // TODO: dispose managed state (managed objects)
+                _overlandSettlementView.Dispose();
+
+                // TODO: set large fields to null
+                _viewportAdapter = null;
+
+                _disposedValue = true;
+            }
+
+            GC.SuppressFinalize(this);
         }
     }
 }

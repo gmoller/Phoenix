@@ -1,4 +1,5 @@
-﻿using GuiControls;
+﻿using System;
+using GuiControls;
 using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -9,7 +10,7 @@ using Utilities;
 
 namespace PhoenixGamePresentation.Views
 {
-    internal class CursorView
+    internal class CursorView : IDisposable
     {
         #region State
         private PointI _position;
@@ -18,13 +19,19 @@ namespace PhoenixGamePresentation.Views
 
         private Viewport _viewport;
         private ViewportAdapter _viewportAdapter;
+
+        private readonly InputHandler _input;
+        private bool _disposedValue;
         #endregion End State
 
-        internal CursorView()
+        internal CursorView(InputHandler input)
         {
             _imgCursor = new Image(_position.ToVector2(), Alignment.TopLeft, new Vector2(28.0f, 32.0f), "Cursor");
 
             SetupViewport(0, 0, 1920, 1080);
+
+            input.AddCommandHandler("CursorView", 0, new MouseInputAction(MouseInputActionType.Moved, UpdatePosition));
+            _input = input;
         }
 
         private void SetupViewport(int x, int y, int width, int height)
@@ -39,9 +46,9 @@ namespace PhoenixGamePresentation.Views
             _imgCursor.LoadContent(content);
         }
 
-        internal void Update(InputHandler input, float deltaTime)
+        internal void Update(float deltaTime)
         {
-            _position = new PointI(input.MousePosition.X, input.MousePosition.Y);
+            _position = new PointI(_input.MousePosition.X, _input.MousePosition.Y);
             _imgCursor.SetTopLeftPosition(_position);
         }
 
@@ -53,6 +60,35 @@ namespace PhoenixGamePresentation.Views
             _imgCursor.Draw(spriteBatch);
             spriteBatch.End();
             spriteBatch.GraphicsDevice.Viewport = originalViewport;
+        }
+
+        #region Event Handlers
+
+        private void UpdatePosition(object sender, EventArgs e)
+        {
+            var mouseEventArgs = e as MouseEventArgs;
+            if (mouseEventArgs is null) return;
+
+            _position = new PointI(mouseEventArgs.X, mouseEventArgs.Y);
+            _imgCursor.SetTopLeftPosition(_position);
+        }
+
+        #endregion
+
+        public void Dispose()
+        {
+            if (!_disposedValue)
+            {
+                // TODO: dispose managed state (managed objects)
+                _input.RemoveCommandHandler("CursorView", 0, new MouseInputAction(MouseInputActionType.Moved, UpdatePosition));
+
+                // TODO: set large fields to null
+                _viewportAdapter = null;
+
+                _disposedValue = true;
+            }
+
+            GC.SuppressFinalize(this);
         }
     }
 }

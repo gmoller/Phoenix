@@ -19,7 +19,7 @@ namespace PhoenixGamePresentation.Views
             _input = new InputHandler();
             _input.Initialize();
             _worldView = new WorldView(phoenixGame.World, _input);
-            _cursorView = new CursorView();
+            _cursorView = new CursorView(_input);
         }
 
         public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
@@ -102,8 +102,8 @@ namespace PhoenixGamePresentation.Views
         public void Update(float deltaTime)
         {
             _input.Update(deltaTime);
-            _worldView.Update(_input, deltaTime);
-            _cursorView.Update(_input, deltaTime);
+            _worldView.Update(deltaTime);
+            _cursorView.Update(deltaTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)

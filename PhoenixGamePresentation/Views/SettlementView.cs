@@ -14,7 +14,7 @@ using Utilities;
 namespace PhoenixGamePresentation.Views
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    internal class SettlementView
+    internal class SettlementView : IDisposable
     {
         #region State
         private readonly WorldView _worldView;
@@ -26,9 +26,12 @@ namespace PhoenixGamePresentation.Views
 
         private Viewport _viewport;
         private ViewportAdapter _viewportAdapter;
+
+        private readonly InputHandler _input;
+        private bool _disposedValue;
         #endregion
 
-        internal SettlementView(WorldView worldView, Settlement settlement)
+        internal SettlementView(WorldView worldView, Settlement settlement, InputHandler input)
         {
             _worldView = worldView;
             Settlement = settlement;
@@ -39,6 +42,8 @@ namespace PhoenixGamePresentation.Views
             _secondaryFrame = new SecondaryFrame(this, topLeftPositionSecondary, "GUI_Textures_1");
 
             SetupViewport(0, 0, 1920, 1080);
+
+            _input = input;
         }
 
         private void SetupViewport(int x, int y, int width, int height)
@@ -54,12 +59,12 @@ namespace PhoenixGamePresentation.Views
             _secondaryFrame.LoadContent(content);
         }
 
-        internal void Update(InputHandler input, float deltaTime, Viewport? viewport)
+        internal void Update(float deltaTime, Viewport? viewport)
         {
             if (_worldView.GameStatus != GameStatus.CityView) return;
 
-            _mainFrame.Update(input, deltaTime, viewport);
-            _secondaryFrame.Update(input, deltaTime, viewport);
+            _mainFrame.Update(_input, deltaTime, viewport);
+            _secondaryFrame.Update(_input, deltaTime, viewport);
         }
 
         internal void Draw(SpriteBatch spriteBatch)
@@ -95,5 +100,20 @@ namespace PhoenixGamePresentation.Views
         }
 
         private string DebuggerDisplay => $"{{Name={Settlement.Name}}}";
+
+        public void Dispose()
+        {
+            if (!_disposedValue)
+            {
+                // TODO: dispose managed state (managed objects)
+
+                // TODO: set large fields to null
+                _viewportAdapter = null;
+
+                _disposedValue = true;
+            }
+
+            GC.SuppressFinalize(this);
+        }
     }
 }

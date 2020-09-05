@@ -58,11 +58,11 @@ namespace PhoenixGamePresentation.Views
             _test.LoadContent(content);
         }
 
-        internal void Update(InputHandler input, float deltaTime)
+        internal void Update(float deltaTime)
         {
             if (_worldView.GameStatus != GameStatus.OverlandMap) return;
 
-            _test.Update(input, deltaTime, _viewport);
+            _test.Update(_input, deltaTime, _viewport);
         }
 
         internal void Draw(SpriteBatch spriteBatch, Camera camera)

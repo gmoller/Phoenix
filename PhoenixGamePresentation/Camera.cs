@@ -151,7 +151,7 @@ namespace PhoenixGamePresentation
             NumberOfHexesBelow = NumberOfHexesAbove;
         }
 
-        public void Update(InputHandler input, float deltaTime)
+        public void Update(float deltaTime)
         {
             if (_worldView.GameStatus != GameStatus.OverlandMap)
             {

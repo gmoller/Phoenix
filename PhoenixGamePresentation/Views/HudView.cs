@@ -16,7 +16,7 @@ using Color = Microsoft.Xna.Framework.Color;
 
 namespace PhoenixGamePresentation.Views
 {
-    internal class HudView
+    internal class HudView : IDisposable
     {
         #region State
         private readonly WorldView _worldView;
@@ -109,7 +109,7 @@ namespace PhoenixGamePresentation.Views
 
             SetupViewport(_area.X, _area.Y, _area.Width, _area.Height + btnEndTurn.Height);
 
-            //input.AddCommandHandler("HudView", 0, new MouseInputAction(MouseInputActionType.Moved, EndTurn));
+            input.AddCommandHandler("HudView", 0, new MouseInputAction(MouseInputActionType.Moved, CheckIfMouseIsOverHudView));
             _input = input;
         }
 
@@ -150,25 +150,12 @@ namespace PhoenixGamePresentation.Views
             _actionButtons = _worldView.ActionButtons;
         }
 
-        public void Update(InputHandler input, float deltaTime)
+        public void Update(float deltaTime)
         {
             if (_worldView.GameStatus == GameStatus.CityView) return;
 
-            // Causes
-            // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
-            var mouseOverHudView = _area.Contains(input.MousePosition) || _hudViewFrame.ChildControls["btnEndTurn"].MouseOver;
-
-            // Actions
-            _hudViewFrame.Enabled = mouseOverHudView;
-
-            _hudViewFrame.Update(input, deltaTime, _viewport);
-            _actionButtons.Update(input, deltaTime, _viewport);
-
-            // Status change?
-            if (_worldView.GameStatus != GameStatus.CityView)
-            {
-                _worldView.GameStatus = mouseOverHudView ? GameStatus.InHudView : GameStatus.OverlandMap;
-            }
+            _hudViewFrame.Update(_input, deltaTime, _viewport);
+            _actionButtons.Update(_input, deltaTime, _viewport);
         }
 
         internal void Draw(SpriteBatch spriteBatch)
@@ -299,6 +286,21 @@ namespace PhoenixGamePresentation.Views
 
         #region Event Handlers
 
+        private void CheckIfMouseIsOverHudView(object sender, EventArgs e)
+        {
+            var mouseEventArgs = e as MouseEventArgs;
+            if (mouseEventArgs is null) return;
+
+            // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
+            var mouseOverHudView = _area.Contains(mouseEventArgs.X, mouseEventArgs.Y) || _hudViewFrame.ChildControls["btnEndTurn"].MouseOver;
+            _hudViewFrame.Enabled = mouseOverHudView;
+
+            if (_worldView.GameStatus != GameStatus.CityView)
+            {
+                _worldView.GameStatus = mouseOverHudView ? GameStatus.InHudView : GameStatus.OverlandMap;
+            }
+        }
+
         private void MiniMapClick(object sender, EventArgs e)
         {
             // Where on the minimap is clicked?
@@ -322,5 +324,21 @@ namespace PhoenixGamePresentation.Views
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            if (!_disposedValue)
+            {
+                // TODO: dispose managed state (managed objects)
+                _input.RemoveCommandHandler("HudView", 0, new MouseInputAction(MouseInputActionType.Moved, CheckIfMouseIsOverHudView));
+
+                // TODO: set large fields to null
+                _viewportAdapter = null;
+
+                _disposedValue = true;
+            }
+
+            GC.SuppressFinalize(this);
+        }
     }
 }
