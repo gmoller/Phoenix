@@ -18,7 +18,7 @@ namespace Input
             Handler = handler;
         }
 
-        public void Invoke()
+        public void Invoke(float deltaTime)
         {
             Handler.Invoke(this, new KeyboardEventArgs(Key));
         }

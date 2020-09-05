@@ -46,7 +46,7 @@ namespace PhoenixGamePresentation.Views
             _overlandSettlementsView = new OverlandSettlementViews(this, World.Settlements, input);
             _stackViews = new StackViews(this, World.Stacks, input);
             _settlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid));
-            _hudView = new HudView(this, _stackViews);
+            _hudView = new HudView(this, _stackViews, input);
 
             _movementTypeImages = InitializeMovementTypeImages();
             _actionButtons = InitializeActionButtons();

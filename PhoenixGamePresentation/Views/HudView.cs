@@ -31,11 +31,14 @@ namespace PhoenixGamePresentation.Views
 
         private Viewport _viewport;
         private ViewportAdapter _viewportAdapter;
+
+        private readonly InputHandler _input;
+        private bool _disposedValue;
         #endregion End State
 
         private StackView SelectedStackView => _stackViews.Current;
 
-        internal HudView(WorldView worldView, StackViews stackViews)
+        internal HudView(WorldView worldView, StackViews stackViews, InputHandler input)
         {
             var width = (int)(1920 * 0.1305f); // 13.05% of screen width
             var height = (int)(1080 * 0.945f); // 94.5% of screen height
@@ -105,6 +108,9 @@ namespace PhoenixGamePresentation.Views
             //var newFrame = new Frame(json);
 
             SetupViewport(_area.X, _area.Y, _area.Width, _area.Height + btnEndTurn.Height);
+
+            //input.AddCommandHandler("HudView", 0, new MouseInputAction(MouseInputActionType.Moved, EndTurn));
+            _input = input;
         }
 
         private void SetupViewport(int x, int y, int width, int height)

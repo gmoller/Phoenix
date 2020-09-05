@@ -30,7 +30,7 @@ namespace PhoenixGamePresentation.Views
         {
             _worldView = worldView;
 
-            input.AddCommandHandler("OverlandSettlementView", 0, new MouseInputAction(MouseButtons.RightButton, MouseInputActionType.ButtonPressed, OpenSettlement));
+            input.AddCommandHandler("OverlandSettlementView", 0, new MouseInputAction(MouseInputActionType.RightButtonPressed, OpenSettlement));
             _input = input;
         }
 
@@ -92,7 +92,7 @@ namespace PhoenixGamePresentation.Views
             if (!_disposedValue)
             {
                 // TODO: dispose managed state (managed objects)
-                _input.RemoveCommandHandler("OverlandSettlementView", 0, new MouseInputAction(MouseButtons.RightButton, MouseInputActionType.ButtonPressed, OpenSettlement));
+                _input.RemoveCommandHandler("OverlandSettlementView", 0, new MouseInputAction(MouseInputActionType.RightButtonPressed, OpenSettlement));
 
                 // TODO: set large fields to null
                 _texture = null;

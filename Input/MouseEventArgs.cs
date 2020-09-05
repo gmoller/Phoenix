@@ -5,7 +5,6 @@ namespace Input
 {
     public class MouseEventArgs : EventArgs
     {
-        public MouseButtons Button { get; }
         public PointI Location { get; }
         public PointI MouseMovement { get; }
         public float DeltaTime { get; }

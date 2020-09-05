@@ -90,10 +90,10 @@ namespace PhoenixGamePresentation
             //_rotation = 0.0f;
 
             input.AddCommandHandler("Camera", 0, new KeyboardInputAction(Keys.OemTilde, KeyboardInputActionType.Released, ResetZoom));
-            input.AddCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.Wheel, MouseInputActionType.WheelUp, IncreaseZoom));
-            input.AddCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.Wheel, MouseInputActionType.WheelDown, DecreaseZoom));
-            input.AddCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.RightButton, MouseInputActionType.ButtonDrag, DragCamera));
-            input.AddCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.None, MouseInputActionType.Moved, MoveCamera));
+            input.AddCommandHandler("Camera", 0, new MouseInputAction(MouseInputActionType.WheelUp, IncreaseZoom));
+            input.AddCommandHandler("Camera", 0, new MouseInputAction(MouseInputActionType.WheelDown, DecreaseZoom));
+            input.AddCommandHandler("Camera", 0, new MouseInputAction(MouseInputActionType.RightButtonDrag, DragCamera));
+            input.AddCommandHandler("Camera", 0, new MouseInputAction(MouseInputActionType.Moved, MoveCamera));
             _input = input;
         }
 
@@ -290,10 +290,10 @@ namespace PhoenixGamePresentation
             {
                 // TODO: dispose managed state (managed objects)
                 _input.RemoveCommandHandler("Camera", 0, new KeyboardInputAction(Keys.OemTilde, KeyboardInputActionType.Released, ResetZoom));
-                _input.RemoveCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.Wheel, MouseInputActionType.WheelUp, IncreaseZoom));
-                _input.RemoveCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.Wheel, MouseInputActionType.WheelDown, DecreaseZoom));
-                _input.RemoveCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.RightButton, MouseInputActionType.ButtonDrag, DragCamera));
-                _input.RemoveCommandHandler("Camera", 0, new MouseInputAction(MouseButtons.None, MouseInputActionType.Moved, MoveCamera));
+                _input.RemoveCommandHandler("Camera", 0, new MouseInputAction(MouseInputActionType.WheelUp, IncreaseZoom));
+                _input.RemoveCommandHandler("Camera", 0, new MouseInputAction(MouseInputActionType.WheelDown, DecreaseZoom));
+                _input.RemoveCommandHandler("Camera", 0, new MouseInputAction(MouseInputActionType.RightButtonDrag, DragCamera));
+                _input.RemoveCommandHandler("Camera", 0, new MouseInputAction(MouseInputActionType.Moved, MoveCamera));
 
                 // TODO: set large fields to null
 

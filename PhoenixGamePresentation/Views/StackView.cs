@@ -77,9 +77,9 @@ namespace PhoenixGamePresentation.Views
             input.AddCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad6, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
             input.AddCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad7, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
             input.AddCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad9, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-            input.AddCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseButtons.RightButton, MouseInputActionType.ButtonPressed, DrawPotentialMovementPath));
-            input.AddCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseButtons.RightButton, MouseInputActionType.ButtonReleased, SelectStack));
-            input.AddCommandHandler($"StackView:{Id}", 1, new MouseInputAction(MouseButtons.RightButton, MouseInputActionType.ButtonReleased, ResetPotentialMovementPath));
+            input.AddCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonPressed, DrawPotentialMovementPath));
+            input.AddCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonReleased, SelectStack));
+            input.AddCommandHandler($"StackView:{Id}", 1, new MouseInputAction(MouseInputActionType.RightButtonReleased, ResetPotentialMovementPath));
             _input = input;
         }
 
@@ -511,9 +511,9 @@ namespace PhoenixGamePresentation.Views
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad6, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad7, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad9, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-                _input.RemoveCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseButtons.RightButton, MouseInputActionType.ButtonPressed, DrawPotentialMovementPath));
-                _input.RemoveCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseButtons.RightButton, MouseInputActionType.ButtonReleased, SelectStack));
-                _input.RemoveCommandHandler($"StackView:{Id}", 1, new MouseInputAction(MouseButtons.RightButton, MouseInputActionType.ButtonReleased, ResetPotentialMovementPath));
+                _input.RemoveCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonPressed, DrawPotentialMovementPath));
+                _input.RemoveCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonReleased, SelectStack));
+                _input.RemoveCommandHandler($"StackView:{Id}", 1, new MouseInputAction(MouseInputActionType.RightButtonReleased, ResetPotentialMovementPath));
 
                 // TODO: set large fields to null
                 _movementPath = null;

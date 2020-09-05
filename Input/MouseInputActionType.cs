@@ -2,12 +2,20 @@
 {
     public enum MouseInputActionType
     {
-        ButtonDown,
-        ButtonPressed,
-        ButtonReleased,
+        LeftButtonDown,
+        LeftButtonPressed,
+        LeftButtonReleased,
+        MiddleButtonDown,
+        MiddleButtonPressed,
+        MiddleButtonReleased,
+        RightButtonDown,
+        RightButtonPressed,
+        RightButtonReleased,
         WheelUp,
         WheelDown,
-        ButtonDrag,
+        LeftButtonDrag,
+        MiddleButtonDrag,
+        RightButtonDrag,
         Moved
     }
 }
