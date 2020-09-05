@@ -285,13 +285,10 @@ namespace PhoenixGamePresentation.Views
 
         #region Event Handlers
 
-        private void CheckIfMouseIsOverHudView(object sender, EventArgs e)
+        private void CheckIfMouseIsOverHudView(object sender, MouseEventArgs e)
         {
-            var mouseEventArgs = e as MouseEventArgs;
-            if (mouseEventArgs is null) return;
-
             // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
-            var mouseOverHudView = _area.Contains(mouseEventArgs.Mouse.Location) || _hudViewFrame.ChildControls["btnEndTurn"].MouseOver;
+            var mouseOverHudView = _area.Contains(e.Mouse.Location) || _hudViewFrame.ChildControls["btnEndTurn"].MouseOver;
             _hudViewFrame.Enabled = mouseOverHudView;
 
             if (_worldView.GameStatus != GameStatus.CityView)
@@ -328,10 +325,10 @@ namespace PhoenixGamePresentation.Views
         {
             if (!_disposedValue)
             {
-                // TODO: dispose managed state (managed objects)
+                // dispose managed state (managed objects)
                 _input.RemoveCommandHandler("HudView", 0, new MouseInputAction(MouseInputActionType.Moved, CheckIfMouseIsOverHudView));
 
-                // TODO: set large fields to null
+                // set large fields to null
                 _viewportAdapter = null;
 
                 _disposedValue = true;

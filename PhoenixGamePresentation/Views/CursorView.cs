@@ -48,8 +48,6 @@ namespace PhoenixGamePresentation.Views
 
         internal void Update(float deltaTime)
         {
-            _position = new PointI(_input.MousePosition.X, _input.MousePosition.Y);
-            _imgCursor.SetTopLeftPosition(_position);
         }
 
         internal void Draw(SpriteBatch spriteBatch)
@@ -62,14 +60,11 @@ namespace PhoenixGamePresentation.Views
             spriteBatch.GraphicsDevice.Viewport = originalViewport;
         }
 
-        #region Event Handlers
+        #region Event Handlers   
 
-        private void UpdatePosition(object sender, EventArgs e)
+        private void UpdatePosition(object sender, MouseEventArgs e)
         {
-            var mouseEventArgs = e as MouseEventArgs;
-            if (mouseEventArgs is null) return;
-
-            _position = mouseEventArgs.Mouse.Location.ToPointI();
+            _position = e.Mouse.Location.ToPointI();
             _imgCursor.SetTopLeftPosition(_position);
         }
 
@@ -79,10 +74,10 @@ namespace PhoenixGamePresentation.Views
         {
             if (!_disposedValue)
             {
-                // TODO: dispose managed state (managed objects)
+                // dispose managed state (managed objects)
                 _input.RemoveCommandHandler("CursorView", 0, new MouseInputAction(MouseInputActionType.Moved, UpdatePosition));
 
-                // TODO: set large fields to null
+                // set large fields to null
                 _viewportAdapter = null;
 
                 _disposedValue = true;

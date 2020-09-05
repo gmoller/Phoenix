@@ -174,8 +174,9 @@ namespace PhoenixGamePresentation.Views
 
         #region Event Handlers
 
-        private void EndTurn(object sender, EventArgs e)
+        private void EndTurn(object sender, KeyboardEventArgs e)
         {
+            // TODO: only allow if all units have been given orders
             _worldView.EndTurn();
         }
 
@@ -185,10 +186,10 @@ namespace PhoenixGamePresentation.Views
         {
             if (!_disposedValue)
             {
-                // TODO: dispose managed state (managed objects)
+                // dispose managed state (managed objects)
                 _input.RemoveCommandHandler("OverlandMapView", 0, new KeyboardInputAction(Keys.Enter, KeyboardInputActionType.Released, EndTurn));
 
-                // TODO: set large fields to null
+                // set large fields to null
                 _viewportAdapter = null;
 
                 _disposedValue = true;

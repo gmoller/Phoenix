@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Hex;
 using Utilities;
 
 namespace MonoGameUtilities.ExtensionMethods
@@ -8,6 +9,22 @@ namespace MonoGameUtilities.ExtensionMethods
         public static PointI ToPointI(this Point p)
         {
             return new PointI(p.X, p.Y);
+        }
+
+        public static bool IsOver(this Point p1, HexOffsetCoordinates p2, Matrix transform)
+        {
+            var hexPoint = p1.ToWorldHex(transform);
+            var cursorIsOnHex = p2.ToPointI() == hexPoint;
+
+            return cursorIsOnHex;
+        }
+
+        public static PointI ToWorldHex(this Point p, Matrix transform)
+        {
+            var worldPositionPointedAtByMouseCursor = Vector2.Transform(p.ToVector2(), Matrix.Invert(transform));
+            var worldHex = HexOffsetCoordinates.FromPixel(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
+
+            return new PointI(worldHex.Col, worldHex.Row);
         }
     }
 }

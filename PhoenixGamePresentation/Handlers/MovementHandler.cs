@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework.Input;
-using Hex;
-using Input;
+﻿using Input;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
 using Utilities;

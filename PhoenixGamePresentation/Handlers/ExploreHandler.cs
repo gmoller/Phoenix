@@ -21,7 +21,7 @@ namespace PhoenixGamePresentation.Handlers
             if (cell != Cell.Empty)
             {
                 // find best path to unexplored cell
-                var path = MovementPathDeterminer.DetermineMovementPath(stackView, stackView.Location, cell.ToPoint, world);
+                var path = MovementPathDeterminer.DetermineMovementPath(stackView, stackView.Location, cell.ToPoint, world.OverlandMap.CellGrid);
 
                 if (path.Count > 0)
                 {

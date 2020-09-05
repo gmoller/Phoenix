@@ -105,9 +105,9 @@ namespace PhoenixGamePresentation.Views
         {
             if (!_disposedValue)
             {
-                // TODO: dispose managed state (managed objects)
+                // dispose managed state (managed objects)
 
-                // TODO: set large fields to null
+                // set large fields to null
                 _viewportAdapter = null;
 
                 _disposedValue = true;

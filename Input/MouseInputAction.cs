@@ -5,11 +5,11 @@ namespace Input
     public readonly struct MouseInputAction
     {
         public MouseInputActionType InputActionType { get; }
-        private Action<object, EventArgs> Handler { get; }
+        private Action<object, MouseEventArgs> Handler { get; }
 
         public string DictionaryKey => $"Mouse.{InputActionType}";
 
-        public MouseInputAction(MouseInputActionType inputActionType, Action<object, EventArgs> handler)
+        public MouseInputAction(MouseInputActionType inputActionType, Action<object, MouseEventArgs> handler)
         {
             InputActionType = inputActionType;
             Handler = handler;

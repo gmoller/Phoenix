@@ -140,6 +140,16 @@ namespace Hex
 
         public static HexCube FromPixel(int x, int y)
         {
+            return FromPixel(x, (double)y);
+        }
+
+        public static HexCube FromPixel(PointF p)
+        {
+            return FromPixel(p.X, p.Y);
+        }
+
+        public static HexCube FromPixel(double x, double y)
+        {
             var q = (Constants.OneThirdOfSquareRootOf3 * x - Constants.ONE_THIRD * y) / Constants.HexSize;
             var r = (Constants.TWO_THIRDS * y) / Constants.HexSize;
             var axial = HexAxial.Round((float)q, (float)r);

@@ -7,7 +7,7 @@ namespace Hex
 {
     // odd-R
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public struct HexOffsetCoordinates
+    public readonly struct HexOffsetCoordinates
     {
         public int Col { get; }
         public int Row { get; }
@@ -17,6 +17,14 @@ namespace Hex
             Col = col;
             Row = row;
         }
+
+        public HexOffsetCoordinates(PointI p)
+        {
+            Col = p.X;
+            Row = p.Y;
+        }
+
+        public PointI ToPointI() => new PointI(Col, Row);
 
         public static HexAxial ToAxial(HexOffsetCoordinates offsetCoordinates)
         {
@@ -152,6 +160,16 @@ namespace Hex
         }
 
         public static HexOffsetCoordinates FromPixel(int x, int y)
+        {
+            return FromPixel(x, (double)y);
+        }
+
+        public static HexOffsetCoordinates FromPixel(PointF p)
+        {
+            return FromPixel(p.X, p.Y);
+        }
+
+        public static HexOffsetCoordinates FromPixel(double x, double y)
         {
             var cube = HexCube.FromPixel(x, y);
             var offsetCoordinates = HexCube.ToOffsetCoordinates(cube);

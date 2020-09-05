@@ -7,11 +7,11 @@ namespace Input
     {
         public Keys Key { get; }
         public KeyboardInputActionType InputActionType { get; }
-        private Action<object, EventArgs> Handler { get; }
+        private Action<object, KeyboardEventArgs> Handler { get; }
 
         public string DictionaryKey => $"Keyboard.{Key}.{InputActionType}";
 
-        public KeyboardInputAction(Keys key, KeyboardInputActionType inputActionType, Action<object, EventArgs> handler)
+        public KeyboardInputAction(Keys key, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> handler)
         {
             Key = key;
             InputActionType = inputActionType;
@@ -20,7 +20,7 @@ namespace Input
 
         public void Invoke(KeyboardHandler keyboard, float deltaTime)
         {
-            Handler.Invoke(this, new KeyboardEventArgs(Key, deltaTime));
+            Handler.Invoke(this, new KeyboardEventArgs(keyboard, Key, deltaTime));
         }
     }
 }

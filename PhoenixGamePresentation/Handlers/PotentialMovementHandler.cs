@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
 using Utilities;
@@ -7,22 +9,21 @@ namespace PhoenixGamePresentation.Handlers
 {
     internal static class PotentialMovementHandler
     {
-        internal static List<PointI> GetPotentialMovementPath(StackView stackView, World world)
+        internal static List<PointI> GetPotentialMovementPath(StackView stackView, CellGrid cellGrid, Point mouseLocation, Matrix transform)
         {
-            var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(stackView, world);
+            var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(stackView, cellGrid, mouseLocation, transform);
             if (!potentialMovement) return new List<PointI>();
 
-            var path = MovementPathDeterminer.DetermineMovementPath(stackView, stackView.Location, hexToMoveTo, world);
+            var path = MovementPathDeterminer.DetermineMovementPath(stackView, stackView.Location, hexToMoveTo, cellGrid);
 
             return path;
 
         }
 
-        private static (bool potentialMovement, PointI hexToMoveTo) CheckForPotentialUnitMovement(StackView stackView, World world)
+        private static (bool potentialMovement, PointI hexToMoveTo) CheckForPotentialUnitMovement(StackView stackView, CellGrid cellGrid, Point mouseLocation, Matrix transform)
         {
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            var hexToMoveTo = context.WorldHexPointedAtByMouseCursor;
-            var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
+            var hexToMoveTo = mouseLocation.ToWorldHex(transform);
+            var cellToMoveTo = cellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new PointI(0, 0));
             var costToMoveIntoResult = stackView.GetCostToMoveInto(cellToMoveTo);
 

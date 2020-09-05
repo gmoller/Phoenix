@@ -43,6 +43,8 @@ namespace PhoenixGamePresentation.Views
         private bool _disposedValue;
         #endregion End State
 
+        private HexOffsetCoordinates LocationHex => new HexOffsetCoordinates(Location);
+
         public bool IsBusy => _stack.IsBusy;
         public UnitStatus Status => _stack.Status;
 
@@ -187,7 +189,7 @@ namespace PhoenixGamePresentation.Views
 
         private void StartUnitMovement(PointI hexToMoveTo)
         {
-            var path = MovementPathDeterminer.DetermineMovementPath(this, Location, hexToMoveTo, _worldView.World);
+            var path = MovementPathDeterminer.DetermineMovementPath(this, Location, hexToMoveTo, _worldView.World.OverlandMap.CellGrid);
             SetMovementPath(path);
 
             StartUnitMovement();
@@ -408,15 +410,20 @@ namespace PhoenixGamePresentation.Views
             StartUnitMovement(hexToMoveTo);
         }
 
-        private void SelectStack(object sender, EventArgs e)
+        private void SelectStack(object sender, MouseEventArgs e)
         {
             if (IsSelected) return;
-            if (!CursorIsOnThisStack(this)) return;
+            if (!MousePointerIsOnHex(LocationHex, e.Mouse.Location)) return;
 
             SetAsCurrent();
         }
 
-        private void FocusCameraOnLocation(object sender, EventArgs e)
+        private bool MousePointerIsOnHex(HexOffsetCoordinates settlementLocation, Point mouseLocation)
+        {
+            return mouseLocation.IsOver(settlementLocation, _worldView.Camera.Transform);
+        }
+
+        private void FocusCameraOnLocation(object sender, KeyboardEventArgs e)
         {
             if (!IsSelected) return;
             if (_worldView.GameStatus == GameStatus.CityView) return;
@@ -424,29 +431,27 @@ namespace PhoenixGamePresentation.Views
             _worldView.Camera.LookAtCell(Location);
         }
 
-        private void DrawPotentialMovementPath(object sender, EventArgs e)
+        private void DrawPotentialMovementPath(object sender, MouseEventArgs e)
         {
             if (!IsSelected) return;
             if (Status == UnitStatus.Explore || IsMovingState) return;
 
-            var path = PotentialMovementHandler.GetPotentialMovementPath(this, _worldView.World);
+            var path = PotentialMovementHandler.GetPotentialMovementPath(this, _worldView.World.OverlandMap.CellGrid, e.Mouse.Location, _worldView.Camera.Transform);
             _potentialMovementPath = path;
         }
 
-        private void ResetPotentialMovementPath(object sender, EventArgs e)
+        private void ResetPotentialMovementPath(object sender, MouseEventArgs e)
         {
             _potentialMovementPath = new List<PointI>();
         }
 
-        private void CheckForUnitMovementFromKeyboardInitiation(object sender, EventArgs e)
+        private void CheckForUnitMovementFromKeyboardInitiation(object sender, KeyboardEventArgs e)
         {
             if (_worldView.GameStatus == GameStatus.CityView) return;
             if (IsMovingState || MovementPoints.AboutEquals(0.0f)) return;
 
-            var keyboardEventArgs = (KeyboardEventArgs)e;
-
             Direction direction;
-            switch (keyboardEventArgs.Key)
+            switch (e.Key)
             {
                 case Keys.NumPad1:
                     direction = Direction.SouthWest;
@@ -481,20 +486,12 @@ namespace PhoenixGamePresentation.Views
             }
         }
 
-        private void CheckForUnitMovementFromMouseInitiation(object sender, EventArgs e)
+        private void CheckForUnitMovementFromMouseInitiation(object sender, MouseEventArgs e)
         {
 
         }
 
         #endregion
-
-        private bool CursorIsOnThisStack(StackView stackView)
-        {
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            var hexPoint = context.WorldHexPointedAtByMouseCursor;
-
-            return stackView.Location == hexPoint;
-        }
 
         public override string ToString()
         {
@@ -507,7 +504,7 @@ namespace PhoenixGamePresentation.Views
         {
             if (!_disposedValue)
             {
-                // TODO: dispose managed state (managed objects)
+                // dispose managed state (managed objects)
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.C, KeyboardInputActionType.Released, FocusCameraOnLocation));
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad1, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad3, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
@@ -520,7 +517,7 @@ namespace PhoenixGamePresentation.Views
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonReleased, SelectStack));
                 _input.RemoveCommandHandler($"StackView:{Id}", 1, new MouseInputAction(MouseInputActionType.RightButtonReleased, ResetPotentialMovementPath));
 
-                // TODO: set large fields to null
+                // set large fields to null
                 _movementPath = null;
                 _potentialMovementPath = null;
 

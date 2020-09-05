@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Hex;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using PhoenixGameLibrary.Helpers;
@@ -36,6 +37,7 @@ namespace PhoenixGameLibrary
         public SettlementCitizens Citizens { get; }
         #endregion
 
+        public HexOffsetCoordinates LocationHex => new HexOffsetCoordinates(Location);
         public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
         public int GrowthRate => DetermineGrowthRate();
         public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(Location, _catchmentCells);

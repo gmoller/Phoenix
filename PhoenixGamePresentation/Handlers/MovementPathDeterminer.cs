@@ -8,7 +8,7 @@ namespace PhoenixGamePresentation.Handlers
 {
     internal static class MovementPathDeterminer
     {
-        internal static List<PointI> DetermineMovementPath(StackView stackView, PointI from, PointI to, World world)
+        internal static List<PointI> DetermineMovementPath(StackView stackView, PointI from, PointI to, CellGrid cellGrid)
         {
             if (from.Equals(to)) return new List<PointI>();
 
@@ -18,7 +18,6 @@ namespace PhoenixGamePresentation.Handlers
             var openList = new PriorityQueue<AStarSearch<PointI, Cost>.Node>();
             var closedList = new Dictionary<PointI, Cost>();
 
-            var cellGrid = world.OverlandMap.CellGrid;
             mapSolver.Solve(GetCostToMoveIntoFunc, new PointI(cellGrid.NumberOfColumns, cellGrid.NumberOfRows), from, to, openList, closedList);
 
             var path = mapSolver.Solution;
