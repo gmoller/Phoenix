@@ -1,6 +1,6 @@
 ﻿namespace Utilities
 {
-    public static class MathHelper
+    public static class MathUtilities
     {
         /// <summary>
         /// Converts Degrees to Radians.

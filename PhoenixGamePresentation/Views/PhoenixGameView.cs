@@ -17,7 +17,6 @@ namespace PhoenixGamePresentation.Views
         public PhoenixGameView(PhoenixGame phoenixGame)
         {
             _input = new InputHandler();
-            _input.Initialize();
             _worldView = new WorldView(phoenixGame.World, _input);
             _cursorView = new CursorView(_input);
         }

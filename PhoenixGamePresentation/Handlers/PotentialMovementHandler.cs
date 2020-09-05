@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Input;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
 using Utilities;
@@ -8,13 +7,6 @@ namespace PhoenixGamePresentation.Handlers
 {
     internal static class PotentialMovementHandler
     {
-        internal static bool MustDeterminePotentialMovementPath(InputHandler input, StackView stackView)
-        {
-            if (stackView.Status == UnitStatus.Explore || stackView.IsMovingState || !input.MouseIsWithinScreen || !input.IsRightMouseButtonDown) return false;
-
-            return true;
-        }
-
         internal static List<PointI> GetPotentialMovementPath(StackView stackView, World world)
         {
             var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(stackView, world);

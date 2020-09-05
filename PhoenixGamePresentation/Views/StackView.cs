@@ -14,7 +14,6 @@ using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentation.Handlers;
 using Utilities;
 using Utilities.ExtensionMethods;
-using Color = Microsoft.Xna.Framework.Color;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -69,7 +68,6 @@ namespace PhoenixGamePresentation.Views
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             _currentPositionOnScreen = HexOffsetCoordinates.ToPixel(stack.Location.X, stack.Location.Y).ToVector2();
 
-            //input.AddCommandHandler(InputAction.LeftMouseButtonReleased, StartMovement);
             input.AddCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.C, KeyboardInputActionType.Released, FocusCameraOnLocation));
             input.AddCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad1, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
             input.AddCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad3, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
@@ -77,6 +75,7 @@ namespace PhoenixGamePresentation.Views
             input.AddCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad6, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
             input.AddCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad7, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
             input.AddCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad9, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
+            input.AddCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.LeftButtonPressed, CheckForUnitMovementFromMouseInitiation));
             input.AddCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonPressed, DrawPotentialMovementPath));
             input.AddCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonReleased, SelectStack));
             input.AddCommandHandler($"StackView:{Id}", 1, new MouseInputAction(MouseInputActionType.RightButtonReleased, ResetPotentialMovementPath));
@@ -481,7 +480,12 @@ namespace PhoenixGamePresentation.Views
                 StartUnitMovement(hexToMoveTo);
             }
         }
-        
+
+        private void CheckForUnitMovementFromMouseInitiation(object sender, EventArgs e)
+        {
+
+        }
+
         #endregion
 
         private bool CursorIsOnThisStack(StackView stackView)
@@ -511,6 +515,7 @@ namespace PhoenixGamePresentation.Views
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad6, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad7, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad9, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
+                _input.RemoveCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.LeftButtonPressed, CheckForUnitMovementFromMouseInitiation));
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonPressed, DrawPotentialMovementPath));
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonReleased, SelectStack));
                 _input.RemoveCommandHandler($"StackView:{Id}", 1, new MouseInputAction(MouseInputActionType.RightButtonReleased, ResetPotentialMovementPath));

@@ -1,21 +1,15 @@
 ﻿using System;
-using Utilities;
 
 namespace Input
 {
     public class MouseEventArgs : EventArgs
     {
-        public PointI Location { get; }
-        public PointI MouseMovement { get; }
+        public MouseHandler Mouse { get; }
         public float DeltaTime { get; }
 
-        public int X => Location.X;
-        public int Y => Location.Y;
-
-        public MouseEventArgs(PointI location, PointI mouseMovement, float deltaTime)
+        public MouseEventArgs(MouseHandler mouse, float deltaTime)
         {
-            Location = location;
-            MouseMovement = mouseMovement;
+            Mouse = mouse;
             DeltaTime = deltaTime;
         }
     }

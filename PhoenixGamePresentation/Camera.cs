@@ -8,7 +8,6 @@ using MonoGameUtilities.ExtensionMethods;
 using PhoenixGamePresentation.Views;
 using Utilities;
 using Utilities.ExtensionMethods;
-using MathHelper = Microsoft.Xna.Framework.MathHelper;
 
 namespace PhoenixGamePresentation
 {
@@ -232,7 +231,7 @@ namespace PhoenixGamePresentation
 
             var mouseEventArgs = (MouseEventArgs)e;
 
-            var panCameraDistance = mouseEventArgs.MouseMovement.ToVector2();
+            var panCameraDistance = mouseEventArgs.Mouse.Movement.ToVector2();
 
             MoveCamera(panCameraDistance);
 
@@ -245,34 +244,34 @@ namespace PhoenixGamePresentation
 
             var mouseEventArgs = (MouseEventArgs)e;
 
-            var panCameraDistance = IsMouseIsAtTopOfScreen(mouseEventArgs) ? new Vector2(0.0f, -1.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
-            panCameraDistance += MouseIsAtBottomOfScreen(mouseEventArgs) ? new Vector2(0.0f, 1.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
-            panCameraDistance += MouseIsAtLeftOfScreen(mouseEventArgs) ? new Vector2(-1.0f, 0.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
-            panCameraDistance += MouseIsAtRightOfScreen(mouseEventArgs) ? new Vector2(1.0f, 0.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
+            var panCameraDistance = IsMouseIsAtTopOfScreen(mouseEventArgs.Mouse.Location) ? new Vector2(0.0f, -1.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
+            panCameraDistance += MouseIsAtBottomOfScreen(mouseEventArgs.Mouse.Location) ? new Vector2(0.0f, 1.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
+            panCameraDistance += MouseIsAtLeftOfScreen(mouseEventArgs.Mouse.Location) ? new Vector2(-1.0f, 0.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
+            panCameraDistance += MouseIsAtRightOfScreen(mouseEventArgs.Mouse.Location) ? new Vector2(1.0f, 0.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
 
             MoveCamera(panCameraDistance);
 
             // TODO: adjust speed depending on zoom level
         }
 
-        private bool IsMouseIsAtTopOfScreen(MouseEventArgs mouseEventArgs)
+        private bool IsMouseIsAtTopOfScreen(Point mousePosition)
         {
-            return mouseEventArgs.Y < 20.0f && mouseEventArgs.Y >= 0.0f;
+            return mousePosition.Y < 20.0f && mousePosition.Y >= 0.0f;
         }
 
-        public bool MouseIsAtBottomOfScreen(MouseEventArgs mouseEventArgs)
+        private bool MouseIsAtBottomOfScreen(Point mousePosition)
         {
-            return mouseEventArgs.Y > 1080 - 20.0f && mouseEventArgs.Y <= 1080.0f;
+            return mousePosition.Y > 1080 - 20.0f && mousePosition.Y <= 1080.0f;
         }
 
-        public bool MouseIsAtLeftOfScreen(MouseEventArgs mouseEventArgs)
+        private bool MouseIsAtLeftOfScreen(Point mousePosition)
         {
-            return mouseEventArgs.X < 20.0f && mouseEventArgs.X >= 0.0f;;
+            return mousePosition.X < 20.0f && mousePosition.X >= 0.0f;;
         }
 
-        public bool MouseIsAtRightOfScreen(MouseEventArgs mouseEventArgs)
+        private bool MouseIsAtRightOfScreen(Point mousePosition)
         {
-            return mouseEventArgs.X > 1670.0f - 20.0f && mouseEventArgs.X <= 1670.0f;
+            return mousePosition.X > 1670.0f - 20.0f && mousePosition.X <= 1670.0f;
         }
 
         private void MoveCamera(Vector2 movePosition)

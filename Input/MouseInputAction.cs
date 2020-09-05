@@ -1,6 +1,4 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
-using Utilities;
 
 namespace Input
 {
@@ -17,9 +15,9 @@ namespace Input
             Handler = handler;
         }
 
-        public void Invoke(Point mousePosition, Point mouseMovement, float deltaTime)
+        public void Invoke(MouseHandler mouse, float deltaTime)
         {
-            Handler.Invoke(this, new MouseEventArgs(new PointI(mousePosition.X, mousePosition.Y), new PointI(mouseMovement.X, mouseMovement.Y), deltaTime));
+            Handler.Invoke(this, new MouseEventArgs(mouse, deltaTime));
         }
     }
 }

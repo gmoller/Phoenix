@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using PointI = Utilities.PointI;
+using Utilities;
 
 namespace MonoGameUtilities.ExtensionMethods
 {
     public static class PointExtensions
     {
-        public static Vector2 ToVector2(this PointI p)
+        public static PointI ToPointI(this Point p)
         {
-            return new Vector2(p.X, p.Y);
+            return new PointI(p.X, p.Y);
         }
     }
 }

@@ -69,7 +69,7 @@ namespace PhoenixGamePresentation.Views
             var mouseEventArgs = e as MouseEventArgs;
             if (mouseEventArgs is null) return;
 
-            _position = new PointI(mouseEventArgs.X, mouseEventArgs.Y);
+            _position = mouseEventArgs.Mouse.Location.ToPointI();
             _imgCursor.SetTopLeftPosition(_position);
         }
 

@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Utilities;
 
-namespace MonogameUtilities
+namespace MonoGameUtilities.ExtensionMethods
 {
     public static class ColorExtensions
     {
-        public static Color ToMonogameColor(this Utilities.Color color)
+        public static Color ToColor(this ColorRgba color)
         {
             return new Color(color.R, color.G, color.B, color.A);
         }

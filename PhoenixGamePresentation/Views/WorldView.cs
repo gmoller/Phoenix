@@ -11,7 +11,6 @@ using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentation.ExtensionMethods;
 using Utilities;
-using Color = Microsoft.Xna.Framework.Color;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -78,7 +77,7 @@ namespace PhoenixGamePresentation.Views
 
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
 
-            //TODO: change this
+            //TODO: change this to be on Camera
             context.WorldPositionPointedAtByMouseCursor = GetWorldPositionPointedAtByMouseCursor(Camera, _input.MousePosition);
             context.WorldHexPointedAtByMouseCursor = GetWorldHexPointedAtByMouseCursor(context.WorldPositionPointedAtByMouseCursor);
 

@@ -6,23 +6,21 @@ namespace Input
     public class InputHandler
     {
         #region State
-        private Dictionary<string, Dictionary<string, KeyboardInputAction>> _keyboardEventHandlers;
-        private Dictionary<string, Dictionary<string, MouseInputAction>> _mouseEventHandlers;
+        private readonly KeyboardHandler _keyboard;
+        public MouseHandler Mouse { get; }
+        private readonly Dictionary<string, Dictionary<string, KeyboardInputAction>> _keyboardEventHandlers;
+        private readonly Dictionary<string, Dictionary<string, MouseInputAction>> _mouseEventHandlers;
         #endregion End State
 
-        public Point MousePosition => MouseHandler.MousePosition;
-        public bool IsRightMouseButtonDown => MouseHandler.IsRightButtonDown();
-        public bool IsLeftMouseButtonReleased => MouseHandler.IsLeftButtonReleased();
+        public Point MousePosition => Mouse.Location;
+        public bool IsLeftMouseButtonReleased => Mouse.IsLeftButtonReleased();
 
-        public bool MouseIsWithinScreen => MousePosition.X >= 0.0f &&
-                                           MousePosition.X <= 1920.0f &&
-                                           MousePosition.Y >= 0.0f &&
-                                           MousePosition.Y <= 1080.0f;
+        internal bool MouseIsWithinScreen => Mouse.MouseIsWithinScreen;
 
-        public void Initialize()
+        public InputHandler()
         {
-            KeyboardHandler.Initialize();
-            MouseHandler.Initialize();
+            _keyboard = new KeyboardHandler();
+            Mouse = new MouseHandler();
 
             _keyboardEventHandlers = new Dictionary<string, Dictionary<string, KeyboardInputAction>>();
             _mouseEventHandlers = new Dictionary<string, Dictionary<string, MouseInputAction>>();
@@ -72,8 +70,8 @@ namespace Input
         {
             //if (!MouseIsWithinScreen) return;
 
-            KeyboardHandler.Update(_keyboardEventHandlers, deltaTime);
-            MouseHandler.Update(_mouseEventHandlers, deltaTime);
+            _keyboard.Update(_keyboardEventHandlers, deltaTime);
+            Mouse.Update(_mouseEventHandlers, deltaTime);
         }
     }
 }

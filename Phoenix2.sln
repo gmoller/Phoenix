@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "Utilities\Util
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhoenixGameLibrary", "PhoenixGameLibrary\PhoenixGameLibrary.csproj", "{6EF3C570-283C-44C2-9025-3E17511F9E7D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonogameUtilities", "MonogameUtilities\MonogameUtilities.csproj", "{1C3C3A31-E2AF-4993-A0A2-45867DED056D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonoGameUtilities", "MonogameUtilities\MonoGameUtilities.csproj", "{1C3C3A31-E2AF-4993-A0A2-45867DED056D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Input", "Input\Input.csproj", "{9D735963-1BC3-4A24-837E-BA22F6A16AD1}"
 EndProject

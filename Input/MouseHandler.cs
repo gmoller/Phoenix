@@ -5,37 +5,48 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Input
 {
-    internal static class MouseHandler
+    public class MouseHandler
     {
         #region State
-        private static MouseState _currentState;
-        private static MouseState _previousState;
-        private static readonly Dictionary<MouseInputActionType, Func<bool>> Switch = new Dictionary<MouseInputActionType, Func<bool>>
-        {
-            { MouseInputActionType.Moved, () => MouseMovement != Point.Zero },
-            { MouseInputActionType.LeftButtonDown, IsLeftButtonDown },
-            { MouseInputActionType.MiddleButtonDown, IsMiddleButtonDown },
-            { MouseInputActionType.RightButtonDown, IsRightButtonDown },
-            { MouseInputActionType.LeftButtonPressed, IsLeftButtonPressed },
-            { MouseInputActionType.MiddleButtonPressed, IsMiddleButtonPressed },
-            { MouseInputActionType.RightButtonPressed, IsRightButtonPressed },
-            { MouseInputActionType.LeftButtonReleased, IsLeftButtonReleased },
-            { MouseInputActionType.MiddleButtonReleased, IsMiddleButtonReleased },
-            { MouseInputActionType.RightButtonReleased, IsRightButtonReleased },
-            { MouseInputActionType.WheelUp, MouseWheelUp },
-            { MouseInputActionType.WheelDown, MouseWheelDown },
-            { MouseInputActionType.LeftButtonDrag, () => IsLeftButtonDown() && HasMouseMoved() },
-            { MouseInputActionType.MiddleButtonDrag, () => IsMiddleButtonDown() && HasMouseMoved() },
-            { MouseInputActionType.RightButtonDrag, () => IsRightButtonDown() && HasMouseMoved() }
-        };
+        private MouseState _currentState;
+        private MouseState _previousState;
+        private readonly Dictionary<MouseInputActionType, Func<bool>> _switch;
         #endregion End State
 
-        internal static void Initialize()
+        public Point Location => _currentState.Position;
+
+        public Point Movement => _currentState.Position - _previousState.Position;
+
+        internal bool MouseIsWithinScreen => Location.X >= 0.0f &&
+                                             Location.X <= 1920.0f &&
+                                             Location.Y >= 0.0f &&
+                                             Location.Y <= 1080.0f;
+
+        internal MouseHandler()
         {
             _currentState = Mouse.GetState();
+
+            _switch = new Dictionary<MouseInputActionType, Func<bool>>
+            {
+                { MouseInputActionType.Moved, () => Movement != Point.Zero },
+                { MouseInputActionType.LeftButtonDown, IsLeftButtonDown },
+                { MouseInputActionType.MiddleButtonDown, IsMiddleButtonDown },
+                { MouseInputActionType.RightButtonDown, IsRightButtonDown },
+                { MouseInputActionType.LeftButtonPressed, IsLeftButtonPressed },
+                { MouseInputActionType.MiddleButtonPressed, IsMiddleButtonPressed },
+                { MouseInputActionType.RightButtonPressed, IsRightButtonPressed },
+                { MouseInputActionType.LeftButtonReleased, IsLeftButtonReleased },
+                { MouseInputActionType.MiddleButtonReleased, IsMiddleButtonReleased },
+                { MouseInputActionType.RightButtonReleased, IsRightButtonReleased },
+                { MouseInputActionType.WheelUp, MouseWheelUp },
+                { MouseInputActionType.WheelDown, MouseWheelDown },
+                { MouseInputActionType.LeftButtonDrag, () => IsLeftButtonDown() && HasMouseMoved() },
+                { MouseInputActionType.MiddleButtonDrag, () => IsMiddleButtonDown() && HasMouseMoved() },
+                { MouseInputActionType.RightButtonDrag, () => IsRightButtonDown() && HasMouseMoved() }
+            };
         }
 
-        internal static void Update(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, float deltaTime)
+        internal void Update(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, float deltaTime)
         {
             _previousState = _currentState;
             _currentState = Mouse.GetState();
@@ -43,82 +54,78 @@ namespace Input
             HandleMouse(mouseEventHandlers, deltaTime);
         }
 
-        internal static Point MousePosition => _currentState.Position;
-
-        private static Point MouseMovement => _currentState.Position - _previousState.Position;
-
-        private static bool IsLeftButtonDown()
+        private bool IsLeftButtonDown()
         {
             return _currentState.LeftButton == ButtonState.Pressed;
         }
 
-        private static bool IsLeftButtonPressed()
+        private bool IsLeftButtonPressed()
         {
             return _previousState.LeftButton == ButtonState.Released && _currentState.LeftButton == ButtonState.Pressed;
         }
 
-        internal static bool IsLeftButtonReleased()
+        internal bool IsLeftButtonReleased()
         {
             return _previousState.LeftButton == ButtonState.Pressed && _currentState.LeftButton == ButtonState.Released;
         }
 
-        private static bool IsMiddleButtonDown()
+        private bool IsMiddleButtonDown()
         {
             return _currentState.MiddleButton == ButtonState.Pressed;
         }
 
-        private static bool IsMiddleButtonPressed()
+        private bool IsMiddleButtonPressed()
         {
             return _previousState.MiddleButton == ButtonState.Released && _currentState.MiddleButton == ButtonState.Pressed;
         }
 
-        private static bool IsMiddleButtonReleased()
+        private bool IsMiddleButtonReleased()
         {
             return _previousState.MiddleButton == ButtonState.Pressed && _currentState.MiddleButton == ButtonState.Released;
         }
 
-        internal static bool IsRightButtonDown()
+        private bool IsRightButtonDown()
         {
             return _currentState.RightButton == ButtonState.Pressed;
         }
 
-        private static bool IsRightButtonPressed()
+        private bool IsRightButtonPressed()
         {
             return _previousState.RightButton == ButtonState.Released && _currentState.RightButton == ButtonState.Pressed;
         }
 
-        private static bool IsRightButtonReleased()
+        private bool IsRightButtonReleased()
         {
             return _previousState.RightButton == ButtonState.Pressed && _currentState.RightButton == ButtonState.Released;
         }
 
-        private static bool MouseWheelUp()
+        private bool MouseWheelUp()
         {
             return _currentState.ScrollWheelValue > _previousState.ScrollWheelValue;
         }
 
-        private static bool MouseWheelDown()
+        private bool MouseWheelDown()
         {
             return _currentState.ScrollWheelValue < _previousState.ScrollWheelValue;
         }
 
-        private static bool HasMouseMoved()
+        private bool HasMouseMoved()
         {
             return _previousState.Position != _currentState.Position;
         }
 
-        private static void HandleMouse(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, float deltaTime)
+        private void HandleMouse(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, float deltaTime)
         {
             foreach (var item in mouseEventHandlers.Values)
             {
                 foreach (var mouseInputAction in item.Values)
                 {
-                    var func = Switch[mouseInputAction.InputActionType];
+                    var func = _switch[mouseInputAction.InputActionType];
                     var invoke = func.Invoke();
 
                     if (invoke)
                     {
-                        mouseInputAction.Invoke(MousePosition, MouseMovement, deltaTime);
+                        mouseInputAction.Invoke(this, deltaTime);
                     }
                 }
             }

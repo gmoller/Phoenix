@@ -8,7 +8,7 @@ namespace Hex
         public static PointF GetCorner(HexVertexDirection direction)
         {
             float degrees = 60 * (int)direction - 30;
-            float radians = MathHelper.ToRadians(degrees);
+            float radians = MathUtilities.ToRadians(degrees);
 
             var v = new PointF((float)(Constants.HexSize * Math.Cos(radians)), (float)(Constants.HexSize * Math.Sin(radians)));
 

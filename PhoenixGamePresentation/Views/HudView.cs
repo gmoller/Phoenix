@@ -12,7 +12,6 @@ using PhoenixGameLibrary;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
 using Utilities;
-using Color = Microsoft.Xna.Framework.Color;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -292,7 +291,7 @@ namespace PhoenixGamePresentation.Views
             if (mouseEventArgs is null) return;
 
             // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
-            var mouseOverHudView = _area.Contains(mouseEventArgs.X, mouseEventArgs.Y) || _hudViewFrame.ChildControls["btnEndTurn"].MouseOver;
+            var mouseOverHudView = _area.Contains(mouseEventArgs.Mouse.Location) || _hudViewFrame.ChildControls["btnEndTurn"].MouseOver;
             _hudViewFrame.Enabled = mouseOverHudView;
 
             if (_worldView.GameStatus != GameStatus.CityView)
@@ -308,7 +307,7 @@ namespace PhoenixGamePresentation.Views
             if (!(e is MouseEventArgs mouseEventArgs)) return;
 
             var minimapImage = _hudViewFrame["miniMapFrame.mapImage"];
-            var minimapPosition = mouseEventArgs.Location - new PointI(_viewport.X + minimapImage.Left, _viewport.Y + minimapImage.Top);
+            var minimapPosition = mouseEventArgs.Mouse.Location - new Point(_viewport.X + minimapImage.Left, _viewport.Y + minimapImage.Top);
             var normalizedX = minimapPosition.X / (float) minimapImage.Size.X;
             var normalizedY = minimapPosition.Y / (float) minimapImage.Size.Y;
 

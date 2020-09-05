@@ -1,12 +1,11 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonogameUtilities;
+using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
 using Utilities;
 using Utilities.ExtensionMethods;
-using Color = Microsoft.Xna.Framework.Color;
 
 namespace PhoenixGamePresentation.Handlers
 {
@@ -53,7 +52,7 @@ namespace PhoenixGamePresentation.Handlers
                 {
                     var cell = cellGrid.GetCell(column1, row1);
                     var terrainTypeId = cell.TerrainTypeId;
-                    var color = terrainTypes[terrainTypeId].MinimapColor.ToMonogameColor();
+                    var color = terrainTypes[terrainTypeId].MinimapColor.ToColor();
 
                     var hexColors = GetHexColors(color, Color.DarkSlateGray, cell.SeenState);
 
