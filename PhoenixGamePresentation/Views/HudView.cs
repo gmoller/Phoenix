@@ -26,6 +26,10 @@ namespace PhoenixGamePresentation.Views
         private readonly Frame _hudViewFrame;
         private EnumerableDictionary<IControl> _actionButtons;
 
+        //TODO: these should be label controls
+        private string _text1;
+        private string _text2;
+
         private readonly StackViews _stackViews;
 
         private Viewport _viewport;
@@ -151,10 +155,31 @@ namespace PhoenixGamePresentation.Views
 
         public void Update(float deltaTime)
         {
+            _text1 = string.Empty;
+            _text2 = string.Empty;
             if (_worldView.GameStatus == GameStatus.CityView) return;
 
             _hudViewFrame.Update(_input, deltaTime, _viewport);
             _actionButtons.Update(_input, deltaTime, _viewport);
+
+            // get tile mouse is over
+            var cellGrid = _worldView.World.OverlandMap.CellGrid;
+            var hexPoint = _input.MousePosition.ToWorldHex(_worldView.Camera.Transform);
+
+            // TODO: check if cell is on screen
+            var cell = cellGrid.GetCell(hexPoint.X, hexPoint.Y);
+            if (cell.SeenState == SeenState.NeverSeen) return;
+
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var terrainTypes = gameMetadata.TerrainTypes;
+            var terrainType = terrainTypes[cell.TerrainTypeId];
+            _text1 = $"{terrainType.Name} - {terrainType.FoodOutput} food";
+
+            if (!terrainType.CanSettleOn) return;
+
+            var catchment = cellGrid.GetCatchment(hexPoint.X, hexPoint.Y, 2);
+            var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new PointI(hexPoint.X, hexPoint.Y), catchment);
+            _text2 = $"Maximum Pop - {maxPop}";
         }
 
         internal void Draw(SpriteBatch spriteBatch)
@@ -247,33 +272,11 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawTileInfo(SpriteBatch spriteBatch)
         {
-            var x = 10.0f;
+            const float x = 10.0f;
             var y = _area.Height * 0.96f;
 
-            // get tile mouse is over
-            var cellGrid = _worldView.World.OverlandMap.CellGrid;
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            var hexPoint = context.WorldHexPointedAtByMouseCursor;
-            if (hexPoint.X >= 0 && hexPoint.Y >= 0 && hexPoint.X < PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS && hexPoint.Y < PhoenixGameLibrary.Constants.WORLD_MAP_ROWS)
-            {
-                var cell = cellGrid.GetCell(hexPoint.X, hexPoint.Y);
-                if (cell.SeenState != SeenState.NeverSeen)
-                {
-                    var terrainTypes = gameMetadata.TerrainTypes;
-                    var terrainType = terrainTypes[cell.TerrainTypeId];
-                    var text1 = $"{terrainType.Name} - {terrainType.FoodOutput} food";
-                    spriteBatch.DrawString(_font, text1, new Vector2(x, y), Color.White);
-
-                    if (terrainType.CanSettleOn)
-                    {
-                        var catchment = cellGrid.GetCatchment(hexPoint.X, hexPoint.Y, 2);
-                        var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new PointI(hexPoint.X, hexPoint.Y), catchment);
-                        var text2 = $"Maximum Pop - {maxPop}";
-                        spriteBatch.DrawString(_font, text2, new Vector2(x, y + 15.0f), Color.White);
-                    }
-                }
-            }
+            spriteBatch.DrawString(_font, _text1, new Vector2(x, y), Color.White);
+            spriteBatch.DrawString(_font, _text2, new Vector2(x, y + 15.0f), Color.White);
         }
 
         private void NewCellSeen(object sender, EventArgs e)

@@ -10,7 +10,7 @@ namespace PhoenixGameLibrary
     /// This struct is immutable.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public struct Cell
+    public readonly struct Cell
     {
         public static readonly Cell Empty = new Cell(0, 0, TerrainType.Invalid.Id);
 

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameUtilities
 {
-    public class TextWrapper
+    public static class TextWrapper
     {
         public static List<string> WrapText(string text, double pixels, SpriteFont spriteFont)
         {

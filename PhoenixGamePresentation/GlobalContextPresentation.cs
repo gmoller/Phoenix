@@ -12,8 +12,6 @@ namespace PhoenixGamePresentation
         public GraphicsDevice GraphicsDevice { get; set; }
         public GraphicsDeviceManager GraphicsDeviceManager { get; set; }
         public GameWindow GameWindow { get; set; }
-
-        public PointI WorldPositionPointedAtByMouseCursor { get; set; }
-        public PointI WorldHexPointedAtByMouseCursor { get; set; }
+        public Camera Camera { get; set; }
     }
 }

@@ -145,6 +145,11 @@ namespace Hex
             return ToPixel(offsetCoordinates.Col, offsetCoordinates.Row);
         }
 
+        public static PointF ToPixel(PointI p)
+        {
+            return ToPixel(p.X, p.Y);
+        }
+
         public static PointF ToPixel(int col, int row)
         {
             var x = Constants.HexSize * (Constants.SquareRootOf3 * (col + 0.5f * (row & 1)));

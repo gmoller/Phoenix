@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
-using Hex;
 using Input;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
@@ -54,6 +53,8 @@ namespace PhoenixGamePresentation.Views
             _actionButtons = InitializeActionButtons();
 
             Camera = new Camera(this, new Rectangle(0, 0, 1670, 1080), CameraClampMode.AutoClamp, input);
+            var globalContextPresentation = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            globalContextPresentation.Camera = Camera;
 
             _input = input;
         }
@@ -74,12 +75,6 @@ namespace PhoenixGamePresentation.Views
         internal void Update(float deltaTime)
         {
             Camera.Update(deltaTime);
-
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-
-            //TODO: change this to be on Camera
-            context.WorldPositionPointedAtByMouseCursor = GetWorldPositionPointedAtByMouseCursor(Camera, _input.MousePosition);
-            context.WorldHexPointedAtByMouseCursor = GetWorldHexPointedAtByMouseCursor(context.WorldPositionPointedAtByMouseCursor);
 
             _overlandMapView.Update(deltaTime);
             _overlandSettlementsView.Update(deltaTime);
@@ -104,20 +99,6 @@ namespace PhoenixGamePresentation.Views
             _hudView.Draw(spriteBatch);
 
             _settlementView.Draw(spriteBatch);
-        }
-
-        private PointI GetWorldPositionPointedAtByMouseCursor(Camera camera, Point mousePosition)
-        {
-            var worldPosPointedAtByMouseCursor = camera.ScreenToWorld(new Vector2(mousePosition.X, mousePosition.Y));
-
-            return new PointI((int)worldPosPointedAtByMouseCursor.X, (int)worldPosPointedAtByMouseCursor.Y);
-        }
-
-        private PointI GetWorldHexPointedAtByMouseCursor(PointI worldPositionPointedAtByMouseCursor)
-        {
-            var worldHex = HexOffsetCoordinates.FromPixel(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
-
-            return new PointI(worldHex.Col, worldHex.Row);
         }
 
         public void BeginTurn()
@@ -219,9 +200,9 @@ namespace PhoenixGamePresentation.Views
         {
             if (!_disposedValue)
             {
-                // TODO: dispose managed state (managed objects)
+                // dispose managed state (managed objects)
 
-                // TODO: set large fields to null
+                // set large fields to null
 
                 _disposedValue = true;
             }

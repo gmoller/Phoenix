@@ -1,4 +1,6 @@
-﻿using Input;
+﻿using Microsoft.Xna.Framework;
+using Input;
+using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
 using Utilities;
@@ -18,18 +20,13 @@ namespace PhoenixGamePresentation.Handlers
             return false;
         }
 
-        internal static bool CheckForStartOfMovement(InputHandler input, StackView stackView, WorldView worldView)
+        internal static bool CheckForStartOfMovement(InputHandler input, StackView stackView, WorldView worldView, Point mouseLocation)
         {
             if (worldView.GameStatus == GameStatus.InHudView) return false;
 
-            var (startMovementMouse, hexToMoveToMouse) = CheckForUnitMovementFromMouseInitiation(input, stackView, worldView.World);
+            var (startMovementMouse, _) = CheckForUnitMovementFromMouseInitiation(input, stackView, worldView.World.OverlandMap.CellGrid, mouseLocation, worldView.Camera.Transform);
 
-            if (startMovementMouse)
-            {
-                return true;
-            }
-
-            return false;
+            return startMovementMouse;
         }
 
         internal static bool MustContinueMovement(StackView stackView)
@@ -42,22 +39,21 @@ namespace PhoenixGamePresentation.Handlers
             return UnitIsMoving(stackView) && CheckIfUnitHasReachedNextCell(stackView);
         }
 
-        internal static PointI GetHexToMoveTo(InputHandler input, StackView stackView, World world)
+        internal static PointI GetHexToMoveTo(InputHandler input, StackView stackView, CellGrid cellGrid, Point mouseLocation, Matrix transform)
         {
-            var (startMovementMouse, hexToMoveToMouse) = CheckForUnitMovementFromMouseInitiation(input, stackView, world);
+            var (startMovementMouse, hexToMoveToMouse) = CheckForUnitMovementFromMouseInitiation(input, stackView, cellGrid, mouseLocation, transform);
 
             return startMovementMouse ? hexToMoveToMouse : PointI.Zero;
         }
 
-        private static (bool startMovement, PointI hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input, StackView stackView, World world)
+        private static (bool startMovement, PointI hexToMoveTo) CheckForUnitMovementFromMouseInitiation(InputHandler input, StackView stackView, CellGrid cellGrid, Point mouseLocation, Matrix transform)
         {
             if (stackView.IsMovingState || stackView.MovementPoints.AboutEquals(0.0f) || !input.IsLeftMouseButtonReleased) return (false, new PointI(0, 0));
 
             // unit is selected, left mouse button released and unit is not already moving
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            var hexToMoveTo = context.WorldHexPointedAtByMouseCursor;
+            var hexToMoveTo = mouseLocation.ToWorldHex(transform);
             if (hexToMoveTo == stackView.Location) return (false, new PointI(0, 0));
-            var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
+            var cellToMoveTo = cellGrid.GetCell(hexToMoveTo.X, hexToMoveTo.Y);
             if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new PointI(0, 0));
 
             var costToMoveIntoResult = stackView.GetCostToMoveInto(cellToMoveTo);

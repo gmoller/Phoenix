@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
+using MonoGameUtilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
 using Utilities;
 using Color = Microsoft.Xna.Framework.Color;
@@ -80,22 +81,25 @@ namespace PhoenixGamePresentation
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             var gameWindow = context.GameWindow;
             var graphicsDevice = context.GraphicsDevice;
+            var camera = context.Camera;
 
             _fps.Update(gameTime, _viewport);
 
             var mouseState = Mouse.GetState();
+            var worldPosition = mouseState.Position.ToWorldPosition(camera.Transform);
+            var worldHex = mouseState.Position.ToWorldHex(camera.Transform);
 
             _labels[1].Text = $"{GC.CollectionCount(0)},{GC.CollectionCount(1)},{GC.CollectionCount(2)}";
             _labels[3].Text = $"({mouseState.Position.X},{mouseState.Position.Y})";
-            _labels[5].Text = $"({context.WorldPositionPointedAtByMouseCursor.X},{context.WorldPositionPointedAtByMouseCursor.Y})";
-            _labels[7].Text = $"{context.WorldHexPointedAtByMouseCursor.X},{context.WorldHexPointedAtByMouseCursor.Y}";
+            _labels[5].Text = $"({worldPosition.X},{worldPosition.Y})";
+            _labels[7].Text = $"{worldHex.X},{worldHex.Y}";
             _labels[9].Text = $"{GC.GetTotalMemory(false) / 1024} KB";
             _labels[11].Text = $"{_fps.UpdateFramesPerSecond}/{_fps.DrawFramesPerSecond}";
             _labels[13].Text = $"{gameWindow.ClientBounds.Width}x{gameWindow.ClientBounds.Height}";
             _labels[15].Text = $"{_viewportAdapter.Viewport.Width}x{_viewportAdapter.Viewport.Height}";
             _labels[17].Text = $"{graphicsDevice.DisplayMode.Width}x{graphicsDevice.DisplayMode.Height}";
             _labels[19].Text = $"{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width}x{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height}";
-            //_labels[21].Text = $"{context.Zoom}";
+            _labels[21].Text = $"{camera.Zoom}";
         }
 
         public void Draw(SpriteBatch spriteBatch)

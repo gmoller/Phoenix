@@ -100,13 +100,18 @@ namespace PhoenixGamePresentation
         {
         }
 
+        /// <summary>
+        /// Translates the position in the world to a position on the screen.
+        /// </summary>
+        /// <param name="worldPosition"></param>
+        /// <returns></returns>
         public Vector2 WorldToScreen(Vector2 worldPosition)
         {
             return Vector2.Transform(worldPosition, Transform);
         }
 
         /// <summary>
-        /// Translates the position of a vector to it's position in the world.
+        /// Translates the position on the screen to it's position in the world.
         /// </summary>
         /// <param name="screenPosition"></param>
         /// <returns></returns>
@@ -115,12 +120,10 @@ namespace PhoenixGamePresentation
             return Vector2.Transform(screenPosition, Matrix.Invert(Transform));
         }
 
-        public void LookAtCellPointedAtByMouse()
+        public void LookAtCellPointedAtByMouse(Point mouseLocation)
         {
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            var hexPoint = context.WorldHexPointedAtByMouseCursor;
-            var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y);
-            CameraFocusPointInWorld = newPosition.ToVector2();
+            var hexPoint = mouseLocation.ToWorldHex(Transform);
+            LookAtCell(hexPoint);
         }
 
         /// <summary>
@@ -129,12 +132,12 @@ namespace PhoenixGamePresentation
         /// <param name="hexPoint"></param>
         public void LookAtCell(PointI hexPoint)
         {
-            var newPosition = HexOffsetCoordinates.ToPixel(hexPoint.X, hexPoint.Y); // in world
+            var newPosition = HexOffsetCoordinates.ToPixel(hexPoint); // in world
             CameraFocusPointInWorld = newPosition.ToVector2();
         }
 
         /// <summary>
-        /// Center camera on pixel.
+        /// Center camera on position in the world.
         /// </summary>
         /// <param name="newPosition"></param>
         public void LookAtPixel(PointI newPosition)

@@ -31,7 +31,7 @@ namespace Phoenix2
         {
             Logger.Instance.Log("MainGame Initializing...");
 
-            Window.Position = new Microsoft.Xna.Framework.Point(0, 0);
+            Window.Position = new Point(0, 0);
             VariableTimeStep();
 
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
@@ -123,7 +123,7 @@ namespace Phoenix2
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.DarkBlue);
+            GraphicsDevice.Clear(Color.DarkBlue);
 
             _phoenixGameView.Draw(_spriteBatch);
             _metricsPanel.Draw(_spriteBatch);

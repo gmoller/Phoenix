@@ -119,7 +119,7 @@ namespace PhoenixGamePresentation.Views
             // Causes
             var changeBlinkState = CheckForBlinkStateChange(deltaTime);
             var mustFindNewExploreLocation = ExploreHandler.MustFindNewExploreLocation(this);
-            var mustStartMovement = MovementHandler.CheckForStartOfMovement(_input, this, _worldView);
+            var mustStartMovement = MovementHandler.CheckForStartOfMovement(_input, this, _worldView, _input.MousePosition);
             var mustRestartMovementAtStartOfTurn = MovementHandler.CheckForRestartOfMovement(this); // not in moving state, has a path and has movement points
             var mustContinueMovement = MovementHandler.MustContinueMovement(this);
             var mustMoveUnitToNextCell = MovementHandler.MustMoveUnitToNextCell(this);
@@ -139,7 +139,7 @@ namespace PhoenixGamePresentation.Views
 
             if (mustStartMovement)
             {
-                var hexToMoveTo = MovementHandler.GetHexToMoveTo(_input, this, _worldView.World);
+                var hexToMoveTo = MovementHandler.GetHexToMoveTo(_input, this, _worldView.World.OverlandMap.CellGrid, _input.MousePosition, _worldView.Camera.Transform);
                 StartUnitMovement(hexToMoveTo);
             }
 
@@ -406,7 +406,7 @@ namespace PhoenixGamePresentation.Views
 
         private void StartMovement(object sender, MouseEventArgs e)
         {
-            var hexToMoveTo = MovementHandler.GetHexToMoveTo(_input, this, _worldView.World);
+            var hexToMoveTo = MovementHandler.GetHexToMoveTo(_input, this, _worldView.World.OverlandMap.CellGrid, e.Mouse.Location, _worldView.Camera.Transform);
             StartUnitMovement(hexToMoveTo);
         }
 

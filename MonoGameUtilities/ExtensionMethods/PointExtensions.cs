@@ -19,9 +19,16 @@ namespace MonoGameUtilities.ExtensionMethods
             return cursorIsOnHex;
         }
 
-        public static PointI ToWorldHex(this Point p, Matrix transform)
+        public static Vector2 ToWorldPosition(this Point p, Matrix transform)
         {
             var worldPositionPointedAtByMouseCursor = Vector2.Transform(p.ToVector2(), Matrix.Invert(transform));
+
+            return new Vector2(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
+        }
+
+        public static PointI ToWorldHex(this Point p, Matrix transform)
+        {
+            var worldPositionPointedAtByMouseCursor = p.ToWorldPosition(transform);
             var worldHex = HexOffsetCoordinates.FromPixel(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
 
             return new PointI(worldHex.Col, worldHex.Row);
