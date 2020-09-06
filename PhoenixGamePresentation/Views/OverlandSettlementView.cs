@@ -8,7 +8,6 @@ using Input;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
-using Utilities;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -79,7 +78,7 @@ namespace PhoenixGamePresentation.Views
 
         private bool MousePointerIsOnHex(HexOffsetCoordinates settlementLocation, Point mouseLocation)
         {
-            return mouseLocation.IsOver(settlementLocation, _worldView.Camera.Transform);
+            return mouseLocation.IsWithinHex(settlementLocation, _worldView.Camera.Transform);
         }
 
         #endregion

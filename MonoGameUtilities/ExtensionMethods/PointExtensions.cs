@@ -11,7 +11,7 @@ namespace MonoGameUtilities.ExtensionMethods
             return new PointI(p.X, p.Y);
         }
 
-        public static bool IsOver(this Point p1, HexOffsetCoordinates p2, Matrix transform)
+        public static bool IsWithinHex(this Point p1, HexOffsetCoordinates p2, Matrix transform)
         {
             var hexPoint = p1.ToWorldHex(transform);
             var cursorIsOnHex = p2.ToPointI() == hexPoint;
@@ -19,19 +19,19 @@ namespace MonoGameUtilities.ExtensionMethods
             return cursorIsOnHex;
         }
 
-        public static Vector2 ToWorldPosition(this Point p, Matrix transform)
-        {
-            var worldPositionPointedAtByMouseCursor = Vector2.Transform(p.ToVector2(), Matrix.Invert(transform));
-
-            return new Vector2(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
-        }
-
-        public static PointI ToWorldHex(this Point p, Matrix transform)
+        private static PointI ToWorldHex(this Point p, Matrix transform)
         {
             var worldPositionPointedAtByMouseCursor = p.ToWorldPosition(transform);
             var worldHex = HexOffsetCoordinates.FromPixel(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
 
             return new PointI(worldHex.Col, worldHex.Row);
+        }
+
+        private static Vector2 ToWorldPosition(this Point p, Matrix transform)
+        {
+            var worldPositionPointedAtByMouseCursor = Vector2.Transform(p.ToVector2(), Matrix.Invert(transform));
+
+            return new Vector2(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
         }
     }
 }

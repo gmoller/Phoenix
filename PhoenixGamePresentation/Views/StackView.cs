@@ -43,7 +43,7 @@ namespace PhoenixGamePresentation.Views
         private bool _disposedValue;
         #endregion End State
 
-        private HexOffsetCoordinates LocationHex => new HexOffsetCoordinates(Location);
+        public HexOffsetCoordinates LocationHex => new HexOffsetCoordinates(Location);
 
         public bool IsBusy => _stack.IsBusy;
         public UnitStatus Status => _stack.Status;
@@ -77,7 +77,7 @@ namespace PhoenixGamePresentation.Views
             input.AddCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad6, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
             input.AddCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad7, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
             input.AddCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad9, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-            input.AddCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.LeftButtonPressed, CheckForUnitMovementFromMouseInitiation));
+            input.AddCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.LeftButtonReleased, CheckForUnitMovementFromMouseInitiation));
             input.AddCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonPressed, DrawPotentialMovementPath));
             input.AddCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonReleased, SelectStack));
             input.AddCommandHandler($"StackView:{Id}", 1, new MouseInputAction(MouseInputActionType.RightButtonReleased, ResetPotentialMovementPath));
@@ -119,7 +119,6 @@ namespace PhoenixGamePresentation.Views
             // Causes
             var changeBlinkState = CheckForBlinkStateChange(deltaTime);
             var mustFindNewExploreLocation = ExploreHandler.MustFindNewExploreLocation(this);
-            var mustStartMovement = MovementHandler.CheckForStartOfMovement(_input, this, _worldView, _input.MousePosition);
             var mustRestartMovementAtStartOfTurn = MovementHandler.CheckForRestartOfMovement(this); // not in moving state, has a path and has movement points
             var mustContinueMovement = MovementHandler.MustContinueMovement(this);
             var mustMoveUnitToNextCell = MovementHandler.MustMoveUnitToNextCell(this);
@@ -135,12 +134,6 @@ namespace PhoenixGamePresentation.Views
             if (mustFindNewExploreLocation)
             {
                 ExploreHandler.SetMovementPathToNewExploreLocation(this, _worldView.World);
-            }
-
-            if (mustStartMovement)
-            {
-                var hexToMoveTo = MovementHandler.GetHexToMoveTo(_input, this, _worldView.World.OverlandMap.CellGrid, _input.MousePosition, _worldView.Camera.Transform);
-                StartUnitMovement(hexToMoveTo);
             }
 
             if (mustRestartMovementAtStartOfTurn)
@@ -404,12 +397,6 @@ namespace PhoenixGamePresentation.Views
 
         #region Event Handlers
 
-        private void StartMovement(object sender, MouseEventArgs e)
-        {
-            var hexToMoveTo = MovementHandler.GetHexToMoveTo(_input, this, _worldView.World.OverlandMap.CellGrid, e.Mouse.Location, _worldView.Camera.Transform);
-            StartUnitMovement(hexToMoveTo);
-        }
-
         private void SelectStack(object sender, MouseEventArgs e)
         {
             if (IsSelected) return;
@@ -420,7 +407,7 @@ namespace PhoenixGamePresentation.Views
 
         private bool MousePointerIsOnHex(HexOffsetCoordinates settlementLocation, Point mouseLocation)
         {
-            return mouseLocation.IsOver(settlementLocation, _worldView.Camera.Transform);
+            return mouseLocation.IsWithinHex(settlementLocation, _worldView.Camera.Transform);
         }
 
         private void FocusCameraOnLocation(object sender, KeyboardEventArgs e)
@@ -436,19 +423,22 @@ namespace PhoenixGamePresentation.Views
             if (!IsSelected) return;
             if (Status == UnitStatus.Explore || IsMovingState) return;
 
-            var path = PotentialMovementHandler.GetPotentialMovementPath(this, _worldView.World.OverlandMap.CellGrid, e.Mouse.Location, _worldView.Camera.Transform);
+            var path = PotentialMovementHandler.GetPotentialMovementPath(this, _worldView.World.OverlandMap.CellGrid, e.Mouse.Location, _worldView.Camera);
             _potentialMovementPath = path;
         }
 
         private void ResetPotentialMovementPath(object sender, MouseEventArgs e)
         {
+            if (!IsSelected) return;
             _potentialMovementPath = new List<PointI>();
         }
 
         private void CheckForUnitMovementFromKeyboardInitiation(object sender, KeyboardEventArgs e)
         {
+            if (!IsSelected) return;
             if (_worldView.GameStatus == GameStatus.CityView) return;
-            if (IsMovingState || MovementPoints.AboutEquals(0.0f)) return;
+            if (IsMovingState) return;
+            if (MovementPoints.AboutEquals(0.0f)) return;
 
             Direction direction;
             switch (e.Key)
@@ -488,7 +478,18 @@ namespace PhoenixGamePresentation.Views
 
         private void CheckForUnitMovementFromMouseInitiation(object sender, MouseEventArgs e)
         {
+            if (!IsSelected) return;
+            if (_worldView.GameStatus == GameStatus.CityView) return;
+            if (_worldView.GameStatus == GameStatus.InHudView) return;
+            if (IsMovingState) return;
+            if (MovementPoints.AboutEquals(0.0f)) return;
 
+            var mustStartMovement = MovementHandler.CheckForUnitMovementFromMouseInitiation(this, _worldView.World.OverlandMap.CellGrid, e.Mouse.Location, _worldView.Camera);
+
+            if (mustStartMovement.startMovement)
+            {
+                StartUnitMovement(mustStartMovement.hexToMoveTo);
+            }
         }
 
         #endregion
@@ -512,7 +513,7 @@ namespace PhoenixGamePresentation.Views
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad6, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad7, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad9, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-                _input.RemoveCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.LeftButtonPressed, CheckForUnitMovementFromMouseInitiation));
+                _input.RemoveCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.LeftButtonReleased, CheckForUnitMovementFromMouseInitiation));
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonPressed, DrawPotentialMovementPath));
                 _input.RemoveCommandHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonReleased, SelectStack));
                 _input.RemoveCommandHandler($"StackView:{Id}", 1, new MouseInputAction(MouseInputActionType.RightButtonReleased, ResetPotentialMovementPath));

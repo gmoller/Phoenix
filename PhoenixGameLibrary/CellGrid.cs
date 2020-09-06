@@ -40,6 +40,11 @@ namespace PhoenixGameLibrary
             }
         }
 
+        public Cell GetCell(HexOffsetCoordinates location)
+        {
+            return GetCell(location.Col, location.Row);
+        }
+
         public Cell GetCell(PointI location)
         {
             return GetCell(location.X, location.Y);

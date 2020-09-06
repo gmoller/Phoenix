@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
-using MonoGameUtilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
 using Utilities;
 using Color = Microsoft.Xna.Framework.Color;
@@ -86,13 +85,13 @@ namespace PhoenixGamePresentation
             _fps.Update(gameTime, _viewport);
 
             var mouseState = Mouse.GetState();
-            var worldPosition = mouseState.Position.ToWorldPosition(camera.Transform);
-            var worldHex = mouseState.Position.ToWorldHex(camera.Transform);
+            var worldPosition = camera.ScreenPixelToWorldPixel(mouseState.Position);
+            var worldHex = camera.ScreenPixelToWorldHex(mouseState.Position);
 
             _labels[1].Text = $"{GC.CollectionCount(0)},{GC.CollectionCount(1)},{GC.CollectionCount(2)}";
             _labels[3].Text = $"({mouseState.Position.X},{mouseState.Position.Y})";
             _labels[5].Text = $"({worldPosition.X},{worldPosition.Y})";
-            _labels[7].Text = $"{worldHex.X},{worldHex.Y}";
+            _labels[7].Text = $"{worldHex.Col},{worldHex.Row}";
             _labels[9].Text = $"{GC.GetTotalMemory(false) / 1024} KB";
             _labels[11].Text = $"{_fps.UpdateFramesPerSecond}/{_fps.DrawFramesPerSecond}";
             _labels[13].Text = $"{gameWindow.ClientBounds.Width}x{gameWindow.ClientBounds.Height}";

@@ -100,14 +100,63 @@ namespace PhoenixGamePresentation
         {
         }
 
+        #region ToScreenPixel
+
+        /// <summary>
+        /// Translates the center position of a hex in the world to a position on the screen.
+        /// </summary>
+        /// <param name="worldHex"></param>
+        /// <returns></returns>
+        public Vector2 WorldHexToScreenPixel(HexOffsetCoordinates worldHex)
+        {
+            var worldPosition = HexOffsetCoordinates.ToPixel(worldHex);
+            var screenPosition = WorldPixelToScreenPixel(worldPosition.ToVector2());
+
+            return screenPosition;
+        }
+
         /// <summary>
         /// Translates the position in the world to a position on the screen.
         /// </summary>
         /// <param name="worldPosition"></param>
         /// <returns></returns>
-        public Vector2 WorldToScreen(Vector2 worldPosition)
+        public Vector2 WorldPixelToScreenPixel(Point worldPosition)
+        {
+            return WorldPixelToScreenPixel(worldPosition.ToVector2());
+        }
+
+        /// <summary>
+        /// Translates the position in the world to a position on the screen.
+        /// </summary>
+        /// <param name="worldPosition"></param>
+        /// <returns></returns>
+        public Vector2 WorldPixelToScreenPixel(PointI worldPosition)
+        {
+            return WorldPixelToScreenPixel(worldPosition.ToVector2());
+        }
+
+        /// <summary>
+        /// Translates the position in the world to a position on the screen.
+        /// </summary>
+        /// <param name="worldPosition"></param>
+        /// <returns></returns>
+        public Vector2 WorldPixelToScreenPixel(Vector2 worldPosition)
         {
             return Vector2.Transform(worldPosition, Transform);
+        }
+
+        #endregion
+
+        #region ToWorldPixel
+
+        /// <summary>
+        /// Translates the position on the screen to it's position in the world.
+        /// </summary>
+        /// <param name="screenPosition"></param>
+        /// <returns></returns>
+        public Vector2 ScreenPixelToWorldPixel(Point screenPosition)
+        {
+            return ScreenPixelToWorldPixel(screenPosition.ToVector2());
         }
 
         /// <summary>
@@ -115,15 +164,78 @@ namespace PhoenixGamePresentation
         /// </summary>
         /// <param name="screenPosition"></param>
         /// <returns></returns>
-        public Vector2 ScreenToWorld(Vector2 screenPosition)
+        public Vector2 ScreenPixelToWorldPixel(PointI screenPosition)
+        {
+            return ScreenPixelToWorldPixel(screenPosition.ToVector2());
+        }
+
+        /// <summary>
+        /// Translates the position on the screen to it's position in the world.
+        /// </summary>
+        /// <param name="screenPosition"></param>
+        /// <returns></returns>
+        public Vector2 ScreenPixelToWorldPixel(Vector2 screenPosition)
         {
             return Vector2.Transform(screenPosition, Matrix.Invert(Transform));
         }
 
-        public void LookAtCellPointedAtByMouse(Point mouseLocation)
+        #endregion
+
+        #region ToWorldHex
+
+        /// <summary>
+        /// Translates the position on the screen to it's hex position in the world.
+        /// </summary>
+        /// <param name="screenPosition"></param>
+        /// <returns></returns>
+        public HexOffsetCoordinates ScreenPixelToWorldHex(Point screenPosition)
         {
-            var hexPoint = mouseLocation.ToWorldHex(Transform);
-            LookAtCell(hexPoint);
+            return ScreenPixelToWorldHex(screenPosition.ToVector2());
+        }
+
+        /// <summary>
+        /// Translates the position on the screen to it's hex position in the world.
+        /// </summary>
+        /// <param name="screenPosition"></param>
+        /// <returns></returns>
+        public HexOffsetCoordinates ScreenPixelToWorldHex(PointI screenPosition)
+        {
+            return ScreenPixelToWorldHex(screenPosition.ToVector2());
+        }
+
+        /// <summary>
+        /// Translates the position on the screen to it's hex position in the world.
+        /// </summary>
+        /// <param name="screenPosition"></param>
+        /// <returns></returns>
+        public HexOffsetCoordinates ScreenPixelToWorldHex(Vector2 screenPosition)
+        {
+            var worldPosition = ScreenPixelToWorldPixel(screenPosition);
+            var worldHex = HexOffsetCoordinates.FromPixel(worldPosition.X, worldPosition.Y);
+
+            return worldHex;
+        }
+
+        #endregion
+
+        #region LookAtCell
+
+        /// <summary>
+        /// Center camera on cell.
+        /// </summary>
+        /// <param name="hexPoint"></param>
+        public void LookAtCell(HexOffsetCoordinates hexPoint)
+        {
+            LookAtCell(hexPoint.ToPointI());
+        }
+
+        /// <summary>
+        /// Center camera on cell.
+        /// </summary>
+        /// <param name="hexPoint"></param>
+        public void LookAtCell(Point hexPoint)
+        {
+            LookAtCell(hexPoint.ToPointI());
         }
 
         /// <summary>
@@ -132,8 +244,21 @@ namespace PhoenixGamePresentation
         /// <param name="hexPoint"></param>
         public void LookAtCell(PointI hexPoint)
         {
-            var newPosition = HexOffsetCoordinates.ToPixel(hexPoint); // in world
+            var newPosition = HexOffsetCoordinates.ToPixel(hexPoint);
             CameraFocusPointInWorld = newPosition.ToVector2();
+        }
+
+        #endregion
+
+        #region LookAtPixel
+
+        /// <summary>
+        /// Center camera on position in the world.
+        /// </summary>
+        /// <param name="newPosition"></param>
+        public void LookAtPixel(Point newPosition)
+        {
+            LookAtPixel(newPosition.ToVector2());
         }
 
         /// <summary>
@@ -142,8 +267,32 @@ namespace PhoenixGamePresentation
         /// <param name="newPosition"></param>
         public void LookAtPixel(PointI newPosition)
         {
-            CameraFocusPointInWorld = newPosition.ToVector2();
+            LookAtPixel(newPosition.ToVector2());
         }
+
+        /// <summary>
+        /// Center camera on position in the world.
+        /// </summary>
+        /// <param name="newPosition"></param>
+        public void LookAtPixel(Vector2 newPosition)
+        {
+            CameraFocusPointInWorld = newPosition;
+        }
+
+        #endregion
+
+        #region LookAtCellPointedAtByMouse
+
+        /// <summary>
+        /// Center camera on mouse location.
+        /// </summary>
+        /// <param name="mouseLocation"></param>
+        public void LookAtCellPointedAtByMouse(Point mouseLocation)
+        {
+            LookAtCell(mouseLocation.ToPointI());
+        }
+
+        #endregion
 
         private void CalculateNumberOfHexesFromCenter(Rectangle viewport, float zoom)
         {
@@ -155,13 +304,6 @@ namespace PhoenixGamePresentation
 
         public void Update(float deltaTime)
         {
-            if (_worldView.GameStatus != GameStatus.OverlandMap)
-            {
-                CameraFocusPointInWorld = ClampCamera(Zoom);
-                return;
-            }
-
-            CameraFocusPointInWorld = ClampCamera(Zoom);
         }
 
         private Vector2 ClampCamera(float zoom)

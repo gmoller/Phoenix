@@ -164,10 +164,10 @@ namespace PhoenixGamePresentation.Views
 
             // get tile mouse is over
             var cellGrid = _worldView.World.OverlandMap.CellGrid;
-            var hexPoint = _input.MousePosition.ToWorldHex(_worldView.Camera.Transform);
+            var hexPoint = _worldView.Camera.ScreenPixelToWorldHex(_input.MousePosition);
 
             // TODO: check if cell is on screen
-            var cell = cellGrid.GetCell(hexPoint.X, hexPoint.Y);
+            var cell = cellGrid.GetCell(hexPoint);
             if (cell.SeenState == SeenState.NeverSeen) return;
 
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
@@ -177,8 +177,8 @@ namespace PhoenixGamePresentation.Views
 
             if (!terrainType.CanSettleOn) return;
 
-            var catchment = cellGrid.GetCatchment(hexPoint.X, hexPoint.Y, 2);
-            var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new PointI(hexPoint.X, hexPoint.Y), catchment);
+            var catchment = cellGrid.GetCatchment(hexPoint.Col, hexPoint.Row, 2);
+            var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new PointI(hexPoint.Col, hexPoint.Row), catchment);
             _text2 = $"Maximum Pop - {maxPop}";
         }
 

@@ -81,7 +81,7 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawCellGrid(SpriteBatch spriteBatch, CellGrid cellGrid, Camera camera)
         {
-            var center = camera.ScreenToWorld(new Vector2(1920.0f / 2.0f, 1080.0f / 2.0f));
+            var center = camera.ScreenPixelToWorldPixel(new Vector2(1920.0f / 2.0f, 1080.0f / 2.0f));
             var centerHex = HexOffsetCoordinates.FromPixel((int)center.X, (int)center.Y);
 
             var fromColumn = centerHex.Col - camera.NumberOfHexesToLeft;
