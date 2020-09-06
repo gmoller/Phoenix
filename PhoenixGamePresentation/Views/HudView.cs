@@ -112,7 +112,7 @@ namespace PhoenixGamePresentation.Views
 
             SetupViewport(_area.X, _area.Y, _area.Width, _area.Height + btnEndTurn.Height);
 
-            input.AddCommandHandler("HudView", 0, new MouseInputAction(MouseInputActionType.Moved, CheckIfMouseIsOverHudView));
+            input.SubscribeToEventHandler("HudView", 0, new MouseInputAction(MouseInputActionType.Moved, CheckIfMouseIsOverHudView));
             _input = input;
         }
 
@@ -329,7 +329,7 @@ namespace PhoenixGamePresentation.Views
             if (!_disposedValue)
             {
                 // dispose managed state (managed objects)
-                _input.RemoveCommandHandler("HudView", 0, new MouseInputAction(MouseInputActionType.Moved, CheckIfMouseIsOverHudView));
+                _input.UnsubscribeFromEventHandler("HudView", 0, new MouseInputAction(MouseInputActionType.Moved, CheckIfMouseIsOverHudView));
 
                 // set large fields to null
                 _viewportAdapter = null;

@@ -26,7 +26,7 @@ namespace Input
             _mouseEventHandlers = new Dictionary<string, Dictionary<string, MouseInputAction>>();
         }
 
-        public void AddCommandHandler(string source, int id, KeyboardInputAction keyboardInputAction)
+        public void SubscribeToEventHandler(string source, int id, KeyboardInputAction keyboardInputAction)
         {
             var firstKey = keyboardInputAction.DictionaryKey;
             var secondKey = $"{source}.{id}";
@@ -38,7 +38,7 @@ namespace Input
             _keyboardEventHandlers[firstKey].Add(secondKey, keyboardInputAction);
         }
 
-        public void AddCommandHandler(string source, int id, MouseInputAction mouseInputAction)
+        public void SubscribeToEventHandler(string source, int id, MouseInputAction mouseInputAction)
         {
             var firstKey = mouseInputAction.DictionaryKey;
             var secondKey = $"{source}.{id}";
@@ -50,7 +50,7 @@ namespace Input
             _mouseEventHandlers[firstKey].Add(secondKey, mouseInputAction);
         }
 
-        public void RemoveCommandHandler(string source, int id, KeyboardInputAction keyboardInputAction)
+        public void UnsubscribeFromEventHandler(string source, int id, KeyboardInputAction keyboardInputAction)
         {
             var firstKey = keyboardInputAction.DictionaryKey;
             var secondKey = $"{source}.{id}";
@@ -58,7 +58,7 @@ namespace Input
             eventHandlers.Remove(secondKey);
         }
 
-        public void RemoveCommandHandler(string source, int id, MouseInputAction mouseInputAction)
+        public void UnsubscribeFromEventHandler(string source, int id, MouseInputAction mouseInputAction)
         {
             var firstKey = mouseInputAction.DictionaryKey;
             var secondKey = $"{source}.{id}";

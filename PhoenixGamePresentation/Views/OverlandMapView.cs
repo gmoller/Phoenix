@@ -42,7 +42,7 @@ namespace PhoenixGamePresentation.Views
 
             SetupViewport(0, 0, 1670, 1080);
 
-            input.AddCommandHandler("OverlandMapView", 0, new KeyboardInputAction(Keys.Enter, KeyboardInputActionType.Released, EndTurn));
+            input.SubscribeToEventHandler("OverlandMapView", 0, new KeyboardInputAction(Keys.Enter, KeyboardInputActionType.Released, EndTurn));
             _input = input;
         }
 
@@ -187,7 +187,7 @@ namespace PhoenixGamePresentation.Views
             if (!_disposedValue)
             {
                 // dispose managed state (managed objects)
-                _input.RemoveCommandHandler("OverlandMapView", 0, new KeyboardInputAction(Keys.Enter, KeyboardInputActionType.Released, EndTurn));
+                _input.UnsubscribeFromEventHandler("OverlandMapView", 0, new KeyboardInputAction(Keys.Enter, KeyboardInputActionType.Released, EndTurn));
 
                 // set large fields to null
                 _viewportAdapter = null;

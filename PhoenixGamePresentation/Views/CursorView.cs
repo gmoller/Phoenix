@@ -30,7 +30,7 @@ namespace PhoenixGamePresentation.Views
 
             SetupViewport(0, 0, 1920, 1080);
 
-            input.AddCommandHandler("CursorView", 0, new MouseInputAction(MouseInputActionType.Moved, UpdatePosition));
+            input.SubscribeToEventHandler("CursorView", 0, new MouseInputAction(MouseInputActionType.Moved, UpdatePosition));
             _input = input;
         }
 
@@ -75,7 +75,7 @@ namespace PhoenixGamePresentation.Views
             if (!_disposedValue)
             {
                 // dispose managed state (managed objects)
-                _input.RemoveCommandHandler("CursorView", 0, new MouseInputAction(MouseInputActionType.Moved, UpdatePosition));
+                _input.UnsubscribeFromEventHandler("CursorView", 0, new MouseInputAction(MouseInputActionType.Moved, UpdatePosition));
 
                 // set large fields to null
                 _viewportAdapter = null;
