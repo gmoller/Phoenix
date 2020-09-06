@@ -16,6 +16,10 @@
         LeftButtonDrag,
         MiddleButtonDrag,
         RightButtonDrag,
-        Moved
+        Moved,
+        AtTopOfScreen,
+        AtBottomOfScreen,
+        AtLeftOfScreen,
+        AtRightOfScreen
     }
 }

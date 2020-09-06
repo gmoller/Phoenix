@@ -28,21 +28,25 @@ namespace Input
 
             _switch = new Dictionary<MouseInputActionType, Func<bool>>
             {
-                { MouseInputActionType.Moved, () => Movement != Point.Zero },
                 { MouseInputActionType.LeftButtonDown, IsLeftButtonDown },
-                { MouseInputActionType.MiddleButtonDown, IsMiddleButtonDown },
-                { MouseInputActionType.RightButtonDown, IsRightButtonDown },
                 { MouseInputActionType.LeftButtonPressed, IsLeftButtonPressed },
-                { MouseInputActionType.MiddleButtonPressed, IsMiddleButtonPressed },
-                { MouseInputActionType.RightButtonPressed, IsRightButtonPressed },
                 { MouseInputActionType.LeftButtonReleased, IsLeftButtonReleased },
+                { MouseInputActionType.MiddleButtonDown, IsMiddleButtonDown },
+                { MouseInputActionType.MiddleButtonPressed, IsMiddleButtonPressed },
                 { MouseInputActionType.MiddleButtonReleased, IsMiddleButtonReleased },
+                { MouseInputActionType.RightButtonDown, IsRightButtonDown },
+                { MouseInputActionType.RightButtonPressed, IsRightButtonPressed },
                 { MouseInputActionType.RightButtonReleased, IsRightButtonReleased },
                 { MouseInputActionType.WheelUp, MouseWheelUp },
                 { MouseInputActionType.WheelDown, MouseWheelDown },
                 { MouseInputActionType.LeftButtonDrag, () => IsLeftButtonDown() && HasMouseMoved() },
                 { MouseInputActionType.MiddleButtonDrag, () => IsMiddleButtonDown() && HasMouseMoved() },
-                { MouseInputActionType.RightButtonDrag, () => IsRightButtonDown() && HasMouseMoved() }
+                { MouseInputActionType.RightButtonDrag, () => IsRightButtonDown() && HasMouseMoved() },
+                { MouseInputActionType.Moved, HasMouseMoved },
+                { MouseInputActionType.AtTopOfScreen, IsMouseIsAtTopOfScreen },
+                { MouseInputActionType.AtBottomOfScreen, MouseIsAtBottomOfScreen },
+                { MouseInputActionType.AtLeftOfScreen, MouseIsAtLeftOfScreen },
+                { MouseInputActionType.AtRightOfScreen, MouseIsAtRightOfScreen }
             };
         }
 
@@ -112,6 +116,26 @@ namespace Input
         private bool HasMouseMoved()
         {
             return _previousState.Position != _currentState.Position;
+        }
+
+        public bool IsMouseIsAtTopOfScreen()
+        {
+            return Location.Y < 30.0f && Location.Y >= 0.0f;
+        }
+
+        public bool MouseIsAtBottomOfScreen()
+        {
+            return Location.Y > 1080 - 30.0f && Location.Y <= 1080.0f;
+        }
+
+        public bool MouseIsAtLeftOfScreen()
+        {
+            return Location.X < 30.0f && Location.X >= 0.0f;
+        }
+
+        public bool MouseIsAtRightOfScreen()
+        {
+            return Location.X > 1670.0f - 30.0f && Location.X <= 1670.0f;
         }
 
         private void HandleMouse(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, float deltaTime)

@@ -83,15 +83,15 @@ namespace PhoenixGamePresentation
         {
             get
             {
-                //var centerHex = CameraFocusHexInWorld;
+                var centerHex = CameraFocusHexInWorld;
 
-                //var fromColumn = centerHex.Col - NumberOfHexesToLeft;
-                //fromColumn = Math.Max(0, fromColumn);
+                var fromColumn = centerHex.Col - NumberOfHexesToLeft;
+                fromColumn = Math.Max(0, fromColumn);
 
-                //var fromRow = centerHex.Row - NumberOfHexesAbove;
-                //fromRow = Math.Max(0, fromRow);
+                var fromRow = centerHex.Row - NumberOfHexesAbove;
+                fromRow = Math.Max(0, fromRow);
 
-                //return new PointI(fromColumn, fromRow);
+                return new PointI(fromColumn, fromRow);
 
                 var cameraRectangle = CameraRectangleInWorld;
                 var hexTopLeft = WorldPixelToWorldHex(new PointI(cameraRectangle.Left, cameraRectangle.Top));
@@ -104,15 +104,15 @@ namespace PhoenixGamePresentation
         {
             get
             {
-                //var centerHex = CameraFocusHexInWorld;
+                var centerHex = CameraFocusHexInWorld;
 
-                //var toColumn = centerHex.Col + NumberOfHexesToRight;
-                //toColumn = Math.Min(PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS, toColumn);
+                var toColumn = centerHex.Col + NumberOfHexesToRight;
+                toColumn = Math.Min(PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS, toColumn);
 
-                //var toRow = centerHex.Row + NumberOfHexesBelow;
-                //toRow = Math.Min(PhoenixGameLibrary.Constants.WORLD_MAP_ROWS, toRow);
+                var toRow = centerHex.Row + NumberOfHexesBelow;
+                toRow = Math.Min(PhoenixGameLibrary.Constants.WORLD_MAP_ROWS, toRow);
 
-                //return new PointI(toColumn, toRow);
+                return new PointI(toColumn, toRow);
 
                 var cameraRectangle = CameraRectangleInWorld;
                 var hexBottomRight = WorldPixelToWorldHex(new PointI(cameraRectangle.Right, cameraRectangle.Bottom));
@@ -135,7 +135,10 @@ namespace PhoenixGamePresentation
             input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.WheelUp, IncreaseZoomEvent.HandleEvent);
             input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.WheelDown, DecreaseZoomEvent.HandleEvent);
             input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.RightButtonDrag, DragCameraEvent.HandleEvent);
-            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.Moved, MoveCameraEvent.HandleEvent);
+            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtTopOfScreen, MoveCameraEvent.HandleEvent);
+            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtBottomOfScreen, MoveCameraEvent.HandleEvent);
+            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtLeftOfScreen, MoveCameraEvent.HandleEvent);
+            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtRightOfScreen, MoveCameraEvent.HandleEvent);
             _input = input;
         }
 
