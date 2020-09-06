@@ -5,16 +5,15 @@ using Microsoft.Xna.Framework.Graphics;
 using Assets;
 using Hex;
 using Input;
-using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.Commands;
+using PhoenixGamePresentation.Events;
 
 namespace PhoenixGamePresentation.Views
 {
     public class OverlandSettlementView : IDisposable
     {
         #region State
-        private readonly WorldView _worldView;
+        internal WorldView WorldView { get; }
 
         private Texture2D _texture;
         //private Texture2D _textures;
@@ -28,9 +27,9 @@ namespace PhoenixGamePresentation.Views
 
         public OverlandSettlementView(WorldView worldView, InputHandler input)
         {
-            _worldView = worldView;
+            WorldView = worldView;
 
-            input.SubscribeToEventHandler("OverlandSettlementView", 0, new MouseInputAction(MouseInputActionType.RightButtonPressed, OpenSettlement));
+            input.SubscribeToEventHandler("OverlandSettlementView", 0, this, MouseInputActionType.RightButtonPressed, OpenSettlementEvent.HandleEvent);
             _input = input;
         }
 
@@ -47,7 +46,7 @@ namespace PhoenixGamePresentation.Views
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var cellGrid = _worldView.World.OverlandMap.CellGrid;
+            var cellGrid = WorldView.World.OverlandMap.CellGrid;
             var cell = cellGrid.GetCell(Settlement.Location.X, Settlement.Location.Y);
             DrawSettlement(spriteBatch, cell);
         }
@@ -61,34 +60,12 @@ namespace PhoenixGamePresentation.Views
             spriteBatch.Draw(_texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
         }
 
-        #region Event Handlers
-
-        private void OpenSettlement(object sender, MouseEventArgs e)
-        {
-            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
-            if (!MousePointerIsOnHex(Settlement.LocationHex, e.Mouse.Location)) return;
-
-            Command openSettlementCommand = new OpenSettlementCommand { Payload = (Settlement, _worldView.World.Settlements) };
-            openSettlementCommand.Execute();
-
-            _worldView.Camera.LookAtCell(Settlement.Location);
-
-            _worldView.GameStatus = GameStatus.CityView;
-        }
-
-        private bool MousePointerIsOnHex(HexOffsetCoordinates settlementLocation, Point mouseLocation)
-        {
-            return mouseLocation.IsWithinHex(settlementLocation, _worldView.Camera.Transform);
-        }
-
-        #endregion
-
         public void Dispose()
         {
             if (!_disposedValue)
             {
                 // dispose managed state (managed objects)
-                _input.UnsubscribeFromEventHandler("OverlandSettlementView", 0, new MouseInputAction(MouseInputActionType.RightButtonPressed, OpenSettlement));
+                _input.UnsubscribeAllFromEventHandler("OverlandSettlementView");
 
                 // set large fields to null
                 _texture = null;

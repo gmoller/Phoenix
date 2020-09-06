@@ -9,6 +9,7 @@ using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
+using PhoenixGamePresentation.Events;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
 using Utilities;
@@ -18,12 +19,12 @@ namespace PhoenixGamePresentation.Views
     internal class HudView : IDisposable
     {
         #region State
-        private readonly WorldView _worldView;
+        internal WorldView WorldView { get; }
 
         private SpriteFont _font;
         private readonly Rectangle _area;
 
-        private readonly Frame _hudViewFrame;
+        internal Frame HudViewFrame { get; }
         private EnumerableDictionary<IControl> _actionButtons;
 
         //TODO: these should be label controls
@@ -51,44 +52,44 @@ namespace PhoenixGamePresentation.Views
 
             #region HudViewFrame
 
-            _hudViewFrame = new Frame(Vector2.Zero, Alignment.TopLeft, new Vector2(_area.Width, _area.Height), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame");
+            HudViewFrame = new Frame(Vector2.Zero, Alignment.TopLeft, new Vector2(_area.Width, _area.Height), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame");
 
             //_hudViewFrame.AddControl(new Image("imgBackground", new Vector2(250, 1080), "NoiseTexture"));
 
-            string GetTextFuncForDate() => _worldView.World.CurrentDate;
-            _hudViewFrame.AddControl(new LabelSized("lblCurrentDate", new Vector2(150.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForDate, "Maleficio-Regular-18", Color.Aquamarine), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 20));
+            string GetTextFuncForDate() => WorldView.World.CurrentDate;
+            HudViewFrame.AddControl(new LabelSized("lblCurrentDate", new Vector2(150.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForDate, "Maleficio-Regular-18", Color.Aquamarine), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 20));
 
             #region MiniMapFrame
 
-            _hudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.15f /* 15% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
+            HudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.15f /* 15% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
             var image = new Image("mapImage", new Vector2(200.0f, 116.0f), null);
             image.Click += MiniMapClick;
-            _hudViewFrame["miniMapFrame"].AddControl(image, Alignment.MiddleCenter, Alignment.MiddleCenter);
+            HudViewFrame["miniMapFrame"].AddControl(image, Alignment.MiddleCenter, Alignment.MiddleCenter);
 
             #endregion
 
             #region ResourceFrame
 
-            _hudViewFrame.AddControl(new Frame("resourceFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 250));
-            _hudViewFrame["resourceFrame"].AddControl(new Image("imgGold", new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 10));
-            _hudViewFrame["resourceFrame"].AddControl(new Image("imgMana", new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 70));
-            _hudViewFrame["resourceFrame"].AddControl(new Image("imgFood", new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 130));
+            HudViewFrame.AddControl(new Frame("resourceFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 250));
+            HudViewFrame["resourceFrame"].AddControl(new Image("imgGold", new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 10));
+            HudViewFrame["resourceFrame"].AddControl(new Image("imgMana", new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 70));
+            HudViewFrame["resourceFrame"].AddControl(new Image("imgFood", new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 130));
 
-            string GetTextFuncForGold() => $"{_worldView.World.PlayerFaction.GoldInTreasury} GP (+{_worldView.World.PlayerFaction.GoldPerTurn})";
-            _hudViewFrame["resourceFrame.imgGold"].AddControl(new LabelSized("lblGold", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForGold, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
+            string GetTextFuncForGold() => $"{WorldView.World.PlayerFaction.GoldInTreasury} GP (+{WorldView.World.PlayerFaction.GoldPerTurn})";
+            HudViewFrame["resourceFrame.imgGold"].AddControl(new LabelSized("lblGold", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForGold, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
             string GetTextFuncForMana() => "5 MP (+1)";
-            _hudViewFrame["resourceFrame.imgMana"].AddControl(new LabelSized("lblMana", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForMana, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
-            string GetTextFuncForFood() => $"{_worldView.World.PlayerFaction.FoodPerTurn} Food";
-            _hudViewFrame["resourceFrame.imgFood"].AddControl(new LabelSized("lblFood", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForFood, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
+            HudViewFrame["resourceFrame.imgMana"].AddControl(new LabelSized("lblMana", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForMana, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
+            string GetTextFuncForFood() => $"{WorldView.World.PlayerFaction.FoodPerTurn} Food";
+            HudViewFrame["resourceFrame.imgFood"].AddControl(new LabelSized("lblFood", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForFood, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
 
             #endregion
 
             #region UnitFrame
 
-            _hudViewFrame.AddControl(new Frame("unitFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 500));
+            HudViewFrame.AddControl(new Frame("unitFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 500));
 
             string GetTextFuncForMoves() => SelectedStackView == null ? string.Empty : $"Moves: {SelectedStackView.MovementPoints}";
-            _hudViewFrame["unitFrame"].AddControl(new LabelSized("lblMoves", new Vector2(130.0f, 15.0f), Alignment.MiddleLeft, GetTextFuncForMoves, "CrimsonText-Regular-12", Color.White), Alignment.BottomLeft, Alignment.BottomLeft, new PointI(10, -13));
+            HudViewFrame["unitFrame"].AddControl(new LabelSized("lblMoves", new Vector2(130.0f, 15.0f), Alignment.MiddleLeft, GetTextFuncForMoves, "CrimsonText-Regular-12", Color.White), Alignment.BottomLeft, Alignment.BottomLeft, new PointI(10, -13));
 
             #endregion
 
@@ -97,11 +98,11 @@ namespace PhoenixGamePresentation.Views
 
             btnEndTurn.AddControl(new LabelSized("lblEndTurn", btnEndTurn.Size.ToVector2(), Alignment.MiddleCenter, "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue), Alignment.MiddleCenter, Alignment.MiddleCenter);
 
-            _hudViewFrame.AddControl(btnEndTurn, Alignment.BottomCenter, Alignment.TopCenter, PointI.Zero);
+            HudViewFrame.AddControl(btnEndTurn, Alignment.BottomCenter, Alignment.TopCenter, PointI.Zero);
 
             #endregion
 
-            _worldView = worldView;
+            WorldView = worldView;
             _stackViews = stackViews;
 
             worldView.World.OverlandMap.CellGrid.NewCellSeen += NewCellSeen;
@@ -112,9 +113,11 @@ namespace PhoenixGamePresentation.Views
 
             SetupViewport(_area.X, _area.Y, _area.Width, _area.Height + btnEndTurn.Height);
 
-            input.SubscribeToEventHandler("HudView", 0, new MouseInputAction(MouseInputActionType.Moved, CheckIfMouseIsOverHudView));
+            input.SubscribeToEventHandler("HudView", 0, this, MouseInputActionType.Moved, CheckIfMouseIsOverHudViewEvent.HandleEvent);
             _input = input;
         }
+
+        internal bool AreaContains(Point mouseLocation) => _area.Contains(mouseLocation);
 
         private void SetupViewport(int x, int y, int width, int height)
         {
@@ -126,45 +129,45 @@ namespace PhoenixGamePresentation.Views
         internal void LoadContent(ContentManager content)
         {
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
-            _hudViewFrame.LoadContent(content);
+            HudViewFrame.LoadContent(content);
             //_hudViewFrame["imgBackground"].LoadContent(content);
-            _hudViewFrame["lblCurrentDate"].LoadContent(content);
+            HudViewFrame["lblCurrentDate"].LoadContent(content);
 
-            _hudViewFrame["resourceFrame"].LoadContent(content);
-            _hudViewFrame["resourceFrame.imgGold"].LoadContent(content);
-            _hudViewFrame["resourceFrame.imgMana"].LoadContent(content);
-            _hudViewFrame["resourceFrame.imgFood"].LoadContent(content);
-            _hudViewFrame["resourceFrame.imgGold.lblGold"].LoadContent(content);
-            _hudViewFrame["resourceFrame.imgMana.lblMana"].LoadContent(content);
-            _hudViewFrame["resourceFrame.imgFood.lblFood"].LoadContent(content);
+            HudViewFrame["resourceFrame"].LoadContent(content);
+            HudViewFrame["resourceFrame.imgGold"].LoadContent(content);
+            HudViewFrame["resourceFrame.imgMana"].LoadContent(content);
+            HudViewFrame["resourceFrame.imgFood"].LoadContent(content);
+            HudViewFrame["resourceFrame.imgGold.lblGold"].LoadContent(content);
+            HudViewFrame["resourceFrame.imgMana.lblMana"].LoadContent(content);
+            HudViewFrame["resourceFrame.imgFood.lblFood"].LoadContent(content);
 
-            _hudViewFrame["miniMapFrame"].LoadContent(content);
+            HudViewFrame["miniMapFrame"].LoadContent(content);
 
-            _hudViewFrame["unitFrame"].LoadContent(content);
-            _hudViewFrame["unitFrame.lblMoves"].LoadContent(content);
+            HudViewFrame["unitFrame"].LoadContent(content);
+            HudViewFrame["unitFrame.lblMoves"].LoadContent(content);
 
-            _hudViewFrame["btnEndTurn"].LoadContent(content);
-            _hudViewFrame["btnEndTurn.lblEndTurn"].LoadContent(content);
+            HudViewFrame["btnEndTurn"].LoadContent(content);
+            HudViewFrame["btnEndTurn.lblEndTurn"].LoadContent(content);
 
-            var createdImage = MinimapHandler.Create(_worldView.World);
-            var mapImage = (Image)_hudViewFrame["miniMapFrame.mapImage"];
+            var createdImage = MinimapHandler.Create(WorldView.World);
+            var mapImage = (Image)HudViewFrame["miniMapFrame.mapImage"];
             mapImage.SetTexture(createdImage);
 
-            _actionButtons = _worldView.ActionButtons;
+            _actionButtons = WorldView.ActionButtons;
         }
 
         public void Update(float deltaTime)
         {
             _text1 = string.Empty;
             _text2 = string.Empty;
-            if (_worldView.GameStatus == GameStatus.CityView) return;
+            if (WorldView.GameStatus == GameStatus.CityView) return;
 
-            _hudViewFrame.Update(_input, deltaTime, _viewport);
+            HudViewFrame.Update(_input, deltaTime, _viewport);
             _actionButtons.Update(_input, deltaTime, _viewport);
 
             // get tile mouse is over
-            var cellGrid = _worldView.World.OverlandMap.CellGrid;
-            var hexPoint = _worldView.Camera.ScreenPixelToWorldHex(_input.MousePosition);
+            var cellGrid = WorldView.World.OverlandMap.CellGrid;
+            var hexPoint = WorldView.Camera.ScreenPixelToWorldHex(_input.MousePosition);
 
             // TODO: check if cell is on screen
             var cell = cellGrid.GetCell(hexPoint);
@@ -188,10 +191,10 @@ namespace PhoenixGamePresentation.Views
             spriteBatch.GraphicsDevice.Viewport = _viewport;
             spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: _viewportAdapter.GetScaleMatrix());
 
-            _hudViewFrame.Draw(spriteBatch);
+            HudViewFrame.Draw(spriteBatch);
 
-            var minimapImage = _hudViewFrame["miniMapFrame.mapImage"];
-            var minimapViewedRectangle = MinimapHandler.GetViewedRectangle(_worldView, minimapImage.Size);
+            var minimapImage = HudViewFrame["miniMapFrame.mapImage"];
+            var minimapViewedRectangle = MinimapHandler.GetViewedRectangle(WorldView, minimapImage.Size);
 
             minimapViewedRectangle.X += minimapImage.Left;
             minimapViewedRectangle.Y += minimapImage.Top;
@@ -235,8 +238,8 @@ namespace PhoenixGamePresentation.Views
             var imgMovementTypes = SelectedStackView.GetMovementTypeImages();
             var i = 0;
             //size: (18;12)
-            var x = _hudViewFrame["unitFrame"].BottomRight.X - 18 - 12;
-            var y = _hudViewFrame["unitFrame"].BottomRight.Y - 12 - 20;
+            var x = HudViewFrame["unitFrame"].BottomRight.X - 18 - 12;
+            var y = HudViewFrame["unitFrame"].BottomRight.Y - 12 - 20;
             foreach (var imgMovementType in imgMovementTypes)
             {
                 imgMovementType.SetTopLeftPosition(new PointI(x - 19 * i, y));
@@ -259,7 +262,7 @@ namespace PhoenixGamePresentation.Views
         {
             var x = 10.0f;
             var y = 460.0f;
-            foreach (var item in _worldView.World.NotificationList)
+            foreach (var item in WorldView.World.NotificationList)
             {
                 var lines = TextWrapper.WrapText(item, 150.0f, _font);
                 foreach (var line in lines)
@@ -281,24 +284,12 @@ namespace PhoenixGamePresentation.Views
 
         private void NewCellSeen(object sender, EventArgs e)
         {
-            var createdImage = MinimapHandler.Create(_worldView.World);
-            var mapImage = (Image)_hudViewFrame["miniMapFrame.mapImage"];
+            var createdImage = MinimapHandler.Create(WorldView.World);
+            var mapImage = (Image)HudViewFrame["miniMapFrame.mapImage"];
             mapImage.SetTexture(createdImage);
         }
 
         #region Event Handlers
-
-        private void CheckIfMouseIsOverHudView(object sender, MouseEventArgs e)
-        {
-            // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
-            var mouseOverHudView = _area.Contains(e.Mouse.Location) || _hudViewFrame.ChildControls["btnEndTurn"].MouseOver;
-            _hudViewFrame.Enabled = mouseOverHudView;
-
-            if (_worldView.GameStatus != GameStatus.CityView)
-            {
-                _worldView.GameStatus = mouseOverHudView ? GameStatus.InHudView : GameStatus.OverlandMap;
-            }
-        }
 
         private void MiniMapClick(object sender, EventArgs e)
         {
@@ -306,20 +297,20 @@ namespace PhoenixGamePresentation.Views
             // Convert that to world pixel
             if (!(e is MouseEventArgs mouseEventArgs)) return;
 
-            var minimapImage = _hudViewFrame["miniMapFrame.mapImage"];
+            var minimapImage = HudViewFrame["miniMapFrame.mapImage"];
             var minimapPosition = mouseEventArgs.Mouse.Location - new Point(_viewport.X + minimapImage.Left, _viewport.Y + minimapImage.Top);
             var normalizedX = minimapPosition.X / (float) minimapImage.Size.X;
             var normalizedY = minimapPosition.Y / (float) minimapImage.Size.Y;
 
-            var x = (int) (_worldView.WorldWidthInPixels * normalizedX);
-            var y = (int) (_worldView.WorldHeightInPixels * normalizedY);
+            var x = (int) (WorldView.WorldWidthInPixels * normalizedX);
+            var y = (int) (WorldView.WorldHeightInPixels * normalizedY);
 
-            _worldView.Camera.LookAtPixel(new PointI(x, y));
+            WorldView.Camera.LookAtPixel(new PointI(x, y));
         }
 
         private void EndTurn(object sender, EventArgs e)
         {
-            _worldView.EndTurn();
+            WorldView.EndTurn();
         }
 
         #endregion
@@ -329,7 +320,7 @@ namespace PhoenixGamePresentation.Views
             if (!_disposedValue)
             {
                 // dispose managed state (managed objects)
-                _input.UnsubscribeFromEventHandler("HudView", 0, new MouseInputAction(MouseInputActionType.Moved, CheckIfMouseIsOverHudView));
+                _input.UnsubscribeAllFromEventHandler("HudView");
 
                 // set large fields to null
                 _viewportAdapter = null;

@@ -1,11 +1,12 @@
 ﻿using System;
-using GuiControls;
-using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using GuiControls;
+using Input;
 using MonoGameUtilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
+using PhoenixGamePresentation.Events;
 using Utilities;
 
 namespace PhoenixGamePresentation.Views
@@ -13,9 +14,9 @@ namespace PhoenixGamePresentation.Views
     internal class CursorView : IDisposable
     {
         #region State
-        private PointI _position;
+        internal PointI Position { get; set; }
 
-        private readonly Image _imgCursor;
+        internal Image CursorImage { get; }
 
         private Viewport _viewport;
         private ViewportAdapter _viewportAdapter;
@@ -26,11 +27,11 @@ namespace PhoenixGamePresentation.Views
 
         internal CursorView(InputHandler input)
         {
-            _imgCursor = new Image(_position.ToVector2(), Alignment.TopLeft, new Vector2(28.0f, 32.0f), "Cursor");
+            CursorImage = new Image(Position.ToVector2(), Alignment.TopLeft, new Vector2(28.0f, 32.0f), "Cursor");
 
             SetupViewport(0, 0, 1920, 1080);
 
-            input.SubscribeToEventHandler("CursorView", 0, new MouseInputAction(MouseInputActionType.Moved, UpdatePosition));
+            input.SubscribeToEventHandler("CursorView", 0, this, MouseInputActionType.Moved, UpdatePositionEvent.HandleEvent);
             _input = input;
         }
 
@@ -43,7 +44,7 @@ namespace PhoenixGamePresentation.Views
 
         internal void LoadContent(ContentManager content)
         {
-            _imgCursor.LoadContent(content);
+            CursorImage.LoadContent(content);
         }
 
         internal void Update(float deltaTime)
@@ -55,27 +56,17 @@ namespace PhoenixGamePresentation.Views
             var originalViewport = spriteBatch.GraphicsDevice.Viewport;
             spriteBatch.GraphicsDevice.Viewport = _viewport;
             spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: _viewportAdapter.GetScaleMatrix());
-            _imgCursor.Draw(spriteBatch);
+            CursorImage.Draw(spriteBatch);
             spriteBatch.End();
             spriteBatch.GraphicsDevice.Viewport = originalViewport;
         }
-
-        #region Event Handlers   
-
-        private void UpdatePosition(object sender, MouseEventArgs e)
-        {
-            _position = e.Mouse.Location.ToPointI();
-            _imgCursor.SetTopLeftPosition(_position);
-        }
-
-        #endregion
 
         public void Dispose()
         {
             if (!_disposedValue)
             {
                 // dispose managed state (managed objects)
-                _input.UnsubscribeFromEventHandler("CursorView", 0, new MouseInputAction(MouseInputActionType.Moved, UpdatePosition));
+                _input.UnsubscribeAllFromEventHandler("CursorView");
 
                 // set large fields to null
                 _viewportAdapter = null;

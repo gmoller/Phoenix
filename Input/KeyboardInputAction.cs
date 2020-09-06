@@ -5,14 +5,14 @@ namespace Input
 {
     public readonly struct KeyboardInputAction
     {
+        private object Sender { get; }
         public Keys Key { get; }
         public KeyboardInputActionType InputActionType { get; }
         private Action<object, KeyboardEventArgs> Handler { get; }
 
-        public string DictionaryKey => $"Keyboard.{Key}.{InputActionType}";
-
-        public KeyboardInputAction(Keys key, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> handler)
+        public KeyboardInputAction(object sender, Keys key, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> handler)
         {
+            Sender = sender;
             Key = key;
             InputActionType = inputActionType;
             Handler = handler;
@@ -20,7 +20,7 @@ namespace Input
 
         public void Invoke(KeyboardHandler keyboard, float deltaTime)
         {
-            Handler.Invoke(this, new KeyboardEventArgs(keyboard, Key, deltaTime));
+            Handler.Invoke(Sender, new KeyboardEventArgs(keyboard, Key, deltaTime));
         }
     }
 }

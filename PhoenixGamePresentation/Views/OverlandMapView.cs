@@ -12,6 +12,7 @@ using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using Utilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
+using PhoenixGamePresentation.Events;
 using Utilities;
 using Color = Microsoft.Xna.Framework.Color;
 
@@ -20,7 +21,7 @@ namespace PhoenixGamePresentation.Views
     internal class OverlandMapView : IDisposable
     {
         #region State
-        private readonly WorldView _worldView;
+        internal WorldView WorldView { get; }
         private readonly OverlandMap _overlandMap;
 
         private readonly Label _test;
@@ -30,11 +31,11 @@ namespace PhoenixGamePresentation.Views
 
         private readonly InputHandler _input;
         private bool _disposedValue;
-        #endregion State
+        #endregion End State
 
         internal OverlandMapView(WorldView worldView, OverlandMap overlandMap, InputHandler input)
         {
-            _worldView = worldView;
+            WorldView = worldView;
             _overlandMap = overlandMap;
 
             _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, "test", null, Color.Blue);
@@ -42,7 +43,7 @@ namespace PhoenixGamePresentation.Views
 
             SetupViewport(0, 0, 1670, 1080);
 
-            input.SubscribeToEventHandler("OverlandMapView", 0, new KeyboardInputAction(Keys.Enter, KeyboardInputActionType.Released, EndTurn));
+            input.SubscribeToEventHandler("OverlandMapView", 0, this, Keys.Enter, KeyboardInputActionType.Released, EndTurnEvent.HandleEvent);
             _input = input;
         }
 
@@ -60,7 +61,7 @@ namespace PhoenixGamePresentation.Views
 
         internal void Update(float deltaTime)
         {
-            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
+            if (WorldView.GameStatus != GameStatus.OverlandMap) return;
 
             _test.Update(_input, deltaTime, _viewport);
         }
@@ -71,7 +72,7 @@ namespace PhoenixGamePresentation.Views
             spriteBatch.GraphicsDevice.Viewport = _viewport;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform * _viewportAdapter.GetScaleMatrix()); // FrontToBack
 
-            DrawCellGrid(spriteBatch, _overlandMap.CellGrid, _worldView.Camera);
+            DrawCellGrid(spriteBatch, _overlandMap.CellGrid, WorldView.Camera);
 
             spriteBatch.End();
             spriteBatch.GraphicsDevice.Viewport = originalViewport;
@@ -104,7 +105,7 @@ namespace PhoenixGamePresentation.Views
                     {
                         DrawCell(spriteBatch, cell, Color.White);
                     }
-                    else if (cell.IsSeenByPlayer(_worldView.World))
+                    else if (cell.IsSeenByPlayer(WorldView.World))
                     {
                         DrawCell(spriteBatch, cell, Color.White);
                     }  
@@ -172,22 +173,12 @@ namespace PhoenixGamePresentation.Views
             spriteBatch.DrawLine(centerPosition + point5, centerPosition + point0, color, 1.0f);
         }
 
-        #region Event Handlers
-
-        private void EndTurn(object sender, KeyboardEventArgs e)
-        {
-            // TODO: only allow if all units have been given orders
-            _worldView.EndTurn();
-        }
-
-        #endregion
-
         public void Dispose()
         {
             if (!_disposedValue)
             {
                 // dispose managed state (managed objects)
-                _input.UnsubscribeFromEventHandler("OverlandMapView", 0, new KeyboardInputAction(Keys.Enter, KeyboardInputActionType.Released, EndTurn));
+                _input.UnsubscribeAllFromEventHandler("OverlandMapView");
 
                 // set large fields to null
                 _viewportAdapter = null;

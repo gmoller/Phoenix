@@ -4,20 +4,20 @@ namespace Input
 {
     public readonly struct MouseInputAction
     {
+        private object Sender { get; }
         public MouseInputActionType InputActionType { get; }
         private Action<object, MouseEventArgs> Handler { get; }
 
-        public string DictionaryKey => $"Mouse.{InputActionType}";
-
-        public MouseInputAction(MouseInputActionType inputActionType, Action<object, MouseEventArgs> handler)
+        public MouseInputAction(object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs> handler)
         {
+            Sender = sender;
             InputActionType = inputActionType;
             Handler = handler;
         }
 
         public void Invoke(MouseHandler mouse, float deltaTime)
         {
-            Handler.Invoke(this, new MouseEventArgs(mouse, deltaTime));
+            Handler.Invoke(Sender, new MouseEventArgs(mouse, deltaTime));
         }
     }
 }

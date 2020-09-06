@@ -11,9 +11,9 @@ using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
+using PhoenixGamePresentation.Events;
 using PhoenixGamePresentation.Handlers;
 using Utilities;
-using Utilities.ExtensionMethods;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -24,13 +24,13 @@ namespace PhoenixGamePresentation.Views
         private const float BLINK_TIME_IN_MILLISECONDS = 250.0f;
         private const float MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS = 250.0f;
 
-        private readonly WorldView _worldView;
+        internal WorldView WorldView { get; }
         private readonly StackViews _stackViews;
         private readonly Stack _stack;
 
         private Vector2 _currentPositionOnScreen;
         private List<PointI> _movementPath;
-        private List<PointI> _potentialMovementPath;
+        internal List<PointI> PotentialMovementPath { get; set; }
 
         private float _blinkCooldownInMilliseconds;
         private bool _blink;
@@ -62,25 +62,26 @@ namespace PhoenixGamePresentation.Views
         public StackView(WorldView worldView, StackViews stackViews, Stack stack, InputHandler input)
         {
             Id = Guid.NewGuid();
-            _worldView = worldView;
+            WorldView = worldView;
             _stackViews = stackViews;
             _stack = stack;
             _movementPath = new List<PointI>();
-            _potentialMovementPath = new List<PointI>();
+            PotentialMovementPath = new List<PointI>();
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             _currentPositionOnScreen = HexOffsetCoordinates.ToPixel(stack.Location.X, stack.Location.Y).ToVector2();
 
-            input.SubscribeToEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.C, KeyboardInputActionType.Released, FocusCameraOnLocation));
-            input.SubscribeToEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad1, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-            input.SubscribeToEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad3, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-            input.SubscribeToEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad4, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-            input.SubscribeToEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad6, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-            input.SubscribeToEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad7, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-            input.SubscribeToEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad9, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-            input.SubscribeToEventHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.LeftButtonReleased, CheckForUnitMovementFromMouseInitiation));
-            input.SubscribeToEventHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonPressed, DrawPotentialMovementPath));
-            input.SubscribeToEventHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonReleased, SelectStack));
-            input.SubscribeToEventHandler($"StackView:{Id}", 1, new MouseInputAction(MouseInputActionType.RightButtonReleased, ResetPotentialMovementPath));
+            input.SubscribeToEventHandler($"StackView:{Id}", 0, this, Keys.C, KeyboardInputActionType.Released, FocusCameraOnLocationEvent.HandleEvent);
+            input.SubscribeToEventHandler($"StackView:{Id}", 0, this, Keys.NumPad1, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiationEvent.HandleEvent);
+            input.SubscribeToEventHandler($"StackView:{Id}", 0, this, Keys.NumPad3, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiationEvent.HandleEvent);
+            input.SubscribeToEventHandler($"StackView:{Id}", 0, this, Keys.NumPad4, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiationEvent.HandleEvent);
+            input.SubscribeToEventHandler($"StackView:{Id}", 0, this, Keys.NumPad6, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiationEvent.HandleEvent);
+            input.SubscribeToEventHandler($"StackView:{Id}", 0, this, Keys.NumPad7, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiationEvent.HandleEvent);
+            input.SubscribeToEventHandler($"StackView:{Id}", 0, this, Keys.NumPad9, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiationEvent.HandleEvent);
+            input.SubscribeToEventHandler($"StackView:{Id}", 0, this, MouseInputActionType.LeftButtonReleased, CheckForUnitMovementFromMouseInitiationEvent.HandleEvent);
+            input.SubscribeToEventHandler($"StackView:{Id}", 0, this, MouseInputActionType.RightButtonPressed, DrawPotentialMovementPathEvent.HandleEvent);
+            input.SubscribeToEventHandler($"StackView:{Id}", 0, this, MouseInputActionType.RightButtonReleased, SelectStackEvent.HandleEvent);
+            input.SubscribeToEventHandler($"StackView:{Id}", 1, this, MouseInputActionType.RightButtonReleased, ResetPotentialMovementPathEvent.HandleEvent);
+
             _input = input;
         }
 
@@ -90,7 +91,7 @@ namespace PhoenixGamePresentation.Views
             var imgMovementTypes = new List<IControl>();
             foreach (var movementType in _stack.MovementTypes)
             {
-                var img = _worldView.MovementTypeImages[movementType];
+                var img = WorldView.MovementTypeImages[movementType];
                 imgMovementTypes.Add(img);
             }
 
@@ -114,7 +115,7 @@ namespace PhoenixGamePresentation.Views
 
         internal void Update(float deltaTime)
         {
-            if (_worldView.GameStatus == GameStatus.CityView) return;
+            if (WorldView.GameStatus == GameStatus.CityView) return;
 
             // Causes
             var changeBlinkState = CheckForBlinkStateChange(deltaTime);
@@ -133,7 +134,7 @@ namespace PhoenixGamePresentation.Views
 
             if (mustFindNewExploreLocation)
             {
-                ExploreHandler.SetMovementPathToNewExploreLocation(this, _worldView.World);
+                ExploreHandler.SetMovementPathToNewExploreLocation(this, WorldView.World);
             }
 
             if (mustRestartMovementAtStartOfTurn)
@@ -152,7 +153,7 @@ namespace PhoenixGamePresentation.Views
             }
         }
 
-        private void SetAsCurrent()
+        internal void SetAsCurrent()
         {
             _blink = true;
             _blinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
@@ -180,9 +181,9 @@ namespace PhoenixGamePresentation.Views
             StartUnitMovement();
         }
 
-        private void StartUnitMovement(PointI hexToMoveTo)
+        internal void StartUnitMovement(PointI hexToMoveTo)
         {
-            var path = MovementPathDeterminer.DetermineMovementPath(this, Location, hexToMoveTo, _worldView.World.OverlandMap.CellGrid);
+            var path = MovementPathDeterminer.DetermineMovementPath(this, Location, hexToMoveTo, WorldView.World.OverlandMap.CellGrid);
             SetMovementPath(path);
 
             StartUnitMovement();
@@ -210,7 +211,7 @@ namespace PhoenixGamePresentation.Views
             {
                 // if exploring: pick new path
                 SetMovementPath(new List<PointI>());
-                ExploreHandler.SetMovementPathToNewExploreLocation(this, _worldView.World);
+                ExploreHandler.SetMovementPathToNewExploreLocation(this, WorldView.World);
             }
 
             MovementCountdownTime -= deltaTime;
@@ -224,7 +225,7 @@ namespace PhoenixGamePresentation.Views
             var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
 
             _currentPositionOnScreen = newPosition;
-            _worldView.Camera.LookAtPixel(new PointI((int)newPosition.X, (int)newPosition.Y));
+            WorldView.Camera.LookAtPixel(new PointI((int)newPosition.X, (int)newPosition.Y));
         }
 
         private void MoveStackToCell()
@@ -326,7 +327,7 @@ namespace PhoenixGamePresentation.Views
             }
 
             DrawMovementPath(spriteBatch, _movementPath, Color.Black, 5.0f, 5.0f);
-            DrawMovementPath(spriteBatch, _potentialMovementPath, Color.White, 3.0f, 1.0f);
+            DrawMovementPath(spriteBatch, PotentialMovementPath, Color.White, 3.0f, 1.0f);
         }
 
         private void DrawUnit(SpriteBatch spriteBatch)
@@ -395,105 +396,6 @@ namespace PhoenixGamePresentation.Views
             spriteBatch.Draw(_stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.None, 0.0f);
         }
 
-        #region Event Handlers
-
-        private void SelectStack(object sender, MouseEventArgs e)
-        {
-            if (IsSelected) return;
-            if (!MousePointerIsOnHex(LocationHex, e.Mouse.Location)) return;
-
-            SetAsCurrent();
-        }
-
-        private bool MousePointerIsOnHex(HexOffsetCoordinates settlementLocation, Point mouseLocation)
-        {
-            return mouseLocation.IsWithinHex(settlementLocation, _worldView.Camera.Transform);
-        }
-
-        private void FocusCameraOnLocation(object sender, KeyboardEventArgs e)
-        {
-            if (!IsSelected) return;
-            if (_worldView.GameStatus == GameStatus.CityView) return;
-
-            _worldView.Camera.LookAtCell(Location);
-        }
-
-        private void DrawPotentialMovementPath(object sender, MouseEventArgs e)
-        {
-            if (!IsSelected) return;
-            if (Status == UnitStatus.Explore || IsMovingState) return;
-
-            var path = PotentialMovementHandler.GetPotentialMovementPath(this, _worldView.World.OverlandMap.CellGrid, e.Mouse.Location, _worldView.Camera);
-            _potentialMovementPath = path;
-        }
-
-        private void ResetPotentialMovementPath(object sender, MouseEventArgs e)
-        {
-            if (!IsSelected) return;
-            _potentialMovementPath = new List<PointI>();
-        }
-
-        private void CheckForUnitMovementFromKeyboardInitiation(object sender, KeyboardEventArgs e)
-        {
-            if (!IsSelected) return;
-            if (_worldView.GameStatus == GameStatus.CityView) return;
-            if (IsMovingState) return;
-            if (MovementPoints.AboutEquals(0.0f)) return;
-
-            Direction direction;
-            switch (e.Key)
-            {
-                case Keys.NumPad1:
-                    direction = Direction.SouthWest;
-                    break;
-                case Keys.NumPad3:
-                    direction = Direction.SouthEast;
-                    break;
-                case Keys.NumPad4:
-                    direction = Direction.West;
-                    break;
-                case Keys.NumPad6:
-                    direction = Direction.East;
-                    break;
-                case Keys.NumPad7:
-                    direction = Direction.NorthWest;
-                    break;
-                case Keys.NumPad9:
-                    direction = Direction.NorthEast;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            var neighbor = HexOffsetCoordinates.GetNeighbor(Location.X, Location.Y, direction);
-            var hexToMoveTo = new PointI(neighbor.Col, neighbor.Row);
-
-            var costToMoveIntoResult = GetCostToMoveInto(hexToMoveTo);
-
-            if (costToMoveIntoResult.CanMoveInto)
-            {
-                StartUnitMovement(hexToMoveTo);
-            }
-        }
-
-        private void CheckForUnitMovementFromMouseInitiation(object sender, MouseEventArgs e)
-        {
-            if (!IsSelected) return;
-            if (_worldView.GameStatus == GameStatus.CityView) return;
-            if (_worldView.GameStatus == GameStatus.InHudView) return;
-            if (IsMovingState) return;
-            if (MovementPoints.AboutEquals(0.0f)) return;
-
-            var mustStartMovement = MovementHandler.CheckForUnitMovementFromMouseInitiation(this, _worldView.World.OverlandMap.CellGrid, e.Mouse.Location, _worldView.Camera);
-
-            if (mustStartMovement.startMovement)
-            {
-                StartUnitMovement(mustStartMovement.hexToMoveTo);
-            }
-        }
-
-        #endregion
-
         public override string ToString()
         {
             return DebuggerDisplay;
@@ -506,21 +408,11 @@ namespace PhoenixGamePresentation.Views
             if (!_disposedValue)
             {
                 // dispose managed state (managed objects)
-                _input.UnsubscribeFromEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.C, KeyboardInputActionType.Released, FocusCameraOnLocation));
-                _input.UnsubscribeFromEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad1, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-                _input.UnsubscribeFromEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad3, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-                _input.UnsubscribeFromEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad4, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-                _input.UnsubscribeFromEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad6, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-                _input.UnsubscribeFromEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad7, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-                _input.UnsubscribeFromEventHandler($"StackView:{Id}", 0, new KeyboardInputAction(Keys.NumPad9, KeyboardInputActionType.Released, CheckForUnitMovementFromKeyboardInitiation));
-                _input.UnsubscribeFromEventHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.LeftButtonReleased, CheckForUnitMovementFromMouseInitiation));
-                _input.UnsubscribeFromEventHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonPressed, DrawPotentialMovementPath));
-                _input.UnsubscribeFromEventHandler($"StackView:{Id}", 0, new MouseInputAction(MouseInputActionType.RightButtonReleased, SelectStack));
-                _input.UnsubscribeFromEventHandler($"StackView:{Id}", 1, new MouseInputAction(MouseInputActionType.RightButtonReleased, ResetPotentialMovementPath));
+                _input.UnsubscribeAllFromEventHandler($"StackView:{Id}");
 
                 // set large fields to null
                 _movementPath = null;
-                _potentialMovementPath = null;
+                PotentialMovementPath = null;
 
                 _disposedValue = true;
             }

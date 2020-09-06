@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Input
 {
@@ -26,9 +28,11 @@ namespace Input
             _mouseEventHandlers = new Dictionary<string, Dictionary<string, MouseInputAction>>();
         }
 
-        public void SubscribeToEventHandler(string source, int id, KeyboardInputAction keyboardInputAction)
+        public void SubscribeToEventHandler(string source, int id, object sender, Keys key, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> handler)
         {
-            var firstKey = keyboardInputAction.DictionaryKey;
+            var keyboardInputAction = new KeyboardInputAction(sender, key, inputActionType, handler);
+
+            var firstKey = $"Keyboard.{key}.{inputActionType}";
             var secondKey = $"{source}.{id}";
             if (!_keyboardEventHandlers.ContainsKey(firstKey))
             {
@@ -38,9 +42,11 @@ namespace Input
             _keyboardEventHandlers[firstKey].Add(secondKey, keyboardInputAction);
         }
 
-        public void SubscribeToEventHandler(string source, int id, MouseInputAction mouseInputAction)
+        public void SubscribeToEventHandler(string source, int id, object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs>  handler)
         {
-            var firstKey = mouseInputAction.DictionaryKey;
+            var mouseInputAction = new MouseInputAction(sender, inputActionType, handler);
+
+            var firstKey = $"Mouse.{inputActionType}";
             var secondKey = $"{source}.{id}";
             if (!_mouseEventHandlers.ContainsKey(firstKey))
             {
@@ -50,20 +56,47 @@ namespace Input
             _mouseEventHandlers[firstKey].Add(secondKey, mouseInputAction);
         }
 
-        public void UnsubscribeFromEventHandler(string source, int id, KeyboardInputAction keyboardInputAction)
+        public void UnsubscribeFromEventHandler(string source, int id, Keys key, KeyboardInputActionType inputActionType)
         {
-            var firstKey = keyboardInputAction.DictionaryKey;
+            var firstKey = $"Keyboard.{key}.{inputActionType}";
             var secondKey = $"{source}.{id}";
             var eventHandlers = _keyboardEventHandlers[firstKey];
             eventHandlers.Remove(secondKey);
         }
 
-        public void UnsubscribeFromEventHandler(string source, int id, MouseInputAction mouseInputAction)
+        public void UnsubscribeFromEventHandler(string source, int id, MouseInputActionType inputActionType)
         {
-            var firstKey = mouseInputAction.DictionaryKey;
+            var firstKey = $"Mouse.{inputActionType}";
             var secondKey = $"{source}.{id}";
             var eventHandlers = _mouseEventHandlers[firstKey];
             eventHandlers.Remove(secondKey);
+        }
+
+        public void UnsubscribeAllFromEventHandler(string source)
+        {
+            foreach (var keyboardEventHandler in _keyboardEventHandlers)
+            {
+                //var eventHandlers = _keyboardEventHandlers[keyboardEventHandler.Key];
+                foreach (var key in keyboardEventHandler.Value.Keys)
+                {
+                    if (key.StartsWith($"{source}."))
+                    {
+                        keyboardEventHandler.Value.Remove(key);
+                    }
+                }
+            }
+
+            foreach (var mouseEventHandler in _mouseEventHandlers)
+            {
+                //var eventHandlers = _mouseEventHandlers[mouseEventHandler.Key];
+                foreach (var key in mouseEventHandler.Value.Keys)
+                {
+                    if (key.StartsWith($"{source}."))
+                    {
+                        mouseEventHandler.Value.Remove(key);
+                    }
+                }
+            }
         }
 
         public void Update(float deltaTime)

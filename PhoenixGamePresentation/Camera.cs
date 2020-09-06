@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Input;
 using Hex;
 using MonoGameUtilities.ExtensionMethods;
+using PhoenixGamePresentation.Events;
 using PhoenixGamePresentation.Views;
 using Utilities;
 using Utilities.ExtensionMethods;
@@ -14,7 +15,7 @@ namespace PhoenixGamePresentation
     public class Camera : IDisposable
     {
         #region State
-        private readonly WorldView _worldView;
+        internal WorldView WorldView { get; }
         private readonly Rectangle _viewport;
 
         private readonly CameraClampMode _clampMode;
@@ -80,7 +81,7 @@ namespace PhoenixGamePresentation
 
         public Camera(WorldView worldView, Rectangle viewport, CameraClampMode clampMode, InputHandler input)
         {
-            _worldView = worldView;
+            WorldView = worldView;
             _viewport = viewport;
             _clampMode = clampMode;
 
@@ -88,11 +89,11 @@ namespace PhoenixGamePresentation
             CameraFocusPointInWorld = Vector2.Zero;
             //_rotation = 0.0f;
 
-            input.SubscribeToEventHandler("Camera", 0, new KeyboardInputAction(Keys.OemTilde, KeyboardInputActionType.Released, ResetZoom));
-            input.SubscribeToEventHandler("Camera", 0, new MouseInputAction(MouseInputActionType.WheelUp, IncreaseZoom));
-            input.SubscribeToEventHandler("Camera", 0, new MouseInputAction(MouseInputActionType.WheelDown, DecreaseZoom));
-            input.SubscribeToEventHandler("Camera", 0, new MouseInputAction(MouseInputActionType.RightButtonDrag, DragCamera));
-            input.SubscribeToEventHandler("Camera", 0, new MouseInputAction(MouseInputActionType.Moved, MoveCamera));
+            input.SubscribeToEventHandler("Camera", 0, this, Keys.OemTilde, KeyboardInputActionType.Released, ResetZoomEvent.HandleEvent);
+            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.WheelUp, IncreaseZoomEvent.HandleEvent);
+            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.WheelDown, DecreaseZoomEvent.HandleEvent);
+            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.RightButtonDrag, DragCameraEvent.HandleEvent);
+            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.Moved, MoveCameraEvent.HandleEvent);
             _input = input;
         }
 
@@ -347,97 +348,19 @@ namespace PhoenixGamePresentation
             return projection;
         }
 
-        #region Event Handlers
-
-        private void ResetZoom(object sender, EventArgs e)
-        {
-            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
-
-            Zoom = 1.0f;
-        }
-
-        private void IncreaseZoom(object sender, EventArgs e)
-        {
-            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
-
-            Zoom += 0.05f;
-        }
-
-        private void DecreaseZoom(object sender, EventArgs e)
-        {
-            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
-
-            Zoom -= 0.05f;
-        }
-
-        private void DragCamera(object sender, EventArgs e)
-        {
-            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
-
-            var mouseEventArgs = (MouseEventArgs)e;
-
-            var panCameraDistance = mouseEventArgs.Mouse.Movement.ToVector2();
-
-            MoveCamera(panCameraDistance);
-
-            // TODO: adjust speed depending on zoom level
-        }
-
-        private void MoveCamera(object sender, EventArgs e)
-        {
-            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
-
-            var mouseEventArgs = (MouseEventArgs)e;
-
-            var panCameraDistance = IsMouseIsAtTopOfScreen(mouseEventArgs.Mouse.Location) ? new Vector2(0.0f, -1.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
-            panCameraDistance += MouseIsAtBottomOfScreen(mouseEventArgs.Mouse.Location) ? new Vector2(0.0f, 1.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
-            panCameraDistance += MouseIsAtLeftOfScreen(mouseEventArgs.Mouse.Location) ? new Vector2(-1.0f, 0.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
-            panCameraDistance += MouseIsAtRightOfScreen(mouseEventArgs.Mouse.Location) ? new Vector2(1.0f, 0.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
-
-            MoveCamera(panCameraDistance);
-
-            // TODO: adjust speed depending on zoom level
-        }
-
-        private bool IsMouseIsAtTopOfScreen(Point mousePosition)
-        {
-            return mousePosition.Y < 20.0f && mousePosition.Y >= 0.0f;
-        }
-
-        private bool MouseIsAtBottomOfScreen(Point mousePosition)
-        {
-            return mousePosition.Y > 1080 - 20.0f && mousePosition.Y <= 1080.0f;
-        }
-
-        private bool MouseIsAtLeftOfScreen(Point mousePosition)
-        {
-            return mousePosition.X < 20.0f && mousePosition.X >= 0.0f;;
-        }
-
-        private bool MouseIsAtRightOfScreen(Point mousePosition)
-        {
-            return mousePosition.X > 1670.0f - 20.0f && mousePosition.X <= 1670.0f;
-        }
-
-        private void MoveCamera(Vector2 movePosition)
+        internal void MoveCamera(Vector2 movePosition)
         {
             var newPosition = CameraFocusPointInWorld + movePosition;
 
             CameraFocusPointInWorld = newPosition;
         }
 
-        #endregion
-
         public void Dispose()
         {
             if (!_disposedValue)
             {
                 // TODO: dispose managed state (managed objects)
-                _input.UnsubscribeFromEventHandler("Camera", 0, new KeyboardInputAction(Keys.OemTilde, KeyboardInputActionType.Released, ResetZoom));
-                _input.UnsubscribeFromEventHandler("Camera", 0, new MouseInputAction(MouseInputActionType.WheelUp, IncreaseZoom));
-                _input.UnsubscribeFromEventHandler("Camera", 0, new MouseInputAction(MouseInputActionType.WheelDown, DecreaseZoom));
-                _input.UnsubscribeFromEventHandler("Camera", 0, new MouseInputAction(MouseInputActionType.RightButtonDrag, DragCamera));
-                _input.UnsubscribeFromEventHandler("Camera", 0, new MouseInputAction(MouseInputActionType.Moved, MoveCamera));
+                _input.UnsubscribeAllFromEventHandler("Camera");
 
                 // TODO: set large fields to null
 
