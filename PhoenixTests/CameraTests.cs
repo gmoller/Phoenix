@@ -23,9 +23,8 @@ namespace PhoenixTests
             CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
 
             var world = new World(60, 40);
-            var worldView = new WorldView(world, new InputHandler());
-            var viewport = new Rectangle(0, 0, 1670, 1080);
-            _camera = new Camera(worldView, viewport, CameraClampMode.NoClamp, new InputHandler());
+            var worldView = new WorldView(world, CameraClampMode.NoClamp, new InputHandler());
+            _camera = worldView.Camera;
         }
 
         [Test]
@@ -118,61 +117,61 @@ namespace PhoenixTests
             // Assert
             Assert.AreEqual(new Vector2(3327, 1936), _camera.CameraFocusPointInWorld);
             Assert.AreEqual(new PointI(30, 20), _camera.CameraFocusHexInWorld.ToPointI());
-            Assert.AreEqual(new Rectangle(2492, 1396, 1670, 1080), _camera.CameraRectangleInWorld);
+            Assert.AreEqual(new Rectangle(2487, 1396, 1680, 1080), _camera.CameraRectangleInWorld);
         }
 
         [Test]
         public void Camera_will_set_focus_point_correctly_when_looking_at_pixel_835_540()
         {
-            // Act
+            // Arrange
             _camera.Zoom = 1.0f;
-            _camera.LookAtPixel(new PointI(835, 540));
+
+            // Act
+            _camera.LookAtPixel(new PointI(840, 540));
 
             // Assert
-            Assert.AreEqual(new Vector2(835, 540), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(7, 5), _camera.CameraFocusHexInWorld.ToPointI());
-            Assert.AreEqual(new Rectangle(0, 0, 1670, 1080), _camera.CameraRectangleInWorld);
+            Assert.AreEqual(new Vector2(840, 540), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new PointI(8, 6), _camera.CameraFocusHexInWorld.ToPointI());
+            Assert.AreEqual(new Rectangle(0, 0, 1680, 1080), _camera.CameraRectangleInWorld);
 
-            Assert.AreEqual(9, _camera.NumberOfHexesToLeft);
-            Assert.AreEqual(9, _camera.NumberOfHexesToRight);
-            Assert.AreEqual(7, _camera.NumberOfHexesAbove);
-            Assert.AreEqual(7, _camera.NumberOfHexesBelow);
+            Assert.AreEqual(new PointI(0, 0), _camera.CameraTopLeftHex);
+            Assert.AreEqual(new PointI(15, 11), _camera.CameraBottomRightHex);
         }
 
         [Test]
         public void Camera_will_set_focus_point_correctly_when_zoomed_in_and_looking_at_pixel_835_540()
         {
-            // Act
+            // Arrange
             _camera.Zoom = 2.0f;
-            _camera.LookAtPixel(new PointI(835, 540));
+
+            // Act
+            _camera.LookAtPixel(new PointI(840, 540));
 
             // Assert
-            Assert.AreEqual(new Vector2(835, 540), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(7, 5), _camera.CameraFocusHexInWorld.ToPointI());
-            Assert.AreEqual(new Rectangle(418, 270, 1670, 1080), _camera.CameraRectangleInWorld);
+            Assert.AreEqual(new Vector2(840, 540), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new PointI(8, 6), _camera.CameraFocusHexInWorld.ToPointI());
+            Assert.AreEqual(new Rectangle(420, 270, 840, 540), _camera.CameraRectangleInWorld);
 
-            Assert.AreEqual(5, _camera.NumberOfHexesToLeft);
-            Assert.AreEqual(5, _camera.NumberOfHexesToRight);
-            Assert.AreEqual(4, _camera.NumberOfHexesAbove);
-            Assert.AreEqual(4, _camera.NumberOfHexesBelow);
+            Assert.AreEqual(new PointI(3, 3), _camera.CameraTopLeftHex);
+            Assert.AreEqual(new PointI(11, 9), _camera.CameraBottomRightHex);
         }
 
         [Test]
         public void Camera_will_set_focus_point_correctly_when_zoomed_out_and_looking_at_pixel_835_540()
         {
-            // Act
+            // Arrange
             _camera.Zoom = 0.5f;
-            _camera.LookAtPixel(new PointI(835, 540));
+
+            // Act
+            _camera.LookAtPixel(new PointI(840, 540));
 
             // Assert
-            Assert.AreEqual(new Vector2(835, 540), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(7, 5), _camera.CameraFocusHexInWorld.ToPointI());
-            Assert.AreEqual(new Rectangle(-835, -540, 1670, 1080), _camera.CameraRectangleInWorld);
+            Assert.AreEqual(new Vector2(840, 540), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new PointI(8, 6), _camera.CameraFocusHexInWorld.ToPointI());
+            Assert.AreEqual(new Rectangle(-840, -540, 3360, 2160), _camera.CameraRectangleInWorld);
 
-            Assert.AreEqual(17, _camera.NumberOfHexesToLeft);
-            Assert.AreEqual(17, _camera.NumberOfHexesToRight);
-            Assert.AreEqual(13, _camera.NumberOfHexesAbove);
-            Assert.AreEqual(13, _camera.NumberOfHexesBelow);
+            Assert.AreEqual(new PointI(-8, -6), _camera.CameraTopLeftHex);
+            Assert.AreEqual(new PointI(22, 17), _camera.CameraBottomRightHex);
         }
     }
 }

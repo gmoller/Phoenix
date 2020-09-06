@@ -20,7 +20,7 @@ namespace PhoenixGamePresentation.Views
         private ViewportAdapter _viewportAdapter;
 
         private readonly InputHandler _input;
-        private bool _disposedValue;
+        private bool IsDisposed { get; set; }
         #endregion
 
         public OverlandSettlementViews(WorldView worldView, Settlements settlements, InputHandler input)
@@ -30,7 +30,7 @@ namespace PhoenixGamePresentation.Views
 
             _overlandSettlementView = new OverlandSettlementView(_worldView, input);
 
-            SetupViewport(0, 0, 1670, 1080);
+            SetupViewport(0, 0, _worldView.Camera.GetViewport.Width, _worldView.Camera.GetViewport.Height);
 
             _input = input;
         }
@@ -76,7 +76,7 @@ namespace PhoenixGamePresentation.Views
 
         public void Dispose()
         {
-            if (!_disposedValue)
+            if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
                 _overlandSettlementView.Dispose();
@@ -84,7 +84,7 @@ namespace PhoenixGamePresentation.Views
                 // set large fields to null
                 _viewportAdapter = null;
 
-                _disposedValue = true;
+                IsDisposed = true;
             }
 
             GC.SuppressFinalize(this);

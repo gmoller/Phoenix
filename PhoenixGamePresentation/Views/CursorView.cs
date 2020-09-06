@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using GuiControls;
 using Input;
 using MonoGameUtilities.ViewportAdapters;
@@ -29,6 +30,7 @@ namespace PhoenixGamePresentation.Views
 
             Input = input;
             Input.SubscribeToEventHandler("CursorView", 0, this, MouseInputActionType.Moved, UpdateCursorPositionEvent.HandleEvent);
+            input.SubscribeToEventHandler("OverlandMapView", 0, this, Keys.F1, KeyboardInputActionType.Released, (sender, e) => { Input.SetMousePosition(new Point(840, 540)); }); // for testing
         }
 
         private void SetupViewport(int x, int y, int width, int height)

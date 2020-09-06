@@ -36,7 +36,7 @@ namespace PhoenixGamePresentation.Views
         private ViewportAdapter _viewportAdapter;
 
         private readonly InputHandler _input;
-        private bool _disposedValue;
+        private bool IsDisposed { get; set; }
         #endregion End State
 
         public int Count => _stackViews.Count;
@@ -52,7 +52,7 @@ namespace PhoenixGamePresentation.Views
             _ordersQueue = new Queue<StackView>();
             _selectedThisTurn = new List<Guid>();
 
-            SetupViewport(0, 0, 1670, 1080);
+            SetupViewport(0, 0, _worldView.Camera.GetViewport.Width, _worldView.Camera.GetViewport.Height);
 
             _input = input;
         }
@@ -232,14 +232,14 @@ namespace PhoenixGamePresentation.Views
 
         public void Dispose()
         {
-            if (!_disposedValue)
+            if (!IsDisposed)
             {
-                // TODO: dispose managed state (managed objects)
+                // dispose managed state (managed objects)
 
-                // TODO: set large fields to null
+                // set large fields to null
                 _viewportAdapter = null;
 
-                _disposedValue = true;
+                IsDisposed = true;
             }
 
             GC.SuppressFinalize(this);

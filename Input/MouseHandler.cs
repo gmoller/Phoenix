@@ -56,6 +56,12 @@ namespace Input
             HandleMouse(mouseEventHandlers, deltaTime);
         }
 
+        // for testing
+        public void SetMousePosition(Point pos)
+        {
+            Mouse.SetPosition(pos.X, pos.Y);
+        }
+
         private bool IsLeftButtonDown()
         {
             return _currentState.LeftButton == ButtonState.Pressed;
@@ -133,7 +139,7 @@ namespace Input
 
         public bool MouseIsAtRightOfScreen()
         {
-            return Location.X > 1670.0f - 30.0f && Location.X <= 1670.0f;
+            return Location.X > 1680.0f - 30.0f && Location.X <= 1680.0f;
         }
 
         private void HandleMouse(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, float deltaTime)

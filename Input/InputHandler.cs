@@ -35,6 +35,12 @@ namespace Input
             Mouse.Update(_mouseEventHandlers, deltaTime);
         }
 
+        // for testing
+        public void SetMousePosition(Point pos)
+        {
+            Mouse.SetMousePosition(pos);
+        }
+
         public void SubscribeToEventHandler(string source, int id, object sender, Keys key, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> action)
         {
             var keyboardInputAction = new KeyboardInputAction(sender, key, inputActionType, action);

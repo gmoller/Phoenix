@@ -41,9 +41,10 @@ namespace PhoenixGamePresentation.Views
             _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, "test", null, Color.Blue);
             _test.Click += delegate { _test.MoveTopLeftPosition(new PointI(10, -10)); };
 
-            SetupViewport(0, 0, 1670, 1080);
+            SetupViewport(0, 0, WorldView.Camera.GetViewport.Width, WorldView.Camera.GetViewport.Height);
 
             input.SubscribeToEventHandler("OverlandMapView", 0, this, Keys.Enter, KeyboardInputActionType.Released, EndTurnEvent.HandleEvent);
+            input.SubscribeToEventHandler("OverlandMapView", 0, this, Keys.D1, KeyboardInputActionType.Released, (sender, e) => { WorldView.Camera.LookAtPixel(new PointI(840, 540)); }); // for testing
             _input = input;
         }
 
@@ -82,11 +83,11 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawCellGrid(SpriteBatch spriteBatch, CellGrid cellGrid, Camera camera)
         {
-            var fromRow = camera.CameraTopLeftHex.Y;
-            var toRow = camera.CameraBottomRightHex.Y;
+            var fromRow = camera.CameraTopLeftHex.Y - 1;
+            var toRow = camera.CameraBottomRightHex.Y + 1;
 
-            var fromColumn = camera.CameraTopLeftHex.X;
-            var toColumn = camera.CameraBottomRightHex.X;
+            var fromColumn = camera.CameraTopLeftHex.X - 1;
+            var toColumn = camera.CameraBottomRightHex.X + 1;
 
             for (var r = fromRow; r <= toRow; r++)
             {

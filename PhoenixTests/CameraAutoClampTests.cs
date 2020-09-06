@@ -23,9 +23,8 @@ namespace PhoenixTests
             CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
 
             var world = new World(60, 40);
-            var worldView = new WorldView(world, new InputHandler());
-            var viewport = new Rectangle(0, 0, 1670, 1080);
-            _camera = new Camera(worldView, viewport, CameraClampMode.AutoClamp, new InputHandler());
+            var worldView = new WorldView(world, CameraClampMode.AutoClamp, new InputHandler());
+            _camera = worldView.Camera;
         }
 
         [Test]
@@ -37,7 +36,7 @@ namespace PhoenixTests
             // Assert
             Assert.AreEqual(0, _camera.CameraRectangleInWorld.Top);
             Assert.AreEqual(0, _camera.CameraRectangleInWorld.Left);
-            Assert.AreEqual(new Vector2(835.0f, 540.0f), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new Vector2(840.0f, 540.0f), _camera.CameraFocusPointInWorld);
         }
 
         [Test]
@@ -49,7 +48,7 @@ namespace PhoenixTests
             // Assert
             Assert.AreEqual(0, _camera.CameraRectangleInWorld.Top);
             Assert.AreEqual(6655, _camera.CameraRectangleInWorld.Right);
-            Assert.AreEqual(new Vector2(5820.0f, 540.0f), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new Vector2(5815.0f, 540.0f), _camera.CameraFocusPointInWorld);
         }
 
         [Test]
@@ -61,7 +60,7 @@ namespace PhoenixTests
             // Assert
             Assert.AreEqual(3872, _camera.CameraRectangleInWorld.Bottom);
             Assert.AreEqual(0, _camera.CameraRectangleInWorld.Left);
-            Assert.AreEqual(new Vector2(835.0f, 3332.0f), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new Vector2(840.0f, 3332.0f), _camera.CameraFocusPointInWorld);
         }
 
         [Test]
@@ -73,7 +72,7 @@ namespace PhoenixTests
             // Assert
             Assert.AreEqual(3872, _camera.CameraRectangleInWorld.Bottom);
             Assert.AreEqual(6655, _camera.CameraRectangleInWorld.Right);
-            Assert.AreEqual(new Vector2(5820.0f, 3332.0f), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new Vector2(5815.0f, 3332.0f), _camera.CameraFocusPointInWorld);
         }
 
         [Test]
@@ -86,7 +85,7 @@ namespace PhoenixTests
             // Assert
             Assert.AreEqual(0, _camera.CameraRectangleInWorld.Top);
             Assert.AreEqual(0, _camera.CameraRectangleInWorld.Left);
-            Assert.AreEqual(new Vector2(417.5f, 270.0f), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new Vector2(420.0f, 270.0f), _camera.CameraFocusPointInWorld);
         }
 
         [Test]
@@ -99,7 +98,7 @@ namespace PhoenixTests
             // Assert
             Assert.AreEqual(0, _camera.CameraRectangleInWorld.Top);
             Assert.AreEqual(0, _camera.CameraRectangleInWorld.Left);
-            Assert.AreEqual(new Vector2(1670.0f, 1080.0f), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new Vector2(1680.0f, 1080.0f), _camera.CameraFocusPointInWorld);
         }
     }
 }

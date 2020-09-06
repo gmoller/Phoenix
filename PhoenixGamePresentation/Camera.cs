@@ -39,17 +39,8 @@ namespace PhoenixGamePresentation
         public float Zoom
         {
             get => _zoom; 
-            set
-            {
-                _zoom = MathHelper.Clamp(value, 0.5f, 2.0f);
-                CalculateNumberOfHexesFromCenter(Viewport, _zoom);
-            }
+            set => _zoom = MathHelper.Clamp(value, 0.5f, 2.0f);
         }
-
-        public int NumberOfHexesToLeft { get; private set; }
-        public int NumberOfHexesToRight { get; private set; }
-        public int NumberOfHexesAbove { get; private set; }
-        public int NumberOfHexesBelow { get; private set; }
 
         private InputHandler Input { get; } // readonly
         private bool IsDisposed { get; set; }
@@ -76,6 +67,7 @@ namespace PhoenixGamePresentation
             Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtRightOfScreen, MoveCameraEvent.HandleEvent);
         }
 
+        public Rectangle GetViewport => Viewport;
         public Matrix Transform => GetTransform();
 
         public HexOffsetCoordinates CameraFocusHexInWorld
@@ -93,7 +85,7 @@ namespace PhoenixGamePresentation
             get
             {
                 var frustum = GetBoundingFrustum();
-                var rectangle = new Rectangle(frustum.Left.D.Round(), frustum.Top.D.Round(), Viewport.Width, Viewport.Height);
+                var rectangle = new Rectangle(frustum.Left.D.Round(), frustum.Top.D.Round(), (Viewport.Width * -frustum.Near.D).Round(), (Viewport.Height * -frustum.Near.D).Round());
 
                 return rectangle;
             }
@@ -103,16 +95,6 @@ namespace PhoenixGamePresentation
         {
             get
             {
-                var centerHex = CameraFocusHexInWorld;
-
-                var fromColumn = centerHex.Col - NumberOfHexesToLeft;
-                fromColumn = Math.Max(0, fromColumn);
-
-                var fromRow = centerHex.Row - NumberOfHexesAbove;
-                fromRow = Math.Max(0, fromRow);
-
-                return new PointI(fromColumn, fromRow);
-
                 var cameraRectangle = CameraRectangleInWorld;
                 var hexTopLeft = WorldPixelToWorldHex(new PointI(cameraRectangle.Left, cameraRectangle.Top));
 
@@ -124,16 +106,6 @@ namespace PhoenixGamePresentation
         {
             get
             {
-                var centerHex = CameraFocusHexInWorld;
-
-                var toColumn = centerHex.Col + NumberOfHexesToRight;
-                toColumn = Math.Min(PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS, toColumn);
-
-                var toRow = centerHex.Row + NumberOfHexesBelow;
-                toRow = Math.Min(PhoenixGameLibrary.Constants.WORLD_MAP_ROWS, toRow);
-
-                return new PointI(toColumn, toRow);
-
                 var cameraRectangle = CameraRectangleInWorld;
                 var hexBottomRight = WorldPixelToWorldHex(new PointI(cameraRectangle.Right, cameraRectangle.Bottom));
 
@@ -347,14 +319,6 @@ namespace PhoenixGamePresentation
 
         #endregion
 
-        private void CalculateNumberOfHexesFromCenter(Rectangle viewport, float zoom)
-        {
-            NumberOfHexesToLeft = (int)(Math.Ceiling(viewport.Width / Hex.Constants.HexWidth * (1 / zoom) * Constants.ONE_HALF)) + 1;
-            NumberOfHexesToRight = NumberOfHexesToLeft;
-            NumberOfHexesAbove = (int)(Math.Ceiling(viewport.Height / Hex.Constants.HexThreeQuarterHeight * (1 / zoom) * Constants.ONE_HALF)) + 1;
-            NumberOfHexesBelow = NumberOfHexesAbove;
-        }
-
         public void Update(float deltaTime)
         {
         }
@@ -363,6 +327,7 @@ namespace PhoenixGamePresentation
         {
             if (ClampMode == CameraClampMode.NoClamp) return CameraFocusPointInWorld;
 
+            // TODO: sort this out
             var x = MathHelper.Clamp(CameraFocusPointInWorld.X, Viewport.Center.X * (1 / zoom),
                 Constants.WORLD_MAP_WIDTH_IN_PIXELS - Viewport.Center.X * (1 / zoom));
             var y = MathHelper.Clamp(CameraFocusPointInWorld.Y, Viewport.Center.Y * (1 / zoom),

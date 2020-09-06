@@ -123,7 +123,7 @@ namespace Phoenix2
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             _phoenixGameView.Draw(_spriteBatch);
             _metricsPanel.Draw(_spriteBatch);

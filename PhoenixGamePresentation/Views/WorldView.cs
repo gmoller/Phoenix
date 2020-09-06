@@ -31,7 +31,7 @@ namespace PhoenixGamePresentation.Views
         public GameStatus GameStatus { get; set; }
 
         private readonly InputHandler _input;
-        private bool _disposedValue;
+        private bool IsDisposed { get; set; }
         #endregion End State
 
         public int WorldWidthInPixels => Constants.WORLD_MAP_WIDTH_IN_PIXELS;
@@ -39,9 +39,13 @@ namespace PhoenixGamePresentation.Views
         public EnumerableDictionary<IControl> MovementTypeImages => new EnumerableDictionary<IControl>(_movementTypeImages);
         public EnumerableDictionary<IControl> ActionButtons => new EnumerableDictionary<IControl>(_actionButtons);
 
-        public WorldView(World world, InputHandler input)
+        public WorldView(World world, CameraClampMode cameraClampMode, InputHandler input)
         {
             World = world;
+
+            Camera = new Camera(this, new Rectangle(0, 0, 1680, 1080), cameraClampMode, input);
+            var globalContextPresentation = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            globalContextPresentation.Camera = Camera;
 
             _overlandMapView = new OverlandMapView(this, World.OverlandMap, input);
             _overlandSettlementsView = new OverlandSettlementViews(this, World.Settlements, input);
@@ -51,10 +55,6 @@ namespace PhoenixGamePresentation.Views
 
             _movementTypeImages = InitializeMovementTypeImages();
             _actionButtons = InitializeActionButtons();
-
-            Camera = new Camera(this, new Rectangle(0, 0, 1670, 1080), CameraClampMode.AutoClamp, input);
-            var globalContextPresentation = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            globalContextPresentation.Camera = Camera;
 
             _input = input;
         }
@@ -198,13 +198,13 @@ namespace PhoenixGamePresentation.Views
 
         public void Dispose()
         {
-            if (!_disposedValue)
+            if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
 
                 // set large fields to null
 
-                _disposedValue = true;
+                IsDisposed = true;
             }
 
             GC.SuppressFinalize(this);

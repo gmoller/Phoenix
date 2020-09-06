@@ -1,5 +1,4 @@
 ﻿using Input;
-using Microsoft.Xna.Framework;
 using NUnit.Framework;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation;
@@ -24,9 +23,7 @@ namespace PhoenixTests
             CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
 
             var world = new World(60, 40);
-            _worldView = new WorldView(world, new InputHandler());
-            var viewport = new Rectangle(0, 0, 1670, 1080);
-            var camera = new Camera(_worldView, viewport, CameraClampMode.AutoClamp, new InputHandler());
+            _worldView = new WorldView(world, CameraClampMode.AutoClamp, new InputHandler());
         }
 
         [Test]

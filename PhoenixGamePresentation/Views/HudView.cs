@@ -44,17 +44,17 @@ namespace PhoenixGamePresentation.Views
 
         internal HudView(WorldView worldView, StackViews stackViews, InputHandler input)
         {
-            var width = (int)(1920 * 0.1305f); // 13.05% of screen width
-            var height = (int)(1080 * 0.945f); // 94.5% of screen height
-            var x = 1920 - width;
+            var x = worldView.Camera.GetViewport.Right;
             var y = 0;
-            _area = new Rectangle(x, y, width, height); // 1670,0,250,1020
+            var width = 1920 - x;
+            var height = 1020;
+            _area = new Rectangle(x, y, width, height); // 1680,0,240,1020
 
             #region HudViewFrame
 
             HudViewFrame = new Frame(Vector2.Zero, Alignment.TopLeft, new Vector2(_area.Width, _area.Height), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame");
 
-            //_hudViewFrame.AddControl(new Image("imgBackground", new Vector2(250, 1080), "NoiseTexture"));
+            //HudViewFrame.AddControl(new Image("imgBackground", new Vector2(250, 1080), "NoiseTexture"));
 
             string GetTextFuncForDate() => WorldView.World.CurrentDate;
             HudViewFrame.AddControl(new LabelSized("lblCurrentDate", new Vector2(150.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForDate, "Maleficio-Regular-18", Color.Aquamarine), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 20));
@@ -130,7 +130,7 @@ namespace PhoenixGamePresentation.Views
         {
             _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
             HudViewFrame.LoadContent(content);
-            //_hudViewFrame["imgBackground"].LoadContent(content);
+            //HudViewFrame["imgBackground"].LoadContent(content);
             HudViewFrame["lblCurrentDate"].LoadContent(content);
 
             HudViewFrame["resourceFrame"].LoadContent(content);
