@@ -16,9 +16,9 @@ namespace PhoenixGamePresentation
     {
         #region State
         internal WorldView WorldView { get; }
-        private readonly Rectangle _viewport;
 
-        private readonly CameraClampMode _clampMode;
+        private Rectangle Viewport { get; } // readonly
+        private CameraClampMode ClampMode { get; } // readonly
         //private float _rotation;
 
         private Vector2 _cameraFocusPointInWorld;
@@ -28,7 +28,7 @@ namespace PhoenixGamePresentation
             private set
             {
                 _cameraFocusPointInWorld = value;
-                if (_clampMode == CameraClampMode.AutoClamp)
+                if (ClampMode == CameraClampMode.AutoClamp)
                 {
                     _cameraFocusPointInWorld = ClampCamera(Zoom);
                 }
@@ -36,14 +36,13 @@ namespace PhoenixGamePresentation
         }
 
         private float _zoom;
-
         public float Zoom
         {
             get => _zoom; 
             set
             {
                 _zoom = MathHelper.Clamp(value, 0.5f, 2.0f);
-                CalculateNumberOfHexesFromCenter(_viewport, _zoom);
+                CalculateNumberOfHexesFromCenter(Viewport, _zoom);
             }
         }
 
@@ -52,9 +51,30 @@ namespace PhoenixGamePresentation
         public int NumberOfHexesAbove { get; private set; }
         public int NumberOfHexesBelow { get; private set; }
 
-        private readonly InputHandler _input;
-        private bool _disposedValue;
+        private InputHandler Input { get; } // readonly
+        private bool IsDisposed { get; set; }
         #endregion End State
+
+        public Camera(WorldView worldView, Rectangle viewport, CameraClampMode clampMode, InputHandler input)
+        {
+            WorldView = worldView;
+            Viewport = viewport;
+            ClampMode = clampMode;
+
+            Zoom = 1.0f;
+            CameraFocusPointInWorld = Vector2.Zero;
+            //_rotation = 0.0f;
+
+            Input = input;
+            Input.SubscribeToEventHandler("Camera", 0, this, Keys.OemTilde, KeyboardInputActionType.Released, ResetCameraZoomEvent.HandleEvent);
+            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.WheelUp, IncreaseCameraZoomEvent.HandleEvent);
+            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.WheelDown, DecreaseCameraZoomEvent.HandleEvent);
+            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.RightButtonDrag, DragCameraEvent.HandleEvent);
+            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtTopOfScreen, MoveCameraEvent.HandleEvent);
+            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtBottomOfScreen, MoveCameraEvent.HandleEvent);
+            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtLeftOfScreen, MoveCameraEvent.HandleEvent);
+            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtRightOfScreen, MoveCameraEvent.HandleEvent);
+        }
 
         public Matrix Transform => GetTransform();
 
@@ -73,7 +93,7 @@ namespace PhoenixGamePresentation
             get
             {
                 var frustum = GetBoundingFrustum();
-                var rectangle = new Rectangle(frustum.Left.D.Round(), frustum.Top.D.Round(), _viewport.Width, _viewport.Height);
+                var rectangle = new Rectangle(frustum.Left.D.Round(), frustum.Top.D.Round(), Viewport.Width, Viewport.Height);
 
                 return rectangle;
             }
@@ -119,27 +139,6 @@ namespace PhoenixGamePresentation
 
                 return hexBottomRight.ToPointI();
             }
-        }
-
-        public Camera(WorldView worldView, Rectangle viewport, CameraClampMode clampMode, InputHandler input)
-        {
-            WorldView = worldView;
-            _viewport = viewport;
-            _clampMode = clampMode;
-
-            Zoom = 1.0f;
-            CameraFocusPointInWorld = Vector2.Zero;
-            //_rotation = 0.0f;
-
-            input.SubscribeToEventHandler("Camera", 0, this, Keys.OemTilde, KeyboardInputActionType.Released, ResetZoomEvent.HandleEvent);
-            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.WheelUp, IncreaseZoomEvent.HandleEvent);
-            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.WheelDown, DecreaseZoomEvent.HandleEvent);
-            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.RightButtonDrag, DragCameraEvent.HandleEvent);
-            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtTopOfScreen, MoveCameraEvent.HandleEvent);
-            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtBottomOfScreen, MoveCameraEvent.HandleEvent);
-            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtLeftOfScreen, MoveCameraEvent.HandleEvent);
-            input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtRightOfScreen, MoveCameraEvent.HandleEvent);
-            _input = input;
         }
 
         internal void LoadContent(ContentManager content)
@@ -362,17 +361,14 @@ namespace PhoenixGamePresentation
 
         private Vector2 ClampCamera(float zoom)
         {
-            if (_clampMode == CameraClampMode.ClampOnUpdate || _clampMode == CameraClampMode.AutoClamp)
-            {
-                var x = MathHelper.Clamp(CameraFocusPointInWorld.X, _viewport.Center.X * (1 / zoom),
-                    Constants.WORLD_MAP_WIDTH_IN_PIXELS - _viewport.Center.X * (1 / zoom));
-                var y = MathHelper.Clamp(CameraFocusPointInWorld.Y, _viewport.Center.Y * (1 / zoom),
-                    Constants.WORLD_MAP_HEIGHT_IN_PIXELS - _viewport.Center.Y * (1 / zoom));
+            if (ClampMode == CameraClampMode.NoClamp) return CameraFocusPointInWorld;
 
-                return new Vector2(x, y);
-            }
+            var x = MathHelper.Clamp(CameraFocusPointInWorld.X, Viewport.Center.X * (1 / zoom),
+                Constants.WORLD_MAP_WIDTH_IN_PIXELS - Viewport.Center.X * (1 / zoom));
+            var y = MathHelper.Clamp(CameraFocusPointInWorld.Y, Viewport.Center.Y * (1 / zoom),
+                Constants.WORLD_MAP_HEIGHT_IN_PIXELS - Viewport.Center.Y * (1 / zoom));
 
-            return CameraFocusPointInWorld;
+            return new Vector2(x, y);
         }
 
         private Matrix GetTransform()
@@ -380,7 +376,7 @@ namespace PhoenixGamePresentation
             var transform = Matrix.CreateTranslation(new Vector3(-CameraFocusPointInWorld.X, -CameraFocusPointInWorld.Y, 0.0f)) *
                         //Matrix.CreateRotationZ(_rotation) *
                         Matrix.CreateScale(Zoom) *
-                        Matrix.CreateTranslation(new Vector3(_viewport.Width * Constants.ONE_HALF, _viewport.Height * Constants.ONE_HALF, 0.0f));
+                        Matrix.CreateTranslation(new Vector3(Viewport.Width * Constants.ONE_HALF, Viewport.Height * Constants.ONE_HALF, 0.0f));
 
             return transform;
         }
@@ -395,7 +391,7 @@ namespace PhoenixGamePresentation
 
         private Matrix GetProjectionMatrix(Matrix viewMatrix)
         {
-            var projection = Matrix.CreateOrthographicOffCenter(0, _viewport.Width, _viewport.Height, 0, -1, 0);
+            var projection = Matrix.CreateOrthographicOffCenter(0, Viewport.Width, Viewport.Height, 0, -1, 0);
             Matrix.Multiply(ref viewMatrix, ref projection, out projection);
 
             return projection;
@@ -410,14 +406,14 @@ namespace PhoenixGamePresentation
 
         public void Dispose()
         {
-            if (!_disposedValue)
+            if (!IsDisposed)
             {
-                // TODO: dispose managed state (managed objects)
-                _input.UnsubscribeAllFromEventHandler("Camera");
+                // dispose managed state (managed objects)
+                Input.UnsubscribeAllFromEventHandler("Camera");
 
-                // TODO: set large fields to null
+                // set large fields to null
 
-                _disposedValue = true;
+                IsDisposed = true;
             }
 
             GC.SuppressFinalize(this);

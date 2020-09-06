@@ -6,18 +6,18 @@ namespace Input
     {
         private object Sender { get; }
         public MouseInputActionType InputActionType { get; }
-        private Action<object, MouseEventArgs> Handler { get; }
+        private Action<object, MouseEventArgs> ActionEvent { get; }
 
-        public MouseInputAction(object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs> handler)
+        public MouseInputAction(object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs> action)
         {
             Sender = sender;
             InputActionType = inputActionType;
-            Handler = handler;
+            ActionEvent = action;
         }
 
         public void Invoke(MouseHandler mouse, float deltaTime)
         {
-            Handler.Invoke(Sender, new MouseEventArgs(mouse, deltaTime));
+            ActionEvent(Sender, new MouseEventArgs(mouse, deltaTime));
         }
     }
 }

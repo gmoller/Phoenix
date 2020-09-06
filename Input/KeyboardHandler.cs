@@ -79,10 +79,10 @@ namespace Input
             {
                 foreach (var keyboardInputAction in item.Values)
                 {
-                    var func = _switch[keyboardInputAction.InputActionType];
-                    var invoke = func.Invoke(keyboardInputAction.Key);
+                    var ifFunc = _switch[keyboardInputAction.InputActionType];
+                    var ifConditionSatisfied = ifFunc(keyboardInputAction.Key);
 
-                    if (invoke)
+                    if (ifConditionSatisfied)
                     {
                         keyboardInputAction.Invoke(this, deltaTime);
                     }

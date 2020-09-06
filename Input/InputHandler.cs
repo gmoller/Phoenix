@@ -14,11 +14,6 @@ namespace Input
         private readonly Dictionary<string, Dictionary<string, MouseInputAction>> _mouseEventHandlers;
         #endregion End State
 
-        public Point MousePosition => Mouse.Location;
-        public bool IsLeftMouseButtonReleased => Mouse.IsLeftButtonReleased();
-
-        internal bool MouseIsWithinScreen => Mouse.MouseIsWithinScreen;
-
         public InputHandler()
         {
             _keyboard = new KeyboardHandler();
@@ -28,9 +23,21 @@ namespace Input
             _mouseEventHandlers = new Dictionary<string, Dictionary<string, MouseInputAction>>();
         }
 
-        public void SubscribeToEventHandler(string source, int id, object sender, Keys key, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> handler)
+        public Point MousePosition => Mouse.Location;
+        public bool IsLeftMouseButtonReleased => Mouse.IsLeftButtonReleased();
+        internal bool MouseIsWithinScreen => Mouse.MouseIsWithinScreen;
+
+        public void Update(float deltaTime)
         {
-            var keyboardInputAction = new KeyboardInputAction(sender, key, inputActionType, handler);
+            //if (!MouseIsWithinScreen) return;
+
+            _keyboard.Update(_keyboardEventHandlers, deltaTime);
+            Mouse.Update(_mouseEventHandlers, deltaTime);
+        }
+
+        public void SubscribeToEventHandler(string source, int id, object sender, Keys key, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> action)
+        {
+            var keyboardInputAction = new KeyboardInputAction(sender, key, inputActionType, action);
 
             var firstKey = $"Keyboard.{key}.{inputActionType}";
             var secondKey = $"{source}.{id}";
@@ -42,9 +49,9 @@ namespace Input
             _keyboardEventHandlers[firstKey].Add(secondKey, keyboardInputAction);
         }
 
-        public void SubscribeToEventHandler(string source, int id, object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs>  handler)
+        public void SubscribeToEventHandler(string source, int id, object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs> action)
         {
-            var mouseInputAction = new MouseInputAction(sender, inputActionType, handler);
+            var mouseInputAction = new MouseInputAction(sender, inputActionType, action);
 
             var firstKey = $"Mouse.{inputActionType}";
             var secondKey = $"{source}.{id}";
@@ -97,14 +104,6 @@ namespace Input
                     }
                 }
             }
-        }
-
-        public void Update(float deltaTime)
-        {
-            //if (!MouseIsWithinScreen) return;
-
-            _keyboard.Update(_keyboardEventHandlers, deltaTime);
-            Mouse.Update(_mouseEventHandlers, deltaTime);
         }
     }
 }

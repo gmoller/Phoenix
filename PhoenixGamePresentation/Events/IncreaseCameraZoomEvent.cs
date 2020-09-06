@@ -2,7 +2,7 @@
 
 namespace PhoenixGamePresentation.Events
 {
-    internal static class DecreaseZoomEvent
+    internal static class IncreaseCameraZoomEvent
     {
         internal static void HandleEvent(object sender, MouseEventArgs e)
         {
@@ -10,7 +10,7 @@ namespace PhoenixGamePresentation.Events
 
             if (camera.WorldView.GameStatus != GameStatus.OverlandMap) return;
 
-            camera.Zoom -= 0.05f;
+            camera.Zoom += 0.05f;
         }
     }
 }

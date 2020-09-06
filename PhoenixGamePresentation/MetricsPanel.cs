@@ -27,17 +27,17 @@ namespace PhoenixGamePresentation
         {
             List<(string text, string name)> metrics = new List<(string, string)>
             {
+                ("FPS (Update/Draw):", "lblFps1"), (string.Empty, "lblFps2"),
                 ("GC COUNT:", "lblGcCount1"), (string.Empty, "lblGcCount2"),
+                ("MEMORY:", "lblMemory1"), (string.Empty, "lblMemory2"),
                 ("SCREEN POS:", "lblScreenPosition1"), (string.Empty, "lblScreenPosition2"),
                 ("WORLD POS:",  "lblWorldPosition1"), (string.Empty, "lblWorldPosition2"),
                 ("WORLD HEX:", "lblWorldHex1"), (string.Empty, "lblWorldHex2"),
-                ("MEMORY:", "lblMemory1"), (string.Empty, "lblMemory2"),
-                ("FPS (Update/Draw):", "lblFps1"), (string.Empty, "lblFps2"),
-                ("ClientBounds:", "lblResolution11"), (string.Empty, "lblResolution12"),
-                ("Viewport:", "lblResolution21"), (string.Empty, "lblResolution22"),
-                ("DisplayMode:", "lblResolution31"), (string.Empty, "lblResolution32"),
-                ("CurrentDisplayMode:", "lblResolution41"), (string.Empty, "lblResolution42"),
-                ("Zoom:", "lblZoom1"), (string.Empty, "lblZoom2")
+                ("ZOOM:", "lblZoom1"), (string.Empty, "lblZoom2")
+                //("ClientBounds:", "lblResolution11"), (string.Empty, "lblResolution12"),
+                //("Viewport:", "lblResolution21"), (string.Empty, "lblResolution22"),
+                //("DisplayMode:", "lblResolution31"), (string.Empty, "lblResolution32"),
+                //("CurrentDisplayMode:", "lblResolution41"), (string.Empty, "lblResolution42"),
             };
 
             _labels = new List<Label>();
@@ -88,17 +88,17 @@ namespace PhoenixGamePresentation
             var worldPosition = camera.ScreenPixelToWorldPixel(mouseState.Position);
             var worldHex = camera.ScreenPixelToWorldHex(mouseState.Position);
 
-            _labels[1].Text = $"{GC.CollectionCount(0)},{GC.CollectionCount(1)},{GC.CollectionCount(2)}";
-            _labels[3].Text = $"({mouseState.Position.X},{mouseState.Position.Y})";
-            _labels[5].Text = $"({worldPosition.X},{worldPosition.Y})";
-            _labels[7].Text = $"{worldHex.Col},{worldHex.Row}";
-            _labels[9].Text = $"{GC.GetTotalMemory(false) / 1024} KB";
-            _labels[11].Text = $"{_fps.UpdateFramesPerSecond}/{_fps.DrawFramesPerSecond}";
-            _labels[13].Text = $"{gameWindow.ClientBounds.Width}x{gameWindow.ClientBounds.Height}";
-            _labels[15].Text = $"{_viewportAdapter.Viewport.Width}x{_viewportAdapter.Viewport.Height}";
-            _labels[17].Text = $"{graphicsDevice.DisplayMode.Width}x{graphicsDevice.DisplayMode.Height}";
-            _labels[19].Text = $"{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width}x{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height}";
-            _labels[21].Text = $"{camera.Zoom}";
+            _labels[1].Text = $"{_fps.UpdateFramesPerSecond}/{_fps.DrawFramesPerSecond}";
+            _labels[3].Text = $"{GC.CollectionCount(0)},{GC.CollectionCount(1)},{GC.CollectionCount(2)}";
+            _labels[5].Text = $"{GC.GetTotalMemory(false) / 1024} KB";
+            _labels[7].Text = $"({mouseState.Position.X},{mouseState.Position.Y})";
+            _labels[9].Text = $"({worldPosition.X},{worldPosition.Y})";
+            _labels[11].Text = $"{worldHex.Col},{worldHex.Row}";
+            _labels[13].Text = $"{camera.Zoom}";
+            //_labels[15].Text = $"{gameWindow.ClientBounds.Width}x{gameWindow.ClientBounds.Height}";
+            //_labels[17].Text = $"{_viewportAdapter.Viewport.Width}x{_viewportAdapter.Viewport.Height}";
+            //_labels[19].Text = $"{graphicsDevice.DisplayMode.Width}x{graphicsDevice.DisplayMode.Height}";
+            //_labels[21].Text = $"{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width}x{GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height}";
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -13,15 +13,6 @@ namespace Input
         private readonly Dictionary<MouseInputActionType, Func<bool>> _switch;
         #endregion End State
 
-        public Point Location => _currentState.Position;
-
-        public Point Movement => _currentState.Position - _previousState.Position;
-
-        internal bool MouseIsWithinScreen => Location.X >= 0.0f &&
-                                             Location.X <= 1920.0f &&
-                                             Location.Y >= 0.0f &&
-                                             Location.Y <= 1080.0f;
-
         internal MouseHandler()
         {
             _currentState = Mouse.GetState();
@@ -49,6 +40,13 @@ namespace Input
                 { MouseInputActionType.AtRightOfScreen, MouseIsAtRightOfScreen }
             };
         }
+
+        public Point Location => _currentState.Position;
+        public Point Movement => _currentState.Position - _previousState.Position;
+        internal bool MouseIsWithinScreen => Location.X >= 0.0f &&
+                                             Location.X <= 1920.0f &&
+                                             Location.Y >= 0.0f &&
+                                             Location.Y <= 1080.0f;
 
         internal void Update(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, float deltaTime)
         {
@@ -144,10 +142,10 @@ namespace Input
             {
                 foreach (var mouseInputAction in item.Values)
                 {
-                    var func = _switch[mouseInputAction.InputActionType];
-                    var invoke = func.Invoke();
+                    var ifFunc = _switch[mouseInputAction.InputActionType];
+                    var ifConditionSatisfied = ifFunc();
 
-                    if (invoke)
+                    if (ifConditionSatisfied)
                     {
                         mouseInputAction.Invoke(this, deltaTime);
                     }

@@ -4,14 +4,13 @@ using PhoenixGamePresentation.Views;
 
 namespace PhoenixGamePresentation.Events
 {
-    internal static class UpdatePositionEvent
+    internal static class UpdateCursorPositionEvent
     {
         internal static void HandleEvent(object sender, MouseEventArgs e)
         {
             var cursorView = (CursorView)sender;
 
-            cursorView.Position = e.Mouse.Location.ToPointI();
-            cursorView.CursorImage.SetTopLeftPosition(cursorView.Position);
+            cursorView.SetPosition(e.Mouse.Location.ToPointI());
         }
     }
 }
