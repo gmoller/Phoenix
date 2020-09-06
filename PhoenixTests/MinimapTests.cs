@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Input;
+using Microsoft.Xna.Framework;
 using NUnit.Framework;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation;
@@ -23,9 +24,9 @@ namespace PhoenixTests
             CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
 
             var world = new World(60, 40);
-            _worldView = new WorldView(world, null);
+            _worldView = new WorldView(world, new InputHandler());
             var viewport = new Rectangle(0, 0, 1670, 1080);
-            var camera = new Camera(_worldView, viewport, CameraClampMode.AutoClamp, null);
+            var camera = new Camera(_worldView, viewport, CameraClampMode.AutoClamp, new InputHandler());
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace PhoenixTests
         }
 
         [Test]
-        public void MinimapViewedRectangle_will_be_set__correctly_when_looking_at_cell_0_0_()
+        public void MinimapViewedRectangle_will_be_set__correctly_when_looking_at_cell_0_0_smaller_minimap()
         {
             _worldView.Camera.LookAtCell(new PointI(0, 0));
 
@@ -71,7 +72,7 @@ namespace PhoenixTests
         }
 
         [Test]
-        public void MinimapViewedRectangle_will_be_set__correctly_when_looking_at_cell_60_40_()
+        public void MinimapViewedRectangle_will_be_set__correctly_when_looking_at_cell_60_40_smaller_minimap()
         {
             _worldView.Camera.LookAtCell(new PointI(60, 40));
 

@@ -11,12 +11,10 @@ namespace PhoenixGamePresentation.Events
 
             if (camera.WorldView.GameStatus != GameStatus.OverlandMap) return;
 
-            var mouseEventArgs = (MouseEventArgs)e;
-
-            var panCameraDistance = IsMouseIsAtTopOfScreen(mouseEventArgs.Mouse.Location) ? new Vector2(0.0f, -1.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
-            panCameraDistance += MouseIsAtBottomOfScreen(mouseEventArgs.Mouse.Location) ? new Vector2(0.0f, 1.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
-            panCameraDistance += MouseIsAtLeftOfScreen(mouseEventArgs.Mouse.Location) ? new Vector2(-1.0f, 0.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
-            panCameraDistance += MouseIsAtRightOfScreen(mouseEventArgs.Mouse.Location) ? new Vector2(1.0f, 0.0f) * mouseEventArgs.DeltaTime : Vector2.Zero;
+            var panCameraDistance = IsMouseIsAtTopOfScreen(e.Mouse.Location) ? new Vector2(0.0f, -1.0f) * e.DeltaTime : Vector2.Zero;
+            panCameraDistance += MouseIsAtBottomOfScreen(e.Mouse.Location) ? new Vector2(0.0f, 1.0f) * e.DeltaTime : Vector2.Zero;
+            panCameraDistance += MouseIsAtLeftOfScreen(e.Mouse.Location) ? new Vector2(-1.0f, 0.0f) * e.DeltaTime : Vector2.Zero;
+            panCameraDistance += MouseIsAtRightOfScreen(e.Mouse.Location) ? new Vector2(1.0f, 0.0f) * e.DeltaTime : Vector2.Zero;
 
             camera.MoveCamera(panCameraDistance);
 

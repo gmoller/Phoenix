@@ -58,13 +58,13 @@ namespace PhoenixGamePresentation
 
         public Matrix Transform => GetTransform();
 
-        public PointI CameraFocusCellInWorld
+        public HexOffsetCoordinates CameraFocusHexInWorld
         {
             get
             {
-                var hexOffsetCoordinates = HexOffsetCoordinates.FromPixel((int)CameraFocusPointInWorld.X, (int)CameraFocusPointInWorld.Y);
+                var hexOffsetCoordinates = HexOffsetCoordinates.FromPixel(CameraFocusPointInWorld.X, CameraFocusPointInWorld.Y);
 
-                return new PointI(hexOffsetCoordinates.Col, hexOffsetCoordinates.Row);
+                return hexOffsetCoordinates;
             }
         }
 
@@ -76,6 +76,48 @@ namespace PhoenixGamePresentation
                 var rectangle = new Rectangle(frustum.Left.D.Round(), frustum.Top.D.Round(), _viewport.Width, _viewport.Height);
 
                 return rectangle;
+            }
+        }
+
+        public PointI CameraTopLeftHex
+        {
+            get
+            {
+                //var centerHex = CameraFocusHexInWorld;
+
+                //var fromColumn = centerHex.Col - NumberOfHexesToLeft;
+                //fromColumn = Math.Max(0, fromColumn);
+
+                //var fromRow = centerHex.Row - NumberOfHexesAbove;
+                //fromRow = Math.Max(0, fromRow);
+
+                //return new PointI(fromColumn, fromRow);
+
+                var cameraRectangle = CameraRectangleInWorld;
+                var hexTopLeft = WorldPixelToWorldHex(new PointI(cameraRectangle.Left, cameraRectangle.Top));
+
+                return hexTopLeft.ToPointI();
+            }
+        }
+
+        public PointI CameraBottomRightHex
+        {
+            get
+            {
+                //var centerHex = CameraFocusHexInWorld;
+
+                //var toColumn = centerHex.Col + NumberOfHexesToRight;
+                //toColumn = Math.Min(PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS, toColumn);
+
+                //var toRow = centerHex.Row + NumberOfHexesBelow;
+                //toRow = Math.Min(PhoenixGameLibrary.Constants.WORLD_MAP_ROWS, toRow);
+
+                //return new PointI(toColumn, toRow);
+
+                var cameraRectangle = CameraRectangleInWorld;
+                var hexBottomRight = WorldPixelToWorldHex(new PointI(cameraRectangle.Right, cameraRectangle.Bottom));
+
+                return hexBottomRight.ToPointI();
             }
         }
 
@@ -213,6 +255,14 @@ namespace PhoenixGamePresentation
         {
             var worldPosition = ScreenPixelToWorldPixel(screenPosition);
             var worldHex = HexOffsetCoordinates.FromPixel(worldPosition.X, worldPosition.Y);
+
+            return worldHex;
+        }
+
+        public HexOffsetCoordinates WorldPixelToWorldHex(PointI worldPosition)
+        {
+            var screenPixel = WorldPixelToScreenPixel(worldPosition);
+            var worldHex = ScreenPixelToWorldHex(screenPixel);
 
             return worldHex;
         }

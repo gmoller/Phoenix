@@ -1,3 +1,4 @@
+using Input;
 using Microsoft.Xna.Framework;
 using NUnit.Framework;
 using PhoenixGameLibrary;
@@ -22,9 +23,9 @@ namespace PhoenixTests
             CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
 
             var world = new World(60, 40);
-            var worldView = new WorldView(world, null);
+            var worldView = new WorldView(world, new InputHandler());
             var viewport = new Rectangle(0, 0, 1670, 1080);
-            _camera = new Camera(worldView, viewport, CameraClampMode.NoClamp, null);
+            _camera = new Camera(worldView, viewport, CameraClampMode.NoClamp, new InputHandler());
         }
 
         [Test]
@@ -34,7 +35,7 @@ namespace PhoenixTests
             _camera.LookAtCell(PointI.Zero);
 
             // Assert
-            Assert.AreEqual(PointI.Zero, _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(Vector2.Zero, _camera.CameraFocusPointInWorld);
         }
 
         [Test]
@@ -44,7 +45,7 @@ namespace PhoenixTests
             _camera.LookAtCell(new PointI(1, 0));
 
             // Assert
-            Assert.AreEqual(new PointI(111, 0), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new Vector2(110.85125f, 0.0f), _camera.CameraFocusPointInWorld);
         }
 
         [Test]
@@ -54,7 +55,7 @@ namespace PhoenixTests
             _camera.LookAtCell(new PointI(2, 0));
 
             // Assert
-            Assert.AreEqual(new PointI(222, 0), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new Vector2(221.7025f, 0.0f), _camera.CameraFocusPointInWorld);
         }
 
         [Test]
@@ -64,7 +65,7 @@ namespace PhoenixTests
             _camera.LookAtCell(new PointI(0, 1));
 
             // Assert
-            Assert.AreEqual(new PointI(55, 96), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new Vector2(55.425625f, 96.0f), _camera.CameraFocusPointInWorld);
         }
 
         [Test]
@@ -74,7 +75,7 @@ namespace PhoenixTests
             _camera.LookAtCell(new PointI(0, 2));
 
             // Assert
-            Assert.AreEqual(new PointI(0, 192), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new Vector2(0, 192), _camera.CameraFocusPointInWorld);
         }
 
         [Test]
@@ -84,7 +85,7 @@ namespace PhoenixTests
             _camera.LookAtCell(new PointI(1, 1));
 
             // Assert
-            Assert.AreEqual(new PointI(166, 96), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new Vector2(166.27687f, 96.0f), _camera.CameraFocusPointInWorld);
         }
 
         [Test]
@@ -94,7 +95,7 @@ namespace PhoenixTests
             _camera.LookAtCell(new PointI(2, 2));
 
             // Assert
-            Assert.AreEqual(new PointI(222, 192), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new Vector2(221.7025f, 192.0f), _camera.CameraFocusPointInWorld);
         }
 
         [Test]
@@ -104,8 +105,8 @@ namespace PhoenixTests
             _camera.LookAtPixel(new PointI(220, 192));
 
             // Assert
-            Assert.AreEqual(new PointI(220, 192), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(2, 2), _camera.CameraFocusCellInWorld);
+            Assert.AreEqual(new Vector2(220, 192), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new PointI(2, 2), _camera.CameraFocusHexInWorld.ToPointI());
         }
 
         [Test]
@@ -115,8 +116,8 @@ namespace PhoenixTests
             _camera.LookAtPixel(new PointI(3327, 1936));
 
             // Assert
-            Assert.AreEqual(new PointI(3327, 1936), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(30, 20), _camera.CameraFocusCellInWorld);
+            Assert.AreEqual(new Vector2(3327, 1936), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new PointI(30, 20), _camera.CameraFocusHexInWorld.ToPointI());
             Assert.AreEqual(new Rectangle(2492, 1396, 1670, 1080), _camera.CameraRectangleInWorld);
         }
 
@@ -128,8 +129,8 @@ namespace PhoenixTests
             _camera.LookAtPixel(new PointI(835, 540));
 
             // Assert
-            Assert.AreEqual(new PointI(835, 540), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(7, 5), _camera.CameraFocusCellInWorld);
+            Assert.AreEqual(new Vector2(835, 540), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new PointI(7, 5), _camera.CameraFocusHexInWorld.ToPointI());
             Assert.AreEqual(new Rectangle(0, 0, 1670, 1080), _camera.CameraRectangleInWorld);
 
             Assert.AreEqual(9, _camera.NumberOfHexesToLeft);
@@ -146,8 +147,8 @@ namespace PhoenixTests
             _camera.LookAtPixel(new PointI(835, 540));
 
             // Assert
-            Assert.AreEqual(new PointI(835, 540), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(7, 5), _camera.CameraFocusCellInWorld);
+            Assert.AreEqual(new Vector2(835, 540), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new PointI(7, 5), _camera.CameraFocusHexInWorld.ToPointI());
             Assert.AreEqual(new Rectangle(418, 270, 1670, 1080), _camera.CameraRectangleInWorld);
 
             Assert.AreEqual(5, _camera.NumberOfHexesToLeft);
@@ -164,8 +165,8 @@ namespace PhoenixTests
             _camera.LookAtPixel(new PointI(835, 540));
 
             // Assert
-            Assert.AreEqual(new PointI(835, 540), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(7, 5), _camera.CameraFocusCellInWorld);
+            Assert.AreEqual(new Vector2(835, 540), _camera.CameraFocusPointInWorld);
+            Assert.AreEqual(new PointI(7, 5), _camera.CameraFocusHexInWorld.ToPointI());
             Assert.AreEqual(new Rectangle(-835, -540, 1670, 1080), _camera.CameraRectangleInWorld);
 
             Assert.AreEqual(17, _camera.NumberOfHexesToLeft);

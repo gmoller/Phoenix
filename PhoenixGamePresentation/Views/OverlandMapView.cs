@@ -82,22 +82,15 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawCellGrid(SpriteBatch spriteBatch, CellGrid cellGrid, Camera camera)
         {
-            var center = camera.ScreenPixelToWorldPixel(new Vector2(1920.0f / 2.0f, 1080.0f / 2.0f));
-            var centerHex = HexOffsetCoordinates.FromPixel((int)center.X, (int)center.Y);
+            var fromRow = camera.CameraTopLeftHex.Y;
+            var toRow = camera.CameraBottomRightHex.Y;
 
-            var fromColumn = centerHex.Col - camera.NumberOfHexesToLeft;
-            if (fromColumn < 0) fromColumn = 0;
-            var toColumn = centerHex.Col + camera.NumberOfHexesToRight;
-            if (toColumn > PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS) toColumn = PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS;
+            var fromColumn = camera.CameraTopLeftHex.X;
+            var toColumn = camera.CameraBottomRightHex.X;
 
-            var fromRow = centerHex.Row - camera.NumberOfHexesAbove;
-            if (fromRow < 0) fromRow = 0;
-            var toRow = centerHex.Row + camera.NumberOfHexesBelow;
-            if (toRow > PhoenixGameLibrary.Constants.WORLD_MAP_ROWS) toRow = PhoenixGameLibrary.Constants.WORLD_MAP_ROWS;
-
-            for (int r = fromRow; r <= toRow; ++r)
+            for (var r = fromRow; r <= toRow; r++)
             {
-                for (int q = fromColumn; q <= toColumn; ++q)
+                for (var q = fromColumn; q <= toColumn; q++)
                 {
                     var cell = cellGrid.GetCell(q, r);
 
