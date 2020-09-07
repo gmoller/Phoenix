@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
 using Utilities;
 
 namespace PhoenixGameLibrary.GameData
@@ -8,22 +10,24 @@ namespace PhoenixGameLibrary.GameData
     /// This struct is immutable.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public struct BuildingMaximumPopulationIncreaseType : IIdentifiedById
+    public readonly struct BuildingMaximumPopulationIncreaseType : IIdentifiedById
     {
         #region State
         public int Id { get; }
+        public int BuildingId { get; }
         public int MaximumPopulationIncrease { get; }
-        #endregion
+        #endregion End State
 
-        private BuildingMaximumPopulationIncreaseType(int buildingId, int maximumPopulationIncrease)
+        private BuildingMaximumPopulationIncreaseType(int id, int buildingId, int maximumPopulationIncrease)
         {
-            Id = buildingId;
+            Id = id;
+            BuildingId = buildingId;
             MaximumPopulationIncrease = maximumPopulationIncrease;
         }
 
-        public static BuildingMaximumPopulationIncreaseType Create(int buildingId, int populationGrowthRateIncrease)
+        public static BuildingMaximumPopulationIncreaseType Create(int id, int buildingId, int populationGrowthRateIncrease)
         {
-            return new BuildingMaximumPopulationIncreaseType(buildingId, populationGrowthRateIncrease);
+            return new BuildingMaximumPopulationIncreaseType(id, buildingId, populationGrowthRateIncrease);
         }
 
         public override string ToString()
@@ -31,7 +35,14 @@ namespace PhoenixGameLibrary.GameData
             return DebuggerDisplay;
         }
 
-        private string DebuggerDisplay => $"{{Id={Id},MaximumPopulationIncrease={MaximumPopulationIncrease}}}";
+        private string DebuggerDisplay => $"{{Id={Id},BuildingId={BuildingId},MaximumPopulationIncrease={MaximumPopulationIncrease}}}";
+    }
+
+    public struct BuildingMaximumPopulationIncreaseTypeForDeserialization
+    {
+        public int Id { get; set; }
+        public int BuildingId { get; set; }
+        public int MaximumPopulationIncrease { get; set; }
     }
 
     public static class BuildingMaximumPopulationIncreaseTypesLoader
@@ -40,11 +51,24 @@ namespace PhoenixGameLibrary.GameData
         {
             var buildingMaximumPopulationIncreaseTypes = new List<BuildingMaximumPopulationIncreaseType>
             {
-                BuildingMaximumPopulationIncreaseType.Create(26, 2),
-                BuildingMaximumPopulationIncreaseType.Create(27, 3)
+                BuildingMaximumPopulationIncreaseType.Create(1, 26, 2),
+                BuildingMaximumPopulationIncreaseType.Create(2, 27, 3)
             };
 
             return DataDictionary<BuildingMaximumPopulationIncreaseType>.Create(buildingMaximumPopulationIncreaseTypes);
+        }
+
+        public static List<BuildingMaximumPopulationIncreaseType> LoadFromJsonFile(string fileName)
+        {
+            var jsonString = File.ReadAllText($@".\Content\GameMetadata\{fileName}.json");
+            var deserialized = JsonSerializer.Deserialize<List<BuildingMaximumPopulationIncreaseTypeForDeserialization>>(jsonString);
+            var list = new List<BuildingMaximumPopulationIncreaseType>();
+            foreach (var item in deserialized)
+            {
+                list.Add(BuildingMaximumPopulationIncreaseType.Create(item.Id, item.BuildingId, item.MaximumPopulationIncrease));
+            }
+
+            return list;
         }
     }
 }

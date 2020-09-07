@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Utilities
 {
@@ -6,6 +7,7 @@ namespace Utilities
     /// This struct is immutable.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
+    [Serializable]
     public readonly struct PointI
     {
         #region State

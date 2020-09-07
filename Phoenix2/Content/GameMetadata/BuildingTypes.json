@@ -1,0 +1,636 @@
+[
+  {
+    "Id": 0,
+    "Name": "Barracks",
+    "Slot": {
+      "X": 2,
+      "Y": 0
+    },
+    "ConstructionCost": 30,
+    "UpkeepGold": 0,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [],
+    "DependsOnBuildings": []
+  },
+  {
+    "Id": 1,
+    "Name": "Armory",
+    "Slot": {
+      "X": 2,
+      "Y": 2
+    },
+    "ConstructionCost": 80,
+    "UpkeepGold": 2,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [],
+    "DependsOnBuildings": [
+      "Barracks",
+      "Smithy"
+    ]
+  },
+  {
+    "Id": 2,
+    "Name": "Fighters Guild",
+    "Slot": {
+      "X": 2,
+      "Y": 4
+    },
+    "ConstructionCost": 200,
+    "UpkeepGold": 3,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [],
+    "DependsOnBuildings": [
+      "Armory"
+    ]
+  },
+  {
+    "Id": 3,
+    "Name": "Armorers Guild",
+    "Slot": {
+      "X": 2,
+      "Y": 6
+    },
+    "ConstructionCost": 350,
+    "UpkeepGold": 4,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Halflings",
+      "Gnolls"
+    ],
+    "DependsOnBuildings": [
+      "Fighters Guild"
+    ]
+  },
+  {
+    "Id": 4,
+    "Name": "War College",
+    "Slot": {
+      "X": 2,
+      "Y": 14
+    },
+    "ConstructionCost": 500,
+    "UpkeepGold": 5,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Barbarians",
+      "Dwarves",
+      "Gnolls",
+      "Halflings",
+      "Klackons",
+      "Lizardmen",
+      "Trolls"
+    ],
+    "DependsOnBuildings": [
+      "University",
+      "Armorers Guild"
+    ]
+  },
+  {
+    "Id": 5,
+    "Name": "Smithy",
+    "Slot": {
+      "X": 3,
+      "Y": 0
+    },
+    "ConstructionCost": 40,
+    "UpkeepGold": 1,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [],
+    "DependsOnBuildings": []
+  },
+  {
+    "Id": 6,
+    "Name": "Stables",
+    "Slot": {
+      "X": 3,
+      "Y": 2
+    },
+    "ConstructionCost": 80,
+    "UpkeepGold": 2,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Dwarves",
+      "Halflings"
+    ],
+    "DependsOnBuildings": [
+      "Smithy"
+    ]
+  },
+  {
+    "Id": 7,
+    "Name": "Animists Guild",
+    "Slot": {
+      "X": 3,
+      "Y": 8
+    },
+    "ConstructionCost": 300,
+    "UpkeepGold": 5,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Barbarians",
+      "Dwarves",
+      "Gnolls",
+      "Halflings",
+      "Klackons",
+      "Lizardmen"
+    ],
+    "DependsOnBuildings": [
+      "Stables",
+      "Temple"
+    ]
+  },
+  {
+    "Id": 8,
+    "Name": "Fantastic Stable",
+    "Slot": {
+      "X": 3,
+      "Y": 10
+    },
+    "ConstructionCost": 600,
+    "UpkeepGold": 6,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Barbarians",
+      "Beastmen",
+      "Draconians",
+      "Dwarves",
+      "Gnolls",
+      "Halflings",
+      "Klackons",
+      "Lizardmen",
+      "Trolls"
+    ],
+    "DependsOnBuildings": [
+      "Animists Guild",
+      "Armorers Guild"
+    ]
+  },
+  {
+    "Id": 9,
+    "Name": "Shipwrights Guild",
+    "Slot": {
+      "X": 0,
+      "Y": 0
+    },
+    "ConstructionCost": 100,
+    "UpkeepGold": 1,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Lizardmen"
+    ],
+    "DependsOnBuildings": []
+  },
+  {
+    "Id": 10,
+    "Name": "Shipyard",
+    "Slot": {
+      "X": 0,
+      "Y": 2
+    },
+    "ConstructionCost": 200,
+    "UpkeepGold": 2,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Beastmen",
+      "Dwarves",
+      "Halflings",
+      "Klackons",
+      "Lizardmen",
+      "Trolls"
+    ],
+    "DependsOnBuildings": [
+      "Shipwrights Guild",
+      "Sawmill"
+    ]
+  },
+  {
+    "Id": 11,
+    "Name": "Maritime Guild",
+    "Slot": {
+      "X": 1,
+      "Y": 4
+    },
+    "ConstructionCost": 400,
+    "UpkeepGold": 4,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Beastmen",
+      "DarkElves",
+      "Draconians",
+      "Dwarves",
+      "Gnolls",
+      "Halflings",
+      "HighElves",
+      "Klackons",
+      "Lizardmen",
+      "Nomads",
+      "Trolls"
+    ],
+    "DependsOnBuildings": [
+      "Armory",
+      "Shipyard"
+    ]
+  },
+  {
+    "Id": 12,
+    "Name": "Sawmill",
+    "Slot": {
+      "X": 1,
+      "Y": 0
+    },
+    "ConstructionCost": 100,
+    "UpkeepGold": 2,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Lizardmen"
+    ],
+    "DependsOnBuildings": []
+  },
+  {
+    "Id": 13,
+    "Name": "Library",
+    "Slot": {
+      "X": 7,
+      "Y": 4
+    },
+    "ConstructionCost": 60,
+    "UpkeepGold": 1,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [],
+    "DependsOnBuildings": [
+      "Builders Hall"
+    ]
+  },
+  {
+    "Id": 14,
+    "Name": "Sages Guild",
+    "Slot": {
+      "X": 7,
+      "Y": 6
+    },
+    "ConstructionCost": 120,
+    "UpkeepGold": 2,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Gnolls",
+      "Klackons",
+      "Lizardmen",
+      "Trolls"
+    ],
+    "DependsOnBuildings": [
+      "Library"
+    ]
+  },
+  {
+    "Id": 15,
+    "Name": "Oracle",
+    "Slot": {
+      "X": 6,
+      "Y": 12
+    },
+    "ConstructionCost": 500,
+    "UpkeepGold": 4,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Barbarians",
+      "Dwarves",
+      "Gnolls",
+      "Halflings",
+      "HighElves",
+      "Klackons",
+      "Lizardmen",
+      "Trolls"
+    ],
+    "DependsOnBuildings": [
+      "University",
+      "Parthenon"
+    ]
+  },
+  {
+    "Id": 16,
+    "Name": "Alchemists Guild",
+    "Slot": {
+      "X": 8,
+      "Y": 8
+    },
+    "ConstructionCost": 250,
+    "UpkeepGold": 3,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Gnolls",
+      "Klackons",
+      "Lizardmen",
+      "Trolls"
+    ],
+    "DependsOnBuildings": [
+      "Sages Guild"
+    ]
+  },
+  {
+    "Id": 17,
+    "Name": "University",
+    "Slot": {
+      "X": 7,
+      "Y": 8
+    },
+    "ConstructionCost": 300,
+    "UpkeepGold": 3,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Barbarians",
+      "Dwarves",
+      "Gnolls",
+      "Halflings",
+      "Klackons",
+      "Lizardmen",
+      "Trolls"
+    ],
+    "DependsOnBuildings": [
+      "Sages Guild"
+    ]
+  },
+  {
+    "Id": 18,
+    "Name": "Wizards Guild",
+    "Slot": {
+      "X": 8,
+      "Y": 10
+    },
+    "ConstructionCost": 1000,
+    "UpkeepGold": 5,
+    "UpkeepMana": 3,
+    "WhichRacesCanNotBuild": [
+      "Barbarians",
+      "Dwarves",
+      "Gnolls",
+      "Halflings",
+      "Klackons",
+      "Lizardmen",
+      "Trolls",
+      "Nomads"
+    ],
+    "DependsOnBuildings": [
+      "University",
+      "Alchemists Guild"
+    ]
+  },
+  {
+    "Id": 19,
+    "Name": "Shrine",
+    "Slot": {
+      "X": 5,
+      "Y": 4
+    },
+    "ConstructionCost": 100,
+    "UpkeepGold": 1,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [],
+    "DependsOnBuildings": [
+      "Builders Hall"
+    ]
+  },
+  {
+    "Id": 20,
+    "Name": "Temple",
+    "Slot": {
+      "X": 5,
+      "Y": 6
+    },
+    "ConstructionCost": 200,
+    "UpkeepGold": 2,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Klackons"
+    ],
+    "DependsOnBuildings": [
+      "Shrine"
+    ]
+  },
+  {
+    "Id": 21,
+    "Name": "Parthenon",
+    "Slot": {
+      "X": 5,
+      "Y": 8
+    },
+    "ConstructionCost": 400,
+    "UpkeepGold": 3,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Dwarves",
+      "Gnolls",
+      "HighElves",
+      "Klackons",
+      "Lizardmen"
+    ],
+    "DependsOnBuildings": [
+      "Temple"
+    ]
+  },
+  {
+    "Id": 22,
+    "Name": "Cathedral",
+    "Slot": {
+      "X": 5,
+      "Y": 12
+    },
+    "ConstructionCost": 800,
+    "UpkeepGold": 4,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Barbarians",
+      "DarkElves",
+      "Dwarves",
+      "Gnolls",
+      "HighElves",
+      "Klackons",
+      "Lizardmen"
+    ],
+    "DependsOnBuildings": [
+      "Parthenon"
+    ]
+  },
+  {
+    "Id": 23,
+    "Name": "Marketplace",
+    "Slot": {
+      "X": 9,
+      "Y": 2
+    },
+    "ConstructionCost": 100,
+    "UpkeepGold": 1,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [],
+    "DependsOnBuildings": [
+      "Smithy"
+    ]
+  },
+  {
+    "Id": 24,
+    "Name": "Bank",
+    "Slot": {
+      "X": 9,
+      "Y": 14
+    },
+    "ConstructionCost": 250,
+    "UpkeepGold": 3,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Barbarians",
+      "Dwarves",
+      "Gnolls",
+      "Halflings",
+      "Klackons",
+      "Lizardmen",
+      "Trolls"
+    ],
+    "DependsOnBuildings": [
+      "Marketplace",
+      "University"
+    ]
+  },
+  {
+    "Id": 25,
+    "Name": "Merchants Guild",
+    "Slot": {
+      "X": 0,
+      "Y": 16
+    },
+    "ConstructionCost": 600,
+    "UpkeepGold": 5,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Barbarians",
+      "Beastmen",
+      "Dwarves",
+      "Gnolls",
+      "Halflings",
+      "Klackons",
+      "Lizardmen",
+      "Trolls"
+    ],
+    "DependsOnBuildings": [
+      "Bank",
+      "Shipyard"
+    ]
+  },
+  {
+    "Id": 26,
+    "Name": "Granary",
+    "Slot": {
+      "X": 8,
+      "Y": 4
+    },
+    "ConstructionCost": 40,
+    "UpkeepGold": 1,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [],
+    "DependsOnBuildings": [
+      "Builders Hall"
+    ]
+  },
+  {
+    "Id": 27,
+    "Name": "Farmers Market",
+    "Slot": {
+      "X": 8,
+      "Y": 6
+    },
+    "ConstructionCost": 100,
+    "UpkeepGold": 2,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [],
+    "DependsOnBuildings": [
+      "Granary",
+      "Marketplace"
+    ]
+  },
+  {
+    "Id": 28,
+    "Name": "Foresters Guild",
+    "Slot": {
+      "X": 1,
+      "Y": 2
+    },
+    "ConstructionCost": 200,
+    "UpkeepGold": 2,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Lizardmen"
+    ],
+    "DependsOnBuildings": [
+      "Sawmill"
+    ]
+  },
+  {
+    "Id": 29,
+    "Name": "Builders Hall",
+    "Slot": {
+      "X": 6,
+      "Y": 2
+    },
+    "ConstructionCost": 60,
+    "UpkeepGold": 1,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [],
+    "DependsOnBuildings": []
+  },
+  {
+    "Id": 30,
+    "Name": "Mechanicians Guild",
+    "Slot": {
+      "X": 6,
+      "Y": 10
+    },
+    "ConstructionCost": 600,
+    "UpkeepGold": 5,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Barbarians",
+      "Beastmen",
+      "Draconians",
+      "Dwarves",
+      "Gnolls",
+      "Halflings",
+      "Klackons",
+      "Lizardmen"
+    ],
+    "DependsOnBuildings": [
+      "University",
+      "Miners Guild"
+    ]
+  },
+  {
+    "Id": 31,
+    "Name": "Miners Guild",
+    "Slot": {
+      "X": 6,
+      "Y": 4
+    },
+    "ConstructionCost": 300,
+    "UpkeepGold": 3,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [
+      "Lizardmen",
+      "Trolls"
+    ],
+    "DependsOnBuildings": [
+      "Builders Hall"
+    ]
+  },
+  {
+    "Id": 32,
+    "Name": "City Walls",
+    "Slot": {
+      "X": 4,
+      "Y": 4
+    },
+    "ConstructionCost": 150,
+    "UpkeepGold": 2,
+    "UpkeepMana": 0,
+    "WhichRacesCanNotBuild": [],
+    "DependsOnBuildings": [
+      "Builders Hall"
+    ]
+  }
+]

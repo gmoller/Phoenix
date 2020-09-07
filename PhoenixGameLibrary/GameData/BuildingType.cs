@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
 using Utilities;
 
 namespace PhoenixGameLibrary.GameData
@@ -8,7 +11,7 @@ namespace PhoenixGameLibrary.GameData
     /// This struct is immutable.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public struct BuildingType : IIdentifiedByIdAndName
+    public readonly struct BuildingType : IIdentifiedByIdAndName
     {
         #region State
         public int Id { get; }
@@ -18,9 +21,9 @@ namespace PhoenixGameLibrary.GameData
         public float UpkeepGold { get; }
         public float UpkeepMana { get; }
 
-        private readonly List<string> _whichRacesCanNotBuild;
-        private readonly List<string> _dependsOnBuildings;
-        #endregion
+        public EnumerableList<string> WhichRacesCanNotBuild { get; }
+        public EnumerableList<string> DependsOnBuildings { get; }
+        #endregion End State
 
         private BuildingType(int id, string name, float constructionCost, float upkeepGold, float upkeepMana, List<string> whichRacesCanNotBuild, List<string> dependsOnBuildings, PointI slot)
         {
@@ -31,8 +34,8 @@ namespace PhoenixGameLibrary.GameData
             UpkeepGold = upkeepGold;
             UpkeepMana = upkeepMana;
 
-            _whichRacesCanNotBuild = whichRacesCanNotBuild;
-            _dependsOnBuildings = dependsOnBuildings;
+            WhichRacesCanNotBuild = new EnumerableList<string>(whichRacesCanNotBuild);
+            DependsOnBuildings = new EnumerableList<string>(dependsOnBuildings);
         }
 
         public static BuildingType Create(int id, string name, float constructionCost, float upkeepGold, float upkeepMana, List<string> whichRacesCanNotBuild, List<string> dependsOnBuildings, PointI slot)
@@ -42,12 +45,12 @@ namespace PhoenixGameLibrary.GameData
 
         public bool CanBeBuiltBy(string raceTypeName)
         {
-            return !_whichRacesCanNotBuild.Contains(raceTypeName);
+            return !WhichRacesCanNotBuild.Contains(raceTypeName);
         }
 
         public bool CanNotBeBuiltBy(string raceTypeName)
         {
-            return _whichRacesCanNotBuild.Contains(raceTypeName);
+            return WhichRacesCanNotBuild.Contains(raceTypeName);
         }
 
         public bool IsReadyToBeBuilt(List<int> buildingsAlreadyBuilt)
@@ -57,7 +60,7 @@ namespace PhoenixGameLibrary.GameData
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var buildingTypes = gameMetadata.BuildingTypes;
 
-            foreach (var building in _dependsOnBuildings)
+            foreach (var building in DependsOnBuildings)
             {
                 var buildingId = buildingTypes[building].Id;
                 if (!buildingsAlreadyBuilt.Contains(buildingId))
@@ -75,6 +78,19 @@ namespace PhoenixGameLibrary.GameData
         }
 
         private string DebuggerDisplay => $"{{Id={Id},Name={Name}}}";
+    }
+
+    public struct BuildingTypeForDeserialization
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public PointI Slot { get; set; }
+        public float ConstructionCost { get; set; }
+        public float UpkeepGold { get; set; }
+        public float UpkeepMana { get; set; }
+
+        public List<string> WhichRacesCanNotBuild { get; set; }
+        public List<string> DependsOnBuildings { get; set; }
     }
 
     public static class BuildingTypesLoader
@@ -119,6 +135,19 @@ namespace PhoenixGameLibrary.GameData
             };
 
             return NamedDataDictionary<BuildingType>.Create(buildingTypes);
+        }
+
+        public static List<BuildingType> LoadFromJsonFile(string fileName)
+        {
+            var jsonString = File.ReadAllText($@".\Content\GameMetadata\{fileName}.json");
+            var deserialized = JsonSerializer.Deserialize<List<BuildingTypeForDeserialization>>(jsonString);
+            var list = new List<BuildingType>();
+            foreach (var item in deserialized)
+            {
+                list.Add(BuildingType.Create(item.Id, item.Name, item.ConstructionCost, item.UpkeepGold, item.UpkeepMana, item.WhichRacesCanNotBuild?.ToList(), item.DependsOnBuildings?.ToList(), item.Slot));
+            }
+
+            return list;
         }
     }
 }

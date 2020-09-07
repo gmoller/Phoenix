@@ -1,0 +1,44 @@
+[
+  {
+    "Id": 0,
+    "Name": "Done",
+    "ButtonName": "Done",
+    "AppliesToAll": true
+  },
+  {
+    "Id": 1,
+    "Name": "Wait",
+    "ButtonName": "Wait",
+    "AppliesToAll": true
+  },
+  {
+    "Id": 2,
+    "Name": "Patrol",
+    "ButtonName": "Patrol",
+    "AppliesToAll": true
+  },
+  {
+    "Id": 3,
+    "Name": "Fortify",
+    "ButtonName": "Fortify",
+    "AppliesToAll": true
+  },
+  {
+    "Id": 4,
+    "Name": "Explore",
+    "ButtonName": "Explore",
+    "AppliesToAll": true
+  },
+  {
+    "Id": 5,
+    "Name": "BuildOutpost",
+    "ButtonName": "Build",
+    "AppliesToAll": false
+  },
+  {
+    "Id": 6,
+    "Name": "Purify",
+    "ButtonName": "Purify",
+    "AppliesToAll": false
+  }
+]

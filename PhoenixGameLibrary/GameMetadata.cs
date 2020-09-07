@@ -24,6 +24,14 @@ namespace PhoenixGameLibrary
 
         public GameMetadata()
         {
+            //var foo1 = BuildingTypesLoader.Load();
+
+            //var options = new JsonSerializerOptions
+            //{
+            //    WriteIndented = true
+            //};
+            //var jsonString = JsonSerializer.Serialize(foo1, options);
+ 
             TerrainTypes = NamedDataDictionary<TerrainType>.Create(TerrainTypesLoader.Load());
             TerrainFoodOutputTypes = DataDictionary<TerrainFoodOutputType>.Create(TerrainFoodOutputTypesLoader.Load());
             TerrainProductionPercentageTypes = DataDictionary<TerrainProductionPercentageType>.Create(TerrainProductionPercentageTypesLoader.Load());
@@ -32,14 +40,14 @@ namespace PhoenixGameLibrary
             RaceTypes = NamedDataDictionary<RaceType>.Create(RaceTypesLoader.Load());
 
             BuildingTypes = NamedDataDictionary<BuildingType>.Create(BuildingTypesLoader.Load());
-            BuildingPopulationGrowthTypes = DataDictionary<BuildingPopulationGrowthType>.Create(BuildingPopulationGrowthTypesLoader.Load());
-            BuildingMaximumPopulationIncreaseTypes = DataDictionary<BuildingMaximumPopulationIncreaseType>.Create(BuildingMaximumPopulationIncreaseTypesLoader.Load());
-            BuildingFoodOutputIncreaseTypes = DataDictionary<BuildingFoodOutputIncreaseType>.Create(BuildingFoodOutputIncreaseTypesLoader.Load());
+            BuildingPopulationGrowthTypes = DataDictionary<BuildingPopulationGrowthType>.Create(BuildingPopulationGrowthTypesLoader.LoadFromJsonFile("BuildingPopulationGrowthTypes"));
+            BuildingMaximumPopulationIncreaseTypes = DataDictionary<BuildingMaximumPopulationIncreaseType>.Create(BuildingMaximumPopulationIncreaseTypesLoader.LoadFromJsonFile("BuildingMaximumPopulationIncreaseTypes"));
+            BuildingFoodOutputIncreaseTypes = DataDictionary<BuildingFoodOutputIncreaseType>.Create(BuildingFoodOutputIncreaseTypesLoader.LoadFromJsonFile("BuildingFoodOutputIncreaseTypes"));
 
             MovementTypes = NamedDataDictionary<MovementType>.Create(MovementTypesLoader.Load());
             //MineralTypes = MineralTypes.Create(MineralTypesLoader.GetMineralTypes());
             UnitTypes = NamedDataDictionary<UnitType>.Create(UnitTypesLoader.Load());
-            ActionTypes = NamedDataDictionary<ActionType>.Create(ActionTypesLoader.Load());
+            ActionTypes = NamedDataDictionary<ActionType>.Create(ActionTypesLoader.LoadFromJsonFile("Actions"));
         }
     }
-}
+} 

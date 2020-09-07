@@ -202,6 +202,42 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Maleficio-Regular-8.spritefont
 
+#begin GameMetadata/Actions.json
+/copy:GameMetadata/Actions.json
+
+#begin GameMetadata/BuildingFoodOutputIncreaseTypes.json
+/copy:GameMetadata/BuildingFoodOutputIncreaseTypes.json
+
+#begin GameMetadata/BuildingMaximumPopulationIncreaseTypes.json
+/copy:GameMetadata/BuildingMaximumPopulationIncreaseTypes.json
+
+#begin GameMetadata/BuildingPopulationGrowthTypes.json
+/copy:GameMetadata/BuildingPopulationGrowthTypes.json
+
+#begin GameMetadata/BuildingTypes.json
+/copy:GameMetadata/BuildingTypes.json
+
+#begin GameMetadata/MovementTypes.json
+/copy:GameMetadata/MovementTypes.json
+
+#begin GameMetadata/RaceTypes.json
+/copy:GameMetadata/RaceTypes.json
+
+#begin GameMetadata/TerrainCanSettleOnTypes.json
+/copy:GameMetadata/TerrainCanSettleOnTypes.json
+
+#begin GameMetadata/TerrainFoodOutputTypes.json
+/copy:GameMetadata/TerrainFoodOutputTypes.json
+
+#begin GameMetadata/TerrainProductionPercentageTypes.json
+/copy:GameMetadata/TerrainProductionPercentageTypes.json
+
+#begin GameMetadata/TerrainTypes.json
+/copy:GameMetadata/TerrainTypes.json
+
+#begin GameMetadata/UnitTypes.json
+/copy:GameMetadata/UnitTypes.json
+
 #begin TextureAtlases/Buildings.atlasspec
 /copy:TextureAtlases/Buildings.atlasspec
 

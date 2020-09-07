@@ -26,9 +26,9 @@ namespace PhoenixGameLibrary.Helpers
             var buildingTypes = gameMetadata.BuildingTypes;
             foreach (var item in buildingFoodOutputIncreaseTypes)
             {
-                if (buildingsBuilt.Contains(item.Id))
+                if (buildingsBuilt.Contains(item.BuildingId))
                 {
-                    var buildingName = buildingTypes[item.Id].Name;
+                    var buildingName = buildingTypes[item.BuildingId].Name;
                     foodBreakdown.Add(buildingName, item.FoodOutputIncrease);
                 }
             }

@@ -77,7 +77,7 @@ namespace PhoenixGameLibrary
             var freeFood = 0.0;
             foreach (var item in buildingFoodOutputIncreaseTypes)
             {
-                if (buildingsBuilt.Contains(item.Id))
+                if (buildingsBuilt.Contains(item.BuildingId))
                 {
                     freeFood += item.FoodOutputIncrease;
                 }

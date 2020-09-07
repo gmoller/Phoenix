@@ -1,0 +1,12 @@
+[
+  {
+    "Id": 1,
+    "BuildingId": 26,
+    "MaximumPopulationIncrease": 2
+  },
+  {
+    "Id": 2,
+    "BuildingId": 27,
+    "MaximumPopulationIncrease": 3
+  }
+]

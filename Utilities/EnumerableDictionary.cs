@@ -11,9 +11,9 @@ namespace Utilities
 
         public int Count => _dict.Count;
 
-        public EnumerableDictionary(Dictionary<string, T> list)
+        public EnumerableDictionary(Dictionary<string, T> dict)
         {
-            _dict = list;
+            _dict = dict ?? new Dictionary<string, T>();
         }
 
         public IEnumerator<T> GetEnumerator()

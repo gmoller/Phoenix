@@ -13,7 +13,7 @@ namespace Utilities
 
         public EnumerableList(List<T> list)
         {
-            _list = list;
+            _list = list ?? new List<T>();
         }
 
         public bool Contains(T item)

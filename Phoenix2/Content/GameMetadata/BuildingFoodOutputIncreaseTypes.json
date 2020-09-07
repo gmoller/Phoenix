@@ -1,0 +1,17 @@
+[
+  {
+    "Id": 1,
+    "BuildingId": 26,
+    "FoodOutputIncrease": 2
+  },
+  {
+    "Id": 2,
+    "BuildingId": 27,
+    "FoodOutputIncrease": 3
+  },
+  {
+    "Id": 3,
+    "BuildingId": 28,
+    "FoodOutputIncrease": 2
+  }
+]

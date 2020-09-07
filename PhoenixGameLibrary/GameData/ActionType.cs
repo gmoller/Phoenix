@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
 using Utilities;
 
 namespace PhoenixGameLibrary.GameData
@@ -8,14 +10,14 @@ namespace PhoenixGameLibrary.GameData
     /// This struct is immutable.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public struct ActionType : IIdentifiedByIdAndName
+    public readonly struct ActionType : IIdentifiedByIdAndName
     {
         #region State
         public int Id { get; }
         public string Name { get; }
         public string ButtonName { get; }
         public bool AppliesToAll { get; }
-        #endregion
+        #endregion End State
 
         private ActionType(int id, string name, string buttonName, bool appliesToAll)
         {
@@ -38,9 +40,17 @@ namespace PhoenixGameLibrary.GameData
         private string DebuggerDisplay => $"{{Id={Id},Name={Name}}}";
     }
 
+    public struct ActionTypeForDeserialization
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string ButtonName { get; set; }
+        public bool AppliesToAll { get; set; }
+    }
+
     public static class ActionTypesLoader
     {
-        public static NamedDataDictionary<ActionType> Load()
+        public static List<ActionType> Load()
         {
             var actionTypes = new List<ActionType>
             {
@@ -53,7 +63,20 @@ namespace PhoenixGameLibrary.GameData
                 ActionType.Create(6, "Purify", "Purify", false)
             };
 
-            return NamedDataDictionary<ActionType>.Create(actionTypes);
+            return actionTypes;
+        }
+
+        public static List<ActionType> LoadFromJsonFile(string fileName)
+        {
+            var jsonString = File.ReadAllText($@".\Content\GameMetadata\{fileName}.json");
+            var deserialized = JsonSerializer.Deserialize<List<ActionTypeForDeserialization>>(jsonString);
+            var list = new List<ActionType>();
+            foreach (var item in deserialized)
+            {
+                list.Add(ActionType.Create(item.Id, item.Name, item.ButtonName, item.AppliesToAll));
+            }
+
+            return list;
         }
     }
 }
