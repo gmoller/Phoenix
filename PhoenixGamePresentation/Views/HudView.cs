@@ -9,7 +9,6 @@ using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
-using PhoenixGamePresentation.Events;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
 using Utilities;
@@ -19,28 +18,28 @@ namespace PhoenixGamePresentation.Views
     internal class HudView : IDisposable
     {
         #region State
-        internal WorldView WorldView { get; }
+        private WorldView WorldView { get; } // readonly
 
-        private SpriteFont _font;
-        private readonly Rectangle _area;
+        private SpriteFont Font { get; set; }
+        private Rectangle Area { get; } // readonly
 
-        internal Frame HudViewFrame { get; }
-        private EnumerableDictionary<IControl> _actionButtons;
+        private Frame HudViewFrame { get; } // readonly
+        private EnumerableDictionary<IControl> ActionButtons { get; set; }
 
         //TODO: these should be label controls
         private string _text1;
         private string _text2;
 
-        private readonly StackViews _stackViews;
+        private StackViews StackViews { get; } // readonly
 
-        private Viewport _viewport;
-        private ViewportAdapter _viewportAdapter;
+        private Viewport Viewport { get; set; }
+        private ViewportAdapter ViewportAdapter { get; set; }
 
-        private readonly InputHandler _input;
-        private bool _disposedValue;
+        private InputHandler Input { get; } // readonly
+        private bool IsDisposed { get; set; }
         #endregion End State
 
-        private StackView SelectedStackView => _stackViews.Current;
+        private StackView SelectedStackView => StackViews.Current;
 
         internal HudView(WorldView worldView, StackViews stackViews, InputHandler input)
         {
@@ -48,11 +47,11 @@ namespace PhoenixGamePresentation.Views
             var y = 0;
             var width = 1920 - x;
             var height = 1020;
-            _area = new Rectangle(x, y, width, height); // 1680,0,240,1020
+            Area = new Rectangle(x, y, width, height); // 1680,0,240,1020
 
             #region HudViewFrame
 
-            HudViewFrame = new Frame(Vector2.Zero, Alignment.TopLeft, new Vector2(_area.Width, _area.Height), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame");
+            HudViewFrame = new Frame(Vector2.Zero, Alignment.TopLeft, new Vector2(Area.Width, Area.Height), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame");
 
             //HudViewFrame.AddControl(new Image("imgBackground", new Vector2(250, 1080), "NoiseTexture"));
 
@@ -61,7 +60,7 @@ namespace PhoenixGamePresentation.Views
 
             #region MiniMapFrame
 
-            HudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.15f /* 15% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
+            HudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.15f /* 15% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
             var image = new Image("mapImage", new Vector2(200.0f, 116.0f), null);
             image.Click += MiniMapClick;
             HudViewFrame["miniMapFrame"].AddControl(image, Alignment.MiddleCenter, Alignment.MiddleCenter);
@@ -70,7 +69,7 @@ namespace PhoenixGamePresentation.Views
 
             #region ResourceFrame
 
-            HudViewFrame.AddControl(new Frame("resourceFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 250));
+            HudViewFrame.AddControl(new Frame("resourceFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 250));
             HudViewFrame["resourceFrame"].AddControl(new Image("imgGold", new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 10));
             HudViewFrame["resourceFrame"].AddControl(new Image("imgMana", new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 70));
             HudViewFrame["resourceFrame"].AddControl(new Image("imgFood", new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 130));
@@ -86,7 +85,7 @@ namespace PhoenixGamePresentation.Views
 
             #region UnitFrame
 
-            HudViewFrame.AddControl(new Frame("unitFrame", new Vector2(_area.Width - 20.0f, _area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 500));
+            HudViewFrame.AddControl(new Frame("unitFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 500));
 
             string GetTextFuncForMoves() => SelectedStackView == null ? string.Empty : $"Moves: {SelectedStackView.MovementPoints}";
             HudViewFrame["unitFrame"].AddControl(new LabelSized("lblMoves", new Vector2(130.0f, 15.0f), Alignment.MiddleLeft, GetTextFuncForMoves, "CrimsonText-Regular-12", Color.White), Alignment.BottomLeft, Alignment.BottomLeft, new PointI(10, -13));
@@ -103,7 +102,7 @@ namespace PhoenixGamePresentation.Views
             #endregion
 
             WorldView = worldView;
-            _stackViews = stackViews;
+            StackViews = stackViews;
 
             worldView.World.OverlandMap.CellGrid.NewCellSeen += NewCellSeen;
 
@@ -111,24 +110,21 @@ namespace PhoenixGamePresentation.Views
             //_hudViewFrame.Deserialize(json);
             //var newFrame = new Frame(json);
 
-            SetupViewport(_area.X, _area.Y, _area.Width, _area.Height + btnEndTurn.Height);
+            SetupViewport(Area.X, Area.Y, Area.Width, Area.Height + btnEndTurn.Height);
 
-            input.SubscribeToEventHandler("HudView", 0, this, MouseInputActionType.Moved, CheckIfMouseIsOverHudViewEvent.HandleEvent);
-            _input = input;
+            Input = input;
         }
-
-        internal bool AreaContains(Point mouseLocation) => _area.Contains(mouseLocation);
 
         private void SetupViewport(int x, int y, int width, int height)
         {
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            _viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
-            _viewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
+            Viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
+            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
         }
 
         internal void LoadContent(ContentManager content)
         {
-            _font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
+            Font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
             HudViewFrame.LoadContent(content);
             //HudViewFrame["imgBackground"].LoadContent(content);
             HudViewFrame["lblCurrentDate"].LoadContent(content);
@@ -153,7 +149,7 @@ namespace PhoenixGamePresentation.Views
             var mapImage = (Image)HudViewFrame["miniMapFrame.mapImage"];
             mapImage.SetTexture(createdImage);
 
-            _actionButtons = WorldView.ActionButtons;
+            ActionButtons = WorldView.GetActionButtons;
         }
 
         public void Update(float deltaTime)
@@ -162,12 +158,12 @@ namespace PhoenixGamePresentation.Views
             _text2 = string.Empty;
             if (WorldView.GameStatus == GameStatus.CityView) return;
 
-            HudViewFrame.Update(_input, deltaTime, _viewport);
-            _actionButtons.Update(_input, deltaTime, _viewport);
+            HudViewFrame.Update(Input, deltaTime, Viewport);
+            ActionButtons.Update(Input, deltaTime, Viewport);
 
             // get tile mouse is over
             var cellGrid = WorldView.World.OverlandMap.CellGrid;
-            var hexPoint = WorldView.Camera.ScreenPixelToWorldHex(_input.MousePosition);
+            var hexPoint = WorldView.Camera.ScreenPixelToWorldHex(Input.MousePosition);
 
             // TODO: check if cell is on screen
             var cell = cellGrid.GetCell(hexPoint);
@@ -188,8 +184,8 @@ namespace PhoenixGamePresentation.Views
         internal void Draw(SpriteBatch spriteBatch)
         {
             var originalViewport = spriteBatch.GraphicsDevice.Viewport;
-            spriteBatch.GraphicsDevice.Viewport = _viewport;
-            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: _viewportAdapter.GetScaleMatrix());
+            spriteBatch.GraphicsDevice.Viewport = Viewport;
+            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: ViewportAdapter.GetScaleMatrix());
 
             HudViewFrame.Draw(spriteBatch);
 
@@ -224,7 +220,7 @@ namespace PhoenixGamePresentation.Views
             var stackViews = SelectedStackView.GetStackViewsSharingSameLocation();
 
             var x = 20.0f;
-            var y = _area.Height * Constants.ONE_HALF + 10.0f;
+            var y = Area.Height * Constants.ONE_HALF + 10.0f;
             int i = 0;
             foreach (var stackView in stackViews)
             {
@@ -251,7 +247,7 @@ namespace PhoenixGamePresentation.Views
         private void DrawActionButtons(SpriteBatch spriteBatch)
         {
             var selectedStackViewActions = SelectedStackView.Actions;
-            foreach (var actionButton in _actionButtons)
+            foreach (var actionButton in ActionButtons)
             {
                 actionButton.Enabled = selectedStackViewActions.Contains(actionButton.Name);
                 actionButton.Draw(spriteBatch);
@@ -264,10 +260,10 @@ namespace PhoenixGamePresentation.Views
             var y = 460.0f;
             foreach (var item in WorldView.World.NotificationList)
             {
-                var lines = TextWrapper.WrapText(item, 150.0f, _font);
+                var lines = TextWrapper.WrapText(item, 150.0f, Font);
                 foreach (var line in lines)
                 {
-                    spriteBatch.DrawString(_font, line, new Vector2(x, y), Color.Pink);
+                    spriteBatch.DrawString(Font, line, new Vector2(x, y), Color.Pink);
                     y += 20.0f;
                 }
             }
@@ -276,10 +272,10 @@ namespace PhoenixGamePresentation.Views
         private void DrawTileInfo(SpriteBatch spriteBatch)
         {
             const float x = 10.0f;
-            var y = _area.Height * 0.96f;
+            var y = Area.Height * 0.96f;
 
-            spriteBatch.DrawString(_font, _text1, new Vector2(x, y), Color.White);
-            spriteBatch.DrawString(_font, _text2, new Vector2(x, y + 15.0f), Color.White);
+            spriteBatch.DrawString(Font, _text1, new Vector2(x, y), Color.White);
+            spriteBatch.DrawString(Font, _text2, new Vector2(x, y + 15.0f), Color.White);
         }
 
         private void NewCellSeen(object sender, EventArgs e)
@@ -298,7 +294,7 @@ namespace PhoenixGamePresentation.Views
             if (!(e is MouseEventArgs mouseEventArgs)) return;
 
             var minimapImage = HudViewFrame["miniMapFrame.mapImage"];
-            var minimapPosition = mouseEventArgs.Mouse.Location - new Point(_viewport.X + minimapImage.Left, _viewport.Y + minimapImage.Top);
+            var minimapPosition = mouseEventArgs.Mouse.Location - new Point(Viewport.X + minimapImage.Left, Viewport.Y + minimapImage.Top);
             var normalizedX = minimapPosition.X / (float) minimapImage.Size.X;
             var normalizedY = minimapPosition.Y / (float) minimapImage.Size.Y;
 
@@ -317,18 +313,16 @@ namespace PhoenixGamePresentation.Views
 
         public void Dispose()
         {
-            if (!_disposedValue)
+            if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
-                _input.UnsubscribeAllFromEventHandler("HudView");
+                Input.UnsubscribeAllFromEventHandler("HudView");
 
                 // set large fields to null
-                _viewportAdapter = null;
+                ViewportAdapter = null;
 
-                _disposedValue = true;
+                IsDisposed = true;
             }
-
-            GC.SuppressFinalize(this);
         }
     }
 }

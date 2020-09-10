@@ -9,6 +9,7 @@ using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentation.ExtensionMethods;
+using PhoenixGamePresentation.Handlers;
 using Utilities;
 
 namespace PhoenixGamePresentation.Views
@@ -18,87 +19,89 @@ namespace PhoenixGamePresentation.Views
         #region State
         public World World { get; }
 
-        private readonly OverlandMapView _overlandMapView;
-        private readonly OverlandSettlementViews _overlandSettlementsView;
-        private readonly StackViews _stackViews;
-        private readonly SettlementView _settlementView;
-        private readonly HudView _hudView;
-        private readonly Dictionary<string, IControl> _movementTypeImages;
-        private readonly Dictionary<string, IControl> _actionButtons;
+        private OverlandMapView OverlandMapView { get; }
+        private OverlandSettlementViews OverlandSettlementViews { get; }
+        private StackViews StackViews { get; }
+        private SettlementView SettlementView { get; }
+        private HudView HudView { get; }
+        private Dictionary<string, IControl> MovementTypeImages { get; }
+        private Dictionary<string, IControl> ActionButtons { get; }
 
         public Camera Camera { get; }
 
-        public GameStatus GameStatus { get; set; }
+        private GameStatusHandler GameStatusHandler { get; }
 
-        private readonly InputHandler _input;
+        private InputHandler Input { get; }
         private bool IsDisposed { get; set; }
         #endregion End State
-
-        public int WorldWidthInPixels => Constants.WORLD_MAP_WIDTH_IN_PIXELS;
-        public int WorldHeightInPixels => Constants.WORLD_MAP_HEIGHT_IN_PIXELS;
-        public EnumerableDictionary<IControl> MovementTypeImages => new EnumerableDictionary<IControl>(_movementTypeImages);
-        public EnumerableDictionary<IControl> ActionButtons => new EnumerableDictionary<IControl>(_actionButtons);
 
         public WorldView(World world, CameraClampMode cameraClampMode, InputHandler input)
         {
             World = world;
+            GameStatusHandler = new GameStatusHandler(GameStatus.OverlandMap);
 
-            Camera = new Camera(this, new Rectangle(0, 0, 1680, 1080), cameraClampMode, input);
+            Input = input;
+
+            Camera = new Camera(this, new Rectangle(0, 0, 1680, 1080), cameraClampMode, Input);
             var globalContextPresentation = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             globalContextPresentation.Camera = Camera;
 
-            _overlandMapView = new OverlandMapView(this, World.OverlandMap, input);
-            _overlandSettlementsView = new OverlandSettlementViews(this, World.Settlements, input);
-            _stackViews = new StackViews(this, World.Stacks, input);
-            _settlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid), input);
-            _hudView = new HudView(this, _stackViews, input);
+            OverlandMapView = new OverlandMapView(this, World.OverlandMap, Input);
+            OverlandSettlementViews = new OverlandSettlementViews(this, World.Settlements, Input);
+            StackViews = new StackViews(this, World.Stacks, Input);
+            SettlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid), Input);
+            HudView = new HudView(this, StackViews, Input);
 
-            _movementTypeImages = InitializeMovementTypeImages();
-            _actionButtons = InitializeActionButtons();
-
-            _input = input;
+            MovementTypeImages = InitializeMovementTypeImages();
+            ActionButtons = InitializeActionButtons();
         }
+
+        internal GameStatus GameStatus => GameStatusHandler.GameStatus;
+        public int WorldWidthInPixels => Constants.WORLD_MAP_WIDTH_IN_PIXELS;
+        public int WorldHeightInPixels => Constants.WORLD_MAP_HEIGHT_IN_PIXELS;
+        public EnumerableDictionary<IControl> GetMovementTypeImages => new EnumerableDictionary<IControl>(MovementTypeImages);
+        public EnumerableDictionary<IControl> GetActionButtons => new EnumerableDictionary<IControl>(ActionButtons);
 
         internal void LoadContent(ContentManager content)
         {
             Camera.LoadContent(content);
-            _overlandMapView.LoadContent(content);
-            _overlandSettlementsView.LoadContent(content);
-            _stackViews.LoadContent(content);
-            _settlementView.LoadContent(content);
-            _hudView.LoadContent(content);
+            OverlandMapView.LoadContent(content);
+            OverlandSettlementViews.LoadContent(content);
+            StackViews.LoadContent(content);
+            SettlementView.LoadContent(content);
+            HudView.LoadContent(content);
 
-            _movementTypeImages.LoadContent(content);
-            _actionButtons.LoadContent(content, true);
+            MovementTypeImages.LoadContent(content);
+            ActionButtons.LoadContent(content, true);
         }
 
         internal void Update(float deltaTime)
         {
             Camera.Update(deltaTime);
 
-            _overlandMapView.Update(deltaTime);
-            _overlandSettlementsView.Update(deltaTime);
-            _stackViews.Update(deltaTime);
+            OverlandMapView.Update(deltaTime);
+            OverlandSettlementViews.Update(deltaTime);
+            StackViews.Update(deltaTime);
 
-            _settlementView.Settlement = World.Settlements.Selected;
-            if (_settlementView.Settlement != null)
+            SettlementView.Settlement = World.Settlements.Selected;
+            if (SettlementView.Settlement != null)
             {
-                _settlementView.Update(deltaTime, null);
+                SettlementView.Update(deltaTime, null);
             }
 
-            _hudView.Update(deltaTime);
-            _stackViews.RemoveDeadUnits();
+            HudView.Update(deltaTime);
+            StackViews.RemoveDeadUnits();
         }
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            _overlandMapView.Draw(spriteBatch, Camera);
-            _overlandSettlementsView.Draw(spriteBatch, Camera);
-            _stackViews.Draw(spriteBatch, Camera);
+            OverlandMapView.Draw(spriteBatch, Camera);
+            OverlandSettlementViews.Draw(spriteBatch, Camera);
+            StackViews.Draw(spriteBatch, Camera);
 
-            _hudView.Draw(spriteBatch);
+            HudView.Draw(spriteBatch);
 
-            _settlementView.Draw(spriteBatch);
+            SettlementView.Draw(spriteBatch);
         }
 
         public void BeginTurn()
@@ -106,7 +109,7 @@ namespace PhoenixGamePresentation.Views
             Command beginTurnCommand = new BeginTurnCommand { Payload = World };
             beginTurnCommand.Execute();
 
-            _stackViews.BeginTurn();
+            StackViews.BeginTurn();
         }
 
         public void EndTurn()
@@ -164,6 +167,27 @@ namespace PhoenixGamePresentation.Views
             return actionButtons;
         }
 
+        internal void ChangeState(GameStatus from, GameStatus to)
+        {
+            GameStatusHandler.ChangeStatus(from, to);
+        }
+
+        internal void SubscribeToStatusChanges(string owner, Action<GameStatus, GameStatus, string> action)
+        {
+            GameStatusHandler.SubscribeToStatusChanges(owner, action);
+        }
+
+        internal void UnsubscribeFromStatusChanges(string owner)
+        {
+            GameStatusHandler.UnsubscribeFromStatusChanges(owner);
+        }
+
+        internal void HandleStatusChange(GameStatus from, GameStatus to, string owner)
+        {
+            Input.Unsubscribe(from.ToString(), owner);
+            Input.Subscribe(to.ToString(), owner);
+        }
+
         #region Event Handlers
 
         private void BtnClick(object sender, ButtonClickEventArgs e)
@@ -172,22 +196,22 @@ namespace PhoenixGamePresentation.Views
             switch (e.Action)
             {
                 case "Done":
-                    _stackViews.DoDoneAction(); 
+                    StackViews.DoDoneAction(); 
                     break;
                 case "Patrol":
-                    _stackViews.DoPatrolAction();
+                    StackViews.DoPatrolAction();
                     break;
                 case "Wait":
-                    _stackViews.DoWaitAction();
+                    StackViews.DoWaitAction();
                     break;
                 case "BuildOutpost":
-                    _stackViews.DoBuildAction();
+                    StackViews.DoBuildAction();
                     break;
                 case "Fortify":
-                    _stackViews.DoFortifyAction();
+                    StackViews.DoFortifyAction();
                     break;
                 case "Explore":
-                    _stackViews.DoExploreAction();
+                    StackViews.DoExploreAction();
                     break;
                 default:
                     throw new Exception($"Action [{e.Action}] is not implemented.");
@@ -206,8 +230,6 @@ namespace PhoenixGamePresentation.Views
 
                 IsDisposed = true;
             }
-
-            GC.SuppressFinalize(this);
         }
     }
 }

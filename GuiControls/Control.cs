@@ -214,7 +214,7 @@ namespace GuiControls
                 {
                     if (input.IsLeftMouseButtonReleased)
                     {
-                        OnClick(new MouseEventArgs(input.Mouse, deltaTime));
+                        OnClick(new MouseEventArgs(input.Mouse, null, deltaTime));
                     }
                 }
             }

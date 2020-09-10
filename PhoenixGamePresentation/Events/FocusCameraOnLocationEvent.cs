@@ -10,7 +10,6 @@ namespace PhoenixGamePresentation.Events
             var stackView = (StackView)sender;
 
             if (!stackView.IsSelected) return;
-            if (stackView.WorldView.GameStatus == GameStatus.CityView) return;
 
             stackView.WorldView.Camera.LookAtCell(stackView.Location);
         }

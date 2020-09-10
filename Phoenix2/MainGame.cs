@@ -92,7 +92,7 @@ namespace Phoenix2
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _phoenixGameView.LoadContent(GraphicsDevice, Content);
+            _phoenixGameView.LoadContent(Content);
             _metricsPanel.LoadContent(Content);
 
             Logger.Instance.LogComplete();

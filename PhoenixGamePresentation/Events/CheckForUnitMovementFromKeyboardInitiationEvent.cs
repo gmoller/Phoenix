@@ -15,7 +15,6 @@ namespace PhoenixGamePresentation.Events
             var stackView = (StackView)sender;
 
             if (!stackView.IsSelected) return;
-            if (stackView.WorldView.GameStatus == GameStatus.CityView) return;
             if (stackView.IsMovingState) return;
             if (stackView.MovementPoints.AboutEquals(0.0f)) return;
 

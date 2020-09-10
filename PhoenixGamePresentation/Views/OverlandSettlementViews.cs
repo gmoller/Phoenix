@@ -11,63 +11,63 @@ namespace PhoenixGamePresentation.Views
     public class OverlandSettlementViews : IDisposable
     {
         #region State
-        private readonly WorldView _worldView;
-        private readonly Settlements _settlements;
+        private WorldView WorldView { get; }// readonly
+        private Settlements Settlements { get; } // readonly
 
-        private readonly OverlandSettlementView _overlandSettlementView;
+        private OverlandSettlementView OverlandSettlementView { get; } // readonly
 
-        private Viewport _viewport;
-        private ViewportAdapter _viewportAdapter;
+        private Viewport Viewport { get; set; }
+        private ViewportAdapter ViewportAdapter { get; set; }
 
-        private readonly InputHandler _input;
+        private InputHandler Input { get; } // readonly
         private bool IsDisposed { get; set; }
-        #endregion
+        #endregion End State
 
         public OverlandSettlementViews(WorldView worldView, Settlements settlements, InputHandler input)
         {
-            _worldView = worldView;
-            _settlements = settlements;
+            WorldView = worldView;
+            Settlements = settlements;
 
-            _overlandSettlementView = new OverlandSettlementView(_worldView, input);
+            OverlandSettlementView = new OverlandSettlementView(WorldView, input);
 
-            SetupViewport(0, 0, _worldView.Camera.GetViewport.Width, _worldView.Camera.GetViewport.Height);
+            SetupViewport(0, 0, WorldView.Camera.GetViewport.Width, WorldView.Camera.GetViewport.Height);
 
-            _input = input;
+            Input = input;
         }
 
         private void SetupViewport(int x, int y, int width, int height)
         {
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            _viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
-            _viewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
+            Viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
+            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
         }
 
         public void LoadContent(ContentManager content)
         {
-            _overlandSettlementView.LoadContent(content);
+            OverlandSettlementView.LoadContent(content);
         }
 
         public void Update(float deltaTime)
         {
-            if (_worldView.GameStatus != GameStatus.OverlandMap) return;
+            if (WorldView.GameStatus != GameStatus.OverlandMap) return;
 
-            foreach (var settlement in _settlements)
+            foreach (var settlement in Settlements)
             {
-                _overlandSettlementView.Settlement = settlement;
-                _overlandSettlementView.Update(deltaTime);
+                OverlandSettlementView.Settlement = settlement;
+                OverlandSettlementView.Update(deltaTime);
             }
         }
 
         public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
             var originalViewport = spriteBatch.GraphicsDevice.Viewport;
-            spriteBatch.GraphicsDevice.Viewport = _viewport;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform * _viewportAdapter.GetScaleMatrix()); // FrontToBack
+            spriteBatch.GraphicsDevice.Viewport = Viewport;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform * ViewportAdapter.GetScaleMatrix()); // FrontToBack
 
-            foreach (var settlement in _settlements)
+            foreach (var settlement in Settlements)
             {
-                _overlandSettlementView.Settlement = settlement;
-                _overlandSettlementView.Draw(spriteBatch);
+                OverlandSettlementView.Settlement = settlement;
+                OverlandSettlementView.Draw(spriteBatch);
             }
 
             spriteBatch.End();
@@ -79,15 +79,14 @@ namespace PhoenixGamePresentation.Views
             if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
-                _overlandSettlementView.Dispose();
+                Input.UnsubscribeAllFromEventHandler("OverlandSettlementViews");
+                OverlandSettlementView.Dispose();
 
                 // set large fields to null
-                _viewportAdapter = null;
+                ViewportAdapter = null;
 
                 IsDisposed = true;
             }
-
-            GC.SuppressFinalize(this);
         }
     }
 }

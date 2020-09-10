@@ -14,71 +14,77 @@ using Utilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
 using PhoenixGamePresentation.Events;
 using Utilities;
-using Color = Microsoft.Xna.Framework.Color;
 
 namespace PhoenixGamePresentation.Views
 {
     internal class OverlandMapView : IDisposable
     {
         #region State
-        internal WorldView WorldView { get; }
-        private readonly OverlandMap _overlandMap;
+        private WorldView WorldView { get; } // readonly
+        private OverlandMap OverlandMap { get; } // readonly
 
-        private readonly Label _test;
+        private Label Test { get; } // readonly
 
-        private Viewport _viewport;
-        private ViewportAdapter _viewportAdapter;
+        private Viewport Viewport { get; set; }
+        private ViewportAdapter ViewportAdapter { get; set; }
 
-        private readonly InputHandler _input;
-        private bool _disposedValue;
+        private InputHandler Input { get; } // readonly
+        private bool IsDisposed { get; set; }
         #endregion End State
 
         internal OverlandMapView(WorldView worldView, OverlandMap overlandMap, InputHandler input)
         {
             WorldView = worldView;
-            _overlandMap = overlandMap;
+            OverlandMap = overlandMap;
 
-            _test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, "test", null, Color.Blue);
-            _test.Click += delegate { _test.MoveTopLeftPosition(new PointI(10, -10)); };
+            Test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, "test", null, Color.Blue);
+            Test.Click += delegate { Test.MoveTopLeftPosition(new PointI(10, -10)); };
 
             SetupViewport(0, 0, WorldView.Camera.GetViewport.Width, WorldView.Camera.GetViewport.Height);
 
-            input.SubscribeToEventHandler("OverlandMapView", 0, this, Keys.Enter, KeyboardInputActionType.Released, EndTurnEvent.HandleEvent);
-            input.SubscribeToEventHandler("OverlandMapView", 0, this, Keys.D1, KeyboardInputActionType.Released, (sender, e) => { WorldView.Camera.LookAtPixel(new PointI(840, 540)); }); // for testing
-            _input = input;
+            Input = input;
+            Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "OverlandMapView");
+            Input.Register(0, this, Keys.Enter, KeyboardInputActionType.Released, EndTurnEvent.HandleEvent);
+            Input.Register(1, this, Keys.D1, KeyboardInputActionType.Released, (sender, e) => { WorldView.Camera.LookAtPixel(new PointI(840, 540)); }); // for testing
+            Input.Register(2, this, MouseInputActionType.RightButtonPressed, OpenSettlementEvent.HandleEvent);
+            Input.EndRegistration();
+
+            Input.Subscribe(GameStatus.OverlandMap.ToString(), "OverlandMapView");
+
+            WorldView.SubscribeToStatusChanges("OverlandMapView", worldView.HandleStatusChange);
         }
 
         private void SetupViewport(int x, int y, int width, int height)
         {
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            _viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
-            _viewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
+            Viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
+            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
         }
 
         internal void LoadContent(ContentManager content)
         {
-            _test.LoadContent(content);
+            Test.LoadContent(content);
         }
 
         internal void Update(float deltaTime)
         {
             if (WorldView.GameStatus != GameStatus.OverlandMap) return;
 
-            _test.Update(_input, deltaTime, _viewport);
+            Test.Update(Input, deltaTime, Viewport);
         }
 
         internal void Draw(SpriteBatch spriteBatch, Camera camera)
         {
             var originalViewport = spriteBatch.GraphicsDevice.Viewport;
-            spriteBatch.GraphicsDevice.Viewport = _viewport;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform * _viewportAdapter.GetScaleMatrix()); // FrontToBack
+            spriteBatch.GraphicsDevice.Viewport = Viewport;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform * ViewportAdapter.GetScaleMatrix()); // FrontToBack
 
-            DrawCellGrid(spriteBatch, _overlandMap.CellGrid, WorldView.Camera);
+            DrawCellGrid(spriteBatch, OverlandMap.CellGrid, WorldView.Camera);
 
             spriteBatch.End();
             spriteBatch.GraphicsDevice.Viewport = originalViewport;
 
-            //_test.Draw(spriteBatch);
+            //Test.Draw(spriteBatch);
         }
 
         private void DrawCellGrid(SpriteBatch spriteBatch, CellGrid cellGrid, Camera camera)
@@ -169,18 +175,16 @@ namespace PhoenixGamePresentation.Views
 
         public void Dispose()
         {
-            if (!_disposedValue)
+            if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
-                _input.UnsubscribeAllFromEventHandler("OverlandMapView");
+                Input.UnsubscribeAllFromEventHandler("OverlandMapView");
 
                 // set large fields to null
-                _viewportAdapter = null;
+                ViewportAdapter = null;
 
-                _disposedValue = true;
+                IsDisposed = true;
             }
-
-            GC.SuppressFinalize(this);
         }
     }
 }

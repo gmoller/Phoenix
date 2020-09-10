@@ -15,9 +15,9 @@ namespace Input
             ActionEvent = action;
         }
 
-        public void Invoke(MouseHandler mouse, float deltaTime)
+        public void Invoke(MouseHandler mouse, object worldView, float deltaTime)
         {
-            ActionEvent(Sender, new MouseEventArgs(mouse, deltaTime));
+            ActionEvent(Sender, new MouseEventArgs(mouse, worldView, deltaTime));
         }
     }
 }

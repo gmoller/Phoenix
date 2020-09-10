@@ -43,17 +43,13 @@ namespace Input
 
         public Point Location => _currentState.Position;
         public Point Movement => _currentState.Position - _previousState.Position;
-        internal bool MouseIsWithinScreen => Location.X >= 0.0f &&
-                                             Location.X <= 1920.0f &&
-                                             Location.Y >= 0.0f &&
-                                             Location.Y <= 1080.0f;
 
-        internal void Update(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, float deltaTime)
+        internal void Update(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, object worldView, float deltaTime)
         {
             _previousState = _currentState;
             _currentState = Mouse.GetState();
 
-            HandleMouse(mouseEventHandlers, deltaTime);
+            HandleMouse(mouseEventHandlers, worldView, deltaTime);
         }
 
         // for testing
@@ -142,18 +138,18 @@ namespace Input
             return Location.X > 1680.0f - 30.0f && Location.X <= 1680.0f;
         }
 
-        private void HandleMouse(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, float deltaTime)
+        private void HandleMouse(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, object worldView, float deltaTime)
         {
             foreach (var item in mouseEventHandlers.Values)
             {
-                foreach (var mouseInputAction in item.Values)
+                foreach (var thenAction in item.Values)
                 {
-                    var ifFunc = _switch[mouseInputAction.InputActionType];
+                    var ifFunc = _switch[thenAction.InputActionType];
                     var ifConditionSatisfied = ifFunc();
 
                     if (ifConditionSatisfied)
                     {
-                        mouseInputAction.Invoke(this, deltaTime);
+                        thenAction.Invoke(this, worldView, deltaTime);
                     }
                 }
             }

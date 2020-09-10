@@ -1,10 +1,11 @@
-﻿using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Assets;
+﻿using Assets;
 using Input;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using PhoenixGameLibrary;
+using PhoenixGamePresentation.Views;
 
-namespace PhoenixGamePresentation.Views
+namespace PhoenixGamePresentation
 {
     public class PhoenixGameView
     {
@@ -12,19 +13,21 @@ namespace PhoenixGamePresentation.Views
         private readonly WorldView _worldView;
         private readonly CursorView _cursorView;
         private readonly InputHandler _input;
-        #endregion
+        #endregion End State
 
         public PhoenixGameView(PhoenixGame phoenixGame)
         {
             _input = new InputHandler();
             _worldView = new WorldView(phoenixGame.World, CameraClampMode.NoClamp, _input);
-            _cursorView = new CursorView(_input);
-        }
+            _cursorView = new CursorView(_worldView, _input);
+        } 
 
-        public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
+        public void LoadContent(ContentManager content)
         {
             //ContentLoader.LoadContent(graphicsDevice);
+            //http://www.iconian.com/index.html
             AssetsManager.Instance.ContentManager = content;
+            AssetsManager.Instance.AddSpriteFont("Arial-12", "Fonts\\Arial-12");
             AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-6", "Fonts\\Maleficio-Regular-6");
             AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-8", "Fonts\\Maleficio-Regular-8");
             AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-12", "Fonts\\Maleficio-Regular-12");
@@ -100,7 +103,7 @@ namespace PhoenixGamePresentation.Views
 
         public void Update(float deltaTime)
         {
-            _input.Update(deltaTime);
+            _input.Update(_worldView, deltaTime);
             _worldView.Update(deltaTime);
             _cursorView.Update(deltaTime);
         }

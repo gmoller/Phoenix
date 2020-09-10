@@ -8,6 +8,7 @@ using Input;
 using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
+using PhoenixGamePresentation.Events;
 using PhoenixGamePresentation.Views.SettlementViewComposite;
 using Utilities;
 
@@ -17,66 +18,72 @@ namespace PhoenixGamePresentation.Views
     internal class SettlementView : IDisposable
     {
         #region State
-        private readonly WorldView _worldView;
+        private WorldView WorldView { get; } // readonly 
 
         internal Settlement Settlement { get; set; }
 
-        private readonly IControl _mainFrame;
-        private readonly IControl _secondaryFrame;
+        private IControl MainFrame { get; } // readonly 
+        private IControl SecondaryFrame { get; }// readonly 
 
-        private Viewport _viewport;
-        private ViewportAdapter _viewportAdapter;
+        private Viewport Viewport { get; set; }
+        private ViewportAdapter ViewportAdapter { get; set; }
 
-        private readonly InputHandler _input;
-        private bool _disposedValue;
-        #endregion
+        private InputHandler Input { get; } // readonly
+        private bool IsDisposed { get; set; }
+        #endregion End State
 
         internal SettlementView(WorldView worldView, Settlement settlement, InputHandler input)
         {
-            _worldView = worldView;
+            WorldView = worldView;
             Settlement = settlement;
 
             var topLeftPositionMain = new Vector2(1920.0f * 0.01f, 200.0f);
             var topLeftPositionSecondary = new Vector2(1920.0f * 0.58f, 200.0f);
-            _mainFrame = new MainFrame(this, topLeftPositionMain, "GUI_Textures_1");
-            _secondaryFrame = new SecondaryFrame(this, topLeftPositionSecondary, "GUI_Textures_1");
+            MainFrame = new MainFrame(this, topLeftPositionMain, "GUI_Textures_1");
+            SecondaryFrame = new SecondaryFrame(this, topLeftPositionSecondary, "GUI_Textures_1");
 
             SetupViewport(0, 0, 1920, 1080);
 
-            _input = input;
+            Settlement.SettlementOpened += SettlementOpened;
+            Input = input;
+        }
+
+        private void SettlementOpened(object sender, EventArgs e)
+        {
+            OpenSettlementEvent.HandleEvent(sender, new MouseEventArgs(null, WorldView, 0.0f));
         }
 
         private void SetupViewport(int x, int y, int width, int height)
         {
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            _viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
-            _viewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
+            Viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
+            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
         }
 
         internal void LoadContent(ContentManager content)
         {
-            _mainFrame.LoadContent(content);
-            _secondaryFrame.LoadContent(content);
+            MainFrame.LoadContent(content);
+            SecondaryFrame.LoadContent(content);
         }
 
         internal void Update(float deltaTime, Viewport? viewport)
         {
-            if (_worldView.GameStatus != GameStatus.CityView) return;
+            if (WorldView.GameStatus != GameStatus.CityView) return;
 
-            _mainFrame.Update(_input, deltaTime, viewport);
-            _secondaryFrame.Update(_input, deltaTime, viewport);
+            MainFrame.Update(Input, deltaTime, viewport);
+            SecondaryFrame.Update(Input, deltaTime, viewport);
         }
 
         internal void Draw(SpriteBatch spriteBatch)
         {
             var originalViewport = spriteBatch.GraphicsDevice.Viewport;
-            spriteBatch.GraphicsDevice.Viewport = _viewport;
-            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: _viewportAdapter.GetScaleMatrix());
+            spriteBatch.GraphicsDevice.Viewport = Viewport;
+            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: ViewportAdapter.GetScaleMatrix());
 
             if (Settlement != null)
             {
-                _mainFrame.Draw(spriteBatch);
-                _secondaryFrame.Draw(spriteBatch);
+                MainFrame.Draw(spriteBatch);
+                SecondaryFrame.Draw(spriteBatch);
             }
 
             spriteBatch.End();
@@ -87,9 +94,9 @@ namespace PhoenixGamePresentation.Views
 
         internal void CloseButtonClick(object sender, EventArgs e)
         {
-            Command closeSettlementCommand = new CloseSettlementCommand { Payload = (Settlement, _worldView.World.Settlements) };
+            Command closeSettlementCommand = new CloseSettlementCommand { Payload = (Settlement, WorldView.World.Settlements) };
             closeSettlementCommand.Execute();
-            _worldView.GameStatus = GameStatus.OverlandMap;
+            WorldView.ChangeState(GameStatus.CityView, GameStatus.OverlandMap);
         }
 
         #endregion
@@ -103,17 +110,16 @@ namespace PhoenixGamePresentation.Views
 
         public void Dispose()
         {
-            if (!_disposedValue)
+            if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
+                Input.UnsubscribeAllFromEventHandler("SettlementView");
 
                 // set large fields to null
-                _viewportAdapter = null;
+                ViewportAdapter = null;
 
-                _disposedValue = true;
+                IsDisposed = true;
             }
-
-            GC.SuppressFinalize(this);
         }
     }
 }

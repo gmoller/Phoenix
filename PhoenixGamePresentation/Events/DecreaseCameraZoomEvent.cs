@@ -8,8 +8,6 @@ namespace PhoenixGamePresentation.Events
         {
             var camera = (Camera)sender;
 
-            if (camera.WorldView.GameStatus != GameStatus.OverlandMap) return;
-
             camera.Zoom -= 0.05f;
         }
     }

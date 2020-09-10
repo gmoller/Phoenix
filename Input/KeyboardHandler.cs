@@ -25,12 +25,12 @@ namespace Input
             };
         }
 
-        internal void Update(Dictionary<string, Dictionary<string, KeyboardInputAction>> keyboardEventHandlers, float deltaTime)
+        internal void Update(Dictionary<string, Dictionary<string, KeyboardInputAction>> keyboardEventHandlers, object worldView, float deltaTime)
         {
             _previousState = _currentState;
             _currentState = Keyboard.GetState();
 
-            HandleKeyboard(keyboardEventHandlers, deltaTime);
+            HandleKeyboard(keyboardEventHandlers, worldView, deltaTime);
         }
 
         /// <summary>
@@ -73,18 +73,18 @@ namespace Input
             return _previousState.IsKeyDown(key) && _currentState.IsKeyUp(key);
         }
 
-        private void HandleKeyboard(Dictionary<string, Dictionary<string, KeyboardInputAction>> keyboardEventHandlers, float deltaTime)
+        private void HandleKeyboard(Dictionary<string, Dictionary<string, KeyboardInputAction>> keyboardEventHandlers, object worldView, float deltaTime)
         {
             foreach (var item in keyboardEventHandlers.Values)
             {
-                foreach (var keyboardInputAction in item.Values)
+                foreach (var thenAction in item.Values)
                 {
-                    var ifFunc = _switch[keyboardInputAction.InputActionType];
-                    var ifConditionSatisfied = ifFunc(keyboardInputAction.Key);
+                    var ifFunc = _switch[thenAction.InputActionType];
+                    var ifConditionSatisfied = ifFunc(thenAction.Key);
 
                     if (ifConditionSatisfied)
                     {
-                        keyboardInputAction.Invoke(this, deltaTime);
+                        thenAction.Invoke(this, worldView, deltaTime);
                     }
                 }
             }

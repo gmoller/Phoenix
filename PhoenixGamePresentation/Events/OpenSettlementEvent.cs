@@ -2,6 +2,7 @@
 using Hex;
 using Input;
 using MonoGameUtilities.ExtensionMethods;
+using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentation.Views;
 
@@ -11,22 +12,32 @@ namespace PhoenixGamePresentation.Events
     {
         internal static void HandleEvent(object sender, MouseEventArgs e)
         {
-            var overlandSettlementView = (OverlandSettlementView)sender;
+            var worldView = (WorldView)e.WorldView;
 
-            if (overlandSettlementView.WorldView.GameStatus != GameStatus.OverlandMap) return;
-            if (!MousePointerIsOnHex(overlandSettlementView.Settlement.LocationHex, e.Mouse.Location, overlandSettlementView.WorldView)) return;
+            Settlement settlement = null;
+            foreach (var item in worldView.World.Settlements)
+            {
+                if (e.Mouse != null && MousePointerIsOnHex(item.LocationHex, e.Mouse.Location, worldView.Camera))
+                {
+                    settlement = item;
+                }
+            }
 
-            Command openSettlementCommand = new OpenSettlementCommand { Payload = (overlandSettlementView.Settlement, overlandSettlementView.WorldView.World.Settlements) };
+            if (settlement is null) return;
+
+            var settlements = worldView.World.Settlements;
+            Command openSettlementCommand = new OpenSettlementCommand { Payload = (settlement, settlements) };
             openSettlementCommand.Execute();
 
-            overlandSettlementView.WorldView.Camera.LookAtCell(overlandSettlementView.Settlement.Location);
-
-            overlandSettlementView.WorldView.GameStatus = GameStatus.CityView;
+            worldView.Camera.LookAtCell(settlement.Location);
+            worldView.ChangeState(GameStatus.OverlandMap, GameStatus.CityView);
         }
 
-        private static bool MousePointerIsOnHex(HexOffsetCoordinates settlementLocation, Point mouseLocation, WorldView worldView)
+        private static bool MousePointerIsOnHex(HexOffsetCoordinates settlementLocation, Point mouseLocation, Camera camera)
         {
-            return mouseLocation.IsWithinHex(settlementLocation, worldView.Camera.Transform);
+            if (!camera.GetViewport.Contains(mouseLocation)) return false;
+
+            return mouseLocation.IsWithinHex(settlementLocation, camera.Transform);
         }
     }
 }

@@ -13,31 +13,26 @@ namespace PhoenixGamePresentation.Views
     public class OverlandSettlementView : IDisposable
     {
         #region State
-        internal WorldView WorldView { get; }
+        private WorldView WorldView { get; } // readonly
 
-        private Texture2D _texture;
-        //private Texture2D _textures;
-        //private AtlasSpec _atlas;
+        private Texture2D Texture { get; set; }
 
         public Settlement Settlement { get; set; }
 
-        private readonly InputHandler _input;
-        private bool _disposedValue;
+        private InputHandler Input { get; } // readonly
+        private bool IsDisposed { get; set; }
         #endregion End State
 
         public OverlandSettlementView(WorldView worldView, InputHandler input)
         {
             WorldView = worldView;
 
-            input.SubscribeToEventHandler("OverlandSettlementView", 0, this, MouseInputActionType.RightButtonPressed, OpenSettlementEvent.HandleEvent);
-            _input = input;
+            Input = input;
         }
 
         public void LoadContent(ContentManager content)
         {
-            _texture = AssetsManager.Instance.GetTexture("VillageSmall00");
-            //_textures = AssetsManager.Instance.GetTexture("GUI_Textures_1");
-            //_atlas = AssetsManager.Instance.GetAtlas("GUI_Textures_1");
+            Texture = AssetsManager.Instance.GetTexture("VillageSmall00");
         }
 
         public void Update(float deltaTime)
@@ -55,26 +50,24 @@ namespace PhoenixGamePresentation.Views
         {
             var position = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row);
             var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(Hex.Constants.HexActualWidth * Constants.ONE_HALF), (int)(Hex.Constants.HexActualHeight * 0.75f));
-            var sourceRectangle = new Rectangle(0, 0, _texture.Width, _texture.Height);
+            var sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
             var layerDepth = cell.Index / 10000.0f + 0.00001f;
-            spriteBatch.Draw(_texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
         }
 
         public void Dispose()
         {
-            if (!_disposedValue)
+            if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
-                _input.UnsubscribeAllFromEventHandler("OverlandSettlementView");
+                Input.UnsubscribeAllFromEventHandler("OverlandSettlementView");
 
                 // set large fields to null
-                _texture = null;
+                Texture = null;
                 Settlement = null;
 
-                _disposedValue = true;
+                IsDisposed = true;
             }
-
-            GC.SuppressFinalize(this);
         }
     }
 }

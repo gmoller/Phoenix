@@ -1,9 +1,8 @@
 ﻿namespace PhoenixGamePresentation
 {
-    public enum GameStatus
+    internal enum GameStatus
     {
         OverlandMap,
-        CityView,
-        InHudView
+        CityView
     }
 }

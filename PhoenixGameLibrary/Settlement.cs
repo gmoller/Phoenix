@@ -35,7 +35,9 @@ namespace PhoenixGameLibrary
         public PointI Location { get; }
 
         public SettlementCitizens Citizens { get; }
-        #endregion
+
+        public event EventHandler SettlementOpened;
+        #endregion End State
 
         public HexOffsetCoordinates LocationHex => new HexOffsetCoordinates(Location);
         public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
@@ -170,10 +172,8 @@ namespace PhoenixGameLibrary
                     _buildingsBuilt.Add(_currentlyBuilding.BuildingId);
                     _world.NotificationList.Add($"- {Name} has produced a {buildingTypes[_currentlyBuilding.BuildingId].Name}");
                     _currentlyBuilding = new CurrentlyBuilding(-1, -1, 0);
-                    Command openSettlementCommand = new OpenSettlementCommand { Payload = (this, _world.Settlements) };
-                    openSettlementCommand.Execute();
 
-                    //_worldView.Camera.LookAtCell(Settlement.Location);
+                    OnSettlementOpened(EventArgs.Empty);
                 }
             }
             if (_currentlyBuilding.UnitId >= 0)
@@ -186,9 +186,14 @@ namespace PhoenixGameLibrary
                     var unitType = unitTypes[_currentlyBuilding.UnitId];
                     _world.AddUnit(Location, unitType);
                     _world.NotificationList.Add($"- {Name} has produced a {unitType.Name}");
-                    _currentlyBuilding = new CurrentlyBuilding(-1, -1, 0);
+                    _currentlyBuilding = new CurrentlyBuilding(-1, _currentlyBuilding.UnitId, 0);
                 }
             }
+        }
+
+        private void OnSettlementOpened(EventArgs e)
+        {
+            SettlementOpened?.Invoke(this, e);
         }
 
         internal bool CanSeeCell(Cell cell)

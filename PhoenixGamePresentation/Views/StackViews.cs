@@ -16,13 +16,13 @@ namespace PhoenixGamePresentation.Views
     internal class StackViews : IEnumerable<StackView>, IDisposable
     {
         #region State
-        private readonly WorldView _worldView;
+        private WorldView WorldView { get; } // readonly
 
-        private readonly Stacks _stacks;
-        private readonly List<StackView> _stackViews;
+        private Stacks Stacks { get; } // readonly
+        private List<StackView> StackViewsList { get; } // readonly
 
-        private Queue<StackView> _ordersQueue;
-        private readonly List<Guid> _selectedThisTurn;
+        private Queue<StackView> OrdersQueue { get; set; }
+        private List<Guid> SelectedThisTurn { get; } // readonly
 
         internal Texture2D GuiTextures { get; private set; }
         internal AtlasFrame SquareGreenFrame { get; private set; }
@@ -32,36 +32,36 @@ namespace PhoenixGamePresentation.Views
 
         internal StackView Current { get; private set; }
 
-        private Viewport _viewport;
-        private ViewportAdapter _viewportAdapter;
+        private Viewport Viewport { get; set; }
+        private ViewportAdapter ViewportAdapter { get; set; }
 
-        private readonly InputHandler _input;
+        private InputHandler Input { get; } // readonly
         private bool IsDisposed { get; set; }
         #endregion End State
 
-        public int Count => _stackViews.Count;
+        public int Count => StackViewsList.Count;
 
-        public StackView this[int index] => _stackViews[index];
+        public StackView this[int index] => StackViewsList[index];
 
         internal StackViews(WorldView worldView, Stacks stacks, InputHandler input)
         {
-            _worldView = worldView;
-            _stacks = stacks;
-            _stackViews = new List<StackView>();
+            WorldView = worldView;
+            Stacks = stacks;
+            StackViewsList = new List<StackView>();
             Current = null;
-            _ordersQueue = new Queue<StackView>();
-            _selectedThisTurn = new List<Guid>();
+            OrdersQueue = new Queue<StackView>();
+            SelectedThisTurn = new List<Guid>();
 
-            SetupViewport(0, 0, _worldView.Camera.GetViewport.Width, _worldView.Camera.GetViewport.Height);
+            SetupViewport(0, 0, WorldView.Camera.GetViewport.Width, WorldView.Camera.GetViewport.Height);
 
-            _input = input;
+            Input = input;
         }
 
         private void SetupViewport(int x, int y, int width, int height)
         {
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            _viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
-            _viewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
+            Viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
+            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
         }
 
         internal void LoadContent(ContentManager content)
@@ -74,20 +74,20 @@ namespace PhoenixGamePresentation.Views
             UnitAtlas = AssetsManager.Instance.GetAtlas("Units");
             UnitTextures = AssetsManager.Instance.GetTexture("Units");
 
-            foreach (var stack in _stacks)
+            foreach (var stack in Stacks)
             {
-                CreateNewStackView(_worldView, stack, _input);
+                CreateNewStackView(WorldView, stack, Input);
             }
         }
 
         internal void Update(float deltaTime)
         {
-            while (_stackViews.Count < _stacks.Count)
+            while (StackViewsList.Count < Stacks.Count)
             {
-                CreateNewStackView(_worldView, _stacks[_stackViews.Count], _input);
+                CreateNewStackView(WorldView, Stacks[StackViewsList.Count], Input);
             }
 
-            foreach (var stackView in _stackViews)
+            foreach (var stackView in StackViewsList)
             {
                 stackView.Update(deltaTime);
             }
@@ -95,21 +95,21 @@ namespace PhoenixGamePresentation.Views
 
         internal void RemoveDeadUnits()
         {
-            var numberRemoved = _stackViews.RemoveAll(stackView => stackView.Count == 0);
+            var numberRemoved = StackViewsList.RemoveAll(stackView => stackView.Count == 0);
 
             if (numberRemoved > 0)
             {
-                _stacks.RemoveDeadUnits();
+                Stacks.RemoveDeadUnits();
             }
         }
 
         internal void Draw(SpriteBatch spriteBatch, Camera camera)
         {
             var originalViewport = spriteBatch.GraphicsDevice.Viewport;
-            spriteBatch.GraphicsDevice.Viewport = _viewport;
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform * _viewportAdapter.GetScaleMatrix()); // FrontToBack
+            spriteBatch.GraphicsDevice.Viewport = Viewport;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform * ViewportAdapter.GetScaleMatrix()); // FrontToBack
 
-            foreach (var stackView in _stackViews)
+            foreach (var stackView in StackViewsList)
             {
                 stackView.Draw(spriteBatch);
             }
@@ -122,7 +122,7 @@ namespace PhoenixGamePresentation.Views
         {
             // create a queue of stacks that need orders
             var queue = new Queue<StackView>();
-            foreach (var stackView in _stackViews)
+            foreach (var stackView in StackViewsList)
             {
                 if (!stackView.IsBusy) // not patrol, or fortify
                 {
@@ -130,8 +130,8 @@ namespace PhoenixGamePresentation.Views
                 }
             }
 
-            _ordersQueue = queue;
-            _selectedThisTurn.Clear();
+            OrdersQueue = queue;
+            SelectedThisTurn.Clear();
 
             SelectNext();
         }
@@ -139,7 +139,7 @@ namespace PhoenixGamePresentation.Views
         internal void DoWaitAction()
         {
             // send current to back of the queue
-            _ordersQueue.Enqueue(Current);
+            OrdersQueue.Enqueue(Current);
             SelectNext();
         }
 
@@ -173,10 +173,10 @@ namespace PhoenixGamePresentation.Views
 
         internal void SetCurrent(StackView stackView)
         {
-            _selectedThisTurn.Add(stackView.Id);
+            SelectedThisTurn.Add(stackView.Id);
             if (Current != null)
             {
-                _ordersQueue.Enqueue(Current);
+                OrdersQueue.Enqueue(Current);
             }
 
             Current = stackView;
@@ -185,16 +185,16 @@ namespace PhoenixGamePresentation.Views
 
         internal void  SelectNext()
         {
-            if (_ordersQueue.Count > 0)
+            if (OrdersQueue.Count > 0)
             {
-                Current = _ordersQueue.Dequeue();
-                if (_selectedThisTurn.Contains(Current.Id))
+                Current = OrdersQueue.Dequeue();
+                if (SelectedThisTurn.Contains(Current.Id))
                 {
                     SelectNext();
                 }
                 else
                 {
-                    _worldView.Camera.LookAtCell(Current.Location);
+                    WorldView.Camera.LookAtCell(Current.Location);
                 }
             }
             else
@@ -207,12 +207,12 @@ namespace PhoenixGamePresentation.Views
         private void CreateNewStackView(WorldView worldView, PhoenixGameLibrary.Stack stack, InputHandler input)
         {
             var stackView = new StackView(worldView, this, stack, input);
-            _stackViews.Add(stackView);
+            StackViewsList.Add(stackView);
         }
 
         public IEnumerator<StackView> GetEnumerator()
         {
-            foreach (var item in _stackViews)
+            foreach (var item in StackViewsList)
             {
                 yield return item;
             }
@@ -228,21 +228,20 @@ namespace PhoenixGamePresentation.Views
             return DebuggerDisplay;
         }
 
-        private string DebuggerDisplay => $"{{Count={_stackViews.Count}}}";
+        private string DebuggerDisplay => $"{{Count={StackViewsList.Count}}}";
 
         public void Dispose()
         {
             if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
+                Input.UnsubscribeAllFromEventHandler("StackViews");
 
                 // set large fields to null
-                _viewportAdapter = null;
+                ViewportAdapter = null;
 
                 IsDisposed = true;
             }
-
-            GC.SuppressFinalize(this);
         }
     }
 }

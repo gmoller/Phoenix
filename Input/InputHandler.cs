@@ -8,31 +8,31 @@ namespace Input
     public class InputHandler
     {
         #region State
-        private readonly KeyboardHandler _keyboard;
+        private KeyboardHandler Keyboard { get; }
         public MouseHandler Mouse { get; }
-        private readonly Dictionary<string, Dictionary<string, KeyboardInputAction>> _keyboardEventHandlers;
-        private readonly Dictionary<string, Dictionary<string, MouseInputAction>> _mouseEventHandlers;
+        private Dictionary<string, Dictionary<string, KeyboardInputAction>> KeyboardEventHandlers { get; }
+        private Dictionary<string, Dictionary<string, MouseInputAction>> MouseEventHandlers { get; }
+        private Registrar Registrar { get; }
         #endregion End State
 
         public InputHandler()
         {
-            _keyboard = new KeyboardHandler();
+            Keyboard = new KeyboardHandler();
             Mouse = new MouseHandler();
 
-            _keyboardEventHandlers = new Dictionary<string, Dictionary<string, KeyboardInputAction>>();
-            _mouseEventHandlers = new Dictionary<string, Dictionary<string, MouseInputAction>>();
+            KeyboardEventHandlers = new Dictionary<string, Dictionary<string, KeyboardInputAction>>();
+            MouseEventHandlers = new Dictionary<string, Dictionary<string, MouseInputAction>>();
+
+            Registrar = new Registrar(this);
         }
 
         public Point MousePosition => Mouse.Location;
         public bool IsLeftMouseButtonReleased => Mouse.IsLeftButtonReleased();
-        internal bool MouseIsWithinScreen => Mouse.MouseIsWithinScreen;
 
-        public void Update(float deltaTime)
+        public void Update(object worldView, float deltaTime)
         {
-            //if (!MouseIsWithinScreen) return;
-
-            _keyboard.Update(_keyboardEventHandlers, deltaTime);
-            Mouse.Update(_mouseEventHandlers, deltaTime);
+            Keyboard.Update(KeyboardEventHandlers, worldView, deltaTime);
+            Mouse.Update(MouseEventHandlers, worldView, deltaTime);
         }
 
         // for testing
@@ -41,75 +41,126 @@ namespace Input
             Mouse.SetMousePosition(pos);
         }
 
-        public void SubscribeToEventHandler(string source, int id, object sender, Keys key, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> action)
+        public void BeginRegistration(string gameStatus, string owner)
         {
-            var keyboardInputAction = new KeyboardInputAction(sender, key, inputActionType, action);
-
-            var firstKey = $"Keyboard.{key}.{inputActionType}";
-            var secondKey = $"{source}.{id}";
-            if (!_keyboardEventHandlers.ContainsKey(firstKey))
-            {
-                _keyboardEventHandlers.Add(firstKey, new Dictionary<string, KeyboardInputAction>());
-            }
-
-            _keyboardEventHandlers[firstKey].Add(secondKey, keyboardInputAction);
+            Registrar.BeginRegistration(gameStatus, owner);
         }
 
-        public void SubscribeToEventHandler(string source, int id, object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs> action)
+        public void Register(int id, object sender, Keys keys, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> action)
         {
-            var mouseInputAction = new MouseInputAction(sender, inputActionType, action);
-
-            var firstKey = $"Mouse.{inputActionType}";
-            var secondKey = $"{source}.{id}";
-            if (!_mouseEventHandlers.ContainsKey(firstKey))
-            {
-                _mouseEventHandlers.Add(firstKey, new Dictionary<string, MouseInputAction>());
-            }
-
-            _mouseEventHandlers[firstKey].Add(secondKey, mouseInputAction);
+            Registrar.Register(id, sender, keys, inputActionType, action);
         }
 
-        public void UnsubscribeFromEventHandler(string source, int id, Keys key, KeyboardInputActionType inputActionType)
+        public void Register(int id, object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs> action)
         {
-            var firstKey = $"Keyboard.{key}.{inputActionType}";
-            var secondKey = $"{source}.{id}";
-            var eventHandlers = _keyboardEventHandlers[firstKey];
-            eventHandlers.Remove(secondKey);
+            Registrar.Register(id, sender, inputActionType, action);
         }
 
-        public void UnsubscribeFromEventHandler(string source, int id, MouseInputActionType inputActionType)
+        public void EndRegistration()
         {
-            var firstKey = $"Mouse.{inputActionType}";
-            var secondKey = $"{source}.{id}";
-            var eventHandlers = _mouseEventHandlers[firstKey];
-            eventHandlers.Remove(secondKey);
+            Registrar.EndRegistration();
         }
 
-        public void UnsubscribeAllFromEventHandler(string source)
+        public void Subscribe(string gameStatus, string owner)
         {
-            foreach (var keyboardEventHandler in _keyboardEventHandlers)
+            Registrar.Subscribe(gameStatus, owner);
+        }
+
+        public void Unsubscribe(string gameStatus, string owner)
+        {
+            Registrar.Unsubscribe(gameStatus, owner);
+        }
+
+        public void UnsubscribeAllFromEventHandler(string owner)
+        {
+            foreach (var keyboardEventHandler in KeyboardEventHandlers)
             {
                 //var eventHandlers = _keyboardEventHandlers[keyboardEventHandler.Key];
                 foreach (var key in keyboardEventHandler.Value.Keys)
                 {
-                    if (key.StartsWith($"{source}."))
+                    if (key.StartsWith($"{owner}"))
                     {
                         keyboardEventHandler.Value.Remove(key);
                     }
                 }
             }
 
-            foreach (var mouseEventHandler in _mouseEventHandlers)
+            foreach (var mouseEventHandler in MouseEventHandlers)
             {
                 //var eventHandlers = _mouseEventHandlers[mouseEventHandler.Key];
                 foreach (var key in mouseEventHandler.Value.Keys)
                 {
-                    if (key.StartsWith($"{source}."))
+                    if (key.StartsWith($"{owner}"))
                     {
                         mouseEventHandler.Value.Remove(key);
                     }
                 }
             }
+        }
+
+        internal void SubscribeToEventHandler(string owner, int id, object sender, Keys key, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> action)
+        {
+            var keyboardInputAction = new KeyboardInputAction(sender, key, inputActionType, action);
+
+            var firstKey = BuildKeyOne(id, inputActionType);
+            var secondKey = BuildKeyTwo(owner, id);
+            if (!KeyboardEventHandlers.ContainsKey(firstKey))
+            {
+                KeyboardEventHandlers.Add(firstKey, new Dictionary<string, KeyboardInputAction>());
+            }
+
+            KeyboardEventHandlers[firstKey].Add(secondKey, keyboardInputAction);
+        }
+
+        internal void SubscribeToEventHandler(string owner, int id, object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs> action)
+        {
+            var mouseInputAction = new MouseInputAction(sender, inputActionType, action);
+
+            var firstKey = BuildKeyOne(id, inputActionType);
+            var secondKey = BuildKeyTwo(owner, id);
+            if (!MouseEventHandlers.ContainsKey(firstKey))
+            {
+                MouseEventHandlers.Add(firstKey, new Dictionary<string, MouseInputAction>());
+            }
+
+            MouseEventHandlers[firstKey].Add(secondKey, mouseInputAction);
+        }
+
+        internal void UnsubscribeFromEventHandler(string owner, int id, KeyboardInputActionType inputActionType)
+        {
+            var firstKey = BuildKeyOne(id, inputActionType);
+            var secondKey = BuildKeyTwo(owner, id);
+            var eventHandlers = KeyboardEventHandlers[firstKey];
+            eventHandlers.Remove(secondKey);
+        }
+
+        internal void UnsubscribeFromEventHandler(string owner, int id, MouseInputActionType inputActionType)
+        {
+            var firstKey = BuildKeyOne(id, inputActionType);
+            var secondKey = BuildKeyTwo(owner, id);
+            var eventHandlers = MouseEventHandlers[firstKey];
+            eventHandlers.Remove(secondKey);
+        }
+
+        private string BuildKeyOne(int id, KeyboardInputActionType inputActionType)
+        {
+            var key = $"Keyboard.{id}.{inputActionType}";
+
+            return key;
+        }
+
+        private string BuildKeyOne(int id, MouseInputActionType inputActionType)
+        {
+            var key = $"Mouse.{id}.{inputActionType}";
+
+            return key;
+        }
+
+        private string BuildKeyTwo(string owner, int id)
+        {
+            var key = $"{owner}.{id}";
+
+            return key;
         }
     }
 }

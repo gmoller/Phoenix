@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameUtilities.ExtensionMethods;
-using PointI = Utilities.PointI;
+using Utilities;
 
 namespace PhoenixGamePresentation.Views.SettlementViewComposite
 {
@@ -36,7 +36,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             _frmMain["frmPopulation"].AddControl(new LabelSized("lblFarmers", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Farmers:", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 25));
             _frmMain["frmPopulation"].AddControl(new LabelSized("lblWorkers", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Workers:", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 55));
             _frmMain["frmPopulation"].AddControl(new LabelSized("lblRebels", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Rebels:", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 85));
-            _frmMain["frmPopulation"].AddControl(new CitizenView("citizenView", new Vector2(130.0f, 135.0f), Alignment.TopLeft, settlementView, "Citizens"), Alignment.TopLeft, Alignment.TopLeft, new PointI(130, 20));
+            _frmMain["frmPopulation"].AddControl(new CitizenView("citizenView", new Vector2(90.0f, 135.0f), Alignment.TopLeft, settlementView, "Citizens"), Alignment.TopLeft, Alignment.TopLeft, new PointI(130, 20));
 
             _frmMain.AddControl(new Frame("frmResources", new Vector2(515.0f, 175.0f), TextureAtlas, "frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 190));
             _frmMain["frmResources"].AddControl(new LabelSized("lblResources", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Resources", "CrimsonText-Regular-12", Color.Orange, Color.DarkBlue), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 0));

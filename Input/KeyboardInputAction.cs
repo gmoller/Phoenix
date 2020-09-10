@@ -18,9 +18,9 @@ namespace Input
             ActionEvent = action;
         }
 
-        public void Invoke(KeyboardHandler keyboard, float deltaTime)
+        public void Invoke(KeyboardHandler keyboard, object worldView, float deltaTime)
         {
-            ActionEvent(Sender, new KeyboardEventArgs(keyboard, Key, deltaTime));
+            ActionEvent(Sender, new KeyboardEventArgs(keyboard, Key, worldView, deltaTime));
         }
     }
 }

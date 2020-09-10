@@ -17,8 +17,8 @@ namespace PhoenixGamePresentation
         #region State
         internal WorldView WorldView { get; }
 
-        private Rectangle Viewport { get; } // readonly
-        private CameraClampMode ClampMode { get; } // readonly
+        private Rectangle Viewport { get; }
+        private CameraClampMode ClampMode { get; }
         //private float _rotation;
 
         private Vector2 _cameraFocusPointInWorld;
@@ -42,7 +42,7 @@ namespace PhoenixGamePresentation
             set => _zoom = MathHelper.Clamp(value, 0.5f, 2.0f);
         }
 
-        private InputHandler Input { get; } // readonly
+        private InputHandler Input { get; }
         private bool IsDisposed { get; set; }
         #endregion End State
 
@@ -57,14 +57,20 @@ namespace PhoenixGamePresentation
             //_rotation = 0.0f;
 
             Input = input;
-            Input.SubscribeToEventHandler("Camera", 0, this, Keys.OemTilde, KeyboardInputActionType.Released, ResetCameraZoomEvent.HandleEvent);
-            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.WheelUp, IncreaseCameraZoomEvent.HandleEvent);
-            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.WheelDown, DecreaseCameraZoomEvent.HandleEvent);
-            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.RightButtonDrag, DragCameraEvent.HandleEvent);
-            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtTopOfScreen, MoveCameraEvent.HandleEvent);
-            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtBottomOfScreen, MoveCameraEvent.HandleEvent);
-            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtLeftOfScreen, MoveCameraEvent.HandleEvent);
-            Input.SubscribeToEventHandler("Camera", 0, this, MouseInputActionType.AtRightOfScreen, MoveCameraEvent.HandleEvent);
+            Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "Camera");
+            Input.Register(0, this, Keys.OemTilde, KeyboardInputActionType.Released, ResetCameraZoomEvent.HandleEvent);
+            Input.Register(1, this, MouseInputActionType.WheelUp, IncreaseCameraZoomEvent.HandleEvent);
+            Input.Register(2, this, MouseInputActionType.WheelDown, DecreaseCameraZoomEvent.HandleEvent);
+            Input.Register(3, this, MouseInputActionType.RightButtonDrag, DragCameraEvent.HandleEvent);
+            Input.Register(4, this, MouseInputActionType.AtTopOfScreen, MoveCameraEvent.HandleEvent);
+            Input.Register(5, this, MouseInputActionType.AtBottomOfScreen, MoveCameraEvent.HandleEvent);
+            Input.Register(6, this, MouseInputActionType.AtLeftOfScreen, MoveCameraEvent.HandleEvent);
+            Input.Register(7, this, MouseInputActionType.AtRightOfScreen, MoveCameraEvent.HandleEvent);
+            Input.EndRegistration();
+
+            Input.Subscribe(GameStatus.OverlandMap.ToString(), "Camera");
+
+            WorldView.SubscribeToStatusChanges("Camera", WorldView.HandleStatusChange);
         }
 
         public Rectangle GetViewport => Viewport;

@@ -8,11 +8,7 @@ namespace PhoenixGamePresentation.Events
         {
             var camera = (Camera)sender;
 
-            if (camera.WorldView.GameStatus != GameStatus.OverlandMap) return;
-
-            var mouseEventArgs = (MouseEventArgs)e;
-
-            var panCameraDistance = mouseEventArgs.Mouse.Movement.ToVector2();
+            var panCameraDistance = e.Mouse.Movement.ToVector2();
 
             camera.MoveCamera(panCameraDistance);
 

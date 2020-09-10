@@ -7,8 +7,10 @@ namespace PhoenixGamePresentation.Handlers
 {
     internal static class MovementHandler
     {
-        internal static bool CheckForRestartOfMovement(StackView stackView)
+        internal static bool CheckForRestartOfMovement(object sender, float deltaTime)
         {
+            var stackView = (StackView)sender;
+
             if (stackView.IsMovingState == false && stackView.MovementPath.Count > 0 && stackView.MovementPoints > 0.0f)
             {
                 return true;
@@ -17,18 +19,17 @@ namespace PhoenixGamePresentation.Handlers
             return false;
         }
         
-        internal static bool MustContinueMovement(StackView stackView)
+        internal static bool MustContinueMovement(object sender, float deltaTime)
         {
-            return UnitIsMoving(stackView);
-        }
+            var stackView = (StackView)sender;
 
-        internal static bool MustMoveUnitToNextCell(StackView stackView)
-        {
-            return UnitIsMoving(stackView) && CheckIfUnitHasReachedNextCell(stackView);
+            return UnitIsMoving(stackView);
         }
 
         internal static (bool startMovement, PointI hexToMoveTo) CheckForUnitMovementFromMouseInitiation(StackView stackView, CellGrid cellGrid, Point mouseLocation, Camera camera)
         {
+            if (!stackView.WorldView.Camera.GetViewport.Contains(mouseLocation)) return (false, new PointI(0, 0));
+
             // unit is selected, left mouse button released and unit is not already moving
             var hexToMoveTo = camera.ScreenPixelToWorldHex(mouseLocation);
             if (hexToMoveTo.Equals(stackView.LocationHex)) return (false, new PointI(0, 0));
@@ -43,11 +44,6 @@ namespace PhoenixGamePresentation.Handlers
         private static bool UnitIsMoving(StackView stackView)
         {
             return stackView.IsMovingState;
-        }
-
-        private static bool CheckIfUnitHasReachedNextCell(StackView stackView)
-        {
-            return stackView.MovementCountdownTime <= 0;
         }
     }
 }
