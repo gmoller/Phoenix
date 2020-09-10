@@ -6,20 +6,19 @@ using Assets;
 using Hex;
 using Input;
 using PhoenixGameLibrary;
-using PhoenixGamePresentation.Events;
 
 namespace PhoenixGamePresentation.Views
 {
     public class OverlandSettlementView : IDisposable
     {
         #region State
-        private WorldView WorldView { get; } // readonly
+        private WorldView WorldView { get; }
 
         private Texture2D Texture { get; set; }
 
         public Settlement Settlement { get; set; }
 
-        private InputHandler Input { get; } // readonly
+        private InputHandler Input { get; }
         private bool IsDisposed { get; set; }
         #endregion End State
 
@@ -41,7 +40,7 @@ namespace PhoenixGamePresentation.Views
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var cellGrid = WorldView.World.OverlandMap.CellGrid;
+            var cellGrid = WorldView.CellGrid;
             var cell = cellGrid.GetCell(Settlement.Location.X, Settlement.Location.Y);
             DrawSettlement(spriteBatch, cell);
         }

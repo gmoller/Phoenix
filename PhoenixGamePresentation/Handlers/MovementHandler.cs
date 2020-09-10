@@ -28,7 +28,7 @@ namespace PhoenixGamePresentation.Handlers
 
         internal static (bool startMovement, PointI hexToMoveTo) CheckForUnitMovementFromMouseInitiation(StackView stackView, CellGrid cellGrid, Point mouseLocation, Camera camera)
         {
-            if (!stackView.WorldView.Camera.GetViewport.Contains(mouseLocation)) return (false, new PointI(0, 0));
+            if (!camera.GetViewport.Contains(mouseLocation)) return (false, new PointI(0, 0));
 
             // unit is selected, left mouse button released and unit is not already moving
             var hexToMoveTo = camera.ScreenPixelToWorldHex(mouseLocation);

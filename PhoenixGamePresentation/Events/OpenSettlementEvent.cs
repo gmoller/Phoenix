@@ -15,7 +15,7 @@ namespace PhoenixGamePresentation.Events
             var worldView = (WorldView)e.WorldView;
 
             Settlement settlement = null;
-            foreach (var item in worldView.World.Settlements)
+            foreach (var item in worldView.Settlements)
             {
                 if (e.Mouse != null && MousePointerIsOnHex(item.LocationHex, e.Mouse.Location, worldView.Camera))
                 {
@@ -25,7 +25,7 @@ namespace PhoenixGamePresentation.Events
 
             if (settlement is null) return;
 
-            var settlements = worldView.World.Settlements;
+            var settlements = worldView.Settlements;
             Command openSettlementCommand = new OpenSettlementCommand { Payload = (settlement, settlements) };
             openSettlementCommand.Execute();
 

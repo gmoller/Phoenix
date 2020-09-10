@@ -170,7 +170,7 @@ namespace PhoenixGamePresentation.Views
 
         internal void StartUnitMovement(PointI hexToMoveTo)
         {
-            var path = MovementPathDeterminer.DetermineMovementPath(this, Location, hexToMoveTo, WorldView.World.OverlandMap.CellGrid);
+            var path = MovementPathDeterminer.DetermineMovementPath(this, Location, hexToMoveTo, WorldView.CellGrid);
             SetMovementPath(path);
 
             StartUnitMovement();

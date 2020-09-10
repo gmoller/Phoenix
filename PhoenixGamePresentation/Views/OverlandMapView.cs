@@ -105,7 +105,7 @@ namespace PhoenixGamePresentation.Views
                     {
                         DrawCell(spriteBatch, cell, Color.White);
                     }
-                    else if (cell.IsSeenByPlayer(WorldView.World))
+                    else if (cell.IsSeenByPlayer(WorldView.Settlements, WorldView.Stacks))
                     {
                         DrawCell(spriteBatch, cell, Color.White);
                     }  

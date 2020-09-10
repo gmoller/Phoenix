@@ -15,7 +15,7 @@ namespace PhoenixGamePresentation.Events
             if (stackView.IsMovingState) return;
             if (stackView.MovementPoints.AboutEquals(0.0f)) return;
 
-            var mustStartMovement = MovementHandler.CheckForUnitMovementFromMouseInitiation(stackView, stackView.WorldView.World.OverlandMap.CellGrid, e.Mouse.Location, stackView.WorldView.Camera);
+            var mustStartMovement = MovementHandler.CheckForUnitMovementFromMouseInitiation(stackView, stackView.WorldView.CellGrid, e.Mouse.Location, stackView.WorldView.Camera);
 
             if (mustStartMovement.startMovement)
             {

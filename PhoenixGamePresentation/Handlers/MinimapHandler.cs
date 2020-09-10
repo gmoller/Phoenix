@@ -28,7 +28,7 @@ namespace PhoenixGamePresentation.Handlers
             return minimapViewedRectangle;
         }
 
-        internal static Texture2D Create(World world)
+        internal static Texture2D Create(CellGrid cellGrid)
         {
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
@@ -38,7 +38,6 @@ namespace PhoenixGamePresentation.Handlers
 
             var scalingFactorX = 7;
             var scalingFactorY = 6;
-            var cellGrid = world.OverlandMap.CellGrid;
             var width = cellGrid.NumberOfColumns;
             var height = cellGrid.NumberOfRows;
             var scaledWidth = (width * scalingFactorX) + 4; // Math.Ceiling(scalingFactorX * Constants.ONE_HALF)

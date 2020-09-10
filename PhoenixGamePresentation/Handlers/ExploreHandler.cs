@@ -20,7 +20,7 @@ namespace PhoenixGamePresentation.Handlers
             var stackView = (StackView)sender;
 
             // find closest unexplored cell
-            var cellGrid = stackView.WorldView.World.OverlandMap.CellGrid;
+            var cellGrid = stackView.WorldView.CellGrid;
             var cell = cellGrid.GetClosestUnexploredCell(stackView.Location);
 
             if (cell != Cell.Empty)

@@ -55,7 +55,7 @@ namespace PhoenixGamePresentation.Views
 
             //HudViewFrame.AddControl(new Image("imgBackground", new Vector2(250, 1080), "NoiseTexture"));
 
-            string GetTextFuncForDate() => WorldView.World.CurrentDate;
+            string GetTextFuncForDate() => WorldView.CurrentDate;
             HudViewFrame.AddControl(new LabelSized("lblCurrentDate", new Vector2(150.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForDate, "Maleficio-Regular-18", Color.Aquamarine), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 20));
 
             #region MiniMapFrame
@@ -74,11 +74,11 @@ namespace PhoenixGamePresentation.Views
             HudViewFrame["resourceFrame"].AddControl(new Image("imgMana", new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 70));
             HudViewFrame["resourceFrame"].AddControl(new Image("imgFood", new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 130));
 
-            string GetTextFuncForGold() => $"{WorldView.World.PlayerFaction.GoldInTreasury} GP (+{WorldView.World.PlayerFaction.GoldPerTurn})";
+            string GetTextFuncForGold() => $"{WorldView.PlayerFaction.GoldInTreasury} GP (+{WorldView.PlayerFaction.GoldPerTurn})";
             HudViewFrame["resourceFrame.imgGold"].AddControl(new LabelSized("lblGold", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForGold, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
             string GetTextFuncForMana() => "5 MP (+1)";
             HudViewFrame["resourceFrame.imgMana"].AddControl(new LabelSized("lblMana", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForMana, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
-            string GetTextFuncForFood() => $"{WorldView.World.PlayerFaction.FoodPerTurn} Food";
+            string GetTextFuncForFood() => $"{WorldView.PlayerFaction.FoodPerTurn} Food";
             HudViewFrame["resourceFrame.imgFood"].AddControl(new LabelSized("lblFood", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForFood, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
 
             #endregion
@@ -104,7 +104,7 @@ namespace PhoenixGamePresentation.Views
             WorldView = worldView;
             StackViews = stackViews;
 
-            worldView.World.OverlandMap.CellGrid.NewCellSeen += NewCellSeen;
+            worldView.CellGrid.NewCellSeen += NewCellSeen;
 
             //var json = _hudViewFrame.Serialize();
             //_hudViewFrame.Deserialize(json);
@@ -145,7 +145,7 @@ namespace PhoenixGamePresentation.Views
             HudViewFrame["btnEndTurn"].LoadContent(content);
             HudViewFrame["btnEndTurn.lblEndTurn"].LoadContent(content);
 
-            var createdImage = MinimapHandler.Create(WorldView.World);
+            var createdImage = MinimapHandler.Create(WorldView.CellGrid);
             var mapImage = (Image)HudViewFrame["miniMapFrame.mapImage"];
             mapImage.SetTexture(createdImage);
 
@@ -162,7 +162,7 @@ namespace PhoenixGamePresentation.Views
             ActionButtons.Update(Input, deltaTime, Viewport);
 
             // get tile mouse is over
-            var cellGrid = WorldView.World.OverlandMap.CellGrid;
+            var cellGrid = WorldView.CellGrid;
             var hexPoint = WorldView.Camera.ScreenPixelToWorldHex(Input.MousePosition);
 
             // TODO: check if cell is on screen
@@ -258,7 +258,7 @@ namespace PhoenixGamePresentation.Views
         {
             var x = 10.0f;
             var y = 460.0f;
-            foreach (var item in WorldView.World.NotificationList)
+            foreach (var item in WorldView.NotificationList)
             {
                 var lines = TextWrapper.WrapText(item, 150.0f, Font);
                 foreach (var line in lines)
@@ -280,7 +280,7 @@ namespace PhoenixGamePresentation.Views
 
         private void NewCellSeen(object sender, EventArgs e)
         {
-            var createdImage = MinimapHandler.Create(WorldView.World);
+            var createdImage = MinimapHandler.Create(WorldView.CellGrid);
             var mapImage = (Image)HudViewFrame["miniMapFrame.mapImage"];
             mapImage.SetTexture(createdImage);
         }

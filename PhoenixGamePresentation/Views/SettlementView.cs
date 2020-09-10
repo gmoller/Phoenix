@@ -94,7 +94,7 @@ namespace PhoenixGamePresentation.Views
 
         internal void CloseButtonClick(object sender, EventArgs e)
         {
-            Command closeSettlementCommand = new CloseSettlementCommand { Payload = (Settlement, WorldView.World.Settlements) };
+            Command closeSettlementCommand = new CloseSettlementCommand { Payload = (Settlement, WorldView.Settlements) };
             closeSettlementCommand.Execute();
             WorldView.ChangeState(GameStatus.CityView, GameStatus.OverlandMap);
         }

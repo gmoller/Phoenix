@@ -90,9 +90,9 @@ namespace PhoenixGameLibrary
             return cell;
         }
 
-        public bool IsSeenByPlayer(World world)
+        public bool IsSeenByPlayer(Settlements settlements, Stacks stacks)
         {
-            foreach (var settlement in world.Settlements)
+            foreach (var settlement in settlements)
             {
                 if (settlement.CanSeeCell(this))
                 {
@@ -100,9 +100,9 @@ namespace PhoenixGameLibrary
                 }
             }
 
-            foreach (var stacks in world.Stacks)
+            foreach (var stack in stacks)
             {
-                if (stacks.CanSeeCell(this))
+                if (stack.CanSeeCell(this))
                 {
                     return true;
                 }

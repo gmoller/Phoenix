@@ -15,7 +15,7 @@ namespace PhoenixGamePresentation.Events
             if (stackView.Status == UnitStatus.Explore) return;
             if (stackView.IsMovingState) return;
 
-            var path = PotentialMovementHandler.GetPotentialMovementPath(stackView, stackView.WorldView.World.OverlandMap.CellGrid, e.Mouse.Location, stackView.WorldView.Camera);
+            var path = PotentialMovementHandler.GetPotentialMovementPath(stackView, stackView.WorldView.CellGrid, e.Mouse.Location, stackView.WorldView.Camera);
             stackView.PotentialMovementPath = path;
         }
     }

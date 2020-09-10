@@ -17,7 +17,7 @@ namespace PhoenixGamePresentation.Views
     public class WorldView : IDisposable
     {
         #region State
-        public World World { get; }
+        private World World { get; }
 
         private OverlandMapView OverlandMapView { get; }
         private OverlandSettlementViews OverlandSettlementViews { get; }
@@ -56,11 +56,17 @@ namespace PhoenixGamePresentation.Views
             ActionButtons = InitializeActionButtons();
         }
 
+        internal CellGrid CellGrid => World.OverlandMap.CellGrid;
+        internal Settlements Settlements => World.Settlements;
+        internal Stacks Stacks => World.Stacks;
         internal GameStatus GameStatus => GameStatusHandler.GameStatus;
         public int WorldWidthInPixels => Constants.WORLD_MAP_WIDTH_IN_PIXELS;
         public int WorldHeightInPixels => Constants.WORLD_MAP_HEIGHT_IN_PIXELS;
         public EnumerableDictionary<IControl> GetMovementTypeImages => new EnumerableDictionary<IControl>(MovementTypeImages);
         public EnumerableDictionary<IControl> GetActionButtons => new EnumerableDictionary<IControl>(ActionButtons);
+        internal string CurrentDate => World.CurrentDate;
+        internal NotificationList NotificationList => World.NotificationList;
+        internal Faction PlayerFaction => World.PlayerFaction;
 
         internal void LoadContent(ContentManager content)
         {
