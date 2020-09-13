@@ -54,6 +54,11 @@ namespace Hex
             return cube;
         }
 
+        public static HexOffsetCoordinates GetNeighbor(PointI point, Direction direction)
+        {
+            return GetNeighbor(point.X, point.Y, direction);
+        }
+
         public static HexOffsetCoordinates GetNeighbor(HexOffsetCoordinates offsetCoordinates, Direction direction)
         {
             return GetNeighbor(offsetCoordinates.Col, offsetCoordinates.Row, direction);

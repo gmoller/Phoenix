@@ -11,25 +11,17 @@ using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using Utilities.ExtensionMethods;
-using MonoGameUtilities.ViewportAdapters;
 using PhoenixGamePresentation.Events;
 using Utilities;
 
 namespace PhoenixGamePresentation.Views
 {
-    internal class OverlandMapView : IDisposable
+    internal class OverlandMapView : ViewBase, IDisposable
     {
         #region State
-        private WorldView WorldView { get; } // readonly
-        private OverlandMap OverlandMap { get; } // readonly
+        private OverlandMap OverlandMap { get; }
 
-        private Label Test { get; } // readonly
-
-        private Viewport Viewport { get; set; }
-        private ViewportAdapter ViewportAdapter { get; set; }
-
-        private InputHandler Input { get; } // readonly
-        private bool IsDisposed { get; set; }
+        private Label Test { get; }
         #endregion End State
 
         internal OverlandMapView(WorldView worldView, OverlandMap overlandMap, InputHandler input)
@@ -46,19 +38,23 @@ namespace PhoenixGamePresentation.Views
             Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "OverlandMapView");
             Input.Register(0, this, Keys.Enter, KeyboardInputActionType.Released, EndTurnEvent.HandleEvent);
             Input.Register(1, this, Keys.D1, KeyboardInputActionType.Released, (sender, e) => { WorldView.Camera.LookAtPixel(new PointI(840, 540)); }); // for testing
-            Input.Register(2, this, MouseInputActionType.RightButtonPressed, OpenSettlementEvent.HandleEvent);
+            Input.Register(2, this, Keys.C, KeyboardInputActionType.Released, (sender, e) => { if (WorldView.CurrentlySelectedStackView != null) WorldView.Camera.LookAtCell(WorldView.CurrentlySelectedStackView.LocationHex); });
+            Input.Register(3, this, MouseInputActionType.RightButtonPressed, OpenSettlementEvent.HandleEvent);
+            Input.Register(4, this, MouseInputActionType.RightButtonPressed, (sender, e) => { WorldView.CurrentlySelectedStackView?.SetPotentialMovement(e.Mouse.Location); });
+            Input.Register(5, this, MouseInputActionType.RightButtonReleased, (sender, e) => { WorldView.CurrentlySelectedStackView?.ResetPotentialMovement(); });
+            Input.Register(6, this, MouseInputActionType.LeftButtonReleased, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromMouseInitiation(e.Mouse.Location); });
+            Input.Register(7, this, Keys.NumPad1, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(8, this, Keys.NumPad3, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(9, this, Keys.NumPad4, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(10, this, Keys.NumPad6, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(11, this, Keys.NumPad7, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(12, this, Keys.NumPad9, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(13, this, MouseInputActionType.RightButtonReleased, WorldView.CheckForSelectionOfStack);
             Input.EndRegistration();
 
             Input.Subscribe(GameStatus.OverlandMap.ToString(), "OverlandMapView");
 
             WorldView.SubscribeToStatusChanges("OverlandMapView", worldView.HandleStatusChange);
-        }
-
-        private void SetupViewport(int x, int y, int width, int height)
-        {
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            Viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
-            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
         }
 
         internal void LoadContent(ContentManager content)

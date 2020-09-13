@@ -9,17 +9,11 @@ using PhoenixGameLibrary;
 
 namespace PhoenixGamePresentation.Views
 {
-    public class OverlandSettlementView : IDisposable
+    internal class OverlandSettlementView : ViewBase, IDisposable
     {
         #region State
-        private WorldView WorldView { get; }
-
         private Texture2D Texture { get; set; }
-
         public Settlement Settlement { get; set; }
-
-        private InputHandler Input { get; }
-        private bool IsDisposed { get; set; }
         #endregion End State
 
         public OverlandSettlementView(WorldView worldView, InputHandler input)
@@ -27,6 +21,12 @@ namespace PhoenixGamePresentation.Views
             WorldView = worldView;
 
             Input = input;
+            Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "OverlandSettlementView");
+            Input.EndRegistration();
+
+            Input.Subscribe(GameStatus.OverlandMap.ToString(), "OverlandSettlementView");
+
+            WorldView.SubscribeToStatusChanges("OverlandSettlementView", worldView.HandleStatusChange);
         }
 
         public void LoadContent(ContentManager content)

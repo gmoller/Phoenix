@@ -6,23 +6,21 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Assets;
 using Input;
-using MonoGameUtilities.ViewportAdapters;
+using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
-using Utilities;
 
 namespace PhoenixGamePresentation.Views
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    internal class StackViews : IEnumerable<StackView>, IDisposable
+    internal class StackViews : ViewBase, IEnumerable<StackView.StackView>, IDisposable
     {
         #region State
-        private WorldView WorldView { get; } // readonly
+        private long NextId { get; set; }
 
-        private Stacks Stacks { get; } // readonly
-        private List<StackView> StackViewsList { get; } // readonly
+        private Stacks Stacks { get; }
+        private List<StackView.StackView> StackViewsList { get; }
 
-        private Queue<StackView> OrdersQueue { get; set; }
-        private List<Guid> SelectedThisTurn { get; } // readonly
+        private Queue<StackView.StackView> OrdersQueue { get; set; }
 
         internal Texture2D GuiTextures { get; private set; }
         internal AtlasFrame SquareGreenFrame { get; private set; }
@@ -30,38 +28,39 @@ namespace PhoenixGamePresentation.Views
         internal Texture2D UnitTextures { get; private set; }
         internal AtlasSpec2 UnitAtlas { get; private set; }
 
-        internal StackView Current { get; private set; }
-
-        private Viewport Viewport { get; set; }
-        private ViewportAdapter ViewportAdapter { get; set; }
-
-        private InputHandler Input { get; } // readonly
-        private bool IsDisposed { get; set; }
+        internal StackView.StackView Current { get; private set; }
         #endregion End State
 
         public int Count => StackViewsList.Count;
 
-        public StackView this[int index] => StackViewsList[index];
+        public StackView.StackView this[int index] => StackViewsList[index];
 
         internal StackViews(WorldView worldView, Stacks stacks, InputHandler input)
         {
             WorldView = worldView;
             Stacks = stacks;
-            StackViewsList = new List<StackView>();
+            StackViewsList = new List<StackView.StackView>();
             Current = null;
-            OrdersQueue = new Queue<StackView>();
-            SelectedThisTurn = new List<Guid>();
+            OrdersQueue = new Queue<StackView.StackView>();
+            NextId = 1;
 
             SetupViewport(0, 0, WorldView.Camera.GetViewport.Width, WorldView.Camera.GetViewport.Height);
 
             Input = input;
+            Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "StackViews");
+            Input.EndRegistration();
+
+            Input.Subscribe(GameStatus.OverlandMap.ToString(), "StackViews");
+
+            WorldView.SubscribeToStatusChanges("StackViews", worldView.HandleStatusChange);
         }
 
-        private void SetupViewport(int x, int y, int width, int height)
+        internal long GetNextId()
         {
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            Viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
-            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
+            var nextId = NextId;
+            NextId++;
+
+            return nextId;
         }
 
         internal void LoadContent(ContentManager content)
@@ -121,81 +120,43 @@ namespace PhoenixGamePresentation.Views
         internal void BeginTurn()
         {
             // create a queue of stacks that need orders
-            var queue = new Queue<StackView>();
+            var queue = new Queue<StackView.StackView>();
             foreach (var stackView in StackViewsList)
             {
-                if (!stackView.IsBusy) // not patrol, or fortify
+                if (!stackView.NeedsOrders)
                 {
                     queue.Enqueue(stackView);
                 }
             }
 
             OrdersQueue = queue;
-            SelectedThisTurn.Clear();
 
-            SelectNext();
+            SelectFirst();
         }
 
-        internal void DoWaitAction()
-        {
-            // send current to back of the queue
-            OrdersQueue.Enqueue(Current);
-            SelectNext();
-        }
-
-        internal void DoDoneAction()
-        {
-            SelectNext();
-        }
-
-        internal void DoPatrolAction()
-        {
-            Current.DoPatrolAction();
-            SelectNext();
-        }
-
-        internal void DoFortifyAction()
-        {
-            Current.DoFortifyAction();
-            SelectNext();
-        }
-
-        internal void DoExploreAction()
-        {
-            Current.DoExploreAction();
-        }
-
-        internal void DoBuildAction()
-        {
-            Current.DoBuildAction();
-            SelectNext();
-        }
-
-        internal void SetCurrent(StackView stackView)
-        {
-            SelectedThisTurn.Add(stackView.Id);
-            if (Current != null)
-            {
-                OrdersQueue.Enqueue(Current);
-            }
-
-            Current = stackView;
-            Current.SetStatusToNone();
-        }
-
-        internal void  SelectNext()
+        private void SelectFirst()
         {
             if (OrdersQueue.Count > 0)
             {
                 Current = OrdersQueue.Dequeue();
-                if (SelectedThisTurn.Contains(Current.Id))
-                {
-                    SelectNext();
-                }
-                else
-                {
-                    WorldView.Camera.LookAtCell(Current.Location);
-                }
+                Current.Select();
+                WorldView.Camera.LookAtCell(Current.LocationHex);
+            }
+            else
+            {
+                Current = null;
+            }
+        }
+
+        private void SelectNext()
+        {
+            Current?.Unselect();
+
+            if (OrdersQueue.Count > 0)
+            {
+                Current = OrdersQueue.Dequeue();
+                Current.Select();
+                WorldView.Camera.LookAtCell(Current.LocationHex);
             }
             else
             {
@@ -204,13 +165,73 @@ namespace PhoenixGamePresentation.Views
             }
         }
 
+        internal void SetCurrent(StackView.StackView stackView)
+        {
+            if (Current != null && Current.Id != stackView.Id)
+            {
+                OrdersQueue.Enqueue(Current);
+            }
+
+            Current = stackView;
+            Current.SetStatusToNone();
+        }
+
+        internal void SetNotCurrent(StackView.StackView stackView)
+        {
+            if (Current == stackView)
+            {
+                SelectNext();
+            }
+        }
+
+        internal void DoAction(string action)
+        {
+            if (action == "Wait")
+            {
+                if (OrdersQueue.Count > 0)
+                {
+                    OrdersQueue.Enqueue(Current);
+                }
+            }
+
+            if (action == "Patrol" || action == "Fortify" || action == "Explore" || action == "Build")
+            {
+                Current.DoAction(action);
+            }
+
+            if (action == "Done" || action == "Wait" || action == "Patrol" || action == "Fortify" || action == "Build")
+            {
+                if (action != "Wait" || OrdersQueue.Count != 0)
+                {
+                    SelectNext();
+                }
+            }
+        }
+
         private void CreateNewStackView(WorldView worldView, PhoenixGameLibrary.Stack stack, InputHandler input)
         {
-            var stackView = new StackView(worldView, this, stack, input);
+            var stackView = new StackView.StackView(worldView, this, stack, input);
             StackViewsList.Add(stackView);
         }
 
-        public IEnumerator<StackView> GetEnumerator()
+        internal void CheckForSelectionOfStack(object sender, MouseEventArgs e)
+        {
+            foreach (var stackView in this)
+            {
+                var mustSelect = e.Mouse.Location.IsWithinHex(stackView.LocationHex, WorldView.Camera.Transform);
+                if (mustSelect)
+                {
+                    if (stackView.Id != Current?.Id)
+                    {
+                        Current?.Unselect();
+                        stackView.Select();
+                        Current = stackView;
+                    }
+                }
+            }
+        }
+
+        public IEnumerator<StackView.StackView> GetEnumerator()
         {
             foreach (var item in StackViewsList)
             {

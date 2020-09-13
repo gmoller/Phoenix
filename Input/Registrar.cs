@@ -4,55 +4,65 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Input
 {
-    public class Registrar
+    internal class Registrar
     {
+        #region State
         private bool RegistrationBegun { get; set; }
-        private string GameStatus { get; set; }
+        private List<string> GameStatuses { get; set; }
         private string Owner { get; set; }
         private InputHandler Input { get; }
 
         private Dictionary<string, (int id, object sender, Keys keys, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> action)> KeyboardEventHandlersRepository { get; }
         private Dictionary<string, (int id, object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs> action)> MouseEventHandlersRepository { get; }
+        #endregion End State
 
-        public Registrar(InputHandler input)
+        internal Registrar(InputHandler input)
         {
+            GameStatuses = new List<string>();
+            Owner = string.Empty;
             KeyboardEventHandlersRepository = new Dictionary<string, (int id, object sender, Keys keys, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> action)>();
             MouseEventHandlersRepository = new Dictionary<string, (int id, object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs> action)>();
 
             Input = input;
         }
 
-        public void BeginRegistration(string gameStatus, string owner)
+        internal void BeginRegistration(List<string> gameStatuses, string owner)
         {
             if (RegistrationBegun) throw new Exception("Registration already begun.");
 
             RegistrationBegun = true;
-            GameStatus = gameStatus;
+            GameStatuses = gameStatuses;
             Owner = owner;
         }
 
-        public void Register(int id, object sender, Keys keys, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> action)
+        internal void Register(int id, object sender, Keys keys, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> action)
         {
-            var key = $"{GameStatus}.{Owner}.{id}";
-            KeyboardEventHandlersRepository.Add(key, (id, sender, keys, inputActionType, action));
+            foreach (var gameStatus in GameStatuses)
+            {
+                var key = $"{gameStatus}.{Owner}.{id}";
+                KeyboardEventHandlersRepository.Add(key, (id, sender, keys, inputActionType, action));
+            }
         }
 
-        public void Register(int id, object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs> action)
+        internal void Register(int id, object sender, MouseInputActionType inputActionType, Action<object, MouseEventArgs> action)
         {
-            var key = $"{GameStatus}.{Owner}.{id}";
-            MouseEventHandlersRepository.Add(key, (id, sender, inputActionType, action));
+            foreach (var gameStatus in GameStatuses)
+            {
+                var key = $"{gameStatus}.{Owner}.{id}";
+                MouseEventHandlersRepository.Add(key, (id, sender, inputActionType, action));
+            }
         }
 
-        public void EndRegistration()
+        internal void EndRegistration()
         {
             if (!RegistrationBegun) throw new Exception("Registration has not begun.");
 
             RegistrationBegun = false;
-            GameStatus = string.Empty;
+            GameStatuses.Clear();
             Owner = string.Empty;
         }
 
-        public void Subscribe(string gameStatus, string owner)
+        internal void Subscribe(string gameStatus, string owner)
         {
             foreach (var item in KeyboardEventHandlersRepository)
             {
@@ -71,7 +81,7 @@ namespace Input
             }
         }
 
-        public void Unsubscribe(string gameStatus, string owner)
+        internal void Unsubscribe(string gameStatus, string owner)
         {
             foreach (var item in KeyboardEventHandlersRepository)
             {

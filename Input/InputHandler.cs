@@ -43,8 +43,14 @@ namespace Input
 
         public void BeginRegistration(string gameStatus, string owner)
         {
-            Registrar.BeginRegistration(gameStatus, owner);
+            Registrar.BeginRegistration(new List<string> { gameStatus }, owner);
         }
+
+        public void BeginRegistration(List<string> gameStatuses, string owner)
+        {
+            Registrar.BeginRegistration(gameStatuses, owner);
+        }
+
 
         public void Register(int id, object sender, Keys keys, KeyboardInputActionType inputActionType, Action<object, KeyboardEventArgs> action)
         {

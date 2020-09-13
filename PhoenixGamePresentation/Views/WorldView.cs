@@ -56,17 +56,21 @@ namespace PhoenixGamePresentation.Views
             ActionButtons = InitializeActionButtons();
         }
 
+        #region Accessors
+
+        internal StackView.StackView CurrentlySelectedStackView => StackViews.Current;
         internal CellGrid CellGrid => World.OverlandMap.CellGrid;
         internal Settlements Settlements => World.Settlements;
         internal Stacks Stacks => World.Stacks;
         internal GameStatus GameStatus => GameStatusHandler.GameStatus;
-        public int WorldWidthInPixels => Constants.WORLD_MAP_WIDTH_IN_PIXELS;
-        public int WorldHeightInPixels => Constants.WORLD_MAP_HEIGHT_IN_PIXELS;
-        public EnumerableDictionary<IControl> GetMovementTypeImages => new EnumerableDictionary<IControl>(MovementTypeImages);
-        public EnumerableDictionary<IControl> GetActionButtons => new EnumerableDictionary<IControl>(ActionButtons);
+        internal int WorldWidthInPixels => Constants.WORLD_MAP_WIDTH_IN_PIXELS;
+        internal int WorldHeightInPixels => Constants.WORLD_MAP_HEIGHT_IN_PIXELS;
+        internal EnumerableDictionary<IControl> GetMovementTypeImages => new EnumerableDictionary<IControl>(MovementTypeImages);
+        internal EnumerableDictionary<IControl> GetActionButtons => new EnumerableDictionary<IControl>(ActionButtons);
         internal string CurrentDate => World.CurrentDate;
         internal NotificationList NotificationList => World.NotificationList;
         internal Faction PlayerFaction => World.PlayerFaction;
+        #endregion
 
         internal void LoadContent(ContentManager content)
         {
@@ -151,7 +155,6 @@ namespace PhoenixGamePresentation.Views
 
             var actionButtons = new Dictionary<string, IControl>();
             var i = 0;
-            //var x = 1680; // position of unitFrame BottomRight: (1680;806)
             var x = 10;
             var y = 806;
             var buttonSize = new Vector2(115.0f, 30.0f);
@@ -171,6 +174,11 @@ namespace PhoenixGamePresentation.Views
             }
 
             return actionButtons;
+        }
+
+        internal void CheckForSelectionOfStack(object sender, MouseEventArgs e)
+        {
+            StackViews.CheckForSelectionOfStack(sender, e);
         }
 
         internal void ChangeState(GameStatus from, GameStatus to)
@@ -198,30 +206,7 @@ namespace PhoenixGamePresentation.Views
 
         private void BtnClick(object sender, ButtonClickEventArgs e)
         {
-            //TODO: ToDictionary
-            switch (e.Action)
-            {
-                case "Done":
-                    StackViews.DoDoneAction(); 
-                    break;
-                case "Patrol":
-                    StackViews.DoPatrolAction();
-                    break;
-                case "Wait":
-                    StackViews.DoWaitAction();
-                    break;
-                case "BuildOutpost":
-                    StackViews.DoBuildAction();
-                    break;
-                case "Fortify":
-                    StackViews.DoFortifyAction();
-                    break;
-                case "Explore":
-                    StackViews.DoExploreAction();
-                    break;
-                default:
-                    throw new Exception($"Action [{e.Action}] is not implemented.");
-            }
+            StackViews.DoAction(e.Action);
         }
 
         #endregion

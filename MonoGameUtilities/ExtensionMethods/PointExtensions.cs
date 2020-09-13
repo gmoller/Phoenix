@@ -11,6 +11,11 @@ namespace MonoGameUtilities.ExtensionMethods
             return new PointI(p.X, p.Y);
         }
 
+        public static bool IsWithinHex(this Point p1, PointI p2, Matrix transform)
+        {
+            return p1.IsWithinHex(new HexOffsetCoordinates(p2), transform);
+        }
+
         public static bool IsWithinHex(this Point p1, HexOffsetCoordinates p2, Matrix transform)
         {
             var hexPoint = p1.ToWorldHex(transform);

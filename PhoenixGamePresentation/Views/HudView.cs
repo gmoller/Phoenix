@@ -7,7 +7,6 @@ using GuiControls;
 using Input;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
-using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
@@ -15,31 +14,23 @@ using Utilities;
 
 namespace PhoenixGamePresentation.Views
 {
-    internal class HudView : IDisposable
+    internal class HudView : ViewBase, IDisposable
     {
         #region State
-        private WorldView WorldView { get; } // readonly
-
         private SpriteFont Font { get; set; }
-        private Rectangle Area { get; } // readonly
+        private Rectangle Area { get; }
 
-        private Frame HudViewFrame { get; } // readonly
+        private Frame HudViewFrame { get; }
         private EnumerableDictionary<IControl> ActionButtons { get; set; }
 
         //TODO: these should be label controls
         private string _text1;
         private string _text2;
 
-        private StackViews StackViews { get; } // readonly
-
-        private Viewport Viewport { get; set; }
-        private ViewportAdapter ViewportAdapter { get; set; }
-
-        private InputHandler Input { get; } // readonly
-        private bool IsDisposed { get; set; }
+        private StackViews StackViews { get; }
         #endregion End State
 
-        private StackView SelectedStackView => StackViews.Current;
+        private StackView.StackView SelectedStackView => StackViews.Current;
 
         internal HudView(WorldView worldView, StackViews stackViews, InputHandler input)
         {
@@ -113,13 +104,12 @@ namespace PhoenixGamePresentation.Views
             SetupViewport(Area.X, Area.Y, Area.Width, Area.Height + btnEndTurn.Height);
 
             Input = input;
-        }
+            Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "HudView");
+            Input.EndRegistration();
 
-        private void SetupViewport(int x, int y, int width, int height)
-        {
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            Viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
-            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
+            Input.Subscribe(GameStatus.OverlandMap.ToString(), "HudView");
+
+            WorldView.SubscribeToStatusChanges("HudView", worldView.HandleStatusChange);
         }
 
         internal void LoadContent(ContentManager content)

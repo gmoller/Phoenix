@@ -20,7 +20,7 @@ namespace PhoenixGameLibrary
         private UnitStatus _status;
 
         private Guid Id { get; }
-        public PointI Location { get; internal set; } // hex cell the unit is in
+        public PointI LocationHex { get; internal set; } // hex cell the unit is in
         public float MovementPoints { get; internal set; }
         #endregion
 
@@ -30,46 +30,46 @@ namespace PhoenixGameLibrary
         public string UnitTypeTextureName => _unitType.TextureName;
         public int SightRange => GetSightRange();
 
-        public Unit(World world, UnitType unitType, PointI location)
+        public Unit(World world, UnitType unitType, PointI locationHex)
         {
             _world = world;
             Id = Guid.NewGuid();
             _unitType = unitType;
-            Location = location;
+            LocationHex = locationHex;
             MovementPoints = unitType.MovementPoints;
 
-            SetSeenCells(location);
+            SetSeenCells(locationHex);
         }
 
         internal void DoPatrolAction()
         {
             _status = UnitStatus.Patrol;
-            SetSeenCells(Location);
+            SetSeenCells(LocationHex);
         }
 
         internal void DoFortifyAction()
         {
             // TODO: increment defense by 1
             _status = UnitStatus.Fortify;
-            SetSeenCells(Location);
+            SetSeenCells(LocationHex);
         }
 
         internal void DoExploreAction()
         {
             _status = UnitStatus.Explore;
-            SetSeenCells(Location);
+            SetSeenCells(LocationHex);
         }
 
         internal void DoBuildAction()
         {
             // assume settler for now
-            _world.AddSettlement(Location, "Barbarians"); // TODO: get new from user and race type name from faction
+            _world.AddSettlement(LocationHex, "Barbarians"); // TODO: get new from user and race type name from faction
         }
 
         internal void SetStatusToNone()
         {
             _status = UnitStatus.None;
-            SetSeenCells(Location);
+            SetSeenCells(LocationHex);
         }
 
         internal void EndTurn()
@@ -151,10 +151,10 @@ namespace PhoenixGameLibrary
             return potentialMovementCosts;
         }
 
-        internal void SetSeenCells(PointI location)
+        internal void SetSeenCells(PointI locationHex)
         {
             var cellGrid = _world.OverlandMap.CellGrid;
-            _seenCells = cellGrid.GetCatchment(location.X, location.Y, GetSightRange());
+            _seenCells = cellGrid.GetCatchment(locationHex.X, locationHex.Y, GetSightRange());
             foreach (var item in _seenCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
@@ -194,6 +194,6 @@ namespace PhoenixGameLibrary
             return DebuggerDisplay;
         }
 
-        private string DebuggerDisplay => $"{{Id={Id},Name={Name},Location={Location}}}";
+        private string DebuggerDisplay => $"{{Id={Id},Name={Name},LocationHex={LocationHex}}}";
     }
 }

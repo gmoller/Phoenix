@@ -5,31 +5,21 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
-using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentation.Events;
 using PhoenixGamePresentation.Views.SettlementViewComposite;
-using Utilities;
 
 namespace PhoenixGamePresentation.Views
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    internal class SettlementView : IDisposable
+    internal class SettlementView : ViewBase, IDisposable
     {
         #region State
-        private WorldView WorldView { get; } // readonly 
-
         internal Settlement Settlement { get; set; }
 
-        private IControl MainFrame { get; } // readonly 
-        private IControl SecondaryFrame { get; }// readonly 
-
-        private Viewport Viewport { get; set; }
-        private ViewportAdapter ViewportAdapter { get; set; }
-
-        private InputHandler Input { get; } // readonly
-        private bool IsDisposed { get; set; }
+        private IControl MainFrame { get; }
+        private IControl SecondaryFrame { get; }
         #endregion End State
 
         internal SettlementView(WorldView worldView, Settlement settlement, InputHandler input)
@@ -45,19 +35,19 @@ namespace PhoenixGamePresentation.Views
             SetupViewport(0, 0, 1920, 1080);
 
             Settlement.SettlementOpened += SettlementOpened;
+
             Input = input;
+            Input.BeginRegistration(GameStatus.CityView.ToString(), "SettlementView");
+            Input.EndRegistration();
+
+            Input.Subscribe(GameStatus.CityView.ToString(), "SettlementView");
+
+            WorldView.SubscribeToStatusChanges("SettlementView", worldView.HandleStatusChange);
         }
 
         private void SettlementOpened(object sender, EventArgs e)
         {
             OpenSettlementEvent.HandleEvent(sender, new MouseEventArgs(null, WorldView, 0.0f));
-        }
-
-        private void SetupViewport(int x, int y, int width, int height)
-        {
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            Viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
-            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
         }
 
         internal void LoadContent(ContentManager content)

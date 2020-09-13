@@ -10,16 +10,16 @@ namespace PhoenixGamePresentation
     public class PhoenixGameView
     {
         #region State
-        private readonly WorldView _worldView;
-        private readonly CursorView _cursorView;
-        private readonly InputHandler _input;
+        private WorldView WorldView { get; }
+        private CursorView CursorView { get; }
+        private InputHandler Input { get; }
         #endregion End State
 
         public PhoenixGameView(PhoenixGame phoenixGame)
         {
-            _input = new InputHandler();
-            _worldView = new WorldView(phoenixGame.World, CameraClampMode.NoClamp, _input);
-            _cursorView = new CursorView(_worldView, _input);
+            Input = new InputHandler();
+            WorldView = new WorldView(phoenixGame.World, CameraClampMode.NoClamp, Input);
+            CursorView = new CursorView(WorldView, Input);
         } 
 
         public void LoadContent(ContentManager content)
@@ -95,23 +95,23 @@ namespace PhoenixGamePresentation
             AssetsManager.Instance.AddTexture("Squares_Transparent", "TextureAtlases\\Squares_Transparent");
             AssetsManager.Instance.AddAtlas("Squares_Transparent", "TextureAtlases\\Squares_Transparent");
 
-            _worldView.LoadContent(content);
-            _cursorView.LoadContent(content);
+            WorldView.LoadContent(content);
+            CursorView.LoadContent(content);
 
-            _worldView.BeginTurn();
+            WorldView.BeginTurn();
         }
 
         public void Update(float deltaTime)
         {
-            _input.Update(_worldView, deltaTime);
-            _worldView.Update(deltaTime);
-            _cursorView.Update(deltaTime);
+            Input.Update(WorldView, deltaTime);
+            WorldView.Update(deltaTime);
+            CursorView.Update(deltaTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            _worldView.Draw(spriteBatch);
-            _cursorView.Draw(spriteBatch);
+            WorldView.Draw(spriteBatch);
+            CursorView.Draw(spriteBatch);
         }
     }
 }

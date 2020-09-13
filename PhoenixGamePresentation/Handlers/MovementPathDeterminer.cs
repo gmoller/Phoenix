@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using Hex;
 using PhoenixGameLibrary;
-using PhoenixGamePresentation.Views;
+using PhoenixGamePresentation.Views.StackView;
 using Utilities;
 
 namespace PhoenixGamePresentation.Handlers
 {
     internal static class MovementPathDeterminer
     {
-        internal static List<PointI> DetermineMovementPath(StackView stackView, PointI from, PointI to, CellGrid cellGrid)
+        internal static List<PointI> DetermineMovementPath(Stack stack, PointI from, PointI to, CellGrid cellGrid)
         {
             if (from.Equals(to)) return new List<PointI>();
 
@@ -26,7 +26,7 @@ namespace PhoenixGamePresentation.Handlers
 
             GetCostToMoveIntoResult GetCostToMoveIntoFunc(PointI point)
             {
-                return stackView.GetCostToMoveInto(point);
+                return stack.GetCostToMoveInto(point);
             }
         }
 

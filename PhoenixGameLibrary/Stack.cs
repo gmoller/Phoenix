@@ -19,7 +19,7 @@ namespace PhoenixGameLibrary
         public UnitStatus Status { get; private set; }
         #endregion
 
-        public PointI Location => _units.Count > 0 ?_units[0].Location : PointI.Empty;
+        public PointI LocationHex => _units.Count > 0 ?_units[0].LocationHex : PointI.Empty;
 
         public int SightRange => GetSightRange();
 
@@ -28,7 +28,7 @@ namespace PhoenixGameLibrary
         public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(_units));
 
         public int Count => _units.Count;
-        public bool IsBusy => Status == UnitStatus.Patrol || Status == UnitStatus.Fortify;
+        public bool NeedsOrders => Status == UnitStatus.Patrol || Status == UnitStatus.Fortify;
 
         public Unit this[int index] => _units[index];
 
@@ -39,25 +39,47 @@ namespace PhoenixGameLibrary
             Status = UnitStatus.None;
         }
 
-        public void DoPatrolAction()
+        public void DoAction(string action)
+        {
+            //TODO: ToDictionary
+            switch (action)
+            {
+                case "Patrol":
+                    DoPatrolAction();
+                    break;
+                case "Fortify":
+                    DoFortifyAction();
+                    break;
+                case "Explore":
+                    DoExploreAction();
+                    break;
+                case "BuildOutpost":
+                    DoBuildAction();
+                    break;
+                default:
+                    throw new Exception($"Action [{action}] is not implemented.");
+            }
+        }
+
+        private void DoPatrolAction()
         {
             Status = UnitStatus.Patrol;
             _units.DoPatrolAction();
         }
 
-        public void DoFortifyAction()
+        private void DoFortifyAction()
         {
             Status = UnitStatus.Fortify;
             _units.DoFortifyAction();
         }
 
-        public void DoExploreAction()
+        private void DoExploreAction()
         {
             Status = UnitStatus.Explore;
             _units.DoExploreAction();
         }
 
-        public void DoBuildAction()
+        private void DoBuildAction()
         {
             var builders = _units.GetUnitsByAction("BuildOutpost");
             if (builders.Count == 0) return;
@@ -74,13 +96,13 @@ namespace PhoenixGameLibrary
 
         internal void MoveTo(PointI locationToMoveTo)
         {
-            var cellToMoveTo = _world.OverlandMap.CellGrid.GetCell(locationToMoveTo.X, locationToMoveTo.Y);
+            var cellToMoveTo = _world.OverlandMap.CellGrid.GetCell(locationToMoveTo);
             var movementCost = GetCostToMoveInto(cellToMoveTo);
 
             foreach (var unit in _units)
             {
-                unit.Location = locationToMoveTo;
-                unit.SetSeenCells(Location);
+                unit.LocationHex = locationToMoveTo;
+                unit.SetSeenCells(LocationHex);
 
                 unit.MovementPoints -= movementCost.CostToMoveInto;
                 if (unit.MovementPoints < 0.0f)
@@ -107,21 +129,6 @@ namespace PhoenixGameLibrary
             var terrainType = terrainTypes[cell.TerrainTypeId];
 
             return GetCostToMoveInto(terrainType);
-        }
-
-        private int GetSightRange()
-        {
-            var sightRange = 0;
-            foreach (var unit in _units)
-            {
-                if (unit.SightRange > sightRange)
-                {
-                    sightRange = unit.SightRange;
-                }
-
-            }
-
-            return sightRange;
         }
 
         private GetCostToMoveIntoResult GetCostToMoveInto(TerrainType terrainType)
@@ -163,6 +170,20 @@ namespace PhoenixGameLibrary
             }
 
             return potentialMovementCosts;
+        }
+
+        private int GetSightRange()
+        {
+            var sightRange = 0;
+            foreach (var unit in _units)
+            {
+                if (unit.SightRange > sightRange)
+                {
+                    sightRange = unit.SightRange;
+                }
+            }
+
+            return sightRange;
         }
 
         internal void BeginTurn()
@@ -242,7 +263,7 @@ namespace PhoenixGameLibrary
                         // TODO: move this into a Func on the ActionType: addAction = actionType.DoSpecificCheck(Location);
                         if (action == "BuildOutpost")
                         {
-                            addAction = CanSettleOnTerrain(Location);
+                            addAction = CanSettleOnTerrain(LocationHex);
                         }
                         else
                         {
@@ -262,13 +283,13 @@ namespace PhoenixGameLibrary
             return actionsNames;
         }
 
-        private bool CanSettleOnTerrain(PointI thisLocation)
+        private bool CanSettleOnTerrain(PointI thisLocationHex)
         {
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var terrainTypes = gameMetadata.TerrainTypes;
 
             // if terrain is settle-able
-            var cell = _world.OverlandMap.CellGrid.GetCell(thisLocation);
+            var cell = _world.OverlandMap.CellGrid.GetCell(thisLocationHex);
             var terrainType = terrainTypes[cell.TerrainTypeId];
 
             if (!terrainType.CanSettleOn) return false;
@@ -277,7 +298,7 @@ namespace PhoenixGameLibrary
             var settlements = _world.Settlements;
             foreach (var settlement in settlements)
             {
-                var distance = HexOffsetCoordinates.GetDistance(thisLocation.X, thisLocation.Y, settlement.Location.X, settlement.Location.Y);
+                var distance = HexOffsetCoordinates.GetDistance(thisLocationHex.X, thisLocationHex.Y, settlement.Location.X, settlement.Location.Y);
                 if (distance >= 4)
                 {
                     return true;

@@ -9,31 +9,31 @@ namespace PhoenixGameLibrary
     public class Units : IEnumerable<Unit>
     {
         #region State
-        private readonly List<Unit> _units;
-        #endregion
+        private List<Unit> UnitsList { get; }
+        #endregion End State
 
-        public Unit this[int index] => _units[index];
+        public Unit this[int index] => UnitsList[index];
 
-        internal int Count => _units.Count;
+        internal int Count => UnitsList.Count;
 
         internal Units()
         {
-            _units = new List<Unit>();
+            UnitsList = new List<Unit>();
         }
 
         internal void Add(Unit unit)
         {
-            _units.Add(unit);
+            UnitsList.Add(unit);
         }
 
         internal void Remove(Unit unit)
         {
-            _units.Remove(unit);
+            UnitsList.Remove(unit);
         }
 
         internal void DoPatrolAction()
         {
-            foreach (var unit in _units)
+            foreach (var unit in UnitsList)
             {
                 unit.DoPatrolAction();
             }
@@ -41,7 +41,7 @@ namespace PhoenixGameLibrary
 
         internal void DoFortifyAction()
         {
-            foreach (var unit in _units)
+            foreach (var unit in UnitsList)
             {
                 unit.DoFortifyAction();
             }
@@ -49,7 +49,7 @@ namespace PhoenixGameLibrary
 
         internal void DoExploreAction()
         {
-            foreach (var unit in _units)
+            foreach (var unit in UnitsList)
             {
                 unit.DoExploreAction();
             }
@@ -57,7 +57,7 @@ namespace PhoenixGameLibrary
 
         internal void SetStatusToNone()
         {
-            foreach (var unit in _units)
+            foreach (var unit in UnitsList)
             {
                 unit.SetStatusToNone();
             }
@@ -65,7 +65,7 @@ namespace PhoenixGameLibrary
 
         internal List<Unit> GetUnitsByAction(string actionType)
         {
-            return _units.Where(unit => unit.Actions.Contains(actionType)).ToList();
+            return UnitsList.Where(unit => unit.Actions.Contains(actionType)).ToList();
         }
 
         public override string ToString()
@@ -73,11 +73,11 @@ namespace PhoenixGameLibrary
             return DebuggerDisplay;
         }
 
-        private string DebuggerDisplay => $"{{Count={_units.Count}}}";
+        private string DebuggerDisplay => $"{{Count={UnitsList.Count}}}";
 
         public IEnumerator<Unit> GetEnumerator()
         {
-            foreach (var item in _units)
+            foreach (var item in UnitsList)
             {
                 yield return item;
             }

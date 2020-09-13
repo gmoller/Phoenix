@@ -2,25 +2,16 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Input;
-using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
-using Utilities;
 
 namespace PhoenixGamePresentation.Views
 {
-    public class OverlandSettlementViews : IDisposable
+    internal class OverlandSettlementViews : ViewBase, IDisposable
     {
         #region State
-        private WorldView WorldView { get; }// readonly
-        private Settlements Settlements { get; } // readonly
+        private Settlements Settlements { get; }
 
-        private OverlandSettlementView OverlandSettlementView { get; } // readonly
-
-        private Viewport Viewport { get; set; }
-        private ViewportAdapter ViewportAdapter { get; set; }
-
-        private InputHandler Input { get; } // readonly
-        private bool IsDisposed { get; set; }
+        private OverlandSettlementView OverlandSettlementView { get; }
         #endregion End State
 
         public OverlandSettlementViews(WorldView worldView, Settlements settlements, InputHandler input)
@@ -33,13 +24,12 @@ namespace PhoenixGamePresentation.Views
             SetupViewport(0, 0, WorldView.Camera.GetViewport.Width, WorldView.Camera.GetViewport.Height);
 
             Input = input;
-        }
+            Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "OverlandSettlementViews");
+            Input.EndRegistration();
 
-        private void SetupViewport(int x, int y, int width, int height)
-        {
-            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            Viewport = new Viewport(x, y, width, height, 0.0f, 1.0f);
-            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, width, height);
+            Input.Subscribe(GameStatus.OverlandMap.ToString(), "OverlandSettlementViews");
+
+            WorldView.SubscribeToStatusChanges("OverlandSettlementViews", worldView.HandleStatusChange);
         }
 
         public void LoadContent(ContentManager content)

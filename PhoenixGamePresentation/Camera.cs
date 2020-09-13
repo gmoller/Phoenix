@@ -130,6 +130,26 @@ namespace PhoenixGamePresentation
         /// </summary>
         /// <param name="worldHex"></param>
         /// <returns></returns>
+        public Vector2 WorldHexToScreenPixel(Point worldHex)
+        {
+            return WorldHexToScreenPixel(new HexOffsetCoordinates(worldHex.X, worldHex.Y));
+        }
+
+        /// <summary>
+        /// Translates the center position of a hex in the world to a position on the screen.
+        /// </summary>
+        /// <param name="worldHex"></param>
+        /// <returns></returns>
+        public Vector2 WorldHexToScreenPixel(PointI worldHex)
+        {
+            return WorldHexToScreenPixel(new HexOffsetCoordinates(worldHex));
+        }
+
+        /// <summary>
+        /// Translates the center position of a hex in the world to a position on the screen.
+        /// </summary>
+        /// <param name="worldHex"></param>
+        /// <returns></returns>
         public Vector2 WorldHexToScreenPixel(HexOffsetCoordinates worldHex)
         {
             var worldPosition = HexOffsetCoordinates.ToPixel(worldHex);
@@ -200,6 +220,11 @@ namespace PhoenixGamePresentation
         public Vector2 ScreenPixelToWorldPixel(Vector2 screenPosition)
         {
             return Vector2.Transform(screenPosition, Matrix.Invert(Transform));
+        }
+
+        public Vector2 WorldHexToWorldPixel(PointI worldHex)
+        {
+            return HexOffsetCoordinates.ToPixel(worldHex).ToVector2();
         }
 
         #endregion

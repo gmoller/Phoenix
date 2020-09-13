@@ -12,6 +12,8 @@ namespace Input
         private readonly Dictionary<KeyboardInputActionType, Func<Keys, bool>> _switch;
         #endregion End State
 
+        public Keys[] Keys => _currentState.GetPressedKeys();
+
         internal KeyboardHandler()
         {
             _currentState = Keyboard.GetState();
