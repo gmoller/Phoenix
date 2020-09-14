@@ -22,9 +22,39 @@ namespace PhoenixGamePresentation.Views.StackView
 
         internal override void DrawUnit(SpriteBatch spriteBatch, Camera camera)
         {
-            var location = camera.WorldHexToWorldPixel(StackView.Stack.LocationHex);
+            var thisStacksLocationHex = StackView.Stack.LocationHex;
 
-            DrawUnit(spriteBatch, location);
+            var drawUnit = false;
+            var currentlySelectedStack = StackView.StackViews.Current;
+            if (currentlySelectedStack != null) // if another stack is selected
+            {
+                var currentlySelectedStacksLocationHex = currentlySelectedStack.LocationHex;
+                if (currentlySelectedStacksLocationHex == thisStacksLocationHex) // and it's in the same hex as this one
+                {
+                    if (currentlySelectedStack.IsMovingState) // and selected stack is moving
+                    {
+                        drawUnit = true;
+                    }
+                    else
+                    {
+                        // don't draw if there's a selected stack on same location and it's not moving
+                    }
+                }
+                else
+                {
+                    drawUnit = true;
+                }
+            }
+            else
+            {
+                drawUnit = true;
+            }
+
+            if (drawUnit)
+            {
+                var locationInWorld = camera.WorldHexToWorldPixel(thisStacksLocationHex);
+                DrawUnit(spriteBatch, locationInWorld);
+            }
         }
     }
 }

@@ -115,7 +115,7 @@ namespace Phoenix2
             }
 
             _phoenixGame.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
-            _phoenixGameView.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds); // here for controls updates
+            _phoenixGameView.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             _metricsPanel.Update(gameTime);
 
             base.Update(gameTime);

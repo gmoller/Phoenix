@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -207,16 +208,59 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawUnitBadges(SpriteBatch spriteBatch)
         {
-            var stackViews = SelectedStackView.GetStackViewsSharingSameLocation();
+            var stackViews = GetStackViewsSharingSameLocation(SelectedStackView);
 
             var x = 20.0f;
             var y = Area.Height * Constants.ONE_HALF + 10.0f;
             int i = 0;
             foreach (var stackView in stackViews)
             {
-                stackView.DrawBadges(spriteBatch, new Vector2(x, y), i, stackView.IsSelected);
+                DrawUnitBadges(spriteBatch, new Vector2(x, y), i, stackView.IsSelected, stackView.Stack);
                 i += stackView.Count;
             }
+        }
+
+        private List<StackView.StackView> GetStackViewsSharingSameLocation(StackView.StackView selectedStackView)
+        {
+            var stackViews = new List<StackView.StackView>();
+            foreach (var stackView in StackViews)
+            {
+                if (stackView.LocationHex == selectedStackView.LocationHex) // same location
+                {
+                    stackViews.Add(stackView);
+                }
+            }
+
+            return stackViews;
+        }
+
+        private void DrawUnitBadges(SpriteBatch spriteBatch, Vector2 topLeftPosition, int index, bool isSelected, Stack stack)
+        {
+            var x = topLeftPosition.X + 60.0f * Constants.ONE_HALF;
+            var y = topLeftPosition.Y + 60.0f * Constants.ONE_HALF;
+            foreach (var unit in stack)
+            {
+                var indexMod3 = index % 3;
+                var indexDividedBy3 = index / 3; // Floor
+                var xOffset = 75.0f * indexMod3;
+                var yOffset = 75.0f * indexDividedBy3;
+                DrawUnitBadge(spriteBatch, new Vector2(x + xOffset, y + yOffset), unit, isSelected);
+                index++;
+            }
+        }
+
+        private void DrawUnitBadge(SpriteBatch spriteBatch, Vector2 centerPosition, Unit unit, bool isSelected)
+        {
+            // draw background
+            var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 60, 60);
+            var sourceRectangle = isSelected ? StackViews.SquareGreenFrame.ToRectangle() : StackViews.SquareGrayFrame.ToRectangle();
+            spriteBatch.Draw(StackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.FlipVertically, 0.0f);
+
+            // draw unit icon
+            destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 36, 32);
+            var frame = StackViews.UnitAtlas.Frames[unit.UnitTypeTextureName];
+            sourceRectangle = frame.ToRectangle();
+            spriteBatch.Draw(StackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.None, 0.0f);
         }
 
         private void DrawMovementTypeImages(SpriteBatch spriteBatch)

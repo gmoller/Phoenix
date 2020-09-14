@@ -10,6 +10,7 @@ using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
+using PhoenixGamePresentation.Views.StackView;
 using Utilities;
 
 namespace PhoenixGamePresentation.Views
@@ -57,8 +58,7 @@ namespace PhoenixGamePresentation.Views
         }
 
         #region Accessors
-
-        internal StackView.StackView CurrentlySelectedStackView => StackViews.Current;
+        internal StackView.StackView CurrentlySelectedStackView => StackViews.Current?.StackViewState is StackViewSelectedState ? StackViews.Current : null;
         internal CellGrid CellGrid => World.OverlandMap.CellGrid;
         internal Settlements Settlements => World.Settlements;
         internal Stacks Stacks => World.Stacks;

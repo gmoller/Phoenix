@@ -52,13 +52,22 @@ namespace PhoenixGamePresentation.Views.StackView
             return (false, null);
         }
 
+        private bool CheckForRestartOfMovement()
+        {
+            if (StackView.HasMovementPath && StackView.MovementPoints > 0.0f)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         internal override void DrawUnit(SpriteBatch spriteBatch, Camera camera)
         {
             if (!Blink)
             {
-                var location = camera.WorldHexToWorldPixel(StackView.Stack.LocationHex);
-
-                DrawUnit(spriteBatch, location);
+                var locationInWorld = camera.WorldHexToWorldPixel(StackView.Stack.LocationHex);
+                DrawUnit(spriteBatch, locationInWorld);
             }
 
             DrawMovementPath(spriteBatch, PotentialMovementPath, Color.White, 3.0f, 1.0f);
@@ -137,16 +146,6 @@ namespace PhoenixGamePresentation.Views.StackView
             if (BlinkCooldownInMilliseconds > 0.0f) return false;
 
             return true;
-        }
-
-        private bool CheckForRestartOfMovement()
-        {
-            if (StackView.HasMovementPath && StackView.MovementPoints > 0.0f)
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

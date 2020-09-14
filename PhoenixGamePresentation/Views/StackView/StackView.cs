@@ -7,9 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using GuiControls;
 using Input;
 using PhoenixGameLibrary;
-using PhoenixGamePresentation.Handlers;
 using Utilities;
-using Utilities.ExtensionMethods;
 
 namespace PhoenixGamePresentation.Views.StackView
 {
@@ -22,7 +20,7 @@ namespace PhoenixGamePresentation.Views.StackView
 
         internal List<PointI> MovementPath { get; set; }
 
-        private StackViewState StackViewState { get; set; }
+        internal StackViewState StackViewState { get; private set; }
 
         private StackViewUpdateActions StackViewUpdateActions { get; set; }
         #endregion End State
@@ -43,7 +41,7 @@ namespace PhoenixGamePresentation.Views.StackView
             WorldView.SubscribeToStatusChanges($"StackView:{Id}", WorldView.HandleStatusChange);
 
             IfThenElseProcessor = new IfThenElseProcessor();
-            IfThenElseProcessor.Add($"StackView:{Id}", 2, this, MustFindNewExploreLocation, SetMovementPathToNewExploreLocation);
+            //IfThenElseProcessor.Add($"StackView:{Id}", 2, this, MustFindNewExploreLocation, SetMovementPathToNewExploreLocation);
 
             StackViewState = new StackViewNormalState(this);
             StackViewUpdateActions = StackViewUpdateActions.None;
@@ -51,7 +49,6 @@ namespace PhoenixGamePresentation.Views.StackView
 
         #region Accessors
         internal bool NeedsOrders => Stack.NeedsOrders;
-        private UnitStatus Status => Stack.Status;
 
         internal bool IsSelected => StackViews.Current == this;
 
@@ -59,10 +56,21 @@ namespace PhoenixGamePresentation.Views.StackView
 
         internal PointI LocationHex => Stack.LocationHex;
         internal float MovementPoints => Stack.MovementPoints;
-        private int SightRange => Stack.SightRange;
-        private bool IsMovingState => StackViewState is StackViewMovingState;
+        internal int SightRange => Stack.SightRange;
+        internal bool IsMovingState => StackViewState is StackViewMovingState;
         internal bool HasMovementPath => MovementPath?.Count > 0;
-        internal bool HasNoMovementPath => MovementPath?.Count == 0;
+        internal bool HasNoMovementPath
+        {
+            get
+            {
+                if (MovementPath != null)
+                {
+                    return MovementPath.Count == 0;
+                }
+
+                return true;
+            }
+        }
 
         internal int Count => Stack.Count;
         #endregion
@@ -83,7 +91,12 @@ namespace PhoenixGamePresentation.Views.StackView
         internal void Update(float deltaTime)
         {
             IfThenElseProcessor.Update(deltaTime);
-            
+
+            if (Stack.Status == UnitStatus.Explore && HasNoMovementPath)
+            {
+                StackViewState = new StackViewExploringState(this);
+            }
+
             var changeState = StackViewState.Update(StackViewUpdateActions, WorldView, deltaTime);
             if (changeState.changeState)
             {
@@ -105,130 +118,7 @@ namespace PhoenixGamePresentation.Views.StackView
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            if (IsSelected)
-            {
-                DrawUnit(spriteBatch);
-            }
-            else
-            {
-                if (StackViews.Current != null) // if another stack is selected
-                {
-                    var selectedStacksPosition = StackViews.Current.LocationHex;
-                    var thisStacksPosition = LocationHex;
-                    if (selectedStacksPosition == thisStacksPosition) // and it's in the same hex as this one
-                    {
-                        if (StackViews.Current.IsMovingState) // and selected stack is moving
-                        {
-                            DrawUnit(spriteBatch);
-                        }
-                        else
-                        {
-                            // don't draw if there's a selected stack on same location and it's not moving
-                        }
-                    }
-                    else
-                    {
-                        DrawUnit(spriteBatch);
-                    }
-                }
-                else
-                {
-                    DrawUnit(spriteBatch);
-                }
-            }
-        }
-
-        private void DrawUnit(SpriteBatch spriteBatch)
-        {
             StackViewState.DrawUnit(spriteBatch, WorldView.Camera);
-        }
-
-        internal List<StackView> GetStackViewsSharingSameLocation()
-        {
-            var stackViews = new List<StackView>();
-            foreach (var stackView in StackViews)
-            {
-                if (stackView.LocationHex == LocationHex) // same location
-                {
-                    stackViews.Add(stackView);
-                }
-            }
-
-            return stackViews;
-        }
-
-        internal void DrawBadges(SpriteBatch spriteBatch, Vector2 topLeftPosition, int index = 0, bool isSelected = true)
-        {
-            var x = topLeftPosition.X + 60.0f * Constants.ONE_HALF;
-            var y = topLeftPosition.Y + 60.0f * Constants.ONE_HALF;
-            foreach (var unit in Stack)
-            {
-                var indexMod3 = index % 3;
-                var indexDividedBy3 = index / 3; // Floor
-                var xOffset = 75.0f * indexMod3;
-                var yOffset = 75.0f * indexDividedBy3;
-                DrawBadge(spriteBatch, new Vector2(x + xOffset, y + yOffset), unit, isSelected);
-                index++;
-            }
-        }
-
-        private void DrawBadge(SpriteBatch spriteBatch, Vector2 centerPosition, Unit unit, bool isSelected)
-        {
-            // draw background
-            var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 60, 60);
-            var sourceRectangle = isSelected ? StackViews.SquareGreenFrame.ToRectangle() : StackViews.SquareGrayFrame.ToRectangle();
-            spriteBatch.Draw(StackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.FlipVertically, 0.0f);
-
-            // draw unit icon
-            destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 36, 32);
-            var frame = StackViews.UnitAtlas.Frames[unit.UnitTypeTextureName];
-            sourceRectangle = frame.ToRectangle();
-            spriteBatch.Draw(StackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.None, 0.0f);
-        }
-
-        private static bool MustFindNewExploreLocation(object sender, float deltaTime)
-        {
-            var stackView = (StackView)sender;
-
-            var mustFindNewExploreLocation = stackView.Status == UnitStatus.Explore && stackView.HasNoMovementPath;
-
-            return mustFindNewExploreLocation;
-        }
-
-        private static void SetMovementPathToNewExploreLocation(object sender, ActionArgs e)
-        {
-            var stackView = (StackView)sender;
-
-            // find closest unexplored cell
-            var cellGrid = stackView.WorldView.CellGrid;
-            var cell = cellGrid.GetClosestUnexploredCell(stackView.LocationHex);
-
-            if (cell != Cell.Empty)
-            {
-                // find best path to unexplored cell
-                var path = MovementPathDeterminer.DetermineMovementPath(stackView.Stack, stackView.LocationHex, cell.ToPoint, cellGrid);
-
-                if (path.Count > 0)
-                {
-                    path = path.RemoveLast(stackView.SightRange);
-                    stackView.SetMovementPath(path);
-                }
-                else
-                {
-                    // no location found to explore
-                    stackView.SetStatusToNone();
-                }
-            }
-            else
-            {
-                // all locations explored
-                stackView.SetStatusToNone();
-            }
-        }
-
-        private void SetMovementPath(List<PointI> path)
-        {
-            MovementPath = path;
         }
 
         internal void SetPotentialMovement(Point mouseLocation)

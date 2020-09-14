@@ -173,12 +173,11 @@ namespace PhoenixGamePresentation.Views
             }
 
             Current = stackView;
-            Current.SetStatusToNone();
         }
 
         internal void SetNotCurrent(StackView.StackView stackView)
         {
-            if (Current == stackView)
+            if (Current == stackView) // if we were the currently selected one
             {
                 SelectNext();
             }
@@ -194,12 +193,12 @@ namespace PhoenixGamePresentation.Views
                 }
             }
 
-            if (action == "Patrol" || action == "Fortify" || action == "Explore" || action == "Build")
+            if (action == "Patrol" || action == "Fortify" || action == "Explore" || action == "BuildOutpost")
             {
                 Current.DoAction(action);
             }
 
-            if (action == "Done" || action == "Wait" || action == "Patrol" || action == "Fortify" || action == "Build")
+            if (action == "Done" || action == "Wait" || action == "Patrol" || action == "Fortify" || action == "BuildOutpost")
             {
                 if (action != "Wait" || OrdersQueue.Count != 0)
                 {

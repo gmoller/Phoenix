@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Hex;
 using PhoenixGameLibrary;
-using PhoenixGamePresentation.Views.StackView;
 using Utilities;
 
 namespace PhoenixGamePresentation.Handlers
