@@ -31,7 +31,7 @@ namespace GuiControls
 
         protected string TextureAtlas { get; private set; }
         protected string TextureName { get; private set; }
-        protected Microsoft.Xna.Framework.Color Color { get; private set; }
+        protected Color Color { get; private set; }
         protected float LayerDepth { get; private set; }
 
         protected Texture2D Texture { get; set; }
@@ -41,41 +41,12 @@ namespace GuiControls
 
         public string Name { get; protected set; }
 
-        private bool _enabled;
-        public bool Enabled
-        {
-            get => Parent?.Enabled ?? _enabled;
-            set => _enabled = value;
-        }
+        public bool Enabled { get; set; } //Parent?.Enabled ?? _enabled;
+
         public bool MouseOver { get; private set; }
 
         public event EventHandler<EventArgs> Click;
-        #endregion State
-
-        public int Top => ActualDestinationRectangle.Top;
-        public int Bottom => ActualDestinationRectangle.Bottom;
-        public int Left => ActualDestinationRectangle.Left;
-        public int Right => ActualDestinationRectangle.Right;
-        public PointI Center => new PointI(ActualDestinationRectangle.Center.X, ActualDestinationRectangle.Center.Y);
-        public PointI TopLeft => new PointI(Left, Top);
-        public PointI TopRight => new PointI(Right, Top);
-        public PointI BottomLeft => new PointI(Left, Bottom);
-        public PointI BottomRight => new PointI(Right, Bottom);
-
-        public Rectangle Area => new Rectangle(TopLeft.X, TopLeft.Y, Size.X, Size.Y);
-
-        public PointI RelativeTopLeft => new PointI(Left - (Parent?.Left ?? 0), Top - (Parent?.Top ?? 0));
-        public PointI RelativeTopRight => new PointI(RelativeTopLeft.X + Width, RelativeTopLeft.Y);
-        public PointI RelativeMiddleRight => new PointI(RelativeTopLeft.X + Width, RelativeTopLeft.Y + (int)(Height * 0.5f));
-        public PointI RelativeBottomLeft => new PointI(RelativeTopLeft.X, RelativeTopLeft.Y + Height);
-
-        public int Width => ActualDestinationRectangle.Width;
-        public int Height => ActualDestinationRectangle.Height;
-        public PointI Size => new PointI(ActualDestinationRectangle.Size.X, ActualDestinationRectangle.Size.Y);
-
-        public EnumerableDictionary<IControl> ChildControls => new EnumerableDictionary<IControl>(_childControls);
-        public IControl this[int index] => _childControls.Values.ElementAt(index);
-        public IControl this[string key] => FindControl(key);
+        #endregion
 
         private Control()
         {
@@ -105,6 +76,33 @@ namespace GuiControls
         {
             Copy(copyThis);
         }
+
+        #region Accessors
+        public int Top => ActualDestinationRectangle.Top;
+        public int Bottom => ActualDestinationRectangle.Bottom;
+        public int Left => ActualDestinationRectangle.Left;
+        public int Right => ActualDestinationRectangle.Right;
+        public PointI Center => new PointI(ActualDestinationRectangle.Center.X, ActualDestinationRectangle.Center.Y);
+        public PointI TopLeft => new PointI(Left, Top);
+        public PointI TopRight => new PointI(Right, Top);
+        public PointI BottomLeft => new PointI(Left, Bottom);
+        public PointI BottomRight => new PointI(Right, Bottom);
+
+        public Rectangle Area => new Rectangle(TopLeft.X, TopLeft.Y, Size.X, Size.Y);
+
+        public PointI RelativeTopLeft => new PointI(Left - (Parent?.Left ?? 0), Top - (Parent?.Top ?? 0));
+        public PointI RelativeTopRight => new PointI(RelativeTopLeft.X + Width, RelativeTopLeft.Y);
+        public PointI RelativeMiddleRight => new PointI(RelativeTopLeft.X + Width, RelativeTopLeft.Y + (int)(Height * 0.5f));
+        public PointI RelativeBottomLeft => new PointI(RelativeTopLeft.X, RelativeTopLeft.Y + Height);
+
+        public int Width => ActualDestinationRectangle.Width;
+        public int Height => ActualDestinationRectangle.Height;
+        public PointI Size => new PointI(ActualDestinationRectangle.Size.X, ActualDestinationRectangle.Size.Y);
+
+        public EnumerableDictionary<IControl> ChildControls => new EnumerableDictionary<IControl>(_childControls);
+        public IControl this[int index] => _childControls.Values.ElementAt(index);
+        public IControl this[string key] => FindControl(key);
+        #endregion
 
         public virtual IControl Clone()
         {

@@ -55,6 +55,7 @@ namespace PhoenixGamePresentation.Views
             HudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.15f /* 15% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
             var image = new Image("mapImage", new Vector2(200.0f, 116.0f), null);
             image.Click += MiniMapClick;
+            //TODO: minimap drag
             HudViewFrame["miniMapFrame"].AddControl(image, Alignment.MiddleCenter, Alignment.MiddleCenter);
 
             #endregion
@@ -149,6 +150,8 @@ namespace PhoenixGamePresentation.Views
             _text2 = string.Empty;
             if (WorldView.GameStatus == GameStatus.CityView) return;
 
+            HudViewFrame["btnEndTurn"].Enabled = WorldView.AllStacksHaveBeenGivenOrders;
+
             HudViewFrame.Update(Input, deltaTime, Viewport);
             ActionButtons.Update(Input, deltaTime, Viewport);
 
@@ -156,7 +159,6 @@ namespace PhoenixGamePresentation.Views
             var cellGrid = WorldView.CellGrid;
             var hexPoint = WorldView.Camera.ScreenPixelToWorldHex(Input.MousePosition);
 
-            // TODO: check if cell is on screen
             var cell = cellGrid.GetCell(hexPoint);
             if (cell.SeenState == SeenState.NeverSeen) return;
 

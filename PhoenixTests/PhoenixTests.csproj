@@ -16,4 +16,8 @@
     <ProjectReference Include="..\PhoenixGamePresentation\PhoenixGamePresentation.csproj" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="rem deltree /Y $(SolutionDir)\$(SolutionName)\Content&#xD;&#xA;rem |xcopy /E /I  $(SolutionDir)\$(SolutionName)\Content $(TargetDir)\Content" />
+  </Target>
+
 </Project>

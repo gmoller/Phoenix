@@ -44,6 +44,7 @@ namespace PhoenixGameLibrary
         internal void DoPatrolAction()
         {
             _status = UnitStatus.Patrol;
+            MovementPoints = 0.0f;
             SetSeenCells(LocationHex);
         }
 
@@ -51,6 +52,7 @@ namespace PhoenixGameLibrary
         {
             // TODO: increment defense by 1
             _status = UnitStatus.Fortify;
+            MovementPoints = 0.0f;
             SetSeenCells(LocationHex);
         }
 

@@ -19,7 +19,15 @@ namespace PhoenixGameLibrary
         public UnitStatus Status { get; private set; }
         #endregion
 
-        public PointI LocationHex => _units.Count > 0 ?_units[0].LocationHex : PointI.Empty;
+        public Stack(World world, Units units)
+        {
+            _world = world;
+            _units = units;
+            Status = UnitStatus.None;
+        }
+
+        #region Accessors
+        public PointI LocationHex => _units.Count > 0 ? _units[0].LocationHex : PointI.Empty;
 
         public int SightRange => GetSightRange();
 
@@ -28,16 +36,10 @@ namespace PhoenixGameLibrary
         public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(_units));
 
         public int Count => _units.Count;
-        public bool NeedsOrders => Status == UnitStatus.Patrol || Status == UnitStatus.Fortify;
+        public bool NeedsOrders => Status != UnitStatus.Patrol && Status != UnitStatus.Fortify;
 
         public Unit this[int index] => _units[index];
-
-        public Stack(World world, Units units)
-        {
-            _world = world;
-            _units = units;
-            Status = UnitStatus.None;
-        }
+        #endregion
 
         public void DoAction(string action)
         {
@@ -121,6 +123,7 @@ namespace PhoenixGameLibrary
 
         public GetCostToMoveIntoResult GetCostToMoveInto(Cell cell)
         {
+            if (MovementPoints <= 0.0f) return new GetCostToMoveIntoResult(false);
             if (cell == Cell.Empty) return new GetCostToMoveIntoResult(false);
             if (cell.SeenState == SeenState.NeverSeen) return new GetCostToMoveIntoResult(true, 9999999.9f);
 

@@ -29,11 +29,11 @@ namespace PhoenixGamePresentation.Views
         internal AtlasSpec2 UnitAtlas { get; private set; }
 
         internal StackView.StackView Current { get; private set; }
-        #endregion End State
+        #endregion
 
-        public int Count => StackViewsList.Count;
-
-        public StackView.StackView this[int index] => StackViewsList[index];
+        internal int Count => StackViewsList.Count;
+        internal bool AllStacksHaveBeenGivenOrders => OrdersQueue.Count == 0;
+        internal StackView.StackView this[int index] => StackViewsList[index];
 
         internal StackViews(WorldView worldView, Stacks stacks, InputHandler input)
         {
@@ -123,7 +123,7 @@ namespace PhoenixGamePresentation.Views
             var queue = new Queue<StackView.StackView>();
             foreach (var stackView in StackViewsList)
             {
-                if (!stackView.NeedsOrders)
+                if (stackView.NeedsOrders)
                 {
                     queue.Enqueue(stackView);
                 }
@@ -140,7 +140,6 @@ namespace PhoenixGamePresentation.Views
             {
                 Current = OrdersQueue.Dequeue();
                 Current.Select();
-                WorldView.Camera.LookAtCell(Current.LocationHex);
             }
             else
             {
@@ -156,7 +155,6 @@ namespace PhoenixGamePresentation.Views
             {
                 Current = OrdersQueue.Dequeue();
                 Current.Select();
-                WorldView.Camera.LookAtCell(Current.LocationHex);
             }
             else
             {
@@ -217,12 +215,17 @@ namespace PhoenixGamePresentation.Views
         {
             foreach (var stackView in this)
             {
-                var mustSelect = e.Mouse.Location.IsWithinHex(stackView.LocationHex, WorldView.Camera.Transform);
+                var mustSelect = stackView.MovementPoints > 0.0f && e.Mouse.Location.IsWithinHex(stackView.LocationHex, WorldView.Camera.Transform);
                 if (mustSelect)
                 {
                     if (stackView.Id != Current?.Id)
                     {
-                        Current?.Unselect();
+                        if (Current != null)
+                        {
+                            OrdersQueue.Enqueue(Current);
+                            Current.Unselect();
+                        }
+
                         stackView.Select();
                         Current = stackView;
                     }

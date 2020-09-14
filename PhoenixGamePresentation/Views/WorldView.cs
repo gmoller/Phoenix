@@ -7,7 +7,6 @@ using GuiControls;
 using Input;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
 using PhoenixGamePresentation.Views.StackView;
@@ -34,7 +33,7 @@ namespace PhoenixGamePresentation.Views
 
         private InputHandler Input { get; }
         private bool IsDisposed { get; set; }
-        #endregion End State
+        #endregion
 
         public WorldView(World world, CameraClampMode cameraClampMode, InputHandler input)
         {
@@ -70,6 +69,7 @@ namespace PhoenixGamePresentation.Views
         internal string CurrentDate => World.CurrentDate;
         internal NotificationList NotificationList => World.NotificationList;
         internal Faction PlayerFaction => World.PlayerFaction;
+        internal bool AllStacksHaveBeenGivenOrders => StackViews.AllStacksHaveBeenGivenOrders;
         #endregion
 
         internal void LoadContent(ContentManager content)
@@ -116,21 +116,17 @@ namespace PhoenixGamePresentation.Views
 
         public void BeginTurn()
         {
-            Command beginTurnCommand = new BeginTurnCommand { Payload = World };
-            beginTurnCommand.Execute();
-
+            World.BeginTurn();
             StackViews.BeginTurn();
         }
 
         public void EndTurn()
         {
-            Command endTurnCommand = new EndTurnCommand
+            if (StackViews.AllStacksHaveBeenGivenOrders)
             {
-                Payload = World
-            };
-            endTurnCommand.Execute();
-
-            BeginTurn();
+                World.EndTurn();
+                BeginTurn();
+            }
         }
 
         private Dictionary<string, IControl> InitializeMovementTypeImages()

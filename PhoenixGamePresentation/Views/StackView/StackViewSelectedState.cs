@@ -18,7 +18,7 @@ namespace PhoenixGamePresentation.Views.StackView
         private float BlinkCooldownInMilliseconds { get; set; }
         private bool Blink { get; set; }
         private List<PointI> PotentialMovementPath { get; set; }
-        #endregion End State
+        #endregion
 
         internal StackViewSelectedState(StackView stackView)
         {
@@ -27,6 +27,7 @@ namespace PhoenixGamePresentation.Views.StackView
             Blink = false;
             PotentialMovementPath = new List<PointI>();
             StackView.StackViews.SetCurrent(StackView);
+            StackView.FocusCameraOn();
         }
 
         internal override (bool changeState, StackViewState stateToChangeTo) Update(StackViewUpdateActions updateActions, WorldView worldView, float deltaTime)

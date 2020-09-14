@@ -23,7 +23,7 @@ namespace PhoenixGamePresentation.Views.StackView
         internal StackViewState StackViewState { get; private set; }
 
         private StackViewUpdateActions StackViewUpdateActions { get; set; }
-        #endregion End State
+        #endregion
 
         internal StackView(WorldView worldView, StackViews stackViews, Stack stack, InputHandler input)
         {
@@ -86,6 +86,11 @@ namespace PhoenixGamePresentation.Views.StackView
             }
 
             return imgMovementTypes;
+        }
+
+        internal void FocusCameraOn()
+        {
+            WorldView.Camera.LookAtCell(LocationHex);
         }
 
         internal void Update(float deltaTime)

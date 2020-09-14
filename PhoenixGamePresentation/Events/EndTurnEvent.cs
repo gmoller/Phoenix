@@ -9,7 +9,6 @@ namespace PhoenixGamePresentation.Events
         {
             var worldView = (WorldView)e.WorldView;
 
-            // TODO: only allow if all units have been given orders
             worldView.EndTurn();
         }
     }

@@ -22,7 +22,7 @@ namespace PhoenixGamePresentation.Views
         private OverlandMap OverlandMap { get; }
 
         private Label Test { get; }
-        #endregion End State
+        #endregion
 
         internal OverlandMapView(WorldView worldView, OverlandMap overlandMap, InputHandler input)
         {
@@ -38,7 +38,7 @@ namespace PhoenixGamePresentation.Views
             Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "OverlandMapView");
             Input.Register(0, this, Keys.Enter, KeyboardInputActionType.Released, EndTurnEvent.HandleEvent);
             Input.Register(1, this, Keys.D1, KeyboardInputActionType.Released, (sender, e) => { WorldView.Camera.LookAtPixel(new PointI(840, 540)); }); // for testing
-            Input.Register(2, this, Keys.C, KeyboardInputActionType.Released, (sender, e) => { if (WorldView.CurrentlySelectedStackView != null) WorldView.Camera.LookAtCell(WorldView.CurrentlySelectedStackView.LocationHex); });
+            Input.Register(2, this, Keys.C, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.FocusCameraOn(); });
             Input.Register(3, this, MouseInputActionType.RightButtonPressed, OpenSettlementEvent.HandleEvent);
             Input.Register(4, this, MouseInputActionType.RightButtonPressed, (sender, e) => { WorldView.CurrentlySelectedStackView?.SetPotentialMovement(e.Mouse.Location); });
             Input.Register(5, this, MouseInputActionType.RightButtonReleased, (sender, e) => { WorldView.CurrentlySelectedStackView?.ResetPotentialMovement(); });

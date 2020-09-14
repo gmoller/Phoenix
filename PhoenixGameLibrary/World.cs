@@ -59,12 +59,12 @@ namespace PhoenixGameLibrary
             PlayerFaction.FoodPerTurn = Settlements.FoodProducedThisTurn;
         }
 
-        internal void BeginTurn()
+        public void BeginTurn()
         {
             Stacks.BeginTurn();
         }
 
-        internal void EndTurn()
+        public void EndTurn()
         {
             NotificationList.Clear();
             Settlements.EndTurn();
