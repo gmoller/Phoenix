@@ -2,12 +2,11 @@
 
 namespace PhoenixGamePresentation.Views.StackView
 {
-    internal class StackViewNormalState : StackViewState
+    internal class StackViewFortifiedState : StackViewState
     {
-        internal StackViewNormalState(StackView stackView)
+        internal StackViewFortifiedState(StackView stackView)
         {
             StackView = stackView;
-            StackView.SetNotCurrent();
         }
 
         internal override void Update(WorldView worldView, float deltaTime)

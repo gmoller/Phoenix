@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Hex;
 using MonoGameUtilities.ExtensionMethods;
-using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
-using PhoenixGamePresentation.Handlers;
-using Utilities;
 
 namespace PhoenixGamePresentation.Views.StackView
 {
@@ -19,75 +15,47 @@ namespace PhoenixGamePresentation.Views.StackView
         private float MovementCountdownTime { get; set; }
         #endregion End State
 
-        internal StackViewMovingState(List<PointI> movementPath, StackView stackView) : this(stackView)
-        {
-            StackView.MovementPath = movementPath;
-        }
-
-        internal StackViewMovingState(PointI hexToMoveTo, CellGrid cellGrid, StackView stackView) : this(stackView)
-        {
-            var path = MovementPathDeterminer.DetermineMovementPath(StackView.Stack, StackView.LocationHex, hexToMoveTo, cellGrid);
-            StackView.MovementPath = path;
-        }
-
-        private StackViewMovingState(StackView stackView)
+        internal StackViewMovingState(StackView stackView)
         {
             StackView = stackView;
             MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
         }
 
-        internal override (bool changeState, StackViewState stateToChangeTo) Update(StackViewUpdateActions updateActions, WorldView worldView, float deltaTime)
+        internal override void Update(WorldView worldView, float deltaTime)
         {
-            if (MovementCountdownTimeHasExpired())
-            {
-                var cantMove = MoveStackToNextCell();
-                worldView.Camera.LookAtPixel(CurrentPositionOnScreen);
-
-                if (cantMove)
-                {
-                    if (StackView.MovementPoints > 0.0f)
-                    {
-                        return (true, new StackViewSelectedState(StackView));
-                    }
-
-                    return (true, new StackViewNormalState(StackView));
-                }
-
-                return (false, null);
-            }
-
-            var cannotMove = MoveStackBetweenCells(deltaTime);
+            var cantMove = MovementCountdownTimeHasExpired() ? MoveStackToNextCell() : MoveStackBetweenCells(deltaTime);
+            var canMove = !cantMove;
             worldView.Camera.LookAtPixel(CurrentPositionOnScreen);
 
-            if (cannotMove)
+            if (canMove) return;
+
+            if (StackView.StackHasMovementPoints)
             {
-                if (StackView.MovementPoints > 0.0f)
-                {
-                    return (true, new StackViewSelectedState(StackView));
-                }
-
-                return (true, new StackViewNormalState(StackView));
+                StackView.Select();
             }
-
-            return (false, null);
+            else
+            {
+                StackView.Unselect();
+            }
         }
 
         private bool MoveStackToNextCell()
         {
             MovementCountdownTime = MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS;
 
+            //StackView.Stack.MoveTo(StackView.MovementPath[0]);
             Command moveUnitCommand = new MoveUnitCommand { Payload = (StackView.Stack, StackView.MovementPath[0]) };
             moveUnitCommand.Execute();
             RemoveFirstItemFromMovementPath();
 
             // if run out of movement points
-            if (HasNoMovementPoints())
+            if (StackView.StackHasNoMovementPoints)
             {
                 return true;
             }
 
             // if reached final destination
-            if (HasNoMovementPath())
+            if (StackView.HasNoMovementPath)
             {
                 return true;
             }
@@ -134,16 +102,6 @@ namespace PhoenixGamePresentation.Views.StackView
         private bool MovementCountdownTimeHasExpired()
         {
             return MovementCountdownTime <= 0.0f;
-        }
-
-        private bool HasNoMovementPoints()
-        {
-            return StackView.MovementPoints <= 0.0f;
-        }
-
-        private bool HasNoMovementPath()
-        {
-            return StackView.HasNoMovementPath;
         }
     }
 }

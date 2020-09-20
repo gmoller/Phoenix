@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Hex;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
-using PhoenixGamePresentation.Views.StackView;
 using Utilities;
 
 namespace PhoenixGamePresentation.Views
@@ -12,7 +11,7 @@ namespace PhoenixGamePresentation.Views
     internal abstract class StackViewState
     {
         protected StackView.StackView StackView { get; set; }
-        internal abstract (bool changeState, StackViewState stateToChangeTo) Update(StackViewUpdateActions updateActions, WorldView worldView, float deltaTime);
+        internal abstract void Update(WorldView worldView, float deltaTime);
         internal abstract void DrawUnit(SpriteBatch spriteBatch, Camera camera);
 
         protected void DrawUnit(SpriteBatch spriteBatch, Vector2 location)

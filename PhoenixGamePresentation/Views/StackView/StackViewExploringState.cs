@@ -12,14 +12,12 @@ namespace PhoenixGamePresentation.Views.StackView
             StackView = stackView;
         }
 
-        internal override (bool changeState, StackViewState stateToChangeTo) Update(StackViewUpdateActions updateActions, WorldView worldView, float deltaTime)
+        internal override void Update(WorldView worldView, float deltaTime)
         {
-            var changeState = SetMovementPathToNewExploreLocation(worldView);
-
-            return changeState;
+            SetMovementPathToNewExploreLocation(worldView);
         }
 
-        private (bool changeState, StackViewState stateToChangeTo) SetMovementPathToNewExploreLocation(WorldView worldView)
+        private void SetMovementPathToNewExploreLocation(WorldView worldView)
         {
             // find closest unexplored cell
             var cellGrid = worldView.CellGrid;
@@ -27,7 +25,8 @@ namespace PhoenixGamePresentation.Views.StackView
 
             if (cell == Cell.Empty)
             {
-                return (true, new StackViewNormalState(StackView)); // all locations explored
+                // all locations explored
+                StackView.Unselect();
             }
 
             // find best path to unexplored cell
@@ -35,12 +34,13 @@ namespace PhoenixGamePresentation.Views.StackView
 
             if (path.Count == 0)
             {
-                return (true, new StackViewNormalState(StackView)); // could not find a path to location
+                // could not find a path to location
+                StackView.Unselect();
             }
-            
+
             path = path.RemoveLast(StackView.SightRange);
 
-            return (true, new StackViewMovingState(path, StackView));
+            StackView.Move(path);
         }
 
         internal override void DrawUnit(SpriteBatch spriteBatch, Camera camera)

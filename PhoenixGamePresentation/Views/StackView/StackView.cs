@@ -21,8 +21,7 @@ namespace PhoenixGamePresentation.Views.StackView
         internal List<PointI> MovementPath { get; set; }
 
         internal StackViewState StackViewState { get; private set; }
-
-        private StackViewUpdateActions StackViewUpdateActions { get; set; }
+        private StackViewStateMachine StateMachine { get; }
         #endregion
 
         internal StackView(WorldView worldView, StackViews stackViews, Stack stack, InputHandler input)
@@ -44,10 +43,11 @@ namespace PhoenixGamePresentation.Views.StackView
             //IfThenElseProcessor.Add($"StackView:{Id}", 2, this, MustFindNewExploreLocation, SetMovementPathToNewExploreLocation);
 
             StackViewState = new StackViewNormalState(this);
-            StackViewUpdateActions = StackViewUpdateActions.None;
+            StateMachine = new StackViewStateMachine();
         }
 
         #region Accessors
+        internal CellGrid CellGrid => WorldView.CellGrid;
         internal bool NeedsOrders => Stack.NeedsOrders;
 
         internal bool IsSelected => StackViews.Current == this;
@@ -58,6 +58,8 @@ namespace PhoenixGamePresentation.Views.StackView
         internal float MovementPoints => Stack.MovementPoints;
         internal int SightRange => Stack.SightRange;
         internal bool IsMovingState => StackViewState is StackViewMovingState;
+        public bool StackHasMovementPoints => Stack.MovementPoints > 0.0f;
+        public bool StackHasNoMovementPoints => Stack.MovementPoints <= 0.0f;
         internal bool HasMovementPath => MovementPath?.Count > 0;
         internal bool HasNoMovementPath
         {
@@ -88,6 +90,21 @@ namespace PhoenixGamePresentation.Views.StackView
             return imgMovementTypes;
         }
 
+        internal void SetStackViewState(StackViewState state)
+        {
+            StackViewState = state;
+        }
+
+        internal void SetAsCurrent(StackView stackView)
+        {
+            StackViews.SetCurrent(stackView);
+        }
+
+        internal void SetNotCurrent()
+        {
+            StackViews.SetNotCurrent(this);
+        }
+
         internal void FocusCameraOn()
         {
             WorldView.Camera.LookAtCell(LocationHex);
@@ -99,21 +116,24 @@ namespace PhoenixGamePresentation.Views.StackView
 
             if (Stack.Status == UnitStatus.Explore && HasNoMovementPath)
             {
-                StackViewState = new StackViewExploringState(this);
+                StateMachine.Explore(this);
             }
 
-            var changeState = StackViewState.Update(StackViewUpdateActions, WorldView, deltaTime);
-            if (changeState.changeState)
-            {
-                StackViewState = changeState.stateToChangeTo;
-            }
-            
-            StackViewUpdateActions = StackViewUpdateActions.None;
+            StackViewState.Update(WorldView, deltaTime);
         }
 
         internal void DoAction(string action)
         {
             Stack.DoAction(action);
+            switch (action)
+            {
+                case "Patrol":
+                    StateMachine.Patrol(this);
+                    break;
+                case "Fortify":
+                    StateMachine.Fortify(this);
+                    break;
+            }
         }
 
         internal void SetStatusToNone()
@@ -141,33 +161,29 @@ namespace PhoenixGamePresentation.Views.StackView
         internal void CheckForUnitMovementFromMouseInitiation(Point mouseLocation)
         {
             var stackViewSelectedState = StackViewState as StackViewSelectedState;
-            var changeState = stackViewSelectedState.CheckForUnitMovementFromMouseInitiation(WorldView.CellGrid, WorldView.Camera, mouseLocation);
-
-            if (changeState.changeState)
-            {
-                StackViewState = changeState.stateToChangeTo;
-            }
+            stackViewSelectedState.CheckForUnitMovementFromMouseInitiation(WorldView.CellGrid, WorldView.Camera, mouseLocation);
         }
 
         internal void CheckForUnitMovementFromKeyboardInitiation(Keys key)
         {
             var stackViewSelectedState = StackViewState as StackViewSelectedState;
-            var changeState = stackViewSelectedState.CheckForUnitMovementFromKeyboardInitiation(WorldView.CellGrid, key);
-
-            if (changeState.changeState)
-            {
-                StackViewState = changeState.stateToChangeTo;
-            }
+            stackViewSelectedState.CheckForUnitMovementFromKeyboardInitiation(key);
         }
 
         internal void Select()
         {
-            StackViewUpdateActions = StackViewUpdateActions | StackViewUpdateActions.SelectStackDirect;
+            StateMachine.Select(this);
         }
 
         internal void Unselect()
         {
-            StackViewUpdateActions = StackViewUpdateActions | StackViewUpdateActions.UnselectStackDirect;
+            StateMachine.Unselect(this);
+        }
+
+        internal void Move(List<PointI> path)
+        {
+            MovementPath = path;
+            StateMachine.Move(this);
         }
 
         public override string ToString()

@@ -18,10 +18,5 @@ namespace PhoenixGameLibrary
             World.AddUnit(new PointI(15, 7), unitTypes["Barbarian Settlers"]);
             World.AddUnit(new PointI(12, 9), unitTypes["Barbarian Spearmen"]);
         }
-
-        public void Update(float deltaTime)
-        {
-            World.Update(deltaTime);
-        }
     }
 }

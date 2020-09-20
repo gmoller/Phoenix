@@ -22,7 +22,7 @@ namespace PhoenixGameLibrary
 
         public World(int numberOfColumns, int numberOfRows)
         {
-            PlayerFaction = new Faction();
+            PlayerFaction = new Faction(this);
             OverlandMap = new OverlandMap(this, numberOfColumns, numberOfRows);
             Settlements = new Settlements();
             Stacks = new Stacks();
@@ -50,13 +50,6 @@ namespace PhoenixGameLibrary
         {
             var addUnitCommand = new AddUnitCommand { Payload = (location, unitType, Stacks, this) };
             addUnitCommand.Execute();
-        }
-
-        internal void Update(float deltaTime)
-        {
-            Settlements.Update(deltaTime);
-
-            PlayerFaction.FoodPerTurn = Settlements.FoodProducedThisTurn;
         }
 
         public void BeginTurn()

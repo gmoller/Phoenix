@@ -172,9 +172,9 @@ namespace PhoenixGamePresentation.Views
             return actionButtons;
         }
 
-        internal void CheckForSelectionOfStack(object sender, MouseEventArgs e)
+        internal void CheckForSelectionOfStack(Point mouseLocation)
         {
-            StackViews.CheckForSelectionOfStack(sender, e);
+            StackViews.CheckForSelectionOfStack(mouseLocation);
         }
 
         internal void ChangeState(GameStatus from, GameStatus to)

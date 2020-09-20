@@ -26,31 +26,29 @@ namespace PhoenixGamePresentation.Views.StackView
             BlinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             Blink = false;
             PotentialMovementPath = new List<PointI>();
-            StackView.StackViews.SetCurrent(StackView);
+            StackView.SetAsCurrent(StackView);
             StackView.FocusCameraOn();
         }
 
-        internal override (bool changeState, StackViewState stateToChangeTo) Update(StackViewUpdateActions updateActions, WorldView worldView, float deltaTime)
+        internal override void Update(WorldView worldView, float deltaTime)
         {
-            if (updateActions.HasFlag(StackViewUpdateActions.UnselectStackDirect))
-            {
-                return (true, new StackViewNormalState(StackView));
-            }
-
             if (CheckForBlinkChange(deltaTime))
             {
-                Blink = !Blink;
-                BlinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
+                ToggleBlink();
             }
 
             var restartMovement = CheckForRestartOfMovement();
 
             if (restartMovement)
             {
-                return (true, new StackViewMovingState(StackView.MovementPath, StackView));
+                StackView.Move(StackView.MovementPath);
             }
+        }
 
-            return (false, null);
+        private void ToggleBlink()
+        {
+            Blink = !Blink;
+            BlinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
         }
 
         private bool CheckForRestartOfMovement()
@@ -85,19 +83,19 @@ namespace PhoenixGamePresentation.Views.StackView
             PotentialMovementPath = new List<PointI>();
         }
 
-        internal (bool changeState, StackViewState stateToChangeTo) CheckForUnitMovementFromMouseInitiation(CellGrid cellGrid, Camera camera, Point mouseLocation)
+        internal void CheckForUnitMovementFromMouseInitiation(CellGrid cellGrid, Camera camera, Point mouseLocation)
         {
             var mustStartMovement = CheckForUnitMovementFromMouseInitiation(StackView.Stack, cellGrid, mouseLocation, camera);
 
             if (mustStartMovement.startMovement)
             {
-                return (true, new StackViewMovingState(mustStartMovement.hexToMoveTo, cellGrid, StackView));
+                var path = MovementPathDeterminer.DetermineMovementPath(StackView.Stack, StackView.LocationHex, mustStartMovement.hexToMoveTo, StackView.CellGrid);
+                StackView.MovementPath = path;
+                StackView.Move(StackView.MovementPath);
             }
-
-            return (false, null);
         }
 
-        internal (bool changeState, StackViewState stateToChangeTo) CheckForUnitMovementFromKeyboardInitiation(CellGrid cellGrid, Keys key)
+        internal void CheckForUnitMovementFromKeyboardInitiation(Keys key)
         {
             if (StackView.MovementPoints > 0.0f)
             {
@@ -119,11 +117,11 @@ namespace PhoenixGamePresentation.Views.StackView
 
                 if (costToMoveIntoResult.CanMoveInto)
                 {
-                    return (true, new StackViewMovingState(hexToMoveTo, cellGrid, StackView));
+                    var path = MovementPathDeterminer.DetermineMovementPath(StackView.Stack, StackView.LocationHex, hexToMoveTo, StackView.CellGrid);
+                    StackView.MovementPath = path;
+                    StackView.Move(StackView.MovementPath);
                 }
             }
-
-            return (false, null);
         }
 
         private (bool startMovement, PointI hexToMoveTo) CheckForUnitMovementFromMouseInitiation(Stack stack, CellGrid cellGrid, Point mouseLocation, Camera camera)

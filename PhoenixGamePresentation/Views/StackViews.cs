@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Assets;
 using Input;
+using Microsoft.Xna.Framework;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 
@@ -31,10 +32,6 @@ namespace PhoenixGamePresentation.Views
         internal StackView.StackView Current { get; private set; }
         #endregion
 
-        internal int Count => StackViewsList.Count;
-        internal bool AllStacksHaveBeenGivenOrders => OrdersQueue.Count == 0;
-        internal StackView.StackView this[int index] => StackViewsList[index];
-
         internal StackViews(WorldView worldView, Stacks stacks, InputHandler input)
         {
             WorldView = worldView;
@@ -54,6 +51,12 @@ namespace PhoenixGamePresentation.Views
 
             WorldView.SubscribeToStatusChanges("StackViews", worldView.HandleStatusChange);
         }
+
+        #region Accessors
+        internal int Count => StackViewsList.Count;
+        internal bool AllStacksHaveBeenGivenOrders => OrdersQueue.Count == 0;
+        internal StackView.StackView this[int index] => StackViewsList[index];
+        #endregion
 
         internal long GetNextId()
         {
@@ -150,7 +153,6 @@ namespace PhoenixGamePresentation.Views
         private void SelectNext()
         {
             Current?.Unselect();
-
             if (OrdersQueue.Count > 0)
             {
                 Current = OrdersQueue.Dequeue();
@@ -175,10 +177,11 @@ namespace PhoenixGamePresentation.Views
 
         internal void SetNotCurrent(StackView.StackView stackView)
         {
-            if (Current == stackView) // if we were the currently selected one
-            {
-                SelectNext();
-            }
+            Current = null;
+            //if (Current == stackView) // if we were the currently selected one
+            //{
+            //    SelectNext();
+            //}
         }
 
         internal void DoAction(string action)
@@ -211,11 +214,11 @@ namespace PhoenixGamePresentation.Views
             StackViewsList.Add(stackView);
         }
 
-        internal void CheckForSelectionOfStack(object sender, MouseEventArgs e)
+        internal void CheckForSelectionOfStack(Point mouseLocation)
         {
             foreach (var stackView in this)
             {
-                var mustSelect = stackView.MovementPoints > 0.0f && e.Mouse.Location.IsWithinHex(stackView.LocationHex, WorldView.Camera.Transform);
+                var mustSelect = stackView.MovementPoints > 0.0f && mouseLocation.IsWithinHex(stackView.LocationHex, WorldView.Camera.Transform);
                 if (mustSelect)
                 {
                     if (stackView.Id != Current?.Id)

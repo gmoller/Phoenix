@@ -33,34 +33,22 @@ namespace PhoenixGameLibrary
 
         internal void DoPatrolAction()
         {
-            foreach (var unit in UnitsList)
-            {
-                unit.DoPatrolAction();
-            }
+            UnitsList.ForEach(unit => unit.DoPatrolAction());
         }
 
         internal void DoFortifyAction()
         {
-            foreach (var unit in UnitsList)
-            {
-                unit.DoFortifyAction();
-            }
+            UnitsList.ForEach(unit => unit.DoFortifyAction());
         }
 
         internal void DoExploreAction()
         {
-            foreach (var unit in UnitsList)
-            {
-                unit.DoExploreAction();
-            }
+            UnitsList.ForEach(unit => unit.DoExploreAction());
         }
 
         internal void SetStatusToNone()
         {
-            foreach (var unit in UnitsList)
-            {
-                unit.SetStatusToNone();
-            }
+            UnitsList.ForEach(unit => unit.SetStatusToNone());
         }
 
         internal List<Unit> GetUnitsByAction(string actionType)

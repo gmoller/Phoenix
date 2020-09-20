@@ -11,9 +11,9 @@ namespace PhoenixGameLibrary
         private readonly List<Settlement> _settlements;
 
         public Settlement Selected { get; set; }
-        public int FoodProducedThisTurn { get; private set; }
         #endregion
 
+        public int FoodProducedThisTurn => DetermineFoodProduced();
         public Settlement this[int index] => _settlements[index];
         public int Count => _settlements.Count;
 
@@ -22,16 +22,15 @@ namespace PhoenixGameLibrary
             _settlements = new List<Settlement>();
         }
 
-        // TODO: why is this here?
-        internal void Update(float deltaTime)
+        private int DetermineFoodProduced()
         {
-            int foodProducedThisTurn = 0;
+            var foodProducedThisTurn = 0;
             foreach (var settlement in _settlements)
             {
                 foodProducedThisTurn += settlement.FoodSurplus;
             }
 
-            FoodProducedThisTurn = foodProducedThisTurn;
+            return foodProducedThisTurn;
         }
 
         internal void Add(Settlement settlement)

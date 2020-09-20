@@ -31,7 +31,6 @@ namespace PhoenixTests
         [Test]
         public void First()
         {
-            _phoenixGame.Update(0.0166666666666667f);
             _phoenixGameView.Update(0.0166666666666667f);
         }
     }

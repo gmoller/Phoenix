@@ -114,7 +114,6 @@ namespace Phoenix2
                 Exit();
             }
 
-            _phoenixGame.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             _phoenixGameView.Update((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             _metricsPanel.Update(gameTime);
 

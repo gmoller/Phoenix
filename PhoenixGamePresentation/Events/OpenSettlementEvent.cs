@@ -1,9 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Hex;
-using Input;
+﻿using Input;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentation.Views;
 
 namespace PhoenixGamePresentation.Events
@@ -13,11 +10,12 @@ namespace PhoenixGamePresentation.Events
         internal static void HandleEvent(object sender, MouseEventArgs e)
         {
             var worldView = (WorldView)e.WorldView;
+            if (!worldView.Camera.GetViewport.Contains(e.Mouse.Location)) return;
 
             Settlement settlement = null;
             foreach (var item in worldView.Settlements)
             {
-                if (e.Mouse != null && MousePointerIsOnHex(item.LocationHex, e.Mouse.Location, worldView.Camera))
+                if (e.Mouse.Location.IsWithinHex(item.LocationHex, worldView.Camera.Transform))
                 {
                     settlement = item;
                 }
@@ -26,18 +24,11 @@ namespace PhoenixGamePresentation.Events
             if (settlement is null) return;
 
             var settlements = worldView.Settlements;
-            Command openSettlementCommand = new OpenSettlementCommand { Payload = (settlement, settlements) };
-            openSettlementCommand.Execute();
+            settlements.Selected = settlement;
 
+            //settlement.FocusCameraOn();
             worldView.Camera.LookAtCell(settlement.Location);
             worldView.ChangeState(GameStatus.OverlandMap, GameStatus.CityView);
-        }
-
-        private static bool MousePointerIsOnHex(HexOffsetCoordinates settlementLocation, Point mouseLocation, Camera camera)
-        {
-            if (!camera.GetViewport.Contains(mouseLocation)) return false;
-
-            return mouseLocation.IsWithinHex(settlementLocation, camera.Transform);
         }
     }
 }

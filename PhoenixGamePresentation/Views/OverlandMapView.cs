@@ -36,7 +36,7 @@ namespace PhoenixGamePresentation.Views
 
             Input = input;
             Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "OverlandMapView");
-            Input.Register(0, this, Keys.Enter, KeyboardInputActionType.Released, EndTurnEvent.HandleEvent);
+            Input.Register(0, this, Keys.Enter, KeyboardInputActionType.Released, (sender, e) => { worldView.EndTurn(); });
             Input.Register(1, this, Keys.D1, KeyboardInputActionType.Released, (sender, e) => { WorldView.Camera.LookAtPixel(new PointI(840, 540)); }); // for testing
             Input.Register(2, this, Keys.C, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.FocusCameraOn(); });
             Input.Register(3, this, MouseInputActionType.RightButtonPressed, OpenSettlementEvent.HandleEvent);
@@ -49,7 +49,7 @@ namespace PhoenixGamePresentation.Views
             Input.Register(10, this, Keys.NumPad6, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
             Input.Register(11, this, Keys.NumPad7, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
             Input.Register(12, this, Keys.NumPad9, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(13, this, MouseInputActionType.RightButtonReleased, WorldView.CheckForSelectionOfStack);
+            Input.Register(13, this, MouseInputActionType.RightButtonReleased, (sender, e) => { WorldView.CheckForSelectionOfStack(e.Mouse.Location); });
             Input.EndRegistration();
 
             Input.Subscribe(GameStatus.OverlandMap.ToString(), "OverlandMapView");
