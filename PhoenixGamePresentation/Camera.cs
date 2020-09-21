@@ -15,7 +15,8 @@ namespace PhoenixGamePresentation
     public class Camera : IDisposable
     {
         #region State
-        internal WorldView WorldView { get; }
+
+        private WorldView WorldView { get; }
 
         private Rectangle Viewport { get; }
         private CameraClampMode ClampMode { get; }

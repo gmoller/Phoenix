@@ -10,7 +10,6 @@ using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
-using PhoenixGamePresentation.Views.StackView;
 using Utilities;
 
 namespace PhoenixGamePresentation.Views

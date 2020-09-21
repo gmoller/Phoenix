@@ -16,7 +16,7 @@ namespace PhoenixGamePresentation.Views
     {
         #region State
         private Image CursorImage { get; }
-        #endregion End State
+        #endregion
 
         internal CursorView(WorldView worldView, InputHandler input)
         {

@@ -121,22 +121,22 @@ namespace Input
 
         public bool IsMouseIsAtTopOfScreen()
         {
-            return Location.Y < 30.0f && Location.Y >= 0.0f;
+            return Location.Y <= 30.0f && Location.Y >= 0.0f && Location.X >= 0.0f && Location.X <= 1680.0f;
         }
 
         public bool MouseIsAtBottomOfScreen()
         {
-            return Location.Y > 1080 - 30.0f && Location.Y <= 1080.0f;
+            return Location.Y >= 1080 - 30.0f && Location.Y <= 1080.0f && Location.X >= 0.0f && Location.X <= 1680.0f;
         }
 
         public bool MouseIsAtLeftOfScreen()
         {
-            return Location.X < 30.0f && Location.X >= 0.0f;
+            return Location.X < 30.0f && Location.X >= 0.0f && Location.Y >= 0.0f && Location.Y <= 1080.0f;
         }
 
         public bool MouseIsAtRightOfScreen()
         {
-            return Location.X > 1680.0f - 30.0f && Location.X <= 1680.0f;
+            return Location.X > 1680.0f - 30.0f && Location.X <= 1680.0f && Location.Y >= 0.0f && Location.Y <= 1080.0f;
         }
 
         private void HandleMouse(Dictionary<string, Dictionary<string, MouseInputAction>> mouseEventHandlers, object worldView, float deltaTime)

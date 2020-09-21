@@ -29,7 +29,7 @@ namespace PhoenixGamePresentation.Views
         private string _text2;
 
         private StackViews StackViews { get; }
-        #endregion End State
+        #endregion
 
         private StackView.StackView SelectedStackView => StackViews.Current;
 

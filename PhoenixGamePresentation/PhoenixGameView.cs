@@ -15,7 +15,7 @@ namespace PhoenixGamePresentation
         private WorldView WorldView { get; }
         private CursorView CursorView { get; }
         private InputHandler Input { get; }
-        #endregion End State
+        #endregion
 
         public PhoenixGameView(PhoenixGame phoenixGame)
         {
