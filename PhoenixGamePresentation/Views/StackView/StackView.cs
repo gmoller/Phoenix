@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using GuiControls;
 using Input;
 using PhoenixGameLibrary;
+using PhoenixGamePresentation.Handlers;
 using Utilities;
 
 namespace PhoenixGamePresentation.Views.StackView
@@ -40,9 +41,6 @@ namespace PhoenixGamePresentation.Views.StackView
             Input.Subscribe(GameStatus.OverlandMap.ToString(), $"StackView:{Id}");
 
             WorldView.SubscribeToStatusChanges($"StackView:{Id}", WorldView.HandleStatusChange);
-
-            IfThenElseProcessor = new IfThenElseProcessor();
-            //IfThenElseProcessor.Add($"StackView:{Id}", 2, this, MustFindNewExploreLocation, SetMovementPathToNewExploreLocation);
 
             StackViewState = new StackViewNormalState(this);
             StateMachine = new StackViewStateMachine();
@@ -122,8 +120,6 @@ namespace PhoenixGamePresentation.Views.StackView
 
         internal void Update(float deltaTime)
         {
-            IfThenElseProcessor.Update(deltaTime);
-
             if (Stack.Status == UnitStatus.Explore && HasNoMovementPath)
             {
                 StateMachine.Explore(this);
@@ -168,14 +164,12 @@ namespace PhoenixGamePresentation.Views.StackView
 
         internal void CheckForUnitMovementFromMouseInitiation(Point mouseLocation)
         {
-            var stackViewSelectedState = StackViewState as StackViewSelectedState;
-            stackViewSelectedState.CheckForUnitMovementFromMouseInitiation(WorldView.CellGrid, WorldView.Camera, mouseLocation);
+            MovementHandler.CheckForUnitMovement(MovementHandler.CheckForUnitMovementFromMouseInitiation, Stack, (WorldView.CellGrid, mouseLocation, WorldView.Camera), this);
         }
 
         internal void CheckForUnitMovementFromKeyboardInitiation(Keys key)
         {
-            var stackViewSelectedState = StackViewState as StackViewSelectedState;
-            stackViewSelectedState.CheckForUnitMovementFromKeyboardInitiation(key);
+            MovementHandler.CheckForUnitMovement(MovementHandler.CheckForUnitMovementFromKeyboardInitiation, Stack, key, this);
         }
 
         internal void Select()

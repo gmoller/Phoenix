@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
+using MonoGameUtilities;
 using MonoGameUtilities.ViewportAdapters;
 using Utilities;
 

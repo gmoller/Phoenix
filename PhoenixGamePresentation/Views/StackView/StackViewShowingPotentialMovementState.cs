@@ -1,7 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PhoenixGameLibrary;
 using PhoenixGamePresentation.Handlers;
+using Utilities;
 
 namespace PhoenixGamePresentation.Views.StackView
 {
@@ -15,7 +18,7 @@ namespace PhoenixGamePresentation.Views.StackView
 
         internal override void Update(WorldView worldView, float deltaTime)
         {
-            var path = PotentialMovementHandler.GetPotentialMovementPath(StackView.Stack, StackView.CellGrid, StackView.MousePosition, StackView.Camera);
+            var path = GetPotentialMovementPath(StackView.Stack, StackView.CellGrid, StackView.MousePosition, StackView.Camera);
             StackView.PotentialMovementPath = path;
         }
 
@@ -25,6 +28,27 @@ namespace PhoenixGamePresentation.Views.StackView
             DrawUnit(spriteBatch, locationInWorld);
 
             DrawMovementPath(spriteBatch, StackView.PotentialMovementPath, Color.White, 3.0f, 1.0f);
+        }
+
+        private List<PointI> GetPotentialMovementPath(Stack stack, CellGrid cellGrid, Point mouseLocation, Camera camera)
+        {
+            var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(stack, cellGrid, mouseLocation, camera);
+            if (!potentialMovement) return new List<PointI>();
+
+            var path = MovementPathDeterminer.DetermineMovementPath(stack, stack.LocationHex, hexToMoveTo, cellGrid);
+
+            return path;
+
+        }
+
+        private (bool potentialMovement, PointI hexToMoveTo) CheckForPotentialUnitMovement(Stack stack, CellGrid cellGrid, Point mouseLocation, Camera camera)
+        {
+            var hexToMoveTo = camera.ScreenPixelToWorldHex(mouseLocation);
+            var cellToMoveTo = cellGrid.GetCell(hexToMoveTo.Col, hexToMoveTo.Row);
+            if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new PointI(0, 0));
+            var costToMoveIntoResult = stack.GetCostToMoveInto(cellToMoveTo);
+
+            return (costToMoveIntoResult.CanMoveInto, hexToMoveTo.ToPointI());
         }
 
         public override string ToString()

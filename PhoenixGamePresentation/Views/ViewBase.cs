@@ -11,7 +11,6 @@ namespace PhoenixGamePresentation.Views
         internal long Id { get; set; }
 
         protected WorldView WorldView { get; set; }
-        protected IfThenElseProcessor IfThenElseProcessor { get; set; }
         protected InputHandler Input { get; set; }
 
         protected Viewport Viewport { get; set; }
