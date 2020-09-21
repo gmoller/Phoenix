@@ -13,39 +13,43 @@ namespace PhoenixGameLibrary
     public class Stack : IEnumerable<Unit>
     {
         #region State
-        private readonly World _world;
-        private readonly Units _units;
+        private World World { get; }
+        private Units Units { get; }
 
         public UnitStatus Status { get; private set; }
+        public bool OrdersGiven { get; private set; }
         #endregion
 
         public Stack(World world, Units units)
         {
-            _world = world;
-            _units = units;
+            World = world;
+            Units = units;
             Status = UnitStatus.None;
         }
 
         #region Accessors
-        public PointI LocationHex => _units.Count > 0 ? _units[0].LocationHex : PointI.Empty;
+        public PointI LocationHex => Units.Count > 0 ? Units[0].LocationHex : PointI.Empty;
 
         public int SightRange => GetSightRange();
 
         public float MovementPoints => DetermineMovementPoints();
         public EnumerableList<string> MovementTypes => new EnumerableList<string>(DetermineMovementTypes());
-        public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(_units));
+        public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(Units));
 
-        public int Count => _units.Count;
-        public bool NeedsOrders => Status != UnitStatus.Patrol && Status != UnitStatus.Fortify;
+        public int Count => Units.Count;
+        public bool NeedsOrders => !OrdersGiven;
 
-        public Unit this[int index] => _units[index];
+        public Unit this[int index] => Units[index];
         #endregion
 
         public void DoAction(string action)
         {
-            //TODO: ToDictionary
+            //TODO: ToDictionary, de-hardcode
             switch (action)
             {
+                case "Done":
+                    DoDoneAction();
+                    break;
                 case "Patrol":
                     DoPatrolAction();
                     break;
@@ -63,60 +67,71 @@ namespace PhoenixGameLibrary
             }
         }
 
+        private void DoDoneAction()
+        {
+            Status = UnitStatus.None;
+            OrdersGiven = true;
+        }
+
         private void DoPatrolAction()
         {
             Status = UnitStatus.Patrol;
-            _units.DoPatrolAction();
+            Units.DoPatrolAction();
+            OrdersGiven = true;
         }
 
         private void DoFortifyAction()
         {
             Status = UnitStatus.Fortify;
-            _units.DoFortifyAction();
+            Units.DoFortifyAction();
+            OrdersGiven = true;
         }
 
         private void DoExploreAction()
         {
             Status = UnitStatus.Explore;
-            _units.DoExploreAction();
+            Units.DoExploreAction();
+            OrdersGiven = true;
         }
 
         private void DoBuildAction()
         {
-            var builders = _units.GetUnitsByAction("BuildOutpost");
+            var builders = Units.GetUnitsByAction("BuildOutpost");
             if (builders.Count == 0) return;
 
             builders[0].DoBuildAction();
-            _units.Remove(builders[0]);
+            Units.Remove(builders[0]);
         }
 
         public void SetStatusToNone()
         {
             Status = UnitStatus.None;
-            _units.SetStatusToNone();
+            Units.SetStatusToNone();
+            OrdersGiven = false;
         }
 
         internal void MoveTo(PointI locationToMoveTo)
         {
-            var cellToMoveTo = _world.OverlandMap.CellGrid.GetCell(locationToMoveTo);
+            var cellToMoveTo = World.OverlandMap.CellGrid.GetCell(locationToMoveTo);
             var movementCost = GetCostToMoveInto(cellToMoveTo);
 
-            foreach (var unit in _units)
+            foreach (var unit in Units)
             {
                 unit.LocationHex = locationToMoveTo;
                 unit.SetSeenCells(LocationHex);
 
                 unit.MovementPoints -= movementCost.CostToMoveInto;
-                if (unit.MovementPoints < 0.0f)
+                if (unit.MovementPoints <= 0.0f)
                 {
                     unit.MovementPoints = 0.0f;
+                    OrdersGiven = true;
                 }
             }
         }
 
         public GetCostToMoveIntoResult GetCostToMoveInto(PointI location)
         {
-            var cellToMoveTo = _world.OverlandMap.CellGrid.GetCell(location.X, location.Y);
+            var cellToMoveTo = World.OverlandMap.CellGrid.GetCell(location);
 
             return GetCostToMoveInto(cellToMoveTo);
         }
@@ -178,7 +193,7 @@ namespace PhoenixGameLibrary
         private int GetSightRange()
         {
             var sightRange = 0;
-            foreach (var unit in _units)
+            foreach (var unit in Units)
             {
                 if (unit.SightRange > sightRange)
                 {
@@ -191,11 +206,14 @@ namespace PhoenixGameLibrary
 
         internal void BeginTurn()
         {
+            OrdersGiven = Status == UnitStatus.Explore || Status == UnitStatus.Fortify || Status == UnitStatus.Patrol; // TODO: de-hardcode these, a persistent flag?
         }
 
         internal void EndTurn()
         {
-            foreach (var unit in _units)
+            if (!OrdersGiven) throw new Exception("Can not end turn, Stack still requires orders.");
+
+            foreach (var unit in Units)
             {
                 unit.EndTurn();
             }
@@ -203,7 +221,7 @@ namespace PhoenixGameLibrary
 
         internal bool CanSeeCell(Cell cell)
         {
-            foreach (var unit in _units)
+            foreach (var unit in Units)
             {
                 if (unit.CanSeeCell(cell))
                 {
@@ -217,7 +235,7 @@ namespace PhoenixGameLibrary
         private float DetermineMovementPoints()
         {
             var movementPoints = float.MaxValue;
-            foreach (var unit in _units)
+            foreach (var unit in Units)
             {
                 movementPoints = Math.Min(movementPoints, unit.MovementPoints);
             }
@@ -229,16 +247,16 @@ namespace PhoenixGameLibrary
         {
             var movementTypes = new List<string>();
 
-            if (IsSwimming(_units)) movementTypes.Add("Swimming");
-            if (IsFlying(_units)) movementTypes.Add("Flying");
-            if (IsSailing(_units)) movementTypes.Add("Sailing");
-            if (IsForester(_units)) movementTypes.Add("Forester");
-            if (IsMountaineer(_units)) movementTypes.Add("Mountaineer");
-            if (IsPathfinding(_units)) movementTypes.Add("Pathfinding");
-            if (IsPlaneShift(_units)) movementTypes.Add("PlaneShift");
+            if (IsSwimming(Units)) movementTypes.Add("Swimming");
+            if (IsFlying(Units)) movementTypes.Add("Flying");
+            if (IsSailing(Units)) movementTypes.Add("Sailing");
+            if (IsForester(Units)) movementTypes.Add("Forester");
+            if (IsMountaineer(Units)) movementTypes.Add("Mountaineer");
+            if (IsPathfinding(Units)) movementTypes.Add("Pathfinding");
+            if (IsPlaneShift(Units)) movementTypes.Add("PlaneShift");
 
             // if none of Swimming,Flying,Sailing,Forester,Mountaineer,Pathfinding then Walking
-            if (!(IsSwimming(_units) || IsFlying(_units) || IsSailing(_units) || IsForester(_units) || IsMountaineer(_units) || IsPathfinding(_units))) movementTypes.Add("Walking");
+            if (!(IsSwimming(Units) || IsFlying(Units) || IsSailing(Units) || IsForester(Units) || IsMountaineer(Units) || IsPathfinding(Units))) movementTypes.Add("Walking");
 
             return movementTypes;
         }
@@ -292,13 +310,13 @@ namespace PhoenixGameLibrary
             var terrainTypes = gameMetadata.TerrainTypes;
 
             // if terrain is settle-able
-            var cell = _world.OverlandMap.CellGrid.GetCell(thisLocationHex);
+            var cell = World.OverlandMap.CellGrid.GetCell(thisLocationHex);
             var terrainType = terrainTypes[cell.TerrainTypeId];
 
             if (!terrainType.CanSettleOn) return false;
             
             // and not within 4 distance from another settlement
-            var settlements = _world.Settlements;
+            var settlements = World.Settlements;
             foreach (var settlement in settlements)
             {
                 var distance = HexOffsetCoordinates.GetDistance(thisLocationHex.X, thisLocationHex.Y, settlement.Location.X, settlement.Location.Y);
@@ -494,7 +512,7 @@ namespace PhoenixGameLibrary
 
         public IEnumerator<Unit> GetEnumerator()
         {
-            foreach (var item in _units)
+            foreach (var item in Units)
             {
                 yield return item;
             }
@@ -510,6 +528,6 @@ namespace PhoenixGameLibrary
             return DebuggerDisplay;
         }
 
-        private string DebuggerDisplay => $"{{Count={_units.Count}}}";
+        private string DebuggerDisplay => $"{{Count={Units.Count}}}";
     }
 }

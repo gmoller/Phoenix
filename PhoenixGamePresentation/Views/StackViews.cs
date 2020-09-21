@@ -56,7 +56,7 @@ namespace PhoenixGamePresentation.Views
         #region Accessors
         internal int Count => StackViewsList.Count;
         internal string OrdersQueueList => GetOrdersQueueList();
-        internal bool AllStacksHaveBeenGivenOrders => OrdersQueue.Count == 0;
+        internal bool AllStacksHaveBeenGivenOrders => GetAllStacksHaveBeenGivenOrders();
         internal StackView.StackView this[int index] => StackViewsList[index];
         #endregion
 
@@ -66,6 +66,16 @@ namespace PhoenixGamePresentation.Views
             var ret = string.Join(",", array);
 
             return ret;
+        }
+
+        private bool GetAllStacksHaveBeenGivenOrders()
+        {
+            foreach (var stack in Stacks)
+            {
+                if (!stack.OrdersGiven) return false;
+            }
+
+            return true;
         }
 
         internal long GetNextId()
@@ -199,6 +209,7 @@ namespace PhoenixGamePresentation.Views
 
         internal void DoAction(string action)
         {
+            //TODO: de-hardcode
             if (action == "Wait")
             {
                 if (OrdersQueue.Count > 0)
@@ -207,7 +218,7 @@ namespace PhoenixGamePresentation.Views
                 }
             }
 
-            if (action == "Patrol" || action == "Fortify" || action == "Explore" || action == "BuildOutpost")
+            if (action == "Done" || action == "Patrol" || action == "Fortify" || action == "Explore" || action == "BuildOutpost")
             {
                 Current.DoAction(action);
             }

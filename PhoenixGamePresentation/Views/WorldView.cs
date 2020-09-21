@@ -58,8 +58,8 @@ namespace PhoenixGamePresentation.Views
             Tooltip = new Tooltip(Vector2.Zero, Alignment.TopLeft, new Vector2(500.0f, 300.0f), "GUI_Textures_1", "sp_frame", 25, 25, 25, 25, "tooltip") { Enabled = false };
 
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
-            Viewport = new Viewport(0, 0, 1680, 1080, 0.0f, 1.0f);
-            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, 1680, 1080);
+            Viewport = new Viewport(0, 0, Camera.GetViewport.Width, Camera.GetViewport.Height, 0.0f, 1.0f);
+            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, Camera.GetViewport.Width, Camera.GetViewport.Height);
 
             MovementTypeImages = InitializeMovementTypeImages();
             ActionButtons = InitializeActionButtons();

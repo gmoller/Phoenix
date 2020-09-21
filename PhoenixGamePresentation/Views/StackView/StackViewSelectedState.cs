@@ -23,6 +23,7 @@ namespace PhoenixGamePresentation.Views.StackView
             StackView.PotentialMovementPath = new List<PointI>();
             StackView.SetAsCurrent(StackView);
             StackView.FocusCameraOn();
+            StackView.SetStatusToNone();
         }
 
         internal override void Update(WorldView worldView, float deltaTime)

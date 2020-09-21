@@ -26,7 +26,6 @@ namespace PhoenixGamePresentation.Views.StackView
         {
             var locationInWorld = camera.WorldHexToWorldPixel(StackView.Stack.LocationHex);
             DrawUnit(spriteBatch, locationInWorld);
-
             DrawMovementPath(spriteBatch, StackView.PotentialMovementPath, Color.White, 3.0f, 1.0f);
         }
 

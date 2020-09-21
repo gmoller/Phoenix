@@ -49,6 +49,7 @@ namespace PhoenixGamePresentation.Views.StackView
         #region Accessors
         internal CellGrid CellGrid => WorldView.CellGrid;
         internal bool NeedsOrders => Stack.NeedsOrders;
+        internal bool OrdersGiven => Stack.OrdersGiven;
 
         internal bool IsSelected => StackViews.Current == this;
 
@@ -74,7 +75,6 @@ namespace PhoenixGamePresentation.Views.StackView
             }
         }
 
-        internal bool OrdersGiven => StackHasNoMovementPoints;
         internal Camera Camera => WorldView.Camera;
         internal Point MousePosition => Input.MousePosition;
 

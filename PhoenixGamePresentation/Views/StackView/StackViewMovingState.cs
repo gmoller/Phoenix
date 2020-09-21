@@ -92,7 +92,6 @@ namespace PhoenixGamePresentation.Views.StackView
         internal override void DrawUnit(SpriteBatch spriteBatch, Camera camera)
         {
             DrawUnit(spriteBatch, CurrentPositionOnScreen);
-
             DrawMovementPath(spriteBatch, StackView.MovementPath, Color.Black, 5.0f, 5.0f);
         }
 
