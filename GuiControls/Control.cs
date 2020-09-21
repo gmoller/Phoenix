@@ -40,6 +40,7 @@ namespace GuiControls
         protected AtlasSpec2 Atlas { get; private set; }
 
         public string Name { get; protected set; }
+        public string Text { get; set; }
 
         public bool Enabled { get; set; } //Parent?.Enabled ?? _enabled;
 
@@ -57,7 +58,7 @@ namespace GuiControls
             Name = name;
             TextureAtlas = textureAtlas;
             TextureName = textureName;
-            Color = Microsoft.Xna.Framework.Color.White;
+            Color = Color.White;
             LayerDepth = layerDepth;
 
             _textureNormal = textureNormal;
@@ -139,7 +140,7 @@ namespace GuiControls
             }
         }
 
-        public void SetTopLeftPosition(PointI point)
+        public virtual void SetTopLeftPosition(PointI point)
         {
             foreach (var child in ChildControls)
             {
@@ -149,7 +150,7 @@ namespace GuiControls
             ActualDestinationRectangle = new Rectangle(point.X, point.Y, ActualDestinationRectangle.Width, ActualDestinationRectangle.Height);
         }
 
-        public void MoveTopLeftPosition(PointI point)
+        public virtual void MoveTopLeftPosition(PointI point)
         {
             foreach (var child in ChildControls)
             {
@@ -157,6 +158,11 @@ namespace GuiControls
             }
 
             ActualDestinationRectangle = new Rectangle(ActualDestinationRectangle.X + point.X, ActualDestinationRectangle.Y + point.Y, ActualDestinationRectangle.Width, ActualDestinationRectangle.Height);
+        }
+
+        public void SetText(string text)
+        {
+            Text = text;
         }
 
         public virtual void LoadContent(ContentManager content, bool loadChildrenContent = false)
@@ -186,14 +192,23 @@ namespace GuiControls
             var mousePosition = GetMousePosition(input, viewport);
             MouseOver = ActualDestinationRectangle.Contains(mousePosition.X, mousePosition.Y);
 
+            string texture;
             if (Enabled)
             {
-                SetTexture(MouseOver ? _textureHover : _textureNormal);
+                if (MouseOver)
+                {
+                    texture = _textureHover.HasValue() || Atlas == null ? _textureHover : TextureName;
+                }
+                else
+                {
+                    texture = _textureNormal.HasValue() || Atlas == null ? _textureNormal : TextureName;
+                }
             }
             else
             {
-                SetTexture(_textureDisabled);
+                texture = _textureDisabled.HasValue() || Atlas == null ? _textureDisabled : TextureName;
             }
+            SetTexture(texture);
 
             if (_cooldownTimeInMilliseconds > 0.0f)
             {

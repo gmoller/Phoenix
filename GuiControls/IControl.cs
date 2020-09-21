@@ -107,6 +107,7 @@ namespace GuiControls
         void AddControl(IControl childControl, Alignment parentAlignment = Alignment.TopLeft, Alignment childAlignment = Alignment.None, PointI offset = new PointI());
         void SetTopLeftPosition(PointI point);
         void MoveTopLeftPosition(PointI point);
+        void SetText(string text);
         void LoadContent(ContentManager content, bool loadChildrenContent = false);
         void Update(InputHandler input, float deltaTime, Viewport? viewport);
         void Draw(Matrix? transform = null);

@@ -9,6 +9,7 @@ namespace PhoenixGamePresentation.Views.StackView
         {
             Normal,
             Selected,
+            ShowingPotentialMovement,
             Moving,
             Exploring,
             Patrolling,
@@ -19,6 +20,8 @@ namespace PhoenixGamePresentation.Views.StackView
         {
             Select,
             Unselect,
+            ShowPotentialMovement,
+            ResetPotentialMovement,
             Move,
             Explore,
             Patrol,
@@ -68,6 +71,12 @@ namespace PhoenixGamePresentation.Views.StackView
                 .Execute<StackView>(TransitionToFortified);
 
             builder
+                .In(States.Selected)
+                .On(Events.ShowPotentialMovement)
+                .Goto(States.ShowingPotentialMovement)
+                .Execute<StackView>(TransitionToShowingPotentialMovement);
+
+            builder
                 .In(States.Moving)
                 .On(Events.Select)
                 .Goto(States.Selected)
@@ -100,6 +109,12 @@ namespace PhoenixGamePresentation.Views.StackView
             builder
                 .In(States.Fortified)
                 .On(Events.Select)
+                .Goto(States.Selected)
+                .Execute<StackView>(TransitionToSelected);
+
+            builder
+                .In(States.ShowingPotentialMovement)
+                .On(Events.ResetPotentialMovement)
                 .Goto(States.Selected)
                 .Execute<StackView>(TransitionToSelected);
 
@@ -143,6 +158,11 @@ namespace PhoenixGamePresentation.Views.StackView
             stackView.SetStackViewState(new StackViewFortifiedState(stackView));
         }
 
+        private void TransitionToShowingPotentialMovement(StackView stackView)
+        {
+            stackView.SetStackViewState(new StackViewShowingPotentialMovementState(stackView));
+        }
+
         internal void Select(StackView stackView)
         {
             Machine.Fire(Events.Select, stackView);
@@ -171,6 +191,16 @@ namespace PhoenixGamePresentation.Views.StackView
         internal void Fortify(StackView stackView)
         {
             Machine.Fire(Events.Fortify, stackView);
+        }
+
+        internal void ShowPotentialMovement(StackView stackView)
+        {
+            Machine.Fire(Events.ShowPotentialMovement, stackView);
+        }
+
+        internal void ResetPotentialMovement(StackView stackView)
+        {
+            Machine.Fire(Events.ResetPotentialMovement, stackView);
         }
     }
 }

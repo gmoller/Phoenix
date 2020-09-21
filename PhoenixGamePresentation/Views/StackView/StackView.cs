@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GuiControls;
@@ -19,6 +20,7 @@ namespace PhoenixGamePresentation.Views.StackView
         internal Stack Stack { get; }
 
         internal List<PointI> MovementPath { get; set; }
+        internal List<PointI> PotentialMovementPath { get; set; }
 
         internal StackViewState StackViewState { get; private set; }
         private StackViewStateMachine StateMachine { get; }
@@ -74,6 +76,10 @@ namespace PhoenixGamePresentation.Views.StackView
             }
         }
 
+        internal bool OrdersGiven => StackHasNoMovementPoints;
+        internal Camera Camera => WorldView.Camera;
+        internal Point MousePosition => Input.MousePosition;
+
         internal int Count => Stack.Count;
         #endregion
 
@@ -110,6 +116,10 @@ namespace PhoenixGamePresentation.Views.StackView
             WorldView.Camera.LookAtCell(LocationHex);
         }
 
+        internal void LoadContent(ContentManager content)
+        {
+        }
+
         internal void Update(float deltaTime)
         {
             IfThenElseProcessor.Update(deltaTime);
@@ -120,6 +130,11 @@ namespace PhoenixGamePresentation.Views.StackView
             }
 
             StackViewState.Update(WorldView, deltaTime);
+        }
+
+        internal void Draw(SpriteBatch spriteBatch)
+        {
+            StackViewState.DrawUnit(spriteBatch, WorldView.Camera);
         }
 
         internal void DoAction(string action)
@@ -141,21 +156,14 @@ namespace PhoenixGamePresentation.Views.StackView
             Stack.SetStatusToNone();
         }
 
-        internal void Draw(SpriteBatch spriteBatch)
+        internal void SetPotentialMovement()
         {
-            StackViewState.DrawUnit(spriteBatch, WorldView.Camera);
-        }
-
-        internal void SetPotentialMovement(Point mouseLocation)
-        {
-            var stackViewSelectedState = StackViewState as StackViewSelectedState;
-            stackViewSelectedState.SetPotentialMovementPath(WorldView.CellGrid, WorldView.Camera, mouseLocation);
+            StateMachine.ShowPotentialMovement(this);
         }
 
         internal void ResetPotentialMovement()
         {
-            var stackViewSelectedState = StackViewState as StackViewSelectedState;
-            stackViewSelectedState.ResetPotentialMovementPath();
+            StateMachine.ResetPotentialMovement(this);
         }
 
         internal void CheckForUnitMovementFromMouseInitiation(Point mouseLocation)
@@ -180,9 +188,8 @@ namespace PhoenixGamePresentation.Views.StackView
             StateMachine.Unselect(this);
         }
 
-        internal void Move(List<PointI> path)
+        internal void Move()
         {
-            MovementPath = path;
             StateMachine.Move(this);
         }
 

@@ -20,6 +20,7 @@
         AtTopOfScreen,
         AtBottomOfScreen,
         AtLeftOfScreen,
-        AtRightOfScreen
+        AtRightOfScreen,
+        CheckForHoverOver
     }
 }

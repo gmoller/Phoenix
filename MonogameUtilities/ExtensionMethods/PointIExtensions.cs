@@ -9,5 +9,10 @@ namespace MonoGameUtilities.ExtensionMethods
         {
             return new Vector2(p.X, p.Y);
         }
+
+        public static Point ToPoint(this PointI p)
+        {
+            return new Point(p.X, p.Y);
+        }
     }
 }

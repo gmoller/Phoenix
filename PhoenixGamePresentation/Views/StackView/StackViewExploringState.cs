@@ -1,10 +1,12 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework.Graphics;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Handlers;
 using Utilities.ExtensionMethods;
 
 namespace PhoenixGamePresentation.Views.StackView
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     internal class StackViewExploringState : StackViewState
     {
         internal StackViewExploringState(StackView stackView)
@@ -39,8 +41,8 @@ namespace PhoenixGamePresentation.Views.StackView
             }
 
             path = path.RemoveLast(StackView.SightRange);
-
-            StackView.Move(path);
+            StackView.MovementPath = path;
+            StackView.Move();
         }
 
         internal override void DrawUnit(SpriteBatch spriteBatch, Camera camera)
@@ -48,5 +50,12 @@ namespace PhoenixGamePresentation.Views.StackView
             var locationInWorld = camera.WorldHexToWorldPixel(StackView.Stack.LocationHex);
             DrawUnit(spriteBatch, locationInWorld);
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => "Exploring";
     }
 }

@@ -23,7 +23,6 @@ namespace GuiControls
         protected readonly Color? BorderColor;
 
         protected SpriteFont Font { get; set; }
-        public virtual string Text { get; set; }
         #endregion
 
         protected Label(

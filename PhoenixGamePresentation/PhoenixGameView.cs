@@ -1,9 +1,11 @@
 ﻿using Assets;
 using Input;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
+using Utilities;
 
 namespace PhoenixGamePresentation
 {
@@ -25,6 +27,12 @@ namespace PhoenixGamePresentation
         public void LoadContent(ContentManager content)
         {
             //ContentLoader.LoadContent(graphicsDevice);
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            var graphicsDevice = context.GraphicsDevice;
+            var pixel = new Texture2D(graphicsDevice, 1, 1, false, SurfaceFormat.Color);
+            pixel.SetData(new[] { new Color(Color.Black, 180) });
+            AssetsManager.Instance.AddTexture("TransparentBackground", pixel);
+
             //http://www.iconian.com/index.html
             AssetsManager.Instance.ContentManager = content;
             AssetsManager.Instance.AddSpriteFont("Arial-12", "Fonts\\Arial-12");
@@ -60,7 +68,6 @@ namespace PhoenixGamePresentation
             AssetsManager.Instance.AddTexture("VillageSmall00", "Textures\\villageSmall00");
             AssetsManager.Instance.AddTexture("brutal-helm", "Textures\\brutal-helm");
             AssetsManager.Instance.AddTexture("NoiseTexture", "Textures\\noiseTexture");
-
 
             AssetsManager.Instance.AddTexture("terrain_hextiles_basic_1", "TextureAtlases\\terrain_hextiles_basic_1");
             AssetsManager.Instance.AddAtlas("terrain_hextiles_basic_1", "TextureAtlases\\terrain_hextiles_basic_1");

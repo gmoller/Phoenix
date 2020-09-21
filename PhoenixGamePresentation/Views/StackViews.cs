@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Assets;
@@ -54,9 +55,18 @@ namespace PhoenixGamePresentation.Views
 
         #region Accessors
         internal int Count => StackViewsList.Count;
+        internal string OrdersQueueList => GetOrdersQueueList();
         internal bool AllStacksHaveBeenGivenOrders => OrdersQueue.Count == 0;
         internal StackView.StackView this[int index] => StackViewsList[index];
         #endregion
+
+        private string GetOrdersQueueList()
+        {
+            var array = OrdersQueue.ToArray().ToList();
+            var ret = string.Join(",", array);
+
+            return ret;
+        }
 
         internal long GetNextId()
         {
@@ -78,7 +88,10 @@ namespace PhoenixGamePresentation.Views
 
             foreach (var stack in Stacks)
             {
-                CreateNewStackView(WorldView, stack, Input);
+                //CreateNewStackView(WorldView, stack, Input);
+                var stackView = new StackView.StackView(WorldView, this, stack, Input);
+                stackView.LoadContent(content);
+                StackViewsList.Add(stackView);
             }
         }
 
@@ -212,6 +225,19 @@ namespace PhoenixGamePresentation.Views
         {
             var stackView = new StackView.StackView(worldView, this, stack, input);
             StackViewsList.Add(stackView);
+        }
+
+        internal StackView.StackView GetStackViewFromLocation(Point location)
+        {
+            foreach (var stackView in this)
+            {
+                if (location.IsWithinHex(stackView.LocationHex, WorldView.Camera.Transform))
+                {
+                    return stackView;
+                }
+            }
+
+            return null;
         }
 
         internal void CheckForSelectionOfStack(Point mouseLocation)

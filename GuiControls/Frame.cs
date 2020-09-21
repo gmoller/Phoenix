@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Assets;
+using MonoGameUtilities.ExtensionMethods;
+using Utilities;
 
 namespace GuiControls
 {
@@ -168,14 +170,14 @@ namespace GuiControls
             string name,
             float layerDepth = 0.0f) :
             base(
-                position, 
-                positionAlignment, 
-                size, 
-                textureAtlas, 
-                textureName, 
-                null, 
-                null, 
-                null, 
+                position,
+                positionAlignment,
+                size,
+                textureAtlas,
+                textureName,
+                null,
+                null,
+                null,
                 null,
                 name,
                 layerDepth)
@@ -207,6 +209,16 @@ namespace GuiControls
             for (var i = 0; i < _sourcePatches.Length; ++i)
             {
                 spriteBatch.Draw(Texture, _destinationPatches[i], _sourcePatches[i], Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
+            }
+        }
+
+        public override void SetTopLeftPosition(PointI point)
+        {
+            base.SetTopLeftPosition(point);
+
+            if (_destinationPatches != null)
+            {
+                _destinationPatches = CreatePatches(new Rectangle(TopLeft.X, TopLeft.Y, Size.X, Size.Y), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
             }
         }
 

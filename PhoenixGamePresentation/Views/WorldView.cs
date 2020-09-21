@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using Input;
 using MonoGameUtilities.ExtensionMethods;
+using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
@@ -24,6 +25,7 @@ namespace PhoenixGamePresentation.Views
         private StackViews StackViews { get; }
         private SettlementView SettlementView { get; }
         private HudView HudView { get; }
+        private Tooltip Tooltip { get; }
         private Dictionary<string, IControl> MovementTypeImages { get; }
         private Dictionary<string, IControl> ActionButtons { get; }
 
@@ -32,6 +34,8 @@ namespace PhoenixGamePresentation.Views
         private GameStatusHandler GameStatusHandler { get; }
 
         private InputHandler Input { get; }
+        private Viewport Viewport { get; }
+        private ViewportAdapter ViewportAdapter { get; }
         private bool IsDisposed { get; set; }
         #endregion
 
@@ -51,13 +55,18 @@ namespace PhoenixGamePresentation.Views
             StackViews = new StackViews(this, World.Stacks, Input);
             SettlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid), Input);
             HudView = new HudView(this, StackViews, Input);
+            Tooltip = new Tooltip(Vector2.Zero, Alignment.TopLeft, new Vector2(500.0f, 300.0f), "GUI_Textures_1", "sp_frame", 25, 25, 25, 25, "tooltip") { Enabled = false };
+
+            var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
+            Viewport = new Viewport(0, 0, 1680, 1080, 0.0f, 1.0f);
+            ViewportAdapter = new ScalingViewportAdapter(context.GraphicsDevice, 1680, 1080);
 
             MovementTypeImages = InitializeMovementTypeImages();
             ActionButtons = InitializeActionButtons();
         }
 
         #region Accessors
-        internal StackView.StackView CurrentlySelectedStackView => StackViews.Current?.StackViewState is StackViewSelectedState ? StackViews.Current : null;
+        internal StackView.StackView CurrentlySelectedStackView => StackViews.Current?.IsSelected == true ? StackViews.Current : null;
         internal CellGrid CellGrid => World.OverlandMap.CellGrid;
         internal Settlements Settlements => World.Settlements;
         internal Stacks Stacks => World.Stacks;
@@ -80,6 +89,7 @@ namespace PhoenixGamePresentation.Views
             StackViews.LoadContent(content);
             SettlementView.LoadContent(content);
             HudView.LoadContent(content);
+            Tooltip.LoadContent(content);
 
             MovementTypeImages.LoadContent(content);
             ActionButtons.LoadContent(content, true);
@@ -110,6 +120,16 @@ namespace PhoenixGamePresentation.Views
             StackViews.Draw(spriteBatch, Camera);
 
             HudView.Draw(spriteBatch);
+
+            if (Tooltip.Enabled)
+            {
+                var originalViewport = spriteBatch.GraphicsDevice.Viewport;
+                spriteBatch.GraphicsDevice.Viewport = Viewport;
+                spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: ViewportAdapter.GetScaleMatrix());
+                Tooltip.Draw(spriteBatch);
+                spriteBatch.End();
+                spriteBatch.GraphicsDevice.Viewport = originalViewport;
+            }
 
             SettlementView.Draw(spriteBatch);
         }
@@ -172,9 +192,43 @@ namespace PhoenixGamePresentation.Views
             return actionButtons;
         }
 
+        private void EnableTooltip(StackView.StackView stackView)
+        {
+            Tooltip.Enabled = true;
+            var position = Camera.WorldHexToScreenPixel(stackView.LocationHex).ToPointI() + new PointI(25, 25);
+            Tooltip.SetTopLeftPosition(position);
+            Tooltip["frame.lblId"].SetText($"Id: {stackView.Id}");
+            Tooltip["frame.lblState"].SetText($"State: {stackView.StackViewState}");
+            Tooltip["frame.lblStackStatus"].SetText($"StackStatus: {stackView.Stack.Status}");
+            Tooltip["frame.lblIsSelected"].SetText($"IsSelected: {stackView.IsSelected}");
+            Tooltip["frame.lblOrdersGiven"].SetText($"OrdersGiven: {stackView.OrdersGiven}");
+            Tooltip["frame.lblCurrent"].SetText($"Current: {StackViews.Current}");
+            Tooltip["frame.lblOrdersQueue"].SetText($"OrdersQueue: {StackViews.OrdersQueueList}");
+        }
+
+        private void DisableTooltip()
+        {
+            Tooltip.Enabled = false;
+            Tooltip.SetTopLeftPosition(PointI.Zero);
+        }
+
         internal void CheckForSelectionOfStack(Point mouseLocation)
         {
             StackViews.CheckForSelectionOfStack(mouseLocation);
+        }
+
+        internal void CheckIfMouseIsHoveringOverStack(Point mouseLocation)
+        {
+            var stackViewHoveredOver = StackViews.GetStackViewFromLocation(mouseLocation);
+            if (stackViewHoveredOver == null)
+            {
+                DisableTooltip();
+            }
+            else
+            {
+                //TODO: only enable after hovered over for some time
+                EnableTooltip(stackViewHoveredOver);
+            }
         }
 
         internal void ChangeState(GameStatus from, GameStatus to)

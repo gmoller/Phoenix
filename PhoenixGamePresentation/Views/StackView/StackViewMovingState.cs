@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Hex;
 using MonoGameUtilities.ExtensionMethods;
@@ -6,6 +7,7 @@ using PhoenixGameLibrary.Commands;
 
 namespace PhoenixGamePresentation.Views.StackView
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     internal class StackViewMovingState : StackViewState
     {
         private const float MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS = 250.0f;
@@ -103,5 +105,12 @@ namespace PhoenixGamePresentation.Views.StackView
         {
             return MovementCountdownTime <= 0.0f;
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => "Moving";
     }
 }

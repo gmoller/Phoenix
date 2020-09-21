@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,6 +11,7 @@ using Utilities;
 
 namespace PhoenixGamePresentation.Views.StackView
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     internal class StackViewSelectedState : StackViewState
     {
         private const float BLINK_TIME_IN_MILLISECONDS = 250.0f;
@@ -17,7 +19,6 @@ namespace PhoenixGamePresentation.Views.StackView
         #region State
         private float BlinkCooldownInMilliseconds { get; set; }
         private bool Blink { get; set; }
-        private List<PointI> PotentialMovementPath { get; set; }
         #endregion
 
         internal StackViewSelectedState(StackView stackView)
@@ -25,7 +26,7 @@ namespace PhoenixGamePresentation.Views.StackView
             StackView = stackView;
             BlinkCooldownInMilliseconds = BLINK_TIME_IN_MILLISECONDS;
             Blink = false;
-            PotentialMovementPath = new List<PointI>();
+            StackView.PotentialMovementPath = new List<PointI>();
             StackView.SetAsCurrent(StackView);
             StackView.FocusCameraOn();
         }
@@ -41,7 +42,7 @@ namespace PhoenixGamePresentation.Views.StackView
 
             if (restartMovement)
             {
-                StackView.Move(StackView.MovementPath);
+                StackView.Move();
             }
         }
 
@@ -68,19 +69,6 @@ namespace PhoenixGamePresentation.Views.StackView
                 var locationInWorld = camera.WorldHexToWorldPixel(StackView.Stack.LocationHex);
                 DrawUnit(spriteBatch, locationInWorld);
             }
-
-            DrawMovementPath(spriteBatch, PotentialMovementPath, Color.White, 3.0f, 1.0f);
-        }
-
-        internal void SetPotentialMovementPath(CellGrid cellGrid, Camera camera, Point mouseLocation)
-        {
-            var path = PotentialMovementHandler.GetPotentialMovementPath(StackView.Stack, cellGrid, mouseLocation, camera);
-            PotentialMovementPath = path;
-        }
-
-        internal void ResetPotentialMovementPath()
-        {
-            PotentialMovementPath = new List<PointI>();
         }
 
         internal void CheckForUnitMovementFromMouseInitiation(CellGrid cellGrid, Camera camera, Point mouseLocation)
@@ -91,7 +79,7 @@ namespace PhoenixGamePresentation.Views.StackView
             {
                 var path = MovementPathDeterminer.DetermineMovementPath(StackView.Stack, StackView.LocationHex, mustStartMovement.hexToMoveTo, StackView.CellGrid);
                 StackView.MovementPath = path;
-                StackView.Move(StackView.MovementPath);
+                StackView.Move();
             }
         }
 
@@ -119,7 +107,7 @@ namespace PhoenixGamePresentation.Views.StackView
                 {
                     var path = MovementPathDeterminer.DetermineMovementPath(StackView.Stack, StackView.LocationHex, hexToMoveTo, StackView.CellGrid);
                     StackView.MovementPath = path;
-                    StackView.Move(StackView.MovementPath);
+                    StackView.Move();
                 }
             }
         }
@@ -146,5 +134,12 @@ namespace PhoenixGamePresentation.Views.StackView
 
             return true;
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => "Selected";
     }
 }

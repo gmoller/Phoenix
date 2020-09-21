@@ -37,7 +37,8 @@ namespace Input
                 { MouseInputActionType.AtTopOfScreen, IsMouseIsAtTopOfScreen },
                 { MouseInputActionType.AtBottomOfScreen, MouseIsAtBottomOfScreen },
                 { MouseInputActionType.AtLeftOfScreen, MouseIsAtLeftOfScreen },
-                { MouseInputActionType.AtRightOfScreen, MouseIsAtRightOfScreen }
+                { MouseInputActionType.AtRightOfScreen, MouseIsAtRightOfScreen },
+                { MouseInputActionType.CheckForHoverOver, () => true},
             };
         }
 

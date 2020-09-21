@@ -1,7 +1,9 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace PhoenixGamePresentation.Views.StackView
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     internal class StackViewFortifiedState : StackViewState
     {
         internal StackViewFortifiedState(StackView stackView)
@@ -49,5 +51,12 @@ namespace PhoenixGamePresentation.Views.StackView
                 DrawUnit(spriteBatch, locationInWorld);
             }
         }
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        private string DebuggerDisplay => "Fortified";
     }
 }
