@@ -14,13 +14,14 @@ namespace GuiControls
     public abstract class Label : Control
     {
         #region State
-        private readonly Func<string> _getTextFunc;
+        private Func<string> GetTextFunc { get; }
 
-        protected readonly string FontName;
-        protected readonly Color TextColor;
-        protected readonly Color? TextShadowColor;
-        protected readonly Color? BackColor;
-        protected readonly Color? BorderColor;
+        protected string FontName { get; }
+        protected Color TextColor { get; }
+        protected Color? TextShadowColor { get; }
+        protected Color? BackColor { get; }
+        protected Color? BorderColor { get; }
+        protected float Scale { get; }
 
         protected SpriteFont Font { get; set; }
         #endregion
@@ -37,6 +38,7 @@ namespace GuiControls
             Color? textShadowColor = null,
             Color? backColor = null,
             Color? borderColor = null,
+            float scale = 1.0f,
             float layerDepth = 0.0f) : 
             base(
                 position, 
@@ -52,12 +54,13 @@ namespace GuiControls
                 layerDepth)
         {
             Text = text;
-            _getTextFunc = getTextFunc;
+            GetTextFunc = getTextFunc;
             FontName = fontName;
             TextColor = textColor;
             TextShadowColor = textShadowColor;
             BackColor = backColor;
             BorderColor = borderColor;
+            Scale = scale;
         }
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
@@ -65,13 +68,13 @@ namespace GuiControls
             Font = AssetsManager.Instance.GetSpriteFont(FontName);
         }
 
-        protected abstract Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text);
+        protected abstract Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text, float scale);
 
         public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
         {
-            if (_getTextFunc != null)
+            if (GetTextFunc != null)
             {
-                Text = _getTextFunc();
+                Text = GetTextFunc();
             }
 
             base.Update(input, deltaTime, viewport);
@@ -87,7 +90,7 @@ namespace GuiControls
                     LayerDepth);
             }
 
-            var offset = DetermineOffset(Font, Size.ToVector2(), Text);
+            var offset = DetermineOffset(Font, Size.ToVector2(), Text, Scale);
             if (TextShadowColor != null)
             {
                 spriteBatch.DrawString(
@@ -96,8 +99,8 @@ namespace GuiControls
                     TopLeft.ToVector2() + offset + Vector2.One, 
                     TextShadowColor.Value, 
                     0.0f, 
-                    Vector2.Zero, 
-                    1.0f, 
+                    Vector2.Zero,
+                    Scale, 
                     SpriteEffects.None, 
                     LayerDepth);
             }
@@ -120,8 +123,8 @@ namespace GuiControls
                 TopLeft.ToVector2() + offset, 
                 TextColor, 
                 0.0f, 
-                Vector2.Zero, 
-                1.0f, 
+                Vector2.Zero,
+                Scale, 
                 SpriteEffects.None, 
                 LayerDepth);
         }
@@ -322,8 +325,8 @@ namespace GuiControls
     public class LabelSized : Label
     {
         #region State
-        private readonly Alignment _contentAlignment;
-        #endregion State
+        private Alignment ContentAlignment { get; }
+        #endregion
 
         /// <summary>
         /// Use this constructor if Label is to be used as a child of another control.
@@ -339,6 +342,7 @@ namespace GuiControls
         /// <param name="textShadowColor"></param>
         /// <param name="backColor"></param>
         /// <param name="borderColor"></param>
+        /// <param name="scale"></param>
         public LabelSized(
             string name,
             Vector2 size,
@@ -348,7 +352,8 @@ namespace GuiControls
             Color textColor,
             Color? textShadowColor = null,
             Color? backColor = null,
-            Color? borderColor = null) :
+            Color? borderColor = null,
+            float scale = 1.0f) :
             this(
                 Vector2.Zero, 
                 Alignment.TopLeft,
@@ -361,7 +366,8 @@ namespace GuiControls
                 name,
                 textShadowColor,
                 backColor,
-                borderColor)
+                borderColor,
+                scale)
         {
         }
 
@@ -379,6 +385,7 @@ namespace GuiControls
         /// <param name="textShadowColor"></param>
         /// <param name="backColor"></param>
         /// <param name="borderColor"></param>
+        /// <param name="scale"></param>
         public LabelSized(
             string name,
             Vector2 size,
@@ -388,7 +395,8 @@ namespace GuiControls
             Color textColor,
             Color? textShadowColor = null,
             Color? backColor = null,
-            Color? borderColor = null) :
+            Color? borderColor = null,
+            float scale = 1.0f) :
             this(
                 Vector2.Zero,
                 Alignment.TopLeft,
@@ -401,7 +409,8 @@ namespace GuiControls
                 name,
                 textShadowColor,
                 backColor,
-                borderColor)
+                borderColor,
+                scale)
         {
         }
 
@@ -419,6 +428,7 @@ namespace GuiControls
         /// <param name="textShadowColor"></param>
         /// <param name="backColor"></param>
         /// <param name="borderColor"></param>
+        /// <param name="scale"></param>
         public LabelSized(
             Vector2 position,
             Alignment positionAlignment,
@@ -430,7 +440,8 @@ namespace GuiControls
             string name,
             Color? textShadowColor = null,
             Color? backColor = null,
-            Color? borderColor = null) :
+            Color? borderColor = null,
+            float scale = 1.0f) :
             this(
                 position,
                 positionAlignment,
@@ -443,7 +454,8 @@ namespace GuiControls
                 name,
                 textShadowColor,
                 backColor,
-                borderColor)
+                borderColor,
+                scale)
         {
         }
 
@@ -459,6 +471,7 @@ namespace GuiControls
         /// <param name="textColor"></param>
         /// <param name="name"></param>
         /// <param name="textShadowColor"></param>
+        /// <param name="scale"></param>
         public LabelSized(
             Vector2 position,
             Alignment positionAlignment,
@@ -468,7 +481,8 @@ namespace GuiControls
             string fontName,
             Color textColor,
             string name,
-            Color? textShadowColor = null) :
+            Color? textShadowColor = null,
+            float scale = 1.0f) :
             this(
                 position,
                 positionAlignment,
@@ -479,7 +493,10 @@ namespace GuiControls
                 fontName,
                 textColor,
                 name,
-                textShadowColor)
+                textShadowColor,
+                null,
+                null,
+                scale)
         {
         }
 
@@ -496,6 +513,7 @@ namespace GuiControls
             Color? textShadowColor = null,
             Color? backColor = null,
             Color? borderColor = null,
+            float scale = 1.0f,
             float layerDepth = 0.0f) :
             base(
                 position,
@@ -509,42 +527,30 @@ namespace GuiControls
                 textShadowColor,
                 backColor,
                 borderColor,
+                scale,
                 layerDepth)
         {
-            _contentAlignment = contentAlignment;
+            ContentAlignment = contentAlignment;
             ActualDestinationRectangle = DetermineArea(position, positionAlignment, size);
         }
 
-        protected override Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text)
+        protected override Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text, float scale)
         {
-            var textSize = font.MeasureString(text);
+            var textSize = font.MeasureString(text) * scale;
 
-            switch (_contentAlignment)
+            return ContentAlignment switch
             {
-                case Alignment.TopLeft:
-                    return Vector2.Zero;
-                case Alignment.TopCenter:
-                    return new Vector2((size.X - textSize.X) * 0.5f, 0.0f);
-                case Alignment.TopRight:
-                    return new Vector2(size.X - textSize.X, 0.0f);
-
-                case Alignment.MiddleLeft:
-                    return new Vector2(0.0f, (size.Y - textSize.Y) * 0.5f);
-                case Alignment.MiddleCenter:
-                    return new Vector2((size.X - textSize.X) * 0.5f, (size.Y - textSize.Y) * 0.5f);
-                case Alignment.MiddleRight:
-                    return new Vector2(size.X - textSize.X, (size.Y - textSize.Y) * 0.5f);
-
-                case Alignment.BottomLeft:
-                    return new Vector2(0.0f, size.Y - textSize.Y);
-                case Alignment.BottomCenter:
-                    return new Vector2((size.X - textSize.X) * 0.5f, size.Y - textSize.Y);
-                case Alignment.BottomRight:
-                    return new Vector2(size.X - textSize.X, size.Y - textSize.Y);
-
-                default:
-                    throw new Exception($"ContentAlignment [{_contentAlignment}] is not implemented.");
-            }
+                Alignment.TopLeft => Vector2.Zero,
+                Alignment.TopCenter => new Vector2((size.X - textSize.X) * 0.5f, 0.0f),
+                Alignment.TopRight => new Vector2(size.X - textSize.X, 0.0f),
+                Alignment.MiddleLeft => new Vector2(0.0f, (size.Y - textSize.Y) * 0.5f),
+                Alignment.MiddleCenter => new Vector2((size.X - textSize.X) * 0.5f, (size.Y - textSize.Y) * 0.5f),
+                Alignment.MiddleRight => new Vector2(size.X - textSize.X, (size.Y - textSize.Y) * 0.5f),
+                Alignment.BottomLeft => new Vector2(0.0f, size.Y - textSize.Y),
+                Alignment.BottomCenter => new Vector2((size.X - textSize.X) * 0.5f, size.Y - textSize.Y),
+                Alignment.BottomRight => new Vector2(size.X - textSize.X, size.Y - textSize.Y),
+                _ => throw new Exception($"ContentAlignment [{ContentAlignment}] is not implemented."),
+            };
         }
     }
 }
