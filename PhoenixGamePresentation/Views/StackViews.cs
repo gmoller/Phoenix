@@ -22,8 +22,6 @@ namespace PhoenixGamePresentation.Views
         private Stacks Stacks { get; }
         private List<StackView.StackView> StackViewsList { get; }
 
-        private Queue<StackView.StackView> OrdersQueue { get; set; }
-
         internal Texture2D GuiTextures { get; private set; }
         internal AtlasFrame SquareGreenFrame { get; private set; }
         internal AtlasFrame SquareGrayFrame { get; private set; }
@@ -39,7 +37,6 @@ namespace PhoenixGamePresentation.Views
             Stacks = stacks;
             StackViewsList = new List<StackView.StackView>();
             Current = null;
-            OrdersQueue = new Queue<StackView.StackView>();
             NextId = 1;
 
             SetupViewport(0, 0, WorldView.Camera.GetViewport.Width, WorldView.Camera.GetViewport.Height);
@@ -55,27 +52,13 @@ namespace PhoenixGamePresentation.Views
 
         #region Accessors
         internal int Count => StackViewsList.Count;
-        internal string OrdersQueueList => GetOrdersQueueList();
         internal bool AllStacksHaveBeenGivenOrders => GetAllStacksHaveBeenGivenOrders();
         internal StackView.StackView this[int index] => StackViewsList[index];
         #endregion
 
-        private string GetOrdersQueueList()
-        {
-            var array = OrdersQueue.ToArray().ToList();
-            var ret = string.Join(",", array);
-
-            return ret;
-        }
-
         private bool GetAllStacksHaveBeenGivenOrders()
         {
-            foreach (var stack in Stacks)
-            {
-                if (!stack.OrdersGiven) return false;
-            }
-
-            return true;
+            return Stacks.All(stack => stack.OrdersGiven);
         }
 
         internal long GetNextId()
@@ -145,79 +128,84 @@ namespace PhoenixGamePresentation.Views
 
         internal void BeginTurn()
         {
-            // create a queue of stacks that need orders
-            var queue = new Queue<StackView.StackView>();
-            foreach (var stackView in StackViewsList)
+            Current = null;
+            SelectFirstThatHasNoOrders();
+        }
+
+        private void SelectFirstThatHasNoOrders()
+        {
+            foreach (var stackView in this)
             {
-                if (stackView.NeedsOrders)
+                if (!stackView.OrdersGiven)
                 {
-                    queue.Enqueue(stackView);
+                    Current = stackView;
+                    Current.Select();
+                    break;
                 }
             }
-
-            OrdersQueue = queue;
-
-            SelectFirst();
         }
 
-        private void SelectFirst()
+        internal void SelectNext()
         {
-            if (OrdersQueue.Count > 0)
+            if (Current is null)
             {
-                Current = OrdersQueue.Dequeue();
-                Current.Select();
+                SelectFirstThatHasNoOrders();
             }
             else
             {
+                var id = Current.Id;
+                Current.Unselect();
                 Current = null;
-            }
-        }
+                var oldCurrentIndex = -1;
+                for (var i = 0; i < Count; i++)
+                {
+                    var stackView = this[i];
+                    if (stackView.Id == id)
+                    {
+                        oldCurrentIndex = i;
+                        break;
+                    }
+                }
 
-        private void SelectNext()
-        {
-            Current?.Unselect();
-            if (OrdersQueue.Count > 0)
-            {
-                Current = OrdersQueue.Dequeue();
-                Current.Select();
-            }
-            else
-            {
-                //_worldView.EndTurn(); // auto end turn when no stacks have actions
-                Current = null;
+                if (oldCurrentIndex >= 0)
+                {
+                    if (oldCurrentIndex >= Count - 1)
+                    {
+                        SelectFirstThatHasNoOrders();
+                    }
+                    else
+                    {
+                        Current = this[oldCurrentIndex + 1];
+                        if (Current.OrdersGiven)
+                        {
+                            SelectNext();
+                        }
+                        else
+                        {
+                            Current.Select();
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exception("Strange...");
+                }
             }
         }
 
         internal void SetCurrent(StackView.StackView stackView)
         {
-            if (Current != null && Current.Id != stackView.Id)
-            {
-                OrdersQueue.Enqueue(Current);
-            }
-
             Current = stackView;
         }
 
-        internal void SetNotCurrent(StackView.StackView stackView)
+        internal void SetNotCurrent()
         {
             Current = null;
-            //if (Current == stackView) // if we were the currently selected one
-            //{
-            //    SelectNext();
-            //}
         }
 
         internal void DoAction(string action)
         {
             //TODO: de-hardcode
-            if (action == "Wait")
-            {
-                if (OrdersQueue.Count > 0)
-                {
-                    OrdersQueue.Enqueue(Current);
-                }
-            }
-
             if (action == "Done" || action == "Patrol" || action == "Fortify" || action == "Explore" || action == "BuildOutpost")
             {
                 Current.DoAction(action);
@@ -225,10 +213,7 @@ namespace PhoenixGamePresentation.Views
 
             if (action == "Done" || action == "Wait" || action == "Patrol" || action == "Fortify" || action == "BuildOutpost")
             {
-                if (action != "Wait" || OrdersQueue.Count != 0)
-                {
-                    SelectNext();
-                }
+                SelectNext();
             }
         }
 
@@ -240,15 +225,7 @@ namespace PhoenixGamePresentation.Views
 
         internal StackView.StackView GetStackViewFromLocation(Point location)
         {
-            foreach (var stackView in this)
-            {
-                if (location.IsWithinHex(stackView.LocationHex, WorldView.Camera.Transform))
-                {
-                    return stackView;
-                }
-            }
-
-            return null;
+            return this.FirstOrDefault(stackView => location.IsWithinHex(stackView.LocationHex, WorldView.Camera.Transform));
         }
 
         internal void CheckForSelectionOfStack(Point mouseLocation)
@@ -260,11 +237,7 @@ namespace PhoenixGamePresentation.Views
                 {
                     if (stackView.Id != Current?.Id)
                     {
-                        if (Current != null)
-                        {
-                            OrdersQueue.Enqueue(Current);
-                            Current.Unselect();
-                        }
+                        Current?.Unselect();
 
                         stackView.Select();
                         Current = stackView;

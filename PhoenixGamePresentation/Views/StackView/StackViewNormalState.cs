@@ -10,6 +10,7 @@ namespace PhoenixGamePresentation.Views.StackView
         {
             StackView = stackView;
             StackView.SetNotCurrent();
+            //StackView.SetStatusToNone();
         }
 
         internal override void Update(WorldView worldView, float deltaTime)

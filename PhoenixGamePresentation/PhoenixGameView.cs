@@ -35,6 +35,10 @@ namespace PhoenixGamePresentation
 
             //http://www.iconian.com/index.html
             AssetsManager.Instance.ContentManager = content;
+            AssetsManager.Instance.AddSpriteFont("DarkXShadowX21s Skyrim Font-12", "Fonts\\DarkXShadowX21s Skyrim Font-12");
+            AssetsManager.Instance.AddSpriteFont("DarkXShadowX21s Skyrim Font-18", "Fonts\\DarkXShadowX21s Skyrim Font-18");
+            AssetsManager.Instance.AddSpriteFont("DarkXShadowX21s Skyrim Font-24", "Fonts\\DarkXShadowX21s Skyrim Font-24");
+            AssetsManager.Instance.AddSpriteFont("DarkXShadowX21s Skyrim Font-36", "Fonts\\DarkXShadowX21s Skyrim Font-36");
             AssetsManager.Instance.AddSpriteFont("Arial-12", "Fonts\\Arial-12");
             AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-6", "Fonts\\Maleficio-Regular-6");
             AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-8", "Fonts\\Maleficio-Regular-8");

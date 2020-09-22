@@ -54,7 +54,7 @@ namespace PhoenixGamePresentation.Views
             StackViews = new StackViews(this, World.Stacks, Input);
             SettlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid), Input);
             HudView = new HudView(this, StackViews, Input);
-            Tooltip = new Tooltip(Vector2.Zero, Alignment.TopLeft, new Vector2(500.0f, 300.0f), "GUI_Textures_1", "sp_frame", 25, 25, 25, 25, "tooltip") { Enabled = false };
+            Tooltip = new Tooltip(Vector2.Zero, Alignment.TopLeft, new Vector2(200.0f, 300.0f), "GUI_Textures_1", "sp_frame", 25, 25, 25, 25, "tooltip") { Enabled = false };
 
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             Viewport = new Viewport(0, 0, Camera.GetViewport.Width, Camera.GetViewport.Height, 0.0f, 1.0f);
@@ -201,8 +201,8 @@ namespace PhoenixGamePresentation.Views
             Tooltip["frame.lblStackStatus"].SetText($"StackStatus: {stackView.Stack.Status}");
             Tooltip["frame.lblIsSelected"].SetText($"IsSelected: {stackView.IsSelected}");
             Tooltip["frame.lblOrdersGiven"].SetText($"OrdersGiven: {stackView.OrdersGiven}");
+            Tooltip["frame.lblMovementPoints"].SetText($"MovementPoints: {stackView.MovementPoints}");
             Tooltip["frame.lblCurrent"].SetText($"Current: {StackViews.Current}");
-            Tooltip["frame.lblOrdersQueue"].SetText($"OrdersQueue: {StackViews.OrdersQueueList}");
         }
 
         private void DisableTooltip()

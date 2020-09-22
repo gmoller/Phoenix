@@ -13,7 +13,7 @@ namespace PhoenixGamePresentation.Views.StackView
         private const float MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS = 250.0f;
 
         #region State
-        private Vector2 CurrentPositionOnScreen { get; set; }
+        private Vector2 LocationInWorld { get; set; }
         private float MovementCountdownTime { get; set; }
         #endregion End State
 
@@ -27,7 +27,7 @@ namespace PhoenixGamePresentation.Views.StackView
         {
             var cantMove = MovementCountdownTimeHasExpired() ? MoveStackToNextCell() : MoveStackBetweenCells(deltaTime);
             var canMove = !cantMove;
-            worldView.Camera.LookAtPixel(CurrentPositionOnScreen);
+            worldView.Camera.LookAtPixel(LocationInWorld);
 
             if (canMove) return;
 
@@ -38,6 +38,7 @@ namespace PhoenixGamePresentation.Views.StackView
             else
             {
                 StackView.Unselect();
+                StackView.SelectNext();
             }
         }
 
@@ -84,14 +85,14 @@ namespace PhoenixGamePresentation.Views.StackView
             // lerp between the two positions
             var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
 
-            CurrentPositionOnScreen = newPosition;
+            LocationInWorld = newPosition;
 
             return false;
         }
 
         internal override void DrawUnit(SpriteBatch spriteBatch, Camera camera)
         {
-            DrawUnit(spriteBatch, CurrentPositionOnScreen);
+            DrawUnit(spriteBatch, LocationInWorld);
             DrawMovementPath(spriteBatch, StackView.MovementPath, Color.Black, 5.0f, 5.0f);
         }
 

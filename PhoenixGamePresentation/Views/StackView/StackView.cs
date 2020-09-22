@@ -106,7 +106,7 @@ namespace PhoenixGamePresentation.Views.StackView
 
         internal void SetNotCurrent()
         {
-            StackViews.SetNotCurrent(this);
+            StackViews.SetNotCurrent();
         }
 
         internal void FocusCameraOn()
@@ -120,11 +120,6 @@ namespace PhoenixGamePresentation.Views.StackView
 
         internal void Update(float deltaTime)
         {
-            if (Stack.Status == UnitStatus.Explore && HasNoMovementPath)
-            {
-                StateMachine.Explore(this);
-            }
-
             StackViewState.Update(WorldView, deltaTime);
         }
 
@@ -133,9 +128,15 @@ namespace PhoenixGamePresentation.Views.StackView
             StackViewState.DrawUnit(spriteBatch, WorldView.Camera);
         }
 
+        internal void SelectNext()
+        {
+            StackViews.SelectNext();
+        }
+
         internal void DoAction(string action)
         {
             Stack.DoAction(action);
+            //TODO: de-hardcode
             switch (action)
             {
                 case "Patrol":
@@ -143,6 +144,9 @@ namespace PhoenixGamePresentation.Views.StackView
                     break;
                 case "Fortify":
                     StateMachine.Fortify(this);
+                    break;
+                case "Explore":
+                    StateMachine.Explore(this, WorldView);
                     break;
             }
         }
@@ -175,6 +179,11 @@ namespace PhoenixGamePresentation.Views.StackView
         internal void Select()
         {
             StateMachine.Select(this);
+
+            if (Stack.Status == UnitStatus.Explore)
+            {
+                StateMachine.Explore(this, WorldView);
+            }
         }
 
         internal void Unselect()

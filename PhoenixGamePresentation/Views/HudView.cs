@@ -48,8 +48,8 @@ namespace PhoenixGamePresentation.Views
             //HudViewFrame.AddControl(new Image("imgBackground", new Vector2(250, 1080), "NoiseTexture"));
 
             string GetTextFuncForDate() => WorldView.CurrentDate;
-            HudViewFrame.AddControl(new LabelSized("lblCurrentDate", new Vector2(150.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForDate, "Maleficio-Regular-18", Color.Aquamarine), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 20));
-
+            HudViewFrame.AddControl(new LabelSized("lblCurrentDate", new Vector2(150.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForDate, "DarkXShadowX21s Skyrim Font-24", Color.Aquamarine), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 20));
+             
             #region MiniMapFrame
 
             HudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.15f /* 15% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));

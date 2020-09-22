@@ -21,8 +21,8 @@ namespace GuiControls
             frame.AddControl(new LabelSized("lblStackStatus", new Vector2(100.0f, 30.0f), Alignment.TopLeft, "StackStatus:", "Arial-12", Color.Yellow), Alignment.TopLeft, Alignment.TopLeft, new PointI(15, 75));
             frame.AddControl(new LabelSized("lblIsSelected", new Vector2(100.0f, 30.0f), Alignment.TopLeft, "IsSelected:", "Arial-12", Color.Yellow), Alignment.TopLeft, Alignment.TopLeft, new PointI(15, 105));
             frame.AddControl(new LabelSized("lblOrdersGiven", new Vector2(100.0f, 30.0f), Alignment.TopLeft, "OrdersGiven:", "Arial-12", Color.Yellow), Alignment.TopLeft, Alignment.TopLeft, new PointI(15, 135));
-            frame.AddControl(new LabelSized("lblCurrent", new Vector2(100.0f, 30.0f), Alignment.TopLeft, "Current:", "Arial-12", Color.Yellow), Alignment.TopLeft, Alignment.TopLeft, new PointI(15, 165));
-            frame.AddControl(new LabelSized("lblOrdersQueue", new Vector2(100.0f, 30.0f), Alignment.TopLeft, "OrdersQueue:", "Arial-12", Color.Yellow), Alignment.TopLeft, Alignment.TopLeft, new PointI(15, 195));
+            frame.AddControl(new LabelSized("lblMovementPoints", new Vector2(100.0f, 30.0f), Alignment.TopLeft, "MovementPoints:", "Arial-12", Color.Yellow), Alignment.TopLeft, Alignment.TopLeft, new PointI(15, 165));
+            frame.AddControl(new LabelSized("lblCurrent", new Vector2(100.0f, 30.0f), Alignment.TopLeft, "Current:", "Arial-12", Color.Yellow), Alignment.TopLeft, Alignment.TopLeft, new PointI(15, 195));
         }
 
         protected Tooltip(Tooltip copyThis) : base(copyThis)
@@ -40,8 +40,8 @@ namespace GuiControls
             this["frame.lblStackStatus"].LoadContent(content, loadChildrenContent);
             this["frame.lblIsSelected"].LoadContent(content, loadChildrenContent);
             this["frame.lblOrdersGiven"].LoadContent(content, loadChildrenContent);
+            this["frame.lblMovementPoints"].LoadContent(content, loadChildrenContent);
             this["frame.lblCurrent"].LoadContent(content, loadChildrenContent);
-            this["frame.lblOrdersQueue"].LoadContent(content, loadChildrenContent);
         }
 
         public override void SetTopLeftPosition(PointI point)

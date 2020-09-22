@@ -146,6 +146,34 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/CrimsonText-Regular-8.spritefont
 
+#begin Fonts/DarkXShadowX21s Skyrim Font-12.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/DarkXShadowX21s Skyrim Font-12.spritefont
+
+#begin Fonts/DarkXShadowX21s Skyrim Font-18.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/DarkXShadowX21s Skyrim Font-18.spritefont
+
+#begin Fonts/DarkXShadowX21s Skyrim Font-24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/DarkXShadowX21s Skyrim Font-24.spritefont
+
+#begin Fonts/DarkXShadowX21s Skyrim Font-36.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/DarkXShadowX21s Skyrim Font-36.spritefont
+
 #begin Fonts/Maleficio-Regular-12.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

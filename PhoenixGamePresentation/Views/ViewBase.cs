@@ -13,7 +13,7 @@ namespace PhoenixGamePresentation.Views
         protected WorldView WorldView { get; set; }
         protected InputHandler Input { get; set; }
 
-        protected Viewport Viewport { get; set; }
+        protected Viewport Viewport { get; private set; }
         protected ViewportAdapter ViewportAdapter { get; set; }
 
         protected bool IsDisposed { get; set; }

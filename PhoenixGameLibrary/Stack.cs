@@ -206,7 +206,7 @@ namespace PhoenixGameLibrary
 
         internal void BeginTurn()
         {
-            OrdersGiven = Status == UnitStatus.Explore || Status == UnitStatus.Fortify || Status == UnitStatus.Patrol; // TODO: de-hardcode these, a persistent flag?
+            OrdersGiven = Status == UnitStatus.Fortify || Status == UnitStatus.Patrol; // TODO: de-hardcode these, a persistent flag?
         }
 
         internal void EndTurn()

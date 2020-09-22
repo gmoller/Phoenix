@@ -44,13 +44,13 @@ namespace PhoenixGamePresentation.Views.StackView
                 .In(States.Selected)
                 .On(Events.Explore)
                 .Goto(States.Exploring)
-                .Execute<StackView>(TransitionToExploring);
+                .Execute<(StackView, WorldView)>(TransitionToExploring);
 
             builder
                 .In(States.Selected)
                 .On(Events.Move)
                 .Goto(States.Moving)
-                .Execute((StackView stackView) => { TransitionToMoving(stackView); });
+                .Execute<StackView>(TransitionToMoving);
 
             builder
                 .In(States.Selected)
@@ -128,39 +128,39 @@ namespace PhoenixGamePresentation.Views.StackView
             Machine.Start();
         }
 
-        private void TransitionToNormal(StackView stackView)
+        private void TransitionToNormal(StackView args)
         {
-            stackView.SetStackViewState(new StackViewNormalState(stackView));
+            args.SetStackViewState(new StackViewNormalState(args));
         }
 
-        private void TransitionToSelected(StackView stackView)
+        private void TransitionToSelected(StackView args)
         {
-            stackView.SetStackViewState(new StackViewSelectedState(stackView));
+            args.SetStackViewState(new StackViewSelectedState(args));
         }
 
-        private void TransitionToMoving(StackView stackView)
+        private void TransitionToMoving(StackView args)
         {
-            stackView.SetStackViewState(new StackViewMovingState(stackView));
+            args.SetStackViewState(new StackViewMovingState(args));
         }
 
-        private void TransitionToExploring(StackView stackView)
+        private void TransitionToExploring((StackView stackView, WorldView worldView) args)
         {
-            stackView.SetStackViewState(new StackViewExploringState(stackView));
+            args.stackView.SetStackViewState(new StackViewExploringState(args.stackView, args.worldView));
         }
 
-        private void TransitionToPatrolling(StackView stackView)
+        private void TransitionToPatrolling(StackView args)
         {
-            stackView.SetStackViewState(new StackViewPatrollingState(stackView));
+            args.SetStackViewState(new StackViewPatrollingState(args));
         }
 
-        private void TransitionToFortified(StackView stackView)
+        private void TransitionToFortified(StackView args)
         {
-            stackView.SetStackViewState(new StackViewFortifiedState(stackView));
+            args.SetStackViewState(new StackViewFortifiedState(args));
         }
 
-        private void TransitionToShowingPotentialMovement(StackView stackView)
+        private void TransitionToShowingPotentialMovement(StackView args)
         {
-            stackView.SetStackViewState(new StackViewShowingPotentialMovementState(stackView));
+            args.SetStackViewState(new StackViewShowingPotentialMovementState(args));
         }
 
         internal void Select(StackView stackView)
@@ -178,9 +178,9 @@ namespace PhoenixGamePresentation.Views.StackView
             Machine.Fire(Events.Move, stackView);
         }
 
-        internal void Explore(StackView stackView)
+        internal void Explore(StackView stackView, WorldView worldView)
         {
-            Machine.Fire(Events.Explore, stackView);
+            Machine.Fire(Events.Explore, (stackView, worldView));
         }
 
         internal void Patrol(StackView stackView)
