@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Utilities;
@@ -9,6 +10,8 @@ namespace GuiControls
     public class Tooltip : Control
     {
         #region State
+        private bool IsHoveringOver { get; set; }
+        private DateTime TimeStartedHovering { get; set; }
         #endregion
 
         public Tooltip(Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, int topPadding, int bottomPadding, int leftPadding, int rightPadding, string name, float layerDepth = 0.0f) : base(position, positionAlignment, size, textureAtlas, textureName, null, null, null, null, name, layerDepth)
@@ -47,6 +50,25 @@ namespace GuiControls
         public override void SetTopLeftPosition(PointI point)
         {
             this["frame"].SetTopLeftPosition(point);
+        }
+
+        public bool StartHover()
+        {
+            if (IsHoveringOver)
+            {
+                return DateTime.Now > TimeStartedHovering.AddMilliseconds(500); // TODO: make configurable
+            }
+
+            IsHoveringOver = true;
+            TimeStartedHovering = DateTime.Now;
+
+            return false;
+        }
+
+        public void StopHover()
+        {
+            IsHoveringOver = false;
+            TimeStartedHovering = DateTime.MinValue;
         }
     }
 }

@@ -8,35 +8,48 @@ namespace MonoGameUtilities.ExtensionMethods
     {
         public static PointI ToPointI(this Point p)
         {
-            return new PointI(p.X, p.Y);
+            var point = new PointI(p.X, p.Y);
+
+            return point;
+        }
+
+        public static bool IsWithinRectangle(this Point p1, Rectangle rectangle)
+        {
+            var isWithinRectangle = rectangle.Contains(p1);
+
+            return isWithinRectangle;
         }
 
         public static bool IsWithinHex(this Point p1, PointI p2, Matrix transform)
         {
-            return p1.IsWithinHex(new HexOffsetCoordinates(p2), transform);
+            var isWithinHex = p1.IsWithinHex(new HexOffsetCoordinates(p2), transform);
+
+            return isWithinHex;
         }
 
         public static bool IsWithinHex(this Point p1, HexOffsetCoordinates p2, Matrix transform)
         {
             var hexPoint = p1.ToWorldHex(transform);
-            var cursorIsOnHex = p2.ToPointI() == hexPoint;
+            var isWithinHex = p2.ToPointI() == hexPoint;
 
-            return cursorIsOnHex;
+            return isWithinHex;
         }
 
-        private static PointI ToWorldHex(this Point p, Matrix transform)
+        public static PointI ToWorldHex(this Point p, Matrix transform)
         {
             var worldPositionPointedAtByMouseCursor = p.ToWorldPosition(transform);
             var worldHex = HexOffsetCoordinates.FromPixel(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
+            var worldHexPoint = new PointI(worldHex.Col, worldHex.Row);
 
-            return new PointI(worldHex.Col, worldHex.Row);
+            return worldHexPoint;
         }
 
-        private static Vector2 ToWorldPosition(this Point p, Matrix transform)
+        public static Vector2 ToWorldPosition(this Point p, Matrix transform)
         {
             var worldPositionPointedAtByMouseCursor = Vector2.Transform(p.ToVector2(), Matrix.Invert(transform));
+            var worldPositionPointedAtByMouseCursorVector = new Vector2(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
 
-            return new Vector2(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
+            return worldPositionPointedAtByMouseCursorVector;
         }
     }
 }

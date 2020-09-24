@@ -191,6 +191,16 @@ namespace PhoenixGamePresentation.Views
             return actionButtons;
         }
 
+        private void HoveringOverTooltip(StackView.StackView stackView)
+        {
+            var enable = Tooltip.StartHover();
+
+            if (enable)
+            {
+                EnableTooltip(stackView);
+            }
+        }
+
         private void EnableTooltip(StackView.StackView stackView)
         {
             Tooltip.Enabled = true;
@@ -208,6 +218,7 @@ namespace PhoenixGamePresentation.Views
         private void DisableTooltip()
         {
             Tooltip.Enabled = false;
+            Tooltip.StopHover();
             Tooltip.SetTopLeftPosition(PointI.Zero);
         }
 
@@ -225,8 +236,7 @@ namespace PhoenixGamePresentation.Views
             }
             else
             {
-                //TODO: only enable after hovered over for some time
-                EnableTooltip(stackViewHoveredOver);
+                HoveringOverTooltip(stackViewHoveredOver);
             }
         }
 

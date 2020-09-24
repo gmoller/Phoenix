@@ -17,14 +17,14 @@ namespace PhoenixGamePresentation.Views
         protected void DrawUnit(SpriteBatch spriteBatch, Vector2 location)
         {
             // draw background
-            var destinationRectangle = new Rectangle((int)location.X, (int)location.Y, 60, 60);
             var sourceRectangle = StackView.StackViews.SquareGreenFrame.ToRectangle();
-            spriteBatch.Draw(StackView.StackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
+            var destinationRectangle = StackView.WorldFrame;
+            spriteBatch.Draw(StackView.StackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.0f);
 
             // draw unit icon
-            destinationRectangle = new Rectangle((int)location.X, (int)location.Y, 36, 32);
             var frame = StackView.StackViews.UnitAtlas.Frames[StackView.Stack[0].UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
+            destinationRectangle = new Rectangle((int)location.X, (int)location.Y, sourceRectangle.Width, sourceRectangle.Height);
             spriteBatch.Draw(StackView.StackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
 

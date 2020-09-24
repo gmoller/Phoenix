@@ -223,9 +223,9 @@ namespace PhoenixGamePresentation.Views
             StackViewsList.Add(stackView);
         }
 
-        internal StackView.StackView GetStackViewFromLocation(Point location)
+        internal StackView.StackView GetStackViewFromLocation(Point mouseLocation)
         {
-            return this.FirstOrDefault(stackView => location.IsWithinHex(stackView.LocationHex, WorldView.Camera.Transform));
+            return this.FirstOrDefault(stackView => mouseLocation.IsWithinRectangle(stackView.ScreenFrame));
         }
 
         internal void CheckForSelectionOfStack(Point mouseLocation)

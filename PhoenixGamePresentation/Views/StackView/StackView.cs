@@ -17,6 +17,7 @@ namespace PhoenixGamePresentation.Views.StackView
     internal class StackView : ViewBase, IDisposable
     {
         #region State
+        private readonly Point _frameSize = new Point(60, 60);
         internal StackViews StackViews { get; }
         internal Stack Stack { get; }
 
@@ -25,6 +26,7 @@ namespace PhoenixGamePresentation.Views.StackView
 
         internal StackViewState StackViewState { get; private set; }
         private StackViewStateMachine StateMachine { get; }
+
         #endregion
 
         internal StackView(WorldView worldView, StackViews stackViews, Stack stack, InputHandler input)
@@ -47,8 +49,8 @@ namespace PhoenixGamePresentation.Views.StackView
         }
 
         #region Accessors
+
         internal CellGrid CellGrid => WorldView.CellGrid;
-        internal bool NeedsOrders => Stack.NeedsOrders;
         internal bool OrdersGiven => Stack.OrdersGiven;
 
         internal bool IsSelected => StackViews.Current == this;
@@ -62,6 +64,7 @@ namespace PhoenixGamePresentation.Views.StackView
         public bool StackHasMovementPoints => Stack.MovementPoints > 0.0f;
         public bool StackHasNoMovementPoints => Stack.MovementPoints <= 0.0f;
         internal bool HasMovementPath => MovementPath?.Count > 0;
+
         internal bool HasNoMovementPath
         {
             get
@@ -77,6 +80,34 @@ namespace PhoenixGamePresentation.Views.StackView
 
         internal Camera Camera => WorldView.Camera;
         internal Point MousePosition => Input.MousePosition;
+        internal Rectangle WorldFrame
+        {
+            get
+            {
+                var locationInWorld = WorldView.Camera.WorldHexToWorldPixel(Stack.LocationHex);
+                var frame = MakeRectangle(locationInWorld);
+
+                return frame;
+            }
+        }
+
+        internal Rectangle ScreenFrame
+        {
+            get
+            {
+                var screenPixel = WorldView.Camera.WorldHexToScreenPixel(Stack.LocationHex);
+                var frame = MakeRectangle(screenPixel);
+
+                return frame;
+            }
+        }
+
+        private Rectangle MakeRectangle(Vector2 pos)
+        {
+            var rectangle = new Rectangle((int)(pos.X - _frameSize.X * Constants.ONE_HALF), (int)(pos.Y - _frameSize.Y * Constants.ONE_HALF), _frameSize.X, _frameSize.Y);
+
+            return rectangle;
+        }
 
         internal int Count => Stack.Count;
         #endregion

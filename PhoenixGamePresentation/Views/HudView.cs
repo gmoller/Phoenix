@@ -217,7 +217,7 @@ namespace PhoenixGamePresentation.Views
             int i = 0;
             foreach (var stackView in stackViews)
             {
-                DrawUnitBadges(spriteBatch, new Vector2(x, y), i, stackView.IsSelected, stackView.Stack);
+                DrawUnitBadges(spriteBatch, new Vector2(x, y), i, stackView);
                 i += stackView.Count;
             }
         }
@@ -236,32 +236,32 @@ namespace PhoenixGamePresentation.Views
             return stackViews;
         }
 
-        private void DrawUnitBadges(SpriteBatch spriteBatch, Vector2 topLeftPosition, int index, bool isSelected, Stack stack)
+        private void DrawUnitBadges(SpriteBatch spriteBatch, Vector2 topLeftPosition, int index, StackView.StackView stackView)
         {
-            var x = topLeftPosition.X + 60.0f * Constants.ONE_HALF;
-            var y = topLeftPosition.Y + 60.0f * Constants.ONE_HALF;
-            foreach (var unit in stack)
+            var x = topLeftPosition.X + 30;
+            var y = topLeftPosition.Y + 30;
+            foreach (var unit in stackView.Stack)
             {
                 var indexMod3 = index % 3;
                 var indexDividedBy3 = index / 3; // Floor
-                var xOffset = 75.0f * indexMod3;
-                var yOffset = 75.0f * indexDividedBy3;
-                DrawUnitBadge(spriteBatch, new Vector2(x + xOffset, y + yOffset), unit, isSelected);
+                var xOffset = (stackView.ScreenFrame.Width + 10.0f) * indexMod3;
+                var yOffset = (stackView.ScreenFrame.Height + 10.0f) * indexDividedBy3;
+                DrawUnitBadge(spriteBatch, new Vector2(x + xOffset, y + yOffset), unit, stackView);
                 index++;
             }
         }
 
-        private void DrawUnitBadge(SpriteBatch spriteBatch, Vector2 centerPosition, Unit unit, bool isSelected)
+        private void DrawUnitBadge(SpriteBatch spriteBatch, Vector2 centerPosition, Unit unit, StackView.StackView stackView)
         {
             // draw background
-            var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 60, 60);
-            var sourceRectangle = isSelected ? StackViews.SquareGreenFrame.ToRectangle() : StackViews.SquareGrayFrame.ToRectangle();
+            var sourceRectangle = stackView.IsSelected ? StackViews.SquareGreenFrame.ToRectangle() : StackViews.SquareGrayFrame.ToRectangle();
+            var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, stackView.ScreenFrame.Width, stackView.ScreenFrame.Height);
             spriteBatch.Draw(StackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.FlipVertically, 0.0f);
 
             // draw unit icon
-            destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 36, 32);
             var frame = StackViews.UnitAtlas.Frames[unit.UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
+            destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, sourceRectangle.Width, sourceRectangle.Height);
             spriteBatch.Draw(StackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.None, 0.0f);
         }
 

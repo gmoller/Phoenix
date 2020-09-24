@@ -37,7 +37,6 @@ namespace PhoenixGameLibrary
         public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(Units));
 
         public int Count => Units.Count;
-        public bool NeedsOrders => !OrdersGiven;
 
         public Unit this[int index] => Units[index];
         #endregion
