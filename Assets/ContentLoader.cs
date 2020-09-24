@@ -1,132 +1,120 @@
-﻿//using System.Collections.Generic;
-//using System.IO;
-//using System.Linq;
-//using Microsoft.Xna.Framework.Graphics;
-//using Newtonsoft.Json;
-//using SpriteFontPlus;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
+using SpriteFontPlus;
 
-//namespace Assets
-//{
-//    public static class ContentLoader
-//    {
-//        public static void LoadContent(GraphicsDevice graphicsDevice)
-//        {
-//            var ttfFiles = GetAnyFilesFromContentDirectory("*.ttf");
-//            var fonts = BakeTtfFiles(ttfFiles, graphicsDevice);
-//            AddToAssetsManager(ttfFiles, fonts);
+namespace Assets
+{
+    public static class ContentLoader
+    {
+        public static void LoadContent(string contentFolder, string fonts, string textures, string atlases, GraphicsDevice graphicsDevice)
+        {
+            var ttfFiles = GetFilesFromDirectory($"{contentFolder}{fonts}", "*.ttf");
+            var fontsList = BakeTtfFiles(ttfFiles, graphicsDevice);
+            AddToAssetsManager(fontsList);
 
-//            var pngFiles = GetAnyFilesFromContentDirectory("*.png");
-//            var textures = BakeTextures(pngFiles, graphicsDevice);
-//            AddToAssetsManager(pngFiles, textures);
+            var pngFiles = GetFilesFromDirectory($"{contentFolder}{textures}", "*.png");
+            var texturesList = BakeTextures(pngFiles, graphicsDevice);
+            AddToAssetsManager(texturesList);
 
-//            var atlasSpecFiles = GetAnyFilesFromContentDirectory("*.atlasspec");
-//            var atlases = CreateAtlases(atlasSpecFiles);
-//            AddToAssetsManager(atlasSpecFiles, atlases);
-//        }
+            var atlasSpecFiles = GetFilesFromDirectory($"{contentFolder}{atlases}", "*.atlasspec");
+            var atlasesList = CreateAtlases(atlasSpecFiles);
+            AddToAssetsManager(atlasesList);
+        }
 
-//        private static string[] GetAnyFilesFromContentDirectory(string searchPattern)
-//        {
-//            string path = $@"{Directory.GetCurrentDirectory()}\Content\";
-//            var directoryInfo = new DirectoryInfo(path);
+        private static string[] GetFilesFromDirectory(string path, string searchPattern)
+        {
+            var directoryInfo = new DirectoryInfo(path);
 
-//            FileInfo[] ttfFiles = { };
-//            if (directoryInfo.Exists)
-//            {
-//                // get any ttf files
-//                ttfFiles = directoryInfo.GetFiles(searchPattern);
-//            }
+            FileInfo[] files = { };
+            if (directoryInfo.Exists)
+            {
+                // get any files that match search pattern
+                files = directoryInfo.GetFiles(searchPattern);
+            }
+            var fileNames = files.Select(item => item.FullName).ToArray();
 
-//            return ttfFiles.Select(item => item.FullName).ToArray();
-//        }
+            return fileNames;
+        }
 
-//        private static List<SpriteFont> BakeTtfFiles(string[] files, GraphicsDevice graphicsDevice)
-//        {
-//            var fonts = new List<SpriteFont>();
+        private static List<(string fileName, SpriteFont font)> BakeTtfFiles(string[] files, GraphicsDevice graphicsDevice)
+        {
+            var fonts = new List<(string fileName, SpriteFont font)>();
 
-//            foreach (string file in files)
-//            {
-//                TtfFontBakerResult bakeResult = TtfFontBaker.Bake(File.ReadAllBytes(file), 50, 256, 256, new[]
-//                {
-//                    CharacterRange.BasicLatin,
-//                    //CharacterRange.Latin1Supplement,
-//                    //CharacterRange.LatinExtendedA,
-//                    //CharacterRange.LatinExtendedB,
-//                    //CharacterRange.Cyrillic,
-//                    //CharacterRange.CyrillicSupplement,
-//                    //CharacterRange.Hiragana,
-//                    //CharacterRange.Katakana
-//                });
-//                SpriteFont item = bakeResult.CreateSpriteFont(graphicsDevice);
-//                fonts.Add(item);
-//            }
+            foreach (var file in files)
+            {
+                var bakeResult = TtfFontBaker.Bake(
+                    File.ReadAllBytes(file),
+                    25,
+                    512,
+                    512,
+                    new[] { CharacterRange.BasicLatin });
+                var font = bakeResult.CreateSpriteFont(graphicsDevice);
+                var item = (file, font);
+                fonts.Add(item);
+            }
 
-//            return fonts;
-//        }
+            return fonts;
+        }
 
-//        private static List<Texture2D> BakeTextures(string[] files, GraphicsDevice graphicsDevice)
-//        {
-//            var textures = new List<Texture2D>();
+        private static List<(string fileName, Texture2D texture)> BakeTextures(string[] files, GraphicsDevice graphicsDevice)
+        {
+            var textures = new List<(string fileName, Texture2D texture)>();
 
-//            foreach (string file in files)
-//            {
-//                using (FileStream fileStream = new FileStream(file, FileMode.Open))
-//                {
-//                    Texture2D item = Texture2D.FromStream(graphicsDevice, fileStream);
-//                    textures.Add(item);
-//                }
-//            }
+            foreach (var file in files)
+            {
+                using var fileStream = new FileStream(file, FileMode.Open);
+                var texture = Texture2D.FromStream(graphicsDevice, fileStream);
+                var item = (file, texture);
 
-//            return textures;
-//        }
+                textures.Add(item);
+            }
 
-//        private static List<AtlasSpec> CreateAtlases(string[] files)
-//        {
-//            var atlases = new List<AtlasSpec>();
+            return textures;
+        }
 
-//            foreach (string file in files)
-//            {
-//                var json = File.ReadAllText(file);
-//                var item = JsonConvert.DeserializeObject<AtlasSpec>(json);
-//                atlases.Add(item);
-//            }
+        private static List<(string fileName, AtlasSpec atlasspec)> CreateAtlases(string[] files)
+        {
+            var atlases = new List<(string fileName, AtlasSpec atlasspec)>();
 
-//            return atlases;
-//        }
+            foreach (var file in files)
+            {
+                var json = File.ReadAllText(file);
+                var atlasspec = JsonConvert.DeserializeObject<AtlasSpec>(json);
+                var item = (file, atlasspec);
+                atlases.Add(item);
+            }
 
-//        private static void AddToAssetsManager(string[] files, List<SpriteFont> fonts)
-//        {
-//            int i = 0;
-//            foreach (SpriteFont font in fonts)
-//            {
-//                AssetsManager.Instance.AddSpriteFont(Path.GetFileNameWithoutExtension(files[i++]), font);
-//            }
-//        }
+            return atlases;
+        }
 
-//        private static void AddToAssetsManager(string[] files, List<Texture2D> textures)
-//        {
-//            int i = 0;
-//            foreach (Texture2D texture in textures)
-//            {
-//                AssetsManager.Instance.AddTexture(Path.GetFileNameWithoutExtension(files[i++]), texture);
-//            }
-//        }
+        private static void AddToAssetsManager(List<(string fileName, SpriteFont font)> list)
+        {
+            foreach (var item in list)
+            {
+                var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(item.fileName);
+                AssetsManager.Instance.AddSpriteFont(fileNameWithoutExtension, item.font);
+            }
+        }
 
-//        private static void AddToAssetsManager(string[] files, List<AnimationSpec> animations)
-//        {
-//            int i = 0;
-//            foreach (AnimationSpec animationSpec in animations)
-//            {
-//                AssetsManager.Instance.AddAnimation(Path.GetFileNameWithoutExtension(files[i++]), animationSpec);
-//            }
-//        }
+        private static void AddToAssetsManager(List<(string fileName, Texture2D texture)> list)
+        {
+            foreach (var item in list)
+            {
+                var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(item.fileName);
+                AssetsManager.Instance.AddTexture(fileNameWithoutExtension, item.texture);
+            }
+        }
 
-//        private static void AddToAssetsManager(string[] files, List<AtlasSpec> atlases)
-//        {
-//            int i = 0;
-//            foreach (AtlasSpec atlasSpec in atlases)
-//            {
-//                AssetsManager.Instance.AddAtlas(Path.GetFileNameWithoutExtension(files[i++]), atlasSpec);
-//            }
-//        }
-//    }
-//}
+        private static void AddToAssetsManager(List<(string fileName, AtlasSpec atlasspec)> list)
+        {
+            foreach (var item in list)
+            {
+                var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(item.fileName);
+                AssetsManager.Instance.AddAtlas(fileNameWithoutExtension, item.atlasspec);
+            }
+        }
+    }
+}

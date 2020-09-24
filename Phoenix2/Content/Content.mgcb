@@ -146,6 +146,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/CrimsonText-Regular-8.spritefont
 
+#begin Fonts/DarkXShadowX21s Skyrim Font.ttf
+/copy:Fonts/DarkXShadowX21s Skyrim Font.ttf
+
 #begin Fonts/DarkXShadowX21s Skyrim Font-12.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

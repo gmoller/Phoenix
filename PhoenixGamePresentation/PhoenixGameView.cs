@@ -1,8 +1,9 @@
-﻿using Assets;
-using Input;
+﻿using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Assets;
+using Input;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
 using Utilities;
@@ -26,11 +27,14 @@ namespace PhoenixGamePresentation
 
         public void LoadContent(ContentManager content)
         {
-            //ContentLoader.LoadContent(graphicsDevice);
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             var graphicsDevice = context.GraphicsDevice;
             var pixel = new Texture2D(graphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new[] { new Color(Color.Black, 180) });
+
+            //ContentLoader.LoadContent(@"C:\PhoenixContent\", "Fonts", "Textures", "TextureAtlases", graphicsDevice);
+            ContentLoader.LoadContent($@"{Directory.GetCurrentDirectory()}\Content\", "Fonts", "Textures", "TextureAtlases", graphicsDevice);
+
             AssetsManager.Instance.AddTexture("TransparentBackground", pixel);
 
             //http://www.iconian.com/index.html
@@ -74,37 +78,18 @@ namespace PhoenixGamePresentation
             AssetsManager.Instance.AddTexture("NoiseTexture", "Textures\\noiseTexture");
 
             AssetsManager.Instance.AddTexture("terrain_hextiles_basic_1", "TextureAtlases\\terrain_hextiles_basic_1");
-            AssetsManager.Instance.AddAtlas("terrain_hextiles_basic_1", "TextureAtlases\\terrain_hextiles_basic_1");
             AssetsManager.Instance.AddTexture("terrain_hextiles_basic_2", "TextureAtlases\\terrain_hextiles_basic_2");
-            AssetsManager.Instance.AddAtlas("terrain_hextiles_basic_2", "TextureAtlases\\terrain_hextiles_basic_2");
             AssetsManager.Instance.AddTexture("terrain_hextiles_cold_1", "TextureAtlases\\terrain_hextiles_cold_1");
-            AssetsManager.Instance.AddAtlas("terrain_hextiles_cold_1", "TextureAtlases\\terrain_hextiles_cold_1");
             AssetsManager.Instance.AddTexture("terrain_hextiles_cold_2", "TextureAtlases\\terrain_hextiles_cold_2");
-            AssetsManager.Instance.AddAtlas("terrain_hextiles_cold_2", "TextureAtlases\\terrain_hextiles_cold_2");
 
             AssetsManager.Instance.AddTexture("GUI_Textures_1", "TextureAtlases\\GUI_Textures_1");
-            AssetsManager.Instance.AddAtlas("GUI_Textures_1", "TextureAtlases\\GUI_Textures_1");
-
             AssetsManager.Instance.AddTexture("Icons_1", "TextureAtlases\\Icons_1");
-            AssetsManager.Instance.AddAtlas("Icons_1", "TextureAtlases\\Icons_1");
-
             AssetsManager.Instance.AddTexture("Buildings", "TextureAtlases\\Buildings");
-            AssetsManager.Instance.AddAtlas("Buildings", "TextureAtlases\\Buildings");
-
             AssetsManager.Instance.AddTexture("Citizens", "TextureAtlases\\Citizens");
-            AssetsManager.Instance.AddAtlas("Citizens", "TextureAtlases\\Citizens");
-
             AssetsManager.Instance.AddTexture("Units", "TextureAtlases\\Units");
-            AssetsManager.Instance.AddAtlas("Units", "TextureAtlases\\Units");
-
             AssetsManager.Instance.AddTexture("MovementTypes", "TextureAtlases\\MovementTypes");
-            AssetsManager.Instance.AddAtlas("MovementTypes", "TextureAtlases\\MovementTypes");
-
             AssetsManager.Instance.AddTexture("Squares", "TextureAtlases\\Squares");
-            AssetsManager.Instance.AddAtlas("Squares", "TextureAtlases\\Squares");
-
             AssetsManager.Instance.AddTexture("Squares_Transparent", "TextureAtlases\\Squares_Transparent");
-            AssetsManager.Instance.AddAtlas("Squares_Transparent", "TextureAtlases\\Squares_Transparent");
 
             WorldView.LoadContent(content);
             CursorView.LoadContent(content);
