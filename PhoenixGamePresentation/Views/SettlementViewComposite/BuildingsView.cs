@@ -23,11 +23,11 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         #endregion State
 
         internal BuildingsView(string name, SettlementView settlementView, string textureAtlas) :
-            base(Vector2.Zero, Alignment.TopLeft, new Vector2(515.0f, 450.0f), textureAtlas, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, name)
+            base(Vector2.Zero, Alignment.TopLeft, new Vector2(515.0f, 450.0f), name)
         {
             _settlementView = settlementView;
 
-            _slots = new DynamicSlots(new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515.0f, 450.0f), textureAtlas, "slot", 10, 13, 10.0f, "slots");
+            _slots = new DynamicSlots(new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515.0f, 450.0f), $"{textureAtlas}.slot", 10, 13, 10.0f, "slots");
         }
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)

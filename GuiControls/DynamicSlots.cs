@@ -6,7 +6,7 @@ using Utilities;
 namespace GuiControls
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class DynamicSlots : Control
+    public class DynamicSlots : ControlWithSingleTexture
     {
         #region State
         private readonly int _numberOfSlotsX;
@@ -21,7 +21,6 @@ namespace GuiControls
         /// </summary>
         /// <param name="name"></param>
         /// <param name="size"></param>
-        /// <param name="textureAtlas"></param>
         /// <param name="textureName"></param>
         /// <param name="numberOfSlotsX"></param>
         /// <param name="numberOfSlotsY"></param>
@@ -29,7 +28,6 @@ namespace GuiControls
         public DynamicSlots(
             string name,
             Vector2 size,
-            string textureAtlas,
             string textureName,
             int numberOfSlotsX,
             int numberOfSlotsY,
@@ -38,7 +36,6 @@ namespace GuiControls
                 Vector2.Zero,
                 Alignment.TopLeft,
                 size,
-                textureAtlas,
                 textureName,
                 numberOfSlotsX,
                 numberOfSlotsY,
@@ -54,7 +51,6 @@ namespace GuiControls
         /// <param name="position"></param>
         /// <param name="positionAlignment"></param>
         /// <param name="size"></param>
-        /// <param name="textureAtlas"></param>
         /// <param name="textureName"></param>
         /// <param name="numberOfSlotsX"></param>
         /// <param name="numberOfSlotsY"></param>
@@ -64,7 +60,6 @@ namespace GuiControls
             Vector2 position,
             Alignment positionAlignment,
             Vector2 size,
-            string textureAtlas,
             string textureName,
             int numberOfSlotsX,
             int numberOfSlotsY,
@@ -74,7 +69,6 @@ namespace GuiControls
                 position,
                 positionAlignment,
                 size,
-                textureAtlas,
                 textureName,
                 numberOfSlotsX,
                 numberOfSlotsY,
@@ -85,13 +79,12 @@ namespace GuiControls
         }
 
         private DynamicSlots(
-            Vector2 position, 
-            Alignment positionAlignment, 
-            Vector2 size, 
-            string textureAtlas, 
-            string textureName, 
-            int numberOfSlotsX, 
-            int numberOfSlotsY, 
+            Vector2 position,
+            Alignment positionAlignment,
+            Vector2 size,
+            string textureName,
+            int numberOfSlotsX,
+            int numberOfSlotsY,
             float slotPadding,
             string name,
             float layerDepth = 0.0f) :
@@ -99,12 +92,7 @@ namespace GuiControls
                 position,
                 positionAlignment,
                 size,
-                textureAtlas,
                 textureName,
-                null,
-                null,
-                null,
-                null,
                 name,
                 layerDepth)
         {
@@ -119,15 +107,10 @@ namespace GuiControls
             CreateSlots(new Vector2(startX, startY), new Vector2(slotWidth, slotHeight), _numberOfSlotsX, _numberOfSlotsY);
         }
 
-        protected DynamicSlots(DynamicSlots copyThis) : base(copyThis)
-        {
-        }
-
-        public override IControl Clone() { return new DynamicSlots(this); }
-
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
-            //base.LoadContent(content, loadChildrenContent);
+            base.LoadContent(content, loadChildrenContent);
+
             foreach (var child in ChildControls)
             {
                 child.LoadContent(content, loadChildrenContent);
@@ -143,7 +126,7 @@ namespace GuiControls
             {
                 for (var i = 0; i < numberOfSlotsX; ++i)
                 {
-                    AddControl(new Slot($"slot[{i}.{j}]", size, TextureAtlas, TextureName), Alignment.TopLeft, Alignment.TopLeft, new PointI((int)x, (int)y));
+                    AddControl(new Slot($"slot[{i}.{j}]", size, $"{TextureAtlas}.{TextureName}"), Alignment.TopLeft, Alignment.TopLeft, new PointI((int)x, (int)y));
                     x += size.X;
                 }
 

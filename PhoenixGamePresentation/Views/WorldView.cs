@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
+using GuiControls.Packages;
 using Input;
 using MonoGameUtilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
@@ -54,7 +55,7 @@ namespace PhoenixGamePresentation.Views
             StackViews = new StackViews(this, World.Stacks, Input);
             SettlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid), Input);
             HudView = new HudView(this, StackViews, Input);
-            Tooltip = new Tooltip(Vector2.Zero, Alignment.TopLeft, new Vector2(200.0f, 300.0f), "GUI_Textures_1", "sp_frame", 25, 25, 25, 25, "tooltip") { Enabled = false };
+            Tooltip = new Tooltip(Vector2.Zero, Alignment.TopLeft, new Vector2(200.0f, 300.0f), "GUI_Textures_1.sp_frame", 25, 25, 25, 25, "tooltip") { Enabled = false };
 
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             Viewport = new Viewport(0, 0, Camera.GetViewport.Width, Camera.GetViewport.Height, 0.0f, 1.0f);
@@ -156,7 +157,7 @@ namespace PhoenixGamePresentation.Views
             var movementTypeImages = new Dictionary<string, IControl>();
             foreach (var movementType in movementTypes)
             {
-                var image = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(18.0f, 12.0f), "MovementTypes", movementType.Name, "image");
+                var image = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(18.0f, 12.0f), $"MovementTypes.{movementType.Name}", "image");
                 movementTypeImages.Add(movementType.Name, image);
             }
 
@@ -180,8 +181,8 @@ namespace PhoenixGamePresentation.Views
                 var position = new Vector2(x + xOffset, y + yOffset);
                 i++;
 
-                var button = new Button(position, Alignment.TopLeft, buttonSize, "GUI_Textures_1", "simpleb_n", "simpleb_a", "simpleb_h", "simpleb_a", actionType.Name);
-                button.Click += (o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name));
+                var button = new Button(position, Alignment.TopLeft, buttonSize, "GUI_Textures_1.simpleb_n", "GUI_Textures_1.simpleb_a", "GUI_Textures_1.simpleb_h", "GUI_Textures_1.simpleb_a", actionType.Name);
+                button.AddPackage(new ControlClick((o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name))));
                 var label = new LabelSized(button.Size.ToVector2() * Constants.ONE_HALF, Alignment.MiddleCenter, button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black, $"label{i}", null, null);
                 button.AddControl(label);
 
@@ -206,13 +207,7 @@ namespace PhoenixGamePresentation.Views
             Tooltip.Enabled = true;
             var position = Camera.WorldHexToScreenPixel(stackView.LocationHex).ToPointI() + new PointI(25, 25);
             Tooltip.SetTopLeftPosition(position);
-            Tooltip["frame.lblId"].SetText($"Id: {stackView.Id}");
-            Tooltip["frame.lblState"].SetText($"State: {stackView.StackViewState}");
-            Tooltip["frame.lblStackStatus"].SetText($"StackStatus: {stackView.Stack.Status}");
-            Tooltip["frame.lblIsSelected"].SetText($"IsSelected: {stackView.IsSelected}");
-            Tooltip["frame.lblOrdersGiven"].SetText($"OrdersGiven: {stackView.OrdersGiven}");
-            Tooltip["frame.lblMovementPoints"].SetText($"MovementPoints: {stackView.MovementPoints}");
-            Tooltip["frame.lblCurrent"].SetText($"Current: {StackViews.Current}");
+            Tooltip.SetText();
         }
 
         private void DisableTooltip()

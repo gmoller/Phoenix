@@ -3,13 +3,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Assets;
-using MonoGameUtilities.ExtensionMethods;
 using Utilities;
 
 namespace GuiControls
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class Frame : Control
+    public class Frame : ControlWithSingleTexture
     {
         #region State
         private readonly int _topPadding;
@@ -26,20 +25,17 @@ namespace GuiControls
         /// When a control is a child of another control, it's position will be relative
         /// to the parent control. Therefore there is no need to pass in a position.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="size"></param>
-        /// <param name="textureAtlas"></param>
-        /// <param name="textureName"></param>
+        /// <param name="name">Name of frame control.</param>
+        /// <param name="size">Size of frame control in pixels.</param>
+        /// <param name="textureName">Texture to use for rendering. If texture is from a texture atlas use 'AtlasName.TextureName'</param>
         public Frame(
             string name,
             Vector2 size,
-            string textureAtlas,
             string textureName) :
             this(
                 Vector2.Zero,
                 Alignment.TopLeft,
                 size,
-                textureAtlas,
                 textureName,
                 0,
                 0,
@@ -55,18 +51,16 @@ namespace GuiControls
         /// When a control is a child of another control, it's position will be relative
         /// to the parent control. Therefore there is no need to pass in a position.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="size"></param>
-        /// <param name="textureAtlas"></param>
-        /// <param name="textureName"></param>
-        /// <param name="topPadding"></param>
-        /// <param name="bottomPadding"></param>
-        /// <param name="leftPadding"></param>
-        /// <param name="rightPadding"></param>
+        /// <param name="name">Name of frame control.</param>
+        /// <param name="size">Size of frame control in pixels.</param>
+        /// <param name="textureName">Texture to use for rendering. If texture is from a texture atlas use 'AtlasName.TextureName'</param>
+        /// <param name="topPadding">Used to 'stretch' the texture to the size of the frame. Using 9-slice scaling (http://en.wikipedia.org/wiki/9-slice_scaling)</param>
+        /// <param name="bottomPadding">Used to 'stretch' the texture to the size of the frame. Using 9-slice scaling (http://en.wikipedia.org/wiki/9-slice_scaling)</param>
+        /// <param name="leftPadding">Used to 'stretch' the texture to the size of the frame. Using 9-slice scaling (http://en.wikipedia.org/wiki/9-slice_scaling)</param>
+        /// <param name="rightPadding">Used to 'stretch' the texture to the size of the frame. Using 9-slice scaling (http://en.wikipedia.org/wiki/9-slice_scaling)</param>
         public Frame(
             string name,
             Vector2 size,
-            string textureAtlas,
             string textureName,
             int topPadding,
             int bottomPadding,
@@ -76,7 +70,6 @@ namespace GuiControls
                 Vector2.Zero,
                 Alignment.TopLeft,
                 size,
-                textureAtlas,
                 textureName,
                 topPadding,
                 bottomPadding,
@@ -90,24 +83,21 @@ namespace GuiControls
         /// <summary>
         /// Use this constructor if Frame is expected to be stand alone (have no parent).
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="positionAlignment"></param>
-        /// <param name="size"></param>
-        /// <param name="textureAtlas"></param>
-        /// <param name="textureName"></param>
-        /// <param name="name"></param>
+        /// <param name="position">Position of frame.</param>
+        /// <param name="positionAlignment">Qualifies the position, is that position TopLeft, Center, etc.</param>
+        /// <param name="size">Size of frame control in pixels.</param>
+        /// <param name="textureName">Texture to use for rendering. If texture is from a texture atlas use 'AtlasName.TextureName'</param>
+        /// <param name="name">Name of frame control.</param>
         public Frame(
             Vector2 position,
             Alignment positionAlignment,
             Vector2 size,
-            string textureAtlas,
             string textureName,
             string name) :
             this(
                 position,
                 positionAlignment,
                 size,
-                textureAtlas,
                 textureName,
                 0,
                 0,
@@ -121,21 +111,19 @@ namespace GuiControls
         /// <summary>
         /// Use this constructor if Frame is expected to be stand alone (have no parent).
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="positionAlignment"></param>
-        /// <param name="size"></param>
-        /// <param name="textureAtlas"></param>
-        /// <param name="textureName"></param>
-        /// <param name="topPadding"></param>
-        /// <param name="bottomPadding"></param>
-        /// <param name="leftPadding"></param>
-        /// <param name="rightPadding"></param>
-        /// <param name="name"></param>
+        /// <param name="position">Position of frame.</param>
+        /// <param name="positionAlignment">Qualifies the position, is that position TopLeft, Center, etc.</param>
+        /// <param name="size">Size of frame control in pixels.</param>
+        /// <param name="textureName">Texture to use for rendering. If texture is from a texture atlas use 'AtlasName.TextureName'</param>
+        /// <param name="topPadding">Used to 'stretch' the texture to the size of the frame. Using 9-slice scaling (http://en.wikipedia.org/wiki/9-slice_scaling)</param>
+        /// <param name="bottomPadding">Used to 'stretch' the texture to the size of the frame. Using 9-slice scaling (http://en.wikipedia.org/wiki/9-slice_scaling)</param>
+        /// <param name="leftPadding">Used to 'stretch' the texture to the size of the frame. Using 9-slice scaling (http://en.wikipedia.org/wiki/9-slice_scaling)</param>
+        /// <param name="rightPadding">Used to 'stretch' the texture to the size of the frame. Using 9-slice scaling (http://en.wikipedia.org/wiki/9-slice_scaling)</param>
+        /// <param name="name">Name of frame control.</param>
         public Frame(
             Vector2 position,
             Alignment positionAlignment,
             Vector2 size,
-            string textureAtlas,
             string textureName,
             int topPadding,
             int bottomPadding,
@@ -146,7 +134,6 @@ namespace GuiControls
                 position,
                 positionAlignment,
                 size,
-                textureAtlas,
                 textureName,
                 topPadding,
                 bottomPadding,
@@ -161,7 +148,6 @@ namespace GuiControls
             Vector2 position,
             Alignment positionAlignment,
             Vector2 size,
-            string textureAtlas,
             string textureName,
             int topPadding,
             int bottomPadding,
@@ -173,12 +159,7 @@ namespace GuiControls
                 position,
                 positionAlignment,
                 size,
-                textureAtlas,
                 textureName,
-                null,
-                null,
-                null,
-                null,
                 name,
                 layerDepth)
         {
@@ -188,12 +169,6 @@ namespace GuiControls
             _rightPadding = rightPadding;
         }
 
-        protected Frame(Frame copyThis) : base(copyThis)
-        {
-        }
-
-        public override IControl Clone() { return new Frame(this); }
-
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
             Texture = AssetsManager.Instance.GetTexture(TextureAtlas);
@@ -202,6 +177,8 @@ namespace GuiControls
             var frame = atlas.Frames[TextureName];
             _sourcePatches = CreatePatches(frame.ToRectangle(), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
             _destinationPatches = CreatePatches(new Rectangle(TopLeft.X, TopLeft.Y, Size.X, Size.Y), _topPadding, _bottomPadding, _leftPadding, _rightPadding);
+
+            base.LoadContent(content, loadChildrenContent);
         }
 
         protected override void InDraw(SpriteBatch spriteBatch)

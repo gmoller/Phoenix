@@ -1,9 +1,10 @@
 ﻿using System;
-using GuiControls;
-using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using GuiControls;
+using GuiControls.Packages;
+using Input;
 using MonoGameUtilities.ExtensionMethods;
 using Utilities;
 
@@ -18,19 +19,19 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         #endregion State
 
         public MainFrame(SettlementView settlementView, Vector2 topLeftPosition, string textureAtlas) :
-            base(topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), textureAtlas, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, "MainFrame")
+            base(topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), "MainFrame")
         {
             _settlementView = settlementView;
 
-            _frmMain = new Frame(topLeftPosition, Alignment.TopLeft, Size.ToVector2(), TextureAtlas, "frame_main", "frmMain");
+            _frmMain = new Frame(topLeftPosition, Alignment.TopLeft, Size.ToVector2(), $"{textureAtlas}.frame_main", "frmMain");
 
-            _frmMain.AddControl(new Frame("frmHeader", new Vector2(560.0f, 146.0f), TextureAtlas, "frame_big_heading"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, -100));
+            _frmMain.AddControl(new Frame("frmHeader", new Vector2(560.0f, 146.0f), $"{textureAtlas}.frame_big_heading"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, -100));
             _frmMain["frmHeader"].AddControl(new LabelSized("lblSettlementName1", new Vector2(100.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForSettlementType, "Carolingia-Regular-24", Color.Purple, Color.DarkBlue), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 45));
             _frmMain["frmHeader"].AddControl(new LabelSized("lblSettlementName2", new Vector2(100.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForSettlementName, "Carolingia-Regular-24", Color.Purple, Color.DarkBlue), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 75));
-            _frmMain["frmHeader"].AddControl(new Button("btnClose", new Vector2(43.0f, 44.0f), TextureAtlas, "close_button_n", "close_button_a", "close_button_h", "close_button_a"), Alignment.TopRight, Alignment.TopRight, new PointI(-8, 8));
-            _frmMain["frmHeader.btnClose"].Click += CloseButtonClick;
+            _frmMain["frmHeader"].AddControl(new Button("btnClose", new Vector2(43.0f, 44.0f), $"{textureAtlas}.close_button_n", $"{textureAtlas}.close_button_a", $"{textureAtlas}.close_button_h", $"{textureAtlas}.close_button_a"), Alignment.TopRight, Alignment.TopRight, new PointI(-8, 8));
+            _frmMain["frmHeader.btnClose"].AddPackage(new ControlClick((o, args) => CloseButtonClick(o, new EventArgs())));
 
-            _frmMain.AddControl(new Frame("frmPopulation", new Vector2(515.0f, 120.0f), TextureAtlas, "frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
+            _frmMain.AddControl(new Frame("frmPopulation", new Vector2(515.0f, 120.0f), $"{textureAtlas}.frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
             _frmMain["frmPopulation"].AddControl(new LabelSized("lblRace", new Vector2(100.0f, 15.0f), Alignment.TopLeft, GetTextFuncForRace(), "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(0, -20));
             _frmMain["frmPopulation"].AddControl(new LabelSized("lblPopulationGrowth", new Vector2(100.0f, 15.0f), Alignment.TopRight, GetTextFuncForPopulationGrowth(), "CrimsonText-Regular-12", Color.Orange), Alignment.TopRight, Alignment.TopRight, new PointI(0, -20));
             _frmMain["frmPopulation"].AddControl(new LabelSized("lblFarmers", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Farmers:", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 25));
@@ -38,7 +39,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             _frmMain["frmPopulation"].AddControl(new LabelSized("lblRebels", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Rebels:", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 85));
             _frmMain["frmPopulation"].AddControl(new CitizenView("citizenView", new Vector2(90.0f, 135.0f), Alignment.TopLeft, settlementView, "Citizens"), Alignment.TopLeft, Alignment.TopLeft, new PointI(130, 20));
 
-            _frmMain.AddControl(new Frame("frmResources", new Vector2(515.0f, 175.0f), TextureAtlas, "frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 190));
+            _frmMain.AddControl(new Frame("frmResources", new Vector2(515.0f, 175.0f), $"{textureAtlas}.frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 190));
             _frmMain["frmResources"].AddControl(new LabelSized("lblResources", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Resources", "CrimsonText-Regular-12", Color.Orange, Color.DarkBlue), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 0));
             _frmMain["frmResources"].AddControl(new LabelSized("lblFood", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Food", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 25));
             _frmMain["frmResources.lblFood"].AddControl(new FoodView("foodView", new Vector2(130.0f, 0.0f), Alignment.TopLeft, settlementView, "Bread", "Corn"), Alignment.TopLeft, Alignment.TopLeft, new PointI(130, 0));
@@ -48,11 +49,11 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             _frmMain["frmResources"].AddControl(new LabelSized("lblPower", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Power", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 115));
             _frmMain["frmResources"].AddControl(new LabelSized("lblResearch", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Research", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 145));
 
-            _frmMain.AddControl(new Frame("frmProducing", new Vector2(515.0f, 160.0f), TextureAtlas, "frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 400));
+            _frmMain.AddControl(new Frame("frmProducing", new Vector2(515.0f, 160.0f), $"{textureAtlas}.frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 400));
             _frmMain["frmProducing"].AddControl(new LabelSized("lblProducing", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Producing", "CrimsonText-Regular-12", Color.Orange, Color.DarkBlue), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 0));
             _frmMain["frmProducing"].AddControl(new LabelSized("lblCurrent", new Vector2(100.0f, 15.0f), Alignment.TopLeft, GetTextFuncForCurrentlyProducing, "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 25));
 
-            _frmMain.AddControl(new Frame("frmFooter", new Vector2(563.0f, 71.0f), TextureAtlas, "frame_bottom"), Alignment.BottomCenter, Alignment.BottomCenter, new PointI(0, 5));
+            _frmMain.AddControl(new Frame("frmFooter", new Vector2(563.0f, 71.0f), $"{textureAtlas}.frame_bottom"), Alignment.BottomCenter, Alignment.BottomCenter, new PointI(0, 5));
         }
 
         #region Funcs

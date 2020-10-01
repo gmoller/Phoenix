@@ -16,14 +16,15 @@ namespace GuiControls
         #region State
         private Func<string> GetTextFunc { get; }
 
-        protected string FontName { get; }
-        protected Color TextColor { get; }
-        protected Color? TextShadowColor { get; }
-        protected Color? BackColor { get; }
-        protected Color? BorderColor { get; }
-        protected float Scale { get; }
+        public string Text { get; set; }
+        private string FontName { get; }
+        private Color TextColor { get; }
+        private Color? TextShadowColor { get; }
+        private Color? BackColor { get; }
+        private Color? BorderColor { get; }
+        private float Scale { get; }
 
-        protected SpriteFont Font { get; set; }
+        private SpriteFont Font { get; set; }
         #endregion
 
         protected Label(
@@ -41,15 +42,9 @@ namespace GuiControls
             float scale = 1.0f,
             float layerDepth = 0.0f) : 
             base(
-                position, 
-                positionAlignment, 
-                size, 
-                string.Empty, 
-                string.Empty, 
-                null, 
-                null, 
-                null, 
-                null,
+                position,
+                positionAlignment,
+                size,
                 name,
                 layerDepth)
         {
@@ -127,6 +122,11 @@ namespace GuiControls
                 Scale, 
                 SpriteEffects.None, 
                 LayerDepth);
+        }
+
+        public void SetText(string text)
+        {
+            Text = text;
         }
     }
 
@@ -531,7 +531,6 @@ namespace GuiControls
                 layerDepth)
         {
             ContentAlignment = contentAlignment;
-            ActualDestinationRectangle = DetermineArea(position, positionAlignment, size);
         }
 
         protected override Vector2 DetermineOffset(SpriteFont font, Vector2 size, string text, float scale)

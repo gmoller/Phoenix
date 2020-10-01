@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace GuiControls
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class Slot : Control
+    public class Slot : ControlWithSingleTexture
     {
         /// <summary>
         /// Use this constructor if Slot is to be used as a child of another control.
@@ -14,17 +14,14 @@ namespace GuiControls
         /// </summary>
         /// <param name="name"></param>
         /// <param name="size"></param>
-        /// <param name="textureAtlas"></param>
         /// <param name="textureName"></param>
         public Slot(
             string name,
             Vector2 size,
-            string textureAtlas,
             string textureName) :
             this(
                 Vector2.Zero,
                 size,
-                textureAtlas,
                 textureName,
                 name)
         {
@@ -33,28 +30,16 @@ namespace GuiControls
         private Slot(
             Vector2 position,
             Vector2 size,
-            string textureAtlas,
             string textureName,
             string name) :
             base(
                 position,
                 Alignment.TopLeft,
                 size,
-                textureAtlas,
-                textureName,
-                textureName,
-                textureName,
-                textureName,
                 textureName,
                 name)
         {
         }
-
-        protected Slot(Slot copyThis) : base(copyThis)
-        {
-        }
-
-        public override IControl Clone() { return new Slot(this); }
 
         protected override void InDraw(SpriteBatch spriteBatch)
         {

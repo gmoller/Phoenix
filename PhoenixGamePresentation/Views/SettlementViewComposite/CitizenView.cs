@@ -1,10 +1,11 @@
 ﻿using System;
-using GuiControls;
-using Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using PointI = Utilities.PointI;
+using GuiControls;
+using GuiControls.Packages;
+using Input;
+using Utilities;
 
 namespace PhoenixGamePresentation.Views.SettlementViewComposite
 {
@@ -24,22 +25,22 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         #endregion State
 
         internal CitizenView(string name, Vector2 position, Alignment positionAlignment, SettlementView settlementView, string textureAtlas) :
-            base(position, positionAlignment, new Vector2(100.0f, 30.0f), textureAtlas, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, name)
+            base(position, positionAlignment, new Vector2(100.0f, 30.0f), name)
         {
             _settlementView = settlementView;
 
-            _btnSubtractFarmer = new Button(position + new Vector2(Area.X, Area.Y), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_h", "minus_a", "btnSubtractFarmer");
-            _btnSubtractFarmer.Click += SubtractFarmerButtonClick;
-            _btnAddFarmer = new Button(position + new Vector2(Area.X + 20.0f, Area.Y), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_h", "plus_a", "btnAddFarmer");
-            _btnAddFarmer.Click += AddFarmerButtonClick;
-            _btnSubtractWorker = new Button(position + new Vector2(Area.X, Area.Y + 30.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "minus_n", "minus_a", "minus_h", "minus_a", "btnSubtractWorker");
-            _btnSubtractWorker.Click += SubtractWorkerButtonClick;
-            _btnAddWorker = new Button(position + new Vector2(Area.X + 20.0f, Area.Y + 30.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1", "plus_n", "plus_a", "plus_h", "plus_a", "btnAddWorker");
-            _btnAddWorker.Click += AddWorkerButtonClick;
+            _btnSubtractFarmer = new Button(position + new Vector2(Area.X, Area.Y), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1.minus_n", "GUI_Textures_1.minus_a", "GUI_Textures_1.minus_h", "GUI_Textures_1.minus_a", "btnSubtractFarmer");
+            _btnSubtractFarmer.AddPackage(new ControlClick((o, args) => SubtractFarmerButtonClick(o, new EventArgs())));
+            _btnAddFarmer = new Button(position + new Vector2(Area.X + 20.0f, Area.Y), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1.plus_n", "GUI_Textures_1.plus_a", "GUI_Textures_1.plus_h", "GUI_Textures_1.plus_a", "btnAddFarmer");
+            _btnAddFarmer.AddPackage(new ControlClick((o, args) => AddFarmerButtonClick(o, new EventArgs())));
+            _btnSubtractWorker = new Button(position + new Vector2(Area.X, Area.Y + 30.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1.minus_n", "GUI_Textures_1.minus_a", "GUI_Textures_1.minus_h", "GUI_Textures_1.minus_a", "btnSubtractWorker");
+            _btnSubtractWorker.AddPackage(new ControlClick((o, args) => SubtractWorkerButtonClick(o, new EventArgs())));
+            _btnAddWorker = new Button(position + new Vector2(Area.X + 20.0f, Area.Y + 30.0f), Alignment.TopLeft, new Vector2(19.0f, 19.0f), "GUI_Textures_1.plus_n", "GUI_Textures_1.plus_a", "GUI_Textures_1.plus_h", "GUI_Textures_1.plus_a", "btnAddWorker");
+            _btnAddWorker.AddPackage(new ControlClick((o, args) => AddWorkerButtonClick(o, new EventArgs())));
 
-            _imgFarmer = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 30.0f), textureAtlas, $"Citizen_{settlementView.Settlement.RaceType.Name}_Farmer", "imgFarmer");
-            _imgWorker = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 30.0f), textureAtlas, $"Citizen_{settlementView.Settlement.RaceType.Name}_Worker", "imgWorker");
-            _imgRebel = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 30.0f), textureAtlas, $"Citizen_{settlementView.Settlement.RaceType.Name}_Rebel", "imgRebel");
+            _imgFarmer = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 30.0f), $"{textureAtlas}.Citizen_{settlementView.Settlement.RaceType.Name}_Farmer", "imgFarmer");
+            _imgWorker = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 30.0f), $"{textureAtlas}.Citizen_{settlementView.Settlement.RaceType.Name}_Worker", "imgWorker");
+            _imgRebel = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 30.0f), $"{textureAtlas}.Citizen_{settlementView.Settlement.RaceType.Name}_Rebel", "imgRebel");
         }
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)

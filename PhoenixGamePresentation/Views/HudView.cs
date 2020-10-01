@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Assets;
 using GuiControls;
+using GuiControls.Packages;
 using Input;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
@@ -43,7 +44,7 @@ namespace PhoenixGamePresentation.Views
 
             #region HudViewFrame
 
-            HudViewFrame = new Frame(Vector2.Zero, Alignment.TopLeft, new Vector2(Area.Width, Area.Height), "GUI_Textures_1", "frame3_whole", 47, 47, 47, 47, "hudViewFrame");
+            HudViewFrame = new Frame(Vector2.Zero, Alignment.TopLeft, new Vector2(Area.Width, Area.Height), "GUI_Textures_1.frame3_whole", 47, 47, 47, 47, "hudViewFrame");
 
             //HudViewFrame.AddControl(new Image("imgBackground", new Vector2(250, 1080), "NoiseTexture"));
 
@@ -52,9 +53,9 @@ namespace PhoenixGamePresentation.Views
              
             #region MiniMapFrame
 
-            HudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.15f /* 15% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
+            HudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.15f /* 15% of parent */), "GUI_Textures_1.frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
             var image = new Image("mapImage", new Vector2(200.0f, 116.0f), null);
-            image.Click += MiniMapClick;
+            image.AddPackage(new ControlClick((o, args) => MiniMapClick(o, new EventArgs())));
             //TODO: minimap drag
             HudViewFrame["miniMapFrame"].AddControl(image, Alignment.MiddleCenter, Alignment.MiddleCenter);
 
@@ -62,10 +63,10 @@ namespace PhoenixGamePresentation.Views
 
             #region ResourceFrame
 
-            HudViewFrame.AddControl(new Frame("resourceFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 250));
-            HudViewFrame["resourceFrame"].AddControl(new Image("imgGold", new Vector2(50.0f, 50.0f), "Icons_1", "Coin_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 10));
-            HudViewFrame["resourceFrame"].AddControl(new Image("imgMana", new Vector2(50.0f, 50.0f), "Icons_1", "Potion_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 70));
-            HudViewFrame["resourceFrame"].AddControl(new Image("imgFood", new Vector2(50.0f, 50.0f), "Icons_1", "Bread_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 130));
+            HudViewFrame.AddControl(new Frame("resourceFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1.frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 250));
+            HudViewFrame["resourceFrame"].AddControl(new Image("imgGold", new Vector2(50.0f, 50.0f), "Icons_1.Coin_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 10));
+            HudViewFrame["resourceFrame"].AddControl(new Image("imgMana", new Vector2(50.0f, 50.0f), "Icons_1.Potion_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 70));
+            HudViewFrame["resourceFrame"].AddControl(new Image("imgFood", new Vector2(50.0f, 50.0f), "Icons_1.Bread_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 130));
 
             string GetTextFuncForGold() => $"{WorldView.PlayerFaction.GoldInTreasury} GP (+{WorldView.PlayerFaction.GoldPerTurn})";
             HudViewFrame["resourceFrame.imgGold"].AddControl(new LabelSized("lblGold", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForGold, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
@@ -78,15 +79,15 @@ namespace PhoenixGamePresentation.Views
 
             #region UnitFrame
 
-            HudViewFrame.AddControl(new Frame("unitFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1", "frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 500));
+            HudViewFrame.AddControl(new Frame("unitFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.30f /* 30% of parent */), "GUI_Textures_1.frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 500));
 
             string GetTextFuncForMoves() => SelectedStackView == null ? string.Empty : $"Moves: {SelectedStackView.MovementPoints}";
             HudViewFrame["unitFrame"].AddControl(new LabelSized("lblMoves", new Vector2(130.0f, 15.0f), Alignment.MiddleLeft, GetTextFuncForMoves, "CrimsonText-Regular-12", Color.White), Alignment.BottomLeft, Alignment.BottomLeft, new PointI(10, -13));
 
             #endregion
 
-            var btnEndTurn = new Button("btnEndTurn", new Vector2(245.0f, 56.0f), "GUI_Textures_1", "reg_button_n", "reg_button_a", "reg_button_h", "reg_button_a");
-            btnEndTurn.Click += EndTurn;
+            var btnEndTurn = new Button("btnEndTurn", new Vector2(245.0f, 56.0f), "GUI_Textures_1.reg_button_n", "GUI_Textures_1.reg_button_a", "GUI_Textures_1.reg_button_h", "GUI_Textures_1.reg_button_a");
+            btnEndTurn.AddPackage(new ControlClick((o, args) => EndTurn(o, new EventArgs())));
 
             btnEndTurn.AddControl(new LabelSized("lblEndTurn", btnEndTurn.Size.ToVector2(), Alignment.MiddleCenter, "Next Turn", "CrimsonText-Regular-12", Color.White, Color.Blue), Alignment.MiddleCenter, Alignment.MiddleCenter);
 
@@ -98,10 +99,6 @@ namespace PhoenixGamePresentation.Views
             StackViews = stackViews;
 
             worldView.CellGrid.NewCellSeen += NewCellSeen;
-
-            //var json = _hudViewFrame.Serialize();
-            //_hudViewFrame.Deserialize(json);
-            //var newFrame = new Frame(json);
 
             SetupViewport(Area.X, Area.Y, Area.Width, Area.Height + btnEndTurn.Height);
 

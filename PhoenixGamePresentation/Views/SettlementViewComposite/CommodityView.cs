@@ -19,14 +19,12 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         #endregion State
 
         internal CommodityView(Vector2 position, Alignment positionAlignment, SettlementView settlementView, string imageTextureName1, string imageTextureName2, string name) :
-            base(position, positionAlignment, new Vector2(100.0f, 30.0f), "Icons_1", string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, name, 0.0f)
+            base(position, positionAlignment, new Vector2(100.0f, 30.0f), name)
         {
             SettlementView = settlementView;
 
-            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), "Icons_1", imageTextureName1, "image1");
-            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), "Icons_1", imageTextureName2, "image2");
-
-            //Area2 = new Rectangle();
+            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), $"Icons_1.{imageTextureName1}", "image1");
+            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), $"Icons_1.{imageTextureName2}", "image2");
         }
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
@@ -37,17 +35,6 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 
         public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
         {
-            //if (Area2.Contains(input.MousePosition))
-            //{
-            //    ToolTip = new ToolTip(input.MousePosition.ToVector2() + new Vector2(0.0f, 30.0f));
-            //    ToolTip.AddControl(new Image(new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Bread"));
-            //    ToolTip.AddControl(new Image(new Vector2(0.0f, 25.0f), Alignment.TopLeft, new Vector2(25.0f, 25.0f), "Icons_1", "Pickaxe"));
-            //    ToolTip.AddControl(new LabelAutoSized(new Vector2(0.0f, 50.0f), Alignment.TopLeft, "Here is some text!", "CrimsonText-Regular-12", Color.Blue, Color.Red));
-            //}
-            //else
-            //{
-            //    ToolTip = null;
-            //}
         }
 
         public abstract override void Draw(SpriteBatch spriteBatch);

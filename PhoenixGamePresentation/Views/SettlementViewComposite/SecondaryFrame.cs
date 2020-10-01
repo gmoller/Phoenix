@@ -3,11 +3,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
+using GuiControls.Packages;
 using Input;
 using PhoenixGameLibrary;
 using Utilities;
-using Color = Microsoft.Xna.Framework.Color;
-using PointI = Utilities.PointI;
 
 namespace PhoenixGamePresentation.Views.SettlementViewComposite
 {
@@ -20,27 +19,27 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         #endregion State
 
         internal SecondaryFrame(SettlementView settlementView, Vector2 topLeftPosition, string textureAtlas) :
-            base(topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), textureAtlas, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, "SecondaryFrame")
+            base(topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), "SecondaryFrame")
         {
             _settlementView = settlementView;
 
-            _frmSecondary = new Frame(topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), TextureAtlas, "frame_main", "frmSecondary");
+            _frmSecondary = new Frame(topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), $"{textureAtlas}.frame_main", "frmSecondary");
 
-            _frmSecondary.AddControl(new Frame("frmBuildings", new Vector2(515.0f, 450.0f), TextureAtlas, "frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
+            _frmSecondary.AddControl(new Frame("frmBuildings", new Vector2(515.0f, 450.0f), $"{textureAtlas}.frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
             _frmSecondary["frmBuildings"].AddControl(new LabelSized("lblBuildings", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Buildings", "CrimsonText-Regular-12", Color.Orange, Color.DarkBlue), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 0));
-            _frmSecondary["frmBuildings"].AddControl(new BuildingsView("buildingsView", settlementView, TextureAtlas), Alignment.TopCenter);
+            _frmSecondary["frmBuildings"].AddControl(new BuildingsView("buildingsView", settlementView, textureAtlas), Alignment.TopCenter);
 
-            _frmSecondary.AddControl(new Frame("frmUnits", new Vector2(515.0f, 75.0f), TextureAtlas, "frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 535));
+            _frmSecondary.AddControl(new Frame("frmUnits", new Vector2(515.0f, 75.0f), $"{textureAtlas}.frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 535));
             _frmSecondary["frmUnits"].AddControl(new LabelSized("lblUnits", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Units", "CrimsonText-Regular-12", Color.Orange, Color.DarkBlue), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 0));
-            _frmSecondary["frmUnits"].AddControl(new DynamicSlots("slots20", new Vector2(515.0f, 65.0f), TextureAtlas, "slot", 10, 2, 10.0f), Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
+            _frmSecondary["frmUnits"].AddControl(new DynamicSlots("slots20", new Vector2(515.0f, 65.0f), $"{textureAtlas}.slot", 10, 2, 10.0f), Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
 
             CreateUnitLabels(_frmSecondary["frmUnits.slots20"]);
 
-            _frmSecondary.AddControl(new Frame("frmOther", new Vector2(515.0f, 65.0f), TextureAtlas, "frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 640));
+            _frmSecondary.AddControl(new Frame("frmOther", new Vector2(515.0f, 65.0f), $"{textureAtlas}.frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 640));
             _frmSecondary["frmOther"].AddControl(new LabelSized("lblOther", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Other", "CrimsonText-Regular-12", Color.Orange, Color.DarkBlue), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 0));
-            _frmSecondary["frmOther"].AddControl(new DynamicSlots("slots2", new Vector2(515.0f, 55.0f), TextureAtlas, "slot", 2, 1, 10.0f), Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
+            _frmSecondary["frmOther"].AddControl(new DynamicSlots("slots2", new Vector2(515.0f, 55.0f), $"{textureAtlas}.slot", 2, 1, 10.0f), Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
 
-            _frmSecondary.AddControl(new Frame("frmFooter", new Vector2(563.0f, 71.0f), TextureAtlas, "frame_bottom"), Alignment.BottomCenter, Alignment.BottomCenter, new PointI(0, 5));
+            _frmSecondary.AddControl(new Frame("frmFooter", new Vector2(563.0f, 71.0f), $"{textureAtlas}.frame_bottom"), Alignment.BottomCenter, Alignment.BottomCenter, new PointI(0, 5));
         }
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
@@ -78,7 +77,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
                 if (_settlementView.Settlement.UnitCanBeBuilt(unit.Name))
                 {
                     slots[i].AddControl(new LabelSized(unit.Name, new Vector2(42.0f, 20.0f), Alignment.MiddleCenter, unit.ShortName, "CrimsonText-Regular-6", Color.Red, null, Color.PowderBlue), Alignment.TopLeft, Alignment.TopLeft);
-                    slots[i][unit.Name].Click += UnitClick;
+                    slots[i][unit.Name].AddPackage(new ControlClick((o, args) => UnitClick(o, new EventArgs())));
 
                     i++;
                 }

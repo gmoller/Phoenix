@@ -7,16 +7,17 @@ using Utilities;
 namespace GuiControls
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class Tooltip : Control
+    public class Tooltip : ControlWithSingleTexture
     {
         #region State
         private bool IsHoveringOver { get; set; }
         private DateTime TimeStartedHovering { get; set; }
         #endregion
 
-        public Tooltip(Vector2 position, Alignment positionAlignment, Vector2 size, string textureAtlas, string textureName, int topPadding, int bottomPadding, int leftPadding, int rightPadding, string name, float layerDepth = 0.0f) : base(position, positionAlignment, size, textureAtlas, textureName, null, null, null, null, name, layerDepth)
+        public Tooltip(Vector2 position, Alignment positionAlignment, Vector2 size, string textureName, int topPadding, int bottomPadding, int leftPadding, int rightPadding, string name, float layerDepth = 0.0f)
+            : base(position, positionAlignment, size, textureName, name, layerDepth)
         {
-            var frame = new Frame(position, positionAlignment, size, textureAtlas, textureName, topPadding, bottomPadding, leftPadding, rightPadding, "frame");
+            var frame = new Frame(position, positionAlignment, size, textureName, topPadding, bottomPadding, leftPadding, rightPadding, "frame");
             AddControl(frame);
             frame.AddControl(new Image("background", size - new Vector2(16.0f,16.0f), "TransparentBackground"), Alignment.MiddleCenter, Alignment.MiddleCenter);
             frame.AddControl(new LabelSized("lblId", new Vector2(100.0f, 30.0f), Alignment.TopLeft, "Id:", "Arial-12", Color.Yellow), Alignment.TopLeft, Alignment.TopLeft, new PointI(15, 15));
@@ -27,12 +28,6 @@ namespace GuiControls
             frame.AddControl(new LabelSized("lblMovementPoints", new Vector2(100.0f, 30.0f), Alignment.TopLeft, "MovementPoints:", "Arial-12", Color.Yellow), Alignment.TopLeft, Alignment.TopLeft, new PointI(15, 165));
             frame.AddControl(new LabelSized("lblCurrent", new Vector2(100.0f, 30.0f), Alignment.TopLeft, "Current:", "Arial-12", Color.Yellow), Alignment.TopLeft, Alignment.TopLeft, new PointI(15, 195));
         }
-
-        protected Tooltip(Tooltip copyThis) : base(copyThis)
-        {
-        }
-
-        public override IControl Clone() { return new Tooltip(this); }
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
@@ -49,6 +44,8 @@ namespace GuiControls
 
         public override void SetTopLeftPosition(PointI point)
         {
+            base.SetTopLeftPosition(point);
+
             this["frame"].SetTopLeftPosition(point);
         }
 
@@ -69,6 +66,17 @@ namespace GuiControls
         {
             IsHoveringOver = false;
             TimeStartedHovering = DateTime.MinValue;
+        }
+
+        public void SetText()
+        {
+            //this["frame.lblId"].SetText($"Id: {stackView.Id}");
+            //this["frame.lblState"].SetText($"State: {stackView.StackViewState}");
+            //this["frame.lblStackStatus"].SetText($"StackStatus: {stackView.Stack.Status}");
+            //this["frame.lblIsSelected"].SetText($"IsSelected: {stackView.IsSelected}");
+            //this["frame.lblOrdersGiven"].SetText($"OrdersGiven: {stackView.OrdersGiven}");
+            //this["frame.lblMovementPoints"].SetText($"MovementPoints: {stackView.MovementPoints}");
+            //this["frame.lblCurrent"].SetText($"Current: {StackViews.Current}");
         }
     }
 }

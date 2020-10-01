@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace GuiControls
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class Button : Control
+    public class Button : ControlWithMultipleTextures
     {
         /// <summary>
         /// Use this constructor if Button is to be used as a child of another control.
@@ -14,7 +14,6 @@ namespace GuiControls
         /// </summary>
         /// <param name="name"></param>
         /// <param name="size"></param>
-        /// <param name="textureAtlas"></param>
         /// <param name="textureNormal"></param>
         /// <param name="textureActive"></param>
         /// /// <param name="textureHover"></param>
@@ -23,7 +22,6 @@ namespace GuiControls
         public Button(
             string name,
             Vector2 size,
-            string textureAtlas,
             string textureNormal,
             string textureActive,
             string textureHover,
@@ -33,7 +31,6 @@ namespace GuiControls
                 Vector2.Zero,
                 Alignment.TopLeft,
                 size,
-                textureAtlas,
                 textureNormal,
                 textureActive,
                 textureHover,
@@ -49,7 +46,6 @@ namespace GuiControls
         /// <param name="position"></param>
         /// <param name="positionAlignment"></param>
         /// <param name="size"></param>
-        /// <param name="textureAtlas"></param>
         /// <param name="textureNormal"></param>
         /// <param name="textureActive"></param>
         /// /// <param name="textureHover"></param>
@@ -59,7 +55,6 @@ namespace GuiControls
             Vector2 position,
             Alignment positionAlignment,
             Vector2 size,
-            string textureAtlas,
             string textureNormal,
             string textureActive,
             string textureHover,
@@ -69,7 +64,6 @@ namespace GuiControls
                 position,
                 positionAlignment,
                 size,
-                textureAtlas,
                 textureNormal,
                 textureActive,
                 textureHover,
@@ -83,7 +77,6 @@ namespace GuiControls
             Vector2 position,
             Alignment positionAlignment,
             Vector2 size,
-            string textureAtlas,
             string textureNormal,
             string textureActive,
             string textureHover,
@@ -94,7 +87,6 @@ namespace GuiControls
                 position,
                 positionAlignment,
                 size,
-                textureAtlas,
                 textureNormal,
                 textureNormal,
                 textureActive,
@@ -104,12 +96,6 @@ namespace GuiControls
                 layerDepth)
         {
         }
-
-        protected Button(Button copyThis) : base(copyThis)
-        {
-        }
-
-        public override IControl Clone() { return new Button(this); }
 
         protected override void InDraw(SpriteBatch spriteBatch)
         {
