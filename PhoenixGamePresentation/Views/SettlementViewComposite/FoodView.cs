@@ -13,18 +13,9 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            var x = Area.X;
-            var y = Area.Y;
-            var originalX = x;
-            var originalY = y;
-
-            x = Draw(spriteBatch, x, y, SettlementView.Settlement.FoodSubsistence);
+            var x = Draw(spriteBatch, Area.X, Area.Y, SettlementView.Settlement.FoodSubsistence);
             x += 20;
-            x = Draw(spriteBatch, x, y, SettlementView.Settlement.FoodSurplus);
-
-            //ToolTip?.Draw();
-
-            //Area2 = new Rectangle(originalX, originalY, x, 30);
+            Draw(spriteBatch, x, Area.Y, SettlementView.Settlement.FoodSurplus);
         }
     }
 }
