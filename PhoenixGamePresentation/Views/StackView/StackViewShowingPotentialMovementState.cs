@@ -25,7 +25,8 @@ namespace PhoenixGamePresentation.Views.StackView
         internal override void DrawUnit(SpriteBatch spriteBatch, Camera camera)
         {
             var locationInWorld = camera.WorldHexToWorldPixel(StackView.Stack.LocationHex);
-            DrawUnit(spriteBatch, locationInWorld);
+            DrawUnitBackground(spriteBatch, locationInWorld);
+            DrawUnitIcon(spriteBatch, locationInWorld);
             DrawMovementPath(spriteBatch, StackView.PotentialMovementPath, Color.White, 3.0f, 1.0f);
         }
 

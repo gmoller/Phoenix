@@ -26,8 +26,8 @@ namespace GuiControls
         /// <summary>
         /// Enumerable list of all child controls "owned" by this control.
         /// </summary>
-        EnumerableDictionary<IControl> ChildControls { get; }
-        
+        ChildControls ChildControls { get; }
+
         /// <summary>
         /// Indexer by index to get a child control.
         /// </summary>

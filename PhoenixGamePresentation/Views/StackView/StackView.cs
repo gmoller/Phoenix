@@ -24,7 +24,7 @@ namespace PhoenixGamePresentation.Views.StackView
         internal List<PointI> MovementPath { get; set; }
         internal List<PointI> PotentialMovementPath { get; set; }
 
-        internal StackViewState StackViewState { get; private set; }
+        private StackViewState StackViewState { get; set; }
         private StackViewStateMachine StateMachine { get; }
 
         #endregion

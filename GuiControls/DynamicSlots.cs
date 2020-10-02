@@ -111,10 +111,7 @@ namespace GuiControls
         {
             base.LoadContent(content, loadChildrenContent);
 
-            foreach (var child in ChildControls)
-            {
-                child.LoadContent(content, loadChildrenContent);
-            }
+            ChildControls.LoadChildControls(content, loadChildrenContent);
         }
 
         private void CreateSlots(Vector2 startPosition, Vector2 size, int numberOfSlotsX, int numberOfSlotsY)

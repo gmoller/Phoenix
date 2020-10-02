@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Input;
-using Microsoft.Xna.Framework.Content;
 using Utilities;
-using Utilities.ExtensionMethods;
 
 namespace GuiControls
 {
@@ -24,50 +21,6 @@ namespace GuiControls
             var mousePosition = viewport.HasValue ? new PointI(input.MousePosition.X - viewport.Value.X, input.MousePosition.Y - viewport.Value.Y) : new PointI(input.MousePosition.X, input.MousePosition.Y);
 
             return mousePosition;
-        }
-
-        internal static void LoadChildControls(Dictionary<string, IControl> childControls, ContentManager content)
-        {
-            foreach (var childControl in childControls.Values)
-            {
-                childControl.LoadContent(content, true);
-            }
-        }
-
-        internal static void UpdateChildControls(Dictionary<string, IControl> childControls, InputHandler input, float deltaTime, Viewport? viewport)
-        {
-            foreach (var childControl in childControls.Values)
-            {
-                childControl.Update(input, deltaTime, viewport);
-            }
-        }
-
-        internal static void DrawChildControls(Dictionary<string, IControl> childControls, SpriteBatch spriteBatch)
-        {
-            foreach (var childControl in childControls.Values)
-            {
-                childControl.Draw(spriteBatch);
-            }
-        }
-
-        internal static void DrawChildControls(Dictionary<string, IControl> childControls, Matrix? transform = null)
-        {
-            foreach (var childControl in childControls.Values)
-            {
-                childControl.Draw(transform);
-            }
-        }
-
-        internal static IControl FindControl(string key, Dictionary<string, IControl> childControls)
-        {
-            var split = key.Split('.');
-            var childControl = childControls[split[0]];
-            for (var i = 1; i < split.Length; i++)
-            {
-                childControl = childControl[split[i]];
-            }
-
-            return childControl;
         }
 
         internal static PointI DetermineTopLeft(IControl childControl, Alignment parentAlignment, Alignment childAlignment, PointI offset, Vector2 position, Alignment alignment, PointI size)
@@ -172,21 +125,19 @@ namespace GuiControls
 
         internal static string GetTextureAtlas(string textureName)
         {
-            string returnTextureAtlas = null;
+            string returnTextureAtlas;
 
-            if (textureName.HasValue())
+            var split = textureName.Split('.');
+            switch (split.Length)
             {
-                var split = textureName.Split('.');
-                switch (split.Length)
-                {
-                    case 1:
-                        break;
-                    case 2:
-                        returnTextureAtlas = split[0];
-                        break;
-                    default:
-                        throw new Exception($"TextureName [{textureName}] may not have more than one period.");
-                }
+                case 1:
+                    returnTextureAtlas = null;
+                    break;
+                case 2:
+                    returnTextureAtlas = split[0];
+                    break;
+                default:
+                    throw new Exception($"TextureName [{textureName}] may not have more than one period.");
             }
 
             return returnTextureAtlas;
@@ -194,22 +145,19 @@ namespace GuiControls
 
         internal static string GetTextureName(string textureName)
         {
-            string returnTextureName = null;
+            string returnTextureName;
 
-            if (textureName.HasValue())
+            var split = textureName.Split('.');
+            switch (split.Length)
             {
-                var split = textureName.Split('.');
-                switch (split.Length)
-                {
-                    case 1:
-                        returnTextureName = split[0];
-                        break;
-                    case 2:
-                        returnTextureName = split[1];
-                        break;
-                    default:
-                        throw new Exception($"TextureName [{textureName}] may not have more than one period.");
-                }
+                case 1:
+                    returnTextureName = split[0];
+                    break;
+                case 2:
+                    returnTextureName = split[1];
+                    break;
+                default:
+                    throw new Exception($"TextureName [{textureName}] may not have more than one period.");
             }
 
             return returnTextureName;

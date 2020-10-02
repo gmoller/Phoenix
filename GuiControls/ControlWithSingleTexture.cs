@@ -22,8 +22,12 @@ namespace GuiControls
         protected ControlWithSingleTexture(Vector2 position, Alignment positionAlignment, Vector2 size, string textureName, string name, float layerDepth = 0.0f)
             : base(position, positionAlignment, size, name, layerDepth)
         {
-            TextureAtlas = ControlHelper.GetTextureAtlas(textureName);
-            TextureName = ControlHelper.GetTextureName(textureName);
+            if (textureName.HasValue())
+            {
+                TextureAtlas = ControlHelper.GetTextureAtlas(textureName);
+                TextureName = ControlHelper.GetTextureName(textureName);
+            }
+
             Color = Color.White;
         }
 

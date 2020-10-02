@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Assets;
 using GuiControls;
+using GuiControls.PackagesClasses;
 using Hex;
 using Input;
 using MonoGameUtilities;
@@ -30,8 +31,7 @@ namespace PhoenixGamePresentation.Views
             OverlandMap = overlandMap;
 
             Test = new LabelSized(new Vector2(0.0f, 1080.0f), Alignment.BottomLeft, new Vector2(50.0f, 50.0f), Alignment.TopRight, "Test", "CrimsonText-Regular-12", Color.Red, "test", null, Color.Blue);
-            //Test.AddPackage(new ClickPackage(() => { return Test.MoveTopLeftPosition(new PointI(10, -10)); }));
-            //Test.Click += delegate { Test.MoveTopLeftPosition(new PointI(10, -10)); };
+            Test.AddPackage(new ControlClick((o, args) => Test.MoveTopLeftPosition(new PointI(10, -10))));
 
             SetupViewport(0, 0, WorldView.Camera.GetViewport.Width, WorldView.Camera.GetViewport.Height);
 

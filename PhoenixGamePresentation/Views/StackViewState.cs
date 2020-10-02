@@ -14,17 +14,18 @@ namespace PhoenixGamePresentation.Views
         internal abstract void Update(WorldView worldView, float deltaTime);
         internal abstract void DrawUnit(SpriteBatch spriteBatch, Camera camera);
 
-        protected void DrawUnit(SpriteBatch spriteBatch, Vector2 location)
+        protected void DrawUnitBackground(SpriteBatch spriteBatch, Vector2 location)
         {
-            // draw background
             var sourceRectangle = StackView.StackViews.SquareGreenFrame.ToRectangle();
             var destinationRectangle = StackView.WorldFrame;
             spriteBatch.Draw(StackView.StackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.0f);
+        }
 
-            // draw unit icon
+        protected void DrawUnitIcon(SpriteBatch spriteBatch, Vector2 location)
+        {
             var frame = StackView.StackViews.UnitAtlas.Frames[StackView.Stack[0].UnitTypeTextureName];
-            sourceRectangle = frame.ToRectangle();
-            destinationRectangle = new Rectangle((int)location.X, (int)location.Y, sourceRectangle.Width, sourceRectangle.Height);
+            var sourceRectangle = frame.ToRectangle();
+            var destinationRectangle = new Rectangle((int)location.X, (int)location.Y, sourceRectangle.Width, sourceRectangle.Height);
             spriteBatch.Draw(StackView.StackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * 0.5f), SpriteEffects.None, 0.0f);
         }
 

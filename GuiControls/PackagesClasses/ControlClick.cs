@@ -1,7 +1,7 @@
 ﻿using System;
 using Input;
 
-namespace GuiControls.Packages
+namespace GuiControls.PackagesClasses
 {
     public class ControlClick : IPackage
     {

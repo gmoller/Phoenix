@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Input;
@@ -16,7 +14,8 @@ namespace GuiControls
 
         public bool Enabled { get; set; }
 
-        private readonly Dictionary<string, IControl> _childControls;
+        public ChildControls ChildControls { get; }
+        private Packages Packages { get; }
 
         private Vector2 Position { get; set; }
         private Alignment PositionAlignment { get; }
@@ -25,11 +24,7 @@ namespace GuiControls
 
         protected float LayerDepth { get; }
 
-        protected Rectangle ActualDestinationRectangle => ControlHelper.DetermineArea(Position, PositionAlignment, Size);
-
         public string Name { get; }
-
-        private List<IPackage> Packages { get; }
         #endregion
 
         protected Control(Vector2 position, Alignment positionAlignment, Vector2 size, string name, float layerDepth = 0.0f)
@@ -44,11 +39,12 @@ namespace GuiControls
             Status = ControlStatus.None;
             Enabled = true;
 
-            _childControls = new Dictionary<string, IControl>();
-            Packages = new List<IPackage>();
+            ChildControls = new ChildControls();
+            Packages = new Packages();
         }
 
         #region Accessors
+        protected Rectangle ActualDestinationRectangle => ControlHelper.DetermineArea(Position, PositionAlignment, Size);
         public int Top => ActualDestinationRectangle.Top;
         public int Bottom => ActualDestinationRectangle.Bottom;
         public int Left => ActualDestinationRectangle.Left;
@@ -68,15 +64,14 @@ namespace GuiControls
         public PointI RelativeMiddleRight => new PointI(RelativeTopLeft.X + Width, RelativeTopLeft.Y + (int)(Height * 0.5f));
         public PointI RelativeBottomLeft => new PointI(RelativeTopLeft.X, RelativeTopLeft.Y + Height);
 
-        public EnumerableDictionary<IControl> ChildControls => new EnumerableDictionary<IControl>(_childControls);
-        public IControl this[int index] => _childControls.Values.ElementAt(index);
-        public IControl this[string key] => ControlHelper.FindControl(key, _childControls);
+        public IControl this[int index] => ChildControls[index];
+        public IControl this[string key] => ChildControls.FindControl(key);
         #endregion
 
         /// <summary>
-        /// 
+        /// Add a package to this control.
         /// </summary>
-        /// <param name="package"></param>
+        /// <param name="package">Package to add</param>
         public void AddPackage(IPackage package)
         {
             Packages.Add(package);
@@ -86,7 +81,7 @@ namespace GuiControls
         /// Adds a child control to this control.
         /// </summary>
         /// <param name="childControl">Control to be added</param>
-        /// /// <param name="parentAlignment">Used to determine the position of the child control in relation to the parent</param>
+        /// <param name="parentAlignment">Used to determine the position of the child control in relation to the parent</param>
         /// <param name="childAlignment">Used to determine the position of the child control in relation to the parent</param>
         /// <param name="offset">Offset to be added to the child control's top left position</param>
         public void AddControl(Control childControl, Alignment parentAlignment = Alignment.TopLeft,
@@ -102,7 +97,7 @@ namespace GuiControls
             var topLeft = ControlHelper.DetermineTopLeft(childControl, parentAlignment, childAlignment, offset, Position, PositionAlignment, Size);
 
             childControl.SetTopLeftPosition(topLeft);
-            _childControls.Add(childControl.Name, childControl);
+            ChildControls.Add(childControl.Name, childControl);
         }
 
         /// <summary>
@@ -111,11 +106,7 @@ namespace GuiControls
         /// <param name="point"></param>
         public virtual void SetTopLeftPosition(PointI point)
         {
-            foreach (var child in ChildControls)
-            {
-                child.SetTopLeftPosition(point + child.RelativeTopLeft);
-            }
-
+            ChildControls.SetTopLeftPosition(point);
             Position = ControlHelper.DetermineTopLeft(new Vector2(point.X, point.Y), PositionAlignment, Size);
         }
 
@@ -125,11 +116,7 @@ namespace GuiControls
         /// <param name="point"></param>
         public void MoveTopLeftPosition(PointI point)
         {
-            foreach (var child in ChildControls)
-            {
-                child.MoveTopLeftPosition(point);
-            }
-
+            ChildControls.MoveTopLeftPosition(point);
             Position = new Vector2(Position.X + point.X, Position.Y + point.Y);
         }
 
@@ -142,7 +129,7 @@ namespace GuiControls
         {
             if (loadChildrenContent)
             {
-                ControlHelper.LoadChildControls(_childControls, content);
+                ChildControls.LoadChildControls(content, true);
             }
         }
 
@@ -150,10 +137,7 @@ namespace GuiControls
         {
             if (!Enabled)
             {
-                foreach (var package in Packages)
-                {
-                    package.Reset();
-                }
+                Packages.Reset();
                 Status = ControlStatus.None;
                 return;
             }
@@ -167,12 +151,9 @@ namespace GuiControls
                 Status = ControlStatus.None;
             }
 
-            foreach (var package in Packages)
-            {
-                Status = package.Process(this, input, deltaTime);
-            }
+            Status = Packages.Process(this, input, deltaTime);
 
-            ControlHelper.UpdateChildControls(_childControls, input, deltaTime, viewport);
+            ChildControls.UpdateChildControls(input, deltaTime, viewport);
         }
 
         protected virtual void InDraw(SpriteBatch spriteBatch)
@@ -187,14 +168,14 @@ namespace GuiControls
         {
             InDraw(spriteBatch);
 
-            ControlHelper.DrawChildControls(_childControls, spriteBatch);
+            ChildControls.DrawChildControls(spriteBatch);
         }
 
         public void Draw(Matrix? transform = null)
         {
             InDraw(transform);
 
-            ControlHelper.DrawChildControls(_childControls, transform);
+            ChildControls.DrawChildControls(transform);
         }
 
         public override string ToString()

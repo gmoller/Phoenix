@@ -62,7 +62,8 @@ namespace PhoenixGamePresentation.Views.StackView
             if (!Blink)
             {
                 var locationInWorld = camera.WorldHexToWorldPixel(StackView.Stack.LocationHex);
-                DrawUnit(spriteBatch, locationInWorld);
+                DrawUnitBackground(spriteBatch, locationInWorld);
+                DrawUnitIcon(spriteBatch, locationInWorld);
             }
         }
 

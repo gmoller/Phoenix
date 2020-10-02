@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Assets;
 using GuiControls;
-using GuiControls.Packages;
+using GuiControls.PackagesClasses;
 using Input;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
@@ -54,8 +54,8 @@ namespace PhoenixGamePresentation.Views
             #region MiniMapFrame
 
             HudViewFrame.AddControl(new Frame("miniMapFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.15f /* 15% of parent */), "GUI_Textures_1.frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
-            var image = new Image("mapImage", new Vector2(200.0f, 116.0f), null);
-            image.AddPackage(new ControlClick((o, args) => MiniMapClick(o, new EventArgs())));
+            var image = new Image("mapImage", new Vector2(200.0f, 116.0f));
+            image.AddPackage(new ControlClick((o, args) => MiniMapClick(o, new MouseEventArgs(input.Mouse, WorldView, 0.0f))));
             //TODO: minimap drag
             HudViewFrame["miniMapFrame"].AddControl(image, Alignment.MiddleCenter, Alignment.MiddleCenter);
 
