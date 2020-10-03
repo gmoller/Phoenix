@@ -23,9 +23,9 @@ namespace GuiControls
             return mousePosition;
         }
 
-        internal static PointI DetermineTopLeft(IControl childControl, Alignment parentAlignment, Alignment childAlignment, PointI offset, Vector2 position, Alignment alignment, PointI size)
+        internal static PointI DetermineTopLeft(IControl childControl, Alignment parentAlignment, Alignment childAlignment, PointI offset, Vector2 parentPosition, Alignment parentPositionAlignment, PointI size)
         {
-            var actualRectangle = DetermineArea(position, alignment, size);
+            var actualRectangle = DetermineArea(parentPosition, parentPositionAlignment, size);
 
             PointI topLeft;
             switch (parentAlignment)

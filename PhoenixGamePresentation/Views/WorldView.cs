@@ -181,10 +181,11 @@ namespace PhoenixGamePresentation.Views
                 var position = new Vector2(x + xOffset, y + yOffset);
                 i++;
 
-                var button = new Button(position, Alignment.TopLeft, buttonSize, "GUI_Textures_1.simpleb_n", "GUI_Textures_1.simpleb_a", "GUI_Textures_1.simpleb_h", "GUI_Textures_1.simpleb_a", actionType.Name);
+                var textureString = "GUI_Textures_1.simpleb_";
+                var button = new Button(position, Alignment.TopLeft, buttonSize, $"{textureString}n", $"{textureString}a", $"{textureString}h", $"{textureString}a", actionType.Name);
                 button.AddPackage(new ControlClick((o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name))));
-                var label = new LabelSized(button.Size.ToVector2() * Constants.ONE_HALF, Alignment.MiddleCenter, button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black, $"label{i}", null, null);
-                button.AddControl(label);
+                var label = new LabelSized($"label{i}", button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black);
+                button.AddControl(label, Alignment.MiddleCenter, Alignment.MiddleCenter);
 
                 actionButtons.Add(actionType.Name, button);
             }
