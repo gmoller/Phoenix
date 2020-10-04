@@ -47,7 +47,7 @@ namespace PhoenixGamePresentation.Views
 
         private void SettlementOpened(object sender, EventArgs e)
         {
-            OpenSettlementEvent.HandleEvent(sender, new MouseEventArgs(null, WorldView, 0.0f));
+            OpenSettlementEvent.HandleEvent2(sender, new MouseEventArgs(null, WorldView, 0.0f));
         }
 
         internal void LoadContent(ContentManager content)

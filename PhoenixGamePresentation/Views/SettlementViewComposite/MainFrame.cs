@@ -32,8 +32,8 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             _frmMain["frmHeader.btnClose"].AddPackage(new ControlClick((o, args) => CloseButtonClick(o, new EventArgs())));
 
             _frmMain.AddControl(new Frame("frmPopulation", new Vector2(515.0f, 120.0f), $"{textureAtlas}.frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
-            _frmMain["frmPopulation"].AddControl(new LabelSized("lblRace", new Vector2(100.0f, 15.0f), Alignment.TopLeft, GetTextFuncForRace(), "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(0, -20));
-            _frmMain["frmPopulation"].AddControl(new LabelSized("lblPopulationGrowth", new Vector2(100.0f, 15.0f), Alignment.TopRight, GetTextFuncForPopulationGrowth(), "CrimsonText-Regular-12", Color.Orange), Alignment.TopRight, Alignment.TopRight, new PointI(0, -20));
+            _frmMain["frmPopulation"].AddControl(new LabelSized("lblRace", new Vector2(100.0f, 15.0f), Alignment.TopLeft, GetTextFuncForRace, "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(0, -20));
+            _frmMain["frmPopulation"].AddControl(new LabelSized("lblPopulationGrowth", new Vector2(100.0f, 15.0f), Alignment.TopRight, GetTextFuncForPopulationGrowth, "CrimsonText-Regular-12", Color.Orange), Alignment.TopRight, Alignment.TopRight, new PointI(0, -20));
             _frmMain["frmPopulation"].AddControl(new LabelSized("lblFarmers", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Farmers:", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 25));
             _frmMain["frmPopulation"].AddControl(new LabelSized("lblWorkers", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Workers:", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 55));
             _frmMain["frmPopulation"].AddControl(new LabelSized("lblRebels", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Rebels:", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 85));
