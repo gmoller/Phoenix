@@ -11,6 +11,8 @@ namespace PhoenixGamePresentation.Views
 {
     internal class OverlandSettlementView : ViewBase, IDisposable
     {
+        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
+
         #region State
         private Texture2D Texture { get; set; }
         public Settlement Settlement { get; set; }
@@ -47,7 +49,7 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawSettlement(SpriteBatch spriteBatch, Cell cell)
         {
-            var position = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row);
+            var position = HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row));
             var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(Hex.Constants.HexActualWidth * Constants.ONE_HALF), (int)(Hex.Constants.HexActualHeight * 0.75f));
             var sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
             var layerDepth = cell.Index / 10000.0f + 0.00001f;

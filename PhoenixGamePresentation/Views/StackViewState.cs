@@ -10,6 +10,8 @@ namespace PhoenixGamePresentation.Views
 {
     internal abstract class StackViewState
     {
+        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
+
         protected StackView.StackView StackView { get; set; }
         internal abstract void Update(WorldView worldView, float deltaTime);
         internal abstract void DrawUnit(SpriteBatch spriteBatch, Camera camera);
@@ -33,7 +35,7 @@ namespace PhoenixGamePresentation.Views
         {
             foreach (var item in movementPath)
             {
-                var centerPosition = HexOffsetCoordinates.ToPixel(item).ToVector2();
+                var centerPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(item)).ToVector2();
                 spriteBatch.DrawCircle(centerPosition, radius, 10, color, thickness);
             }
         }

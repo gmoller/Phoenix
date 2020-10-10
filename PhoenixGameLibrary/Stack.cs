@@ -12,6 +12,8 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Stack : IEnumerable<Unit>
     {
+        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
+
         #region State
         private World World { get; }
         private Units Units { get; }
@@ -318,7 +320,7 @@ namespace PhoenixGameLibrary
             var settlements = World.Settlements;
             foreach (var settlement in settlements)
             {
-                var distance = HexOffsetCoordinates.GetDistance(thisLocationHex.X, thisLocationHex.Y, settlement.Location.X, settlement.Location.Y);
+                var distance = HexLibrary.GetDistance(new HexOffsetCoordinates(thisLocationHex), new HexOffsetCoordinates(settlement.Location));
                 if (distance >= 4)
                 {
                     return true;

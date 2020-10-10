@@ -38,7 +38,8 @@ namespace MonoGameUtilities.ExtensionMethods
         public static PointI ToWorldHex(this Point p, Matrix transform)
         {
             var worldPositionPointedAtByMouseCursor = p.ToWorldPosition(transform);
-            var worldHex = HexOffsetCoordinates.FromPixel(worldPositionPointedAtByMouseCursor.X, worldPositionPointedAtByMouseCursor.Y);
+            var hexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
+            var worldHex = hexLibrary.FromPixelToOffsetCoordinates((int)worldPositionPointedAtByMouseCursor.X, (int)worldPositionPointedAtByMouseCursor.Y);
             var worldHexPoint = new PointI(worldHex.Col, worldHex.Row);
 
             return worldHexPoint;

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Utilities;
-using PointI = Utilities.PointI;
 
 namespace MonoGameUtilities.ExtensionMethods
 {

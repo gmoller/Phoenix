@@ -7,6 +7,8 @@ namespace PhoenixGamePresentation.Handlers
 {
     internal static class MovementPathDeterminer
     {
+        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
+
         internal static List<PointI> DetermineMovementPath(Stack stack, PointI from, PointI to, CellGrid cellGrid)
         {
             if (from.Equals(to)) return new List<PointI>();
@@ -31,19 +33,19 @@ namespace PhoenixGamePresentation.Handlers
 
         private static int GetDistance(PointI source, PointI destination)
         {
-            var distance = HexOffsetCoordinates.GetDistance(source.X, source.Y, destination.X, destination.Y);
+            var distance = HexLibrary.GetDistance(new HexOffsetCoordinates(source), new HexOffsetCoordinates(destination));
 
             return distance;
         }
-         
+
         private static PointI[] GetAllNeighbors(PointI point)
         {
-            var allNeighborsHexOffsetCoordinates =  HexOffsetCoordinates.GetAllNeighbors(point.X, point.Y);
+            var neighbors = HexLibrary.GetAllNeighbors(new HexOffsetCoordinates(point));
 
-            var allNeighbors  = new PointI[allNeighborsHexOffsetCoordinates.Length];
-            for (int i = 0; i < allNeighborsHexOffsetCoordinates.Length; ++i)
+            var allNeighbors  = new PointI[6];
+            for (int i = 0; i < 6; ++i)
             {
-                var allNeighborsHexOffsetCoordinate = allNeighborsHexOffsetCoordinates[i];
+                var allNeighborsHexOffsetCoordinate = neighbors[i];
                 allNeighbors[i] = new PointI(allNeighborsHexOffsetCoordinate.Col, allNeighborsHexOffsetCoordinate.Row);
             }
 

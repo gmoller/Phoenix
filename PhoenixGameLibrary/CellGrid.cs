@@ -13,6 +13,8 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class CellGrid
     {
+        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
+
         #region State
         private readonly Cell[,] _cellGrid;
 
@@ -92,7 +94,7 @@ namespace PhoenixGameLibrary
                 var borders = 0;
                 for (var i = 0; i < 6; i++)
                 {
-                    var neighbor = cell.GetNeighbor((Direction)i, this);
+                    var neighbor = cell.GetNeighbor((DirectionPointySideUp)i, this);
                     borders = cell.ControlledByFaction == neighbor.ControlledByFaction ? borders.ResetBit(i) : borders.SetBit(i);
                 }
 
@@ -104,7 +106,7 @@ namespace PhoenixGameLibrary
         public List<Cell> GetCatchment(int column, int row, int radius)
         {
             var catchmentCells = new List<Cell>();
-            var catchment = HexOffsetCoordinates.GetSpiralRing(column, row, radius);
+            var catchment = HexLibrary.GetSpiralRing(new HexOffsetCoordinates(column, row), radius);
             foreach (var tile in catchment)
             {
                 var cell = GetCell(tile.Col, tile.Row);
@@ -124,7 +126,7 @@ namespace PhoenixGameLibrary
             var max = Math.Max(NumberOfColumns, NumberOfRows);
             for (int i = 1; i < max; i++)
             {
-                var ring = HexOffsetCoordinates.GetSingleRing(location.X, location.Y, i);
+                var ring = HexLibrary.GetSingleRing(new HexOffsetCoordinates(location), i);
                 foreach (var coordinates in ring)
                 {
                     var cell = GetCell(coordinates.Col, coordinates.Row);

@@ -14,5 +14,17 @@
             // Factor = pi / 180
             return (float)(degrees * 0.017453292519943295769236907684886);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value1"></param>
+        /// <param name="value2"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public static float Lerp(float value1, float value2, float amount)
+        {
+            return value1 + (value2 - value1) * amount;
+        }
     }
 }

@@ -12,6 +12,8 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public readonly struct Cell
     {
+        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
+
         public static readonly Cell Empty = new Cell(0, 0, TerrainType.Invalid.Id);
 
         #region State
@@ -65,7 +67,7 @@ namespace PhoenixGameLibrary
 
         public List<Cell> GetNeighbors(CellGrid cellGrid)
         {
-            var neighbors = HexOffsetCoordinates.GetSingleRing(Column, Row, 1);
+            var neighbors = HexLibrary.GetSingleRing(new HexOffsetCoordinates(Column, Row), 1);
 
             var returnCells = new List<Cell>();
             foreach (var neighbor in neighbors)
@@ -81,9 +83,9 @@ namespace PhoenixGameLibrary
             return returnCells;
         }
 
-        public Cell GetNeighbor(Direction direction, CellGrid cellGrid)
+        public Cell GetNeighbor(DirectionPointySideUp direction, CellGrid cellGrid)
         {
-            var neighbor = HexOffsetCoordinates.GetNeighbor(Column, Row, direction);
+            var neighbor = HexLibrary.GetNeighbor(new HexOffsetCoordinates(Column, Row), (int)direction);
 
             var cell = cellGrid.GetCell(neighbor.Col, neighbor.Row);
 

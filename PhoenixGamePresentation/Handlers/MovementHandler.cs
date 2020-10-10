@@ -10,6 +10,8 @@ namespace PhoenixGamePresentation.Handlers
 {
     internal static class MovementHandler
     {
+        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
+
         internal static (bool startMovement, PointI hexToMoveTo) CheckForUnitMovementFromMouseInitiation(Stack stack, object args)
         {
             var (cellGrid, mouseLocation, camera) = (ValueTuple<CellGrid, Point, Camera>)args;
@@ -32,16 +34,16 @@ namespace PhoenixGamePresentation.Handlers
 
             var direction = key switch
             {
-                Keys.NumPad1 => Direction.SouthWest,
-                Keys.NumPad3 => Direction.SouthEast,
-                Keys.NumPad4 => Direction.West,
-                Keys.NumPad6 => Direction.East,
-                Keys.NumPad7 => Direction.NorthWest,
-                Keys.NumPad9 => Direction.NorthEast,
+                Keys.NumPad1 => DirectionPointySideUp.SouthWest,
+                Keys.NumPad3 => DirectionPointySideUp.SouthEast,
+                Keys.NumPad4 => DirectionPointySideUp.West,
+                Keys.NumPad6 => DirectionPointySideUp.East,
+                Keys.NumPad7 => DirectionPointySideUp.NorthWest,
+                Keys.NumPad9 => DirectionPointySideUp.NorthEast,
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            var neighbor = HexOffsetCoordinates.GetNeighbor(stack.LocationHex, direction);
+            var neighbor = HexLibrary.GetNeighbor(new HexOffsetCoordinates(stack.LocationHex), (int)direction);
             var hexToMoveTo = neighbor.ToPointI();
 
             var costToMoveIntoResult = stack.GetCostToMoveInto(hexToMoveTo);

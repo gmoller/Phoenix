@@ -19,6 +19,8 @@ namespace PhoenixGamePresentation.Views
 {
     internal class OverlandMapView : ViewBase, IDisposable
     {
+        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
+
         #region State
         private OverlandMap OverlandMap { get; }
 
@@ -120,17 +122,17 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawBorders(SpriteBatch spriteBatch, Cell cell)
         {
-            if (cell.Borders.IsBitSet((byte)Direction.East)) DrawBorder(spriteBatch, cell, HexVertexDirection.NorthEast,  HexVertexDirection.SouthEast);
-            if (cell.Borders.IsBitSet((byte)Direction.SouthEast)) DrawBorder(spriteBatch, cell, HexVertexDirection.SouthEast,  HexVertexDirection.South);
-            if (cell.Borders.IsBitSet((byte)Direction.SouthWest)) DrawBorder(spriteBatch, cell, HexVertexDirection.South,  HexVertexDirection.SouthWest);
-            if (cell.Borders.IsBitSet((byte)Direction.West)) DrawBorder(spriteBatch, cell, HexVertexDirection.SouthWest,  HexVertexDirection.NorthWest);
-            if (cell.Borders.IsBitSet((byte)Direction.NorthWest)) DrawBorder(spriteBatch, cell, HexVertexDirection.NorthWest, HexVertexDirection.North);
-            if (cell.Borders.IsBitSet((byte)Direction.NorthEast)) DrawBorder(spriteBatch, cell, HexVertexDirection.North, HexVertexDirection.NorthEast);
+            if (cell.Borders.IsBitSet((byte)DirectionPointySideUp.East)) DrawBorder(spriteBatch, cell, HexVertexDirection.NorthEast,  HexVertexDirection.SouthEast);
+            if (cell.Borders.IsBitSet((byte)DirectionPointySideUp.SouthEast)) DrawBorder(spriteBatch, cell, HexVertexDirection.SouthEast,  HexVertexDirection.South);
+            if (cell.Borders.IsBitSet((byte)DirectionPointySideUp.SouthWest)) DrawBorder(spriteBatch, cell, HexVertexDirection.South,  HexVertexDirection.SouthWest);
+            if (cell.Borders.IsBitSet((byte)DirectionPointySideUp.West)) DrawBorder(spriteBatch, cell, HexVertexDirection.SouthWest,  HexVertexDirection.NorthWest);
+            if (cell.Borders.IsBitSet((byte)DirectionPointySideUp.NorthWest)) DrawBorder(spriteBatch, cell, HexVertexDirection.NorthWest, HexVertexDirection.North);
+            if (cell.Borders.IsBitSet((byte)DirectionPointySideUp.NorthEast)) DrawBorder(spriteBatch, cell, HexVertexDirection.North, HexVertexDirection.NorthEast);
         }
 
         private void DrawBorder(SpriteBatch spriteBatch, Cell cell, HexVertexDirection vertexDirection1, HexVertexDirection vertexDirection2)
         {
-            var centerPosition = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row).ToVector2();
+            var centerPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
             var point1 = Hex.Hex.GetCorner(vertexDirection1).ToVector2();
             var point2 = Hex.Hex.GetCorner(vertexDirection2).ToVector2();
 
@@ -145,7 +147,7 @@ namespace PhoenixGamePresentation.Views
             var frame = spec.Frames[neverSeen ? cell.TextureFogOfWar.TextureId : cell.Texture.TextureId];
             var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
-            var centerPosition = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row);
+            var centerPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row));
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
             var layerDepth = cell.Index / 10000.0f;
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
@@ -153,7 +155,7 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawHexBorder(SpriteBatch spriteBatch, Cell cell)
         {
-            var centerPosition = HexOffsetCoordinates.ToPixel(cell.Column, cell.Row).ToVector2();
+            var centerPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
 
             var color = Color.PeachPuff;
             var point0 = Hex.Hex.GetCorner(HexVertexDirection.North).ToVector2();
