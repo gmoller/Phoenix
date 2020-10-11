@@ -34,12 +34,14 @@ namespace PhoenixGamePresentation.Handlers
 
             var direction = key switch
             {
-                Keys.NumPad1 => DirectionPointySideUp.SouthWest,
-                Keys.NumPad3 => DirectionPointySideUp.SouthEast,
-                Keys.NumPad4 => DirectionPointySideUp.West,
-                Keys.NumPad6 => DirectionPointySideUp.East,
-                Keys.NumPad7 => DirectionPointySideUp.NorthWest,
-                Keys.NumPad9 => DirectionPointySideUp.NorthEast,
+                Keys.NumPad1 => Direction.SouthWest,
+                Keys.NumPad2 => Direction.South, //None,
+                Keys.NumPad3 => Direction.SouthEast,
+                Keys.NumPad4 => Direction.West, // None
+                Keys.NumPad6 => Direction.East, // None
+                Keys.NumPad7 => Direction.NorthWest,
+                Keys.NumPad8 => Direction.North, //None,
+                Keys.NumPad9 => Direction.NorthEast,
                 _ => throw new ArgumentOutOfRangeException()
             };
 

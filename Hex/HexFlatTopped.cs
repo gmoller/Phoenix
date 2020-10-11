@@ -8,9 +8,11 @@ namespace Hex
         {
             new HexCube( 0, +1, -1), // north
             new HexCube(+1,  0, -1), // northeast
+            new HexCube( 0,  0,  0), // east
             new HexCube(+1, -1,  0), // southeast
             new HexCube( 0, -1, +1), // south
             new HexCube(-1,  0, +1), // southwest
+            new HexCube( 0,  0,  0), // west
             new HexCube(-1, +1,  0), // northwest
         };
 

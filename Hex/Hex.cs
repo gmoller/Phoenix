@@ -15,9 +15,9 @@ namespace Hex
         }
 
 
-        public static PointF GetCorner(HexVertexDirection direction)
+        public static PointF GetCorner(int direction)
         {
-            float degrees = 60 * (int)direction - 30;
+            float degrees = 60 * direction - 30;
             float radians = MathUtilities.ToRadians(degrees);
 
             var v = new PointF((float)(Constants.HexSize * Math.Cos(radians)), (float)(Constants.HexSize * Math.Sin(radians)));
@@ -145,15 +145,19 @@ namespace Hex
             var ring = new List<HexOffsetCoordinates>();
 
             var cube = OffsetCoordinatesToCube(offsetCoordinates);
-            var scaledCube = GetNeighboringCube(4) * radius;
-            cube = cube + scaledCube;
+            var westNeighbor = GetNeighboringCube(6);
+            var scaledCube = westNeighbor * radius;
+            cube += scaledCube;
 
-            for (var i = 0; i < 6; ++i)
+            for (var i = 0; i < 8; i++)
             {
-                for (var j = 0; j < radius; ++j)
+                for (var j = 0; j < radius; j++)
                 {
                     var offset = CubeToOffsetCoordinates(cube);
-                    ring.Add(offset);
+                    if (!ring.Contains(offset))
+                    {
+                        ring.Add(offset);
+                    }
                     cube = GetNeighbor(cube, i);
                 }
             }
@@ -166,7 +170,7 @@ namespace Hex
         {
             var ring = new List<HexOffsetCoordinates> { offsetCoordinates };
 
-            for (var k = 1; k <= radius; ++k)
+            for (var k = 1; k <= radius; k++)
             {
                 var singleRing = GetSingleRing(offsetCoordinates, k);
                 ring.AddRange(singleRing.ToList());
@@ -223,13 +227,17 @@ namespace Hex
 
         public HexCube[] GetAllNeighbors(HexCube hexCube)
         {
-            var neighbors = new HexCube[6];
-            for (var i = 0; i < 6; i++)
+            var neighbors = new List<HexCube>();
+            for (var i = 0; i < 8; i++)
             {
-                neighbors[i] = GetNeighbor(hexCube, i);
+                var neighbor = GetNeighbor(hexCube, i);
+                if (neighbor != hexCube)
+                {
+                    neighbors.Add(neighbor);
+                }
             }
 
-            return neighbors;
+            return neighbors.ToArray();
         }
 
         public HexCube GetNeighbor(HexCube hexCube, int direction)

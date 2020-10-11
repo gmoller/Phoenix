@@ -83,9 +83,9 @@ namespace PhoenixGameLibrary
             return returnCells;
         }
 
-        public Cell GetNeighbor(DirectionPointySideUp direction, CellGrid cellGrid)
+        public Cell GetNeighbor(int direction, CellGrid cellGrid)
         {
-            var neighbor = HexLibrary.GetNeighbor(new HexOffsetCoordinates(Column, Row), (int)direction);
+            var neighbor = HexLibrary.GetNeighbor(new HexOffsetCoordinates(Column, Row), direction);
 
             var cell = cellGrid.GetCell(neighbor.Col, neighbor.Row);
 

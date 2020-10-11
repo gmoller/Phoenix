@@ -92,10 +92,10 @@ namespace PhoenixGameLibrary
             foreach (var cell in cells)
             {
                 var borders = 0;
-                for (var i = 0; i < 6; i++)
+                for (var i = 0; i < 8; i++)
                 {
-                    var neighbor = cell.GetNeighbor((DirectionPointySideUp)i, this);
-                    borders = cell.ControlledByFaction == neighbor.ControlledByFaction ? borders.ResetBit(i) : borders.SetBit(i);
+                    var neighborCell = cell.GetNeighbor(i, this);
+                    borders = cell.ControlledByFaction == neighborCell.ControlledByFaction || cell == neighborCell ? borders.ResetBit(i) : borders.SetBit(i);
                 }
 
                 var newCell = new Cell(cell, cell.SeenState, cell.ControlledByFaction, (byte)borders);

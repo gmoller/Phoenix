@@ -6,12 +6,14 @@ namespace Hex
     {
         private static readonly HexCube[] Directions =
         {
+            new HexCube( 0,  0,  0), // north
+            new HexCube(+1,  0, -1), // northeast
             new HexCube(+1, -1,  0), // east
             new HexCube( 0, -1, +1), // southeast
+            new HexCube( 0,  0,  0), // south
             new HexCube(-1,  0, +1), // southwest
             new HexCube(-1, +1,  0), // west
             new HexCube( 0, +1, -1), // northwest
-            new HexCube(+1,  0, -1), // northeast
         };
 
         public HexPointyTopped(OffsetCoordinatesType offsetCoordinatesType) : base(offsetCoordinatesType)
