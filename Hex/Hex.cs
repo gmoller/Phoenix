@@ -15,17 +15,6 @@ namespace Hex
         }
 
 
-        public static PointF GetCorner(Direction direction)
-        {
-            float degrees = 60 * (int)direction - 30;
-            float radians = MathUtilities.ToRadians(degrees);
-
-            var v = new PointF((float)(Constants.HexSize * Math.Cos(radians)), (float)(Constants.HexSize * Math.Sin(radians)));
-
-            return v;
-        }
-
-
         protected abstract HexCube GetNeighboringCube(Direction direction);
 
 
@@ -323,5 +312,16 @@ namespace Hex
 
             return (x, y, z);
         }
+
+        public PointF GetCorner(Direction direction)
+        {
+            var degrees = GetDegreesForHexCorner(direction);
+            var radians = MathUtilities.ToRadians(degrees);
+            var v = new PointF((float)(Constants.HexSize * Math.Cos(radians)), (float)(Constants.HexSize * Math.Sin(radians)));
+
+            return v;
+        }
+
+        protected abstract float GetDegreesForHexCorner(Direction direction);
     }
 }

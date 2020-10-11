@@ -63,5 +63,36 @@ namespace Hex
 
             return offsetCoordinates;
         }
+
+        protected override float GetDegreesForHexCorner(Direction direction)
+        {
+            var degrees = 0.0f;
+
+            switch (direction)
+            {
+                case Direction.North:
+                    degrees = 270;
+                    break;
+                case Direction.NorthEast:
+                    degrees = 330;
+                    break;
+                case Direction.SouthEast:
+                    degrees = 30;
+                    break;
+                case Direction.South:
+                    degrees = 90;
+                    break;
+                case Direction.SouthWest:
+                    degrees = 150;
+                    break;
+                case Direction.NorthWest:
+                    degrees = 210;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+            }
+
+            return degrees;
+        }
     }
 }

@@ -11,9 +11,9 @@ using Input;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
-using Utilities.ExtensionMethods;
 using PhoenixGamePresentation.Events;
 using Utilities;
+using Utilities.ExtensionMethods;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -122,23 +122,23 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawBorders(SpriteBatch spriteBatch, Cell cell)
         {
-            //if (cell.Borders.IsBitSet((byte)Direction.North)) DrawBorder(spriteBatch, cell, HexVertexDirection.NorthEast, HexVertexDirection.SouthEast);
-            //if (cell.Borders.IsBitSet((byte)Direction.NorthEast)) DrawBorder(spriteBatch, cell, HexVertexDirection.North, HexVertexDirection.NorthEast);
-            //if (cell.Borders.IsBitSet((byte)Direction.East)) DrawBorder(spriteBatch, cell, HexVertexDirection.NorthEast,  HexVertexDirection.SouthEast);
-            //if (cell.Borders.IsBitSet((byte)Direction.SouthEast)) DrawBorder(spriteBatch, cell, HexVertexDirection.SouthEast,  HexVertexDirection.South);
-            //if (cell.Borders.IsBitSet((byte)Direction.South)) DrawBorder(spriteBatch, cell, HexVertexDirection.NorthEast, HexVertexDirection.SouthEast);
-            //if (cell.Borders.IsBitSet((byte)Direction.SouthWest)) DrawBorder(spriteBatch, cell, HexVertexDirection.South,  HexVertexDirection.SouthWest);
-            //if (cell.Borders.IsBitSet((byte)Direction.West)) DrawBorder(spriteBatch, cell, HexVertexDirection.SouthWest,  HexVertexDirection.NorthWest);
-            //if (cell.Borders.IsBitSet((byte)Direction.NorthWest)) DrawBorder(spriteBatch, cell, HexVertexDirection.NorthWest, HexVertexDirection.North);
+            if (cell.Borders.IsBitSet((byte)Direction.North)) DrawBorder(spriteBatch, cell, Direction.NorthEast, Direction.SouthEast);
+            if (cell.Borders.IsBitSet((byte)Direction.NorthEast)) DrawBorder(spriteBatch, cell, Direction.North, Direction.NorthEast);
+            if (cell.Borders.IsBitSet((byte)Direction.East)) DrawBorder(spriteBatch, cell, Direction.NorthEast, Direction.SouthEast);
+            if (cell.Borders.IsBitSet((byte)Direction.SouthEast)) DrawBorder(spriteBatch, cell, Direction.SouthEast, Direction.South);
+            if (cell.Borders.IsBitSet((byte)Direction.South)) DrawBorder(spriteBatch, cell, Direction.NorthEast, Direction.SouthEast);
+            if (cell.Borders.IsBitSet((byte)Direction.SouthWest)) DrawBorder(spriteBatch, cell, Direction.South, Direction.SouthWest);
+            if (cell.Borders.IsBitSet((byte)Direction.West)) DrawBorder(spriteBatch, cell, Direction.SouthWest, Direction.NorthWest);
+            if (cell.Borders.IsBitSet((byte)Direction.NorthWest)) DrawBorder(spriteBatch, cell, Direction.NorthWest, Direction.North);
         }
 
         private void DrawBorder(SpriteBatch spriteBatch, Cell cell, Direction vertexDirection1, Direction vertexDirection2)
         {
             var centerPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
-            var point1 = Hex.Hex.GetCorner(vertexDirection1).ToVector2();
-            var point2 = Hex.Hex.GetCorner(vertexDirection2).ToVector2();
+            var point1 = HexLibrary.GetCorner(vertexDirection1).ToVector2();
+            var point2 = HexLibrary.GetCorner(vertexDirection2).ToVector2();
 
-            spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, cell.ControlledByFaction == 1 ? Color.DarkGreen : Color.Red, 5.0f, 0.5f);
+            spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, cell.ControlledByFaction == 1 ? Color.Yellow : Color.Red, 5.0f, 0.5f); // DarkGreen
         }
 
         private void DrawCell(SpriteBatch spriteBatch, Cell cell, Color color)
@@ -155,25 +155,25 @@ namespace PhoenixGamePresentation.Views
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
         }
 
-        //private void DrawHexBorder(SpriteBatch spriteBatch, Cell cell)
-        //{
-        //    var centerPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
+        private void DrawHexBorder(SpriteBatch spriteBatch, Cell cell)
+        {
+            var centerPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
 
-        //    var color = Color.PeachPuff;
-        //    var point0 = Hex.Hex.GetCorner(HexVertexDirection.North).ToVector2();
-        //    var point1 = Hex.Hex.GetCorner(HexVertexDirection.NorthEast).ToVector2();
-        //    var point2 = Hex.Hex.GetCorner(HexVertexDirection.SouthEast).ToVector2();
-        //    var point3 = Hex.Hex.GetCorner(HexVertexDirection.South).ToVector2();
-        //    var point4 = Hex.Hex.GetCorner(HexVertexDirection.SouthWest).ToVector2();
-        //    var point5 = Hex.Hex.GetCorner(HexVertexDirection.NorthWest).ToVector2();
+            var color = Color.PeachPuff;
+            var point0 = HexLibrary.GetCorner(Direction.North).ToVector2();
+            var point1 = HexLibrary.GetCorner(Direction.NorthEast).ToVector2();
+            var point2 = HexLibrary.GetCorner(Direction.SouthEast).ToVector2();
+            var point3 = HexLibrary.GetCorner(Direction.South).ToVector2();
+            var point4 = HexLibrary.GetCorner(Direction.SouthWest).ToVector2();
+            var point5 = HexLibrary.GetCorner(Direction.NorthWest).ToVector2();
 
-        //    spriteBatch.DrawLine(centerPosition + point0, centerPosition + point1, color, 1.0f);
-        //    spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, color, 1.0f);
-        //    spriteBatch.DrawLine(centerPosition + point2, centerPosition + point3, color, 1.0f);
-        //    spriteBatch.DrawLine(centerPosition + point3, centerPosition + point4, color, 1.0f);
-        //    spriteBatch.DrawLine(centerPosition + point4, centerPosition + point5, color, 1.0f);
-        //    spriteBatch.DrawLine(centerPosition + point5, centerPosition + point0, color, 1.0f);
-        //}
+            spriteBatch.DrawLine(centerPosition + point0, centerPosition + point1, color, 1.0f);
+            spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, color, 1.0f);
+            spriteBatch.DrawLine(centerPosition + point2, centerPosition + point3, color, 1.0f);
+            spriteBatch.DrawLine(centerPosition + point3, centerPosition + point4, color, 1.0f);
+            spriteBatch.DrawLine(centerPosition + point4, centerPosition + point5, color, 1.0f);
+            spriteBatch.DrawLine(centerPosition + point5, centerPosition + point0, color, 1.0f);
+        }
 
         public void Dispose()
         {

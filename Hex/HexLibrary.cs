@@ -49,5 +49,7 @@ namespace Hex
         public PointF ToPixel(HexAxial axial) => _hex.ToPixel(axial);
 
         public  (float x, float y, float z) Lerp(HexCube a, HexCube b, float t) => _hex.Lerp(a, b, t);
+
+        public PointF GetCorner(Direction direction) => _hex.GetCorner(direction);
     }
 }
