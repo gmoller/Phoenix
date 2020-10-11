@@ -12,8 +12,6 @@ namespace PhoenixGamePresentation.Views.StackView
     {
         private const float MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS = 250.0f;
 
-        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
-
         #region State
         private Vector2 LocationInWorld { get; set; }
         private float MovementCountdownTime { get; set; }
@@ -80,10 +78,10 @@ namespace PhoenixGamePresentation.Views.StackView
             MovementCountdownTime -= deltaTime;
 
             // determine start cell screen position
-            var startPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(StackView.LocationHex)).ToVector2();
+            var startPosition = StackView.HexLibrary.ToPixel(new HexOffsetCoordinates(StackView.LocationHex)).ToVector2();
             // determine end cell screen position
             var hexToMoveTo = StackView.MovementPath[0];
-            var endPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(hexToMoveTo)).ToVector2();
+            var endPosition = StackView.HexLibrary.ToPixel(new HexOffsetCoordinates(hexToMoveTo)).ToVector2();
             // lerp between the two positions
             var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
 

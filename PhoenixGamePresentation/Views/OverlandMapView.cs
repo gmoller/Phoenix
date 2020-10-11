@@ -19,8 +19,6 @@ namespace PhoenixGamePresentation.Views
 {
     internal class OverlandMapView : ViewBase, IDisposable
     {
-        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
-
         #region State
         private OverlandMap OverlandMap { get; }
 
@@ -134,9 +132,9 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawBorder(SpriteBatch spriteBatch, Cell cell, Direction vertexDirection1, Direction vertexDirection2)
         {
-            var centerPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
-            var point1 = HexLibrary.GetCorner(vertexDirection1).ToVector2();
-            var point2 = HexLibrary.GetCorner(vertexDirection2).ToVector2();
+            var centerPosition = WorldView.HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
+            var point1 = WorldView.HexLibrary.GetCorner(vertexDirection1).ToVector2();
+            var point2 = WorldView.HexLibrary.GetCorner(vertexDirection2).ToVector2();
 
             spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, cell.ControlledByFaction == 1 ? Color.Yellow : Color.Red, 5.0f, 0.5f); // DarkGreen
         }
@@ -149,7 +147,7 @@ namespace PhoenixGamePresentation.Views
             var frame = spec.Frames[neverSeen ? cell.TextureFogOfWar.TextureId : cell.Texture.TextureId];
             var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
-            var centerPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row));
+            var centerPosition = WorldView.HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row));
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
             var layerDepth = cell.Index / 10000.0f;
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
@@ -157,15 +155,15 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawHexBorder(SpriteBatch spriteBatch, Cell cell)
         {
-            var centerPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
+            var centerPosition = WorldView.HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
 
             var color = Color.PeachPuff;
-            var point0 = HexLibrary.GetCorner(Direction.North).ToVector2();
-            var point1 = HexLibrary.GetCorner(Direction.NorthEast).ToVector2();
-            var point2 = HexLibrary.GetCorner(Direction.SouthEast).ToVector2();
-            var point3 = HexLibrary.GetCorner(Direction.South).ToVector2();
-            var point4 = HexLibrary.GetCorner(Direction.SouthWest).ToVector2();
-            var point5 = HexLibrary.GetCorner(Direction.NorthWest).ToVector2();
+            var point0 = WorldView.HexLibrary.GetCorner(Direction.North).ToVector2();
+            var point1 = WorldView.HexLibrary.GetCorner(Direction.NorthEast).ToVector2();
+            var point2 = WorldView.HexLibrary.GetCorner(Direction.SouthEast).ToVector2();
+            var point3 = WorldView.HexLibrary.GetCorner(Direction.South).ToVector2();
+            var point4 = WorldView.HexLibrary.GetCorner(Direction.SouthWest).ToVector2();
+            var point5 = WorldView.HexLibrary.GetCorner(Direction.NorthWest).ToVector2();
 
             spriteBatch.DrawLine(centerPosition + point0, centerPosition + point1, color, 1.0f);
             spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, color, 1.0f);

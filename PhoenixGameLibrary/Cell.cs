@@ -12,11 +12,10 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public readonly struct Cell
     {
-        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
-
-        public static readonly Cell Empty = new Cell(0, 0, TerrainType.Invalid.Id);
+        public static readonly Cell Empty = new Cell(null, 0, 0, TerrainType.Invalid.Id);
 
         #region State
+        private World World { get; }
         public int Index { get; }
         public int TerrainTypeId { get; }
         public Texture Texture { get; }
@@ -30,8 +29,10 @@ namespace PhoenixGameLibrary
         public int Row => Index / Constants.WORLD_MAP_COLUMNS;
         public PointI ToPoint => new PointI(Column, Row);
 
-        public Cell(int col, int row, int terrainTypeId)
+        public Cell(World world, int col, int row, int terrainTypeId)
         {
+            World = world;
+
             Index = row * Constants.WORLD_MAP_COLUMNS + col;
 
             TerrainTypeId = terrainTypeId;
@@ -56,6 +57,7 @@ namespace PhoenixGameLibrary
 
         public Cell(Cell cell, SeenState seenState, int controlledByFaction, byte borders)
         {
+            World = cell.World;
             Index = cell.Index;
             TerrainTypeId = cell.TerrainTypeId;
             Texture = cell.Texture;
@@ -67,7 +69,7 @@ namespace PhoenixGameLibrary
 
         public List<Cell> GetNeighbors(CellGrid cellGrid)
         {
-            var neighbors = HexLibrary.GetSingleRing(new HexOffsetCoordinates(Column, Row), 1);
+            var neighbors = World.HexLibrary.GetSingleRing(new HexOffsetCoordinates(Column, Row), 1);
 
             var returnCells = new List<Cell>();
             foreach (var neighbor in neighbors)
@@ -85,7 +87,7 @@ namespace PhoenixGameLibrary
 
         public Cell GetNeighbor(Direction direction, CellGrid cellGrid)
         {
-            var neighbor = HexLibrary.GetNeighbor(new HexOffsetCoordinates(Column, Row), direction);
+            var neighbor = World.HexLibrary.GetNeighbor(new HexOffsetCoordinates(Column, Row), direction);
 
             var cell = cellGrid.GetCell(neighbor.Col, neighbor.Row);
 

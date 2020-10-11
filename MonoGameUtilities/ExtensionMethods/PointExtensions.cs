@@ -20,25 +20,24 @@ namespace MonoGameUtilities.ExtensionMethods
             return isWithinRectangle;
         }
 
-        public static bool IsWithinHex(this Point p1, PointI p2, Matrix transform)
+        public static bool IsWithinHex(this Point p1, PointI p2, Matrix transform, HexLibrary hexLibrary)
         {
-            var isWithinHex = p1.IsWithinHex(new HexOffsetCoordinates(p2), transform);
+            var isWithinHex = p1.IsWithinHex(new HexOffsetCoordinates(p2), transform, hexLibrary);
 
             return isWithinHex;
         }
 
-        public static bool IsWithinHex(this Point p1, HexOffsetCoordinates p2, Matrix transform)
+        public static bool IsWithinHex(this Point p1, HexOffsetCoordinates p2, Matrix transform, HexLibrary hexLibrary)
         {
-            var hexPoint = p1.ToWorldHex(transform);
+            var hexPoint = p1.ToWorldHex(transform, hexLibrary);
             var isWithinHex = p2.ToPointI() == hexPoint;
 
             return isWithinHex;
         }
 
-        public static PointI ToWorldHex(this Point p, Matrix transform)
+        public static PointI ToWorldHex(this Point p, Matrix transform, HexLibrary hexLibrary)
         {
             var worldPositionPointedAtByMouseCursor = p.ToWorldPosition(transform);
-            var hexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
             var worldHex = hexLibrary.FromPixelToOffsetCoordinates((int)worldPositionPointedAtByMouseCursor.X, (int)worldPositionPointedAtByMouseCursor.Y);
             var worldHexPoint = new PointI(worldHex.Col, worldHex.Row);
 

@@ -9,7 +9,7 @@
         internal OverlandMap(World world, int numberOfColumns, int numberOfRows)
         {
             _world = world;
-            CellGrid = new CellGrid(numberOfColumns, numberOfRows);
+            CellGrid = new CellGrid(_world, numberOfColumns, numberOfRows);
         }
     }
 }

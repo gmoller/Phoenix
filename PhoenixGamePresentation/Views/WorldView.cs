@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using GuiControls.PackagesClasses;
+using Hex;
 using Input;
 using MonoGameUtilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
@@ -66,6 +67,7 @@ namespace PhoenixGamePresentation.Views
         }
 
         #region Accessors
+        internal HexLibrary HexLibrary => World.HexLibrary;
         internal StackView.StackView CurrentlySelectedStackView => StackViews.Current?.IsSelected == true ? StackViews.Current : null;
         internal CellGrid CellGrid => World.OverlandMap.CellGrid;
         internal Settlements Settlements => World.Settlements;

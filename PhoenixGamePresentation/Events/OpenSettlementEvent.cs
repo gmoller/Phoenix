@@ -33,7 +33,7 @@ namespace PhoenixGamePresentation.Events
             Settlement settlement = null;
             foreach (var item in worldView.Settlements)
             {
-                if (mouseLocation.IsWithinHex(item.LocationHex, worldView.Camera.Transform))
+                if (mouseLocation.IsWithinHex(item.LocationHex, worldView.Camera.Transform, worldView.HexLibrary))
                 {
                     settlement = item;
                 }

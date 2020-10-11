@@ -13,19 +13,19 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class CellGrid
     {
-        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
-
         #region State
         private readonly Cell[,] _cellGrid;
 
+        private World World { get; }
         public int NumberOfColumns { get; }
         public int NumberOfRows { get; }
 
         public event EventHandler NewCellSeen;
         #endregion
 
-        public CellGrid(int numberOfColumns, int numberOfRows)
+        public CellGrid(World world, int numberOfColumns, int numberOfRows)
         {
+            World = world;
             var map = MapGenerator.Generate(numberOfColumns, numberOfRows);
 
             NumberOfColumns = numberOfColumns;
@@ -36,7 +36,7 @@ namespace PhoenixGameLibrary
                 for (var q = 0; q < numberOfColumns; ++q)
                 {
                     var terrainType = map[q, r];
-                    var cell = new Cell(q, r, terrainType.Id);
+                    var cell = new Cell(World, q, r, terrainType.Id);
                     _cellGrid[q, r] = cell;
                 }
             }
@@ -106,7 +106,7 @@ namespace PhoenixGameLibrary
         public List<Cell> GetCatchment(int column, int row, int radius)
         {
             var catchmentCells = new List<Cell>();
-            var catchment = HexLibrary.GetSpiralRing(new HexOffsetCoordinates(column, row), radius);
+            var catchment = World.HexLibrary.GetSpiralRing(new HexOffsetCoordinates(column, row), radius);
             foreach (var tile in catchment)
             {
                 var cell = GetCell(tile.Col, tile.Row);
@@ -126,7 +126,7 @@ namespace PhoenixGameLibrary
             var max = Math.Max(NumberOfColumns, NumberOfRows);
             for (int i = 1; i < max; i++)
             {
-                var ring = HexLibrary.GetSingleRing(new HexOffsetCoordinates(location), i);
+                var ring = World.HexLibrary.GetSingleRing(new HexOffsetCoordinates(location), i);
                 foreach (var coordinates in ring)
                 {
                     var cell = GetCell(coordinates.Col, coordinates.Row);

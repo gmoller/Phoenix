@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GuiControls;
+using Hex;
 using Input;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Handlers;
@@ -49,7 +50,7 @@ namespace PhoenixGamePresentation.Views.StackView
         }
 
         #region Accessors
-
+        internal HexLibrary HexLibrary => WorldView.HexLibrary;
         internal CellGrid CellGrid => WorldView.CellGrid;
         internal bool OrdersGiven => Stack.OrdersGiven;
 

@@ -14,8 +14,6 @@ namespace PhoenixGamePresentation
 {
     public class Camera : IDisposable
     {
-        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
-
         #region State
         private WorldView WorldView { get; }
 
@@ -82,7 +80,7 @@ namespace PhoenixGamePresentation
         {
             get
             {
-                var hexOffsetCoordinates = HexLibrary.FromPixelToOffsetCoordinates((int)CameraFocusPointInWorld.X, (int)CameraFocusPointInWorld.Y);
+                var hexOffsetCoordinates = WorldView.HexLibrary.FromPixelToOffsetCoordinates((int)CameraFocusPointInWorld.X, (int)CameraFocusPointInWorld.Y);
 
                 return hexOffsetCoordinates;
             }
@@ -154,7 +152,7 @@ namespace PhoenixGamePresentation
         /// <returns></returns>
         public Vector2 WorldHexToScreenPixel(HexOffsetCoordinates worldHex)
         {
-            var worldPosition = HexLibrary.ToPixel(worldHex);
+            var worldPosition = WorldView.HexLibrary.ToPixel(worldHex);
             var screenPosition = WorldPixelToScreenPixel(worldPosition.ToVector2());
 
             return screenPosition;
@@ -226,7 +224,7 @@ namespace PhoenixGamePresentation
 
         public Vector2 WorldHexToWorldPixel(PointI worldHex)
         {
-            return HexLibrary.ToPixel(new HexOffsetCoordinates(worldHex)).ToVector2();
+            return WorldView.HexLibrary.ToPixel(new HexOffsetCoordinates(worldHex)).ToVector2();
         }
 
         #endregion
@@ -261,7 +259,7 @@ namespace PhoenixGamePresentation
         public HexOffsetCoordinates ScreenPixelToWorldHex(Vector2 screenPosition)
         {
             var worldPosition = ScreenPixelToWorldPixel(screenPosition);
-            var worldHex = HexLibrary.FromPixelToOffsetCoordinates((int)worldPosition.X, (int)worldPosition.Y);
+            var worldHex = WorldView.HexLibrary.FromPixelToOffsetCoordinates((int)worldPosition.X, (int)worldPosition.Y);
 
             return worldHex;
         }
@@ -302,7 +300,7 @@ namespace PhoenixGamePresentation
         /// <param name="hexPoint"></param>
         public void LookAtCell(PointI hexPoint)
         {
-            var newPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(hexPoint));
+            var newPosition = WorldView.HexLibrary.ToPixel(new HexOffsetCoordinates(hexPoint));
             CameraFocusPointInWorld = newPosition.ToVector2();
         }
 

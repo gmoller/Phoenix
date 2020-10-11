@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
+using Hex;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using Utilities;
@@ -11,6 +12,7 @@ namespace PhoenixGameLibrary
         #region State
         private int _turnNumber;
 
+        public HexLibrary HexLibrary { get; }
         public OverlandMap OverlandMap { get; }
         public Settlements Settlements { get; }
         public Stacks Stacks { get; }
@@ -28,6 +30,7 @@ namespace PhoenixGameLibrary
             Stacks = new Stacks();
             _turnNumber = 0;
             NotificationList = new NotificationList();
+            HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
         }
 
         internal void AddSettlement(PointI location, string raceTypeName)
