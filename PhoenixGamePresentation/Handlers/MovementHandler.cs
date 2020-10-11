@@ -45,7 +45,7 @@ namespace PhoenixGamePresentation.Handlers
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            var neighbor = HexLibrary.GetNeighbor(new HexOffsetCoordinates(stack.LocationHex), (int)direction);
+            var neighbor = HexLibrary.GetNeighbor(new HexOffsetCoordinates(stack.LocationHex), direction);
             var hexToMoveTo = neighbor.ToPointI();
 
             var costToMoveIntoResult = stack.GetCostToMoveInto(hexToMoveTo);

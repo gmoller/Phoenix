@@ -15,9 +15,9 @@ namespace Hex
         }
 
 
-        public static PointF GetCorner(int direction)
+        public static PointF GetCorner(Direction direction)
         {
-            float degrees = 60 * direction - 30;
+            float degrees = 60 * (int)direction - 30;
             float radians = MathUtilities.ToRadians(degrees);
 
             var v = new PointF((float)(Constants.HexSize * Math.Cos(radians)), (float)(Constants.HexSize * Math.Sin(radians)));
@@ -26,7 +26,7 @@ namespace Hex
         }
 
 
-        protected abstract HexCube GetNeighboringCube(int direction);
+        protected abstract HexCube GetNeighboringCube(Direction direction);
 
 
         public abstract HexCube OffsetCoordinatesToCube(HexOffsetCoordinates hexOffsetCoordinates);
@@ -131,7 +131,7 @@ namespace Hex
             return neighbors;
         }
 
-        public HexOffsetCoordinates GetNeighbor(HexOffsetCoordinates hexOffsetCoordinates, int direction)
+        public HexOffsetCoordinates GetNeighbor(HexOffsetCoordinates hexOffsetCoordinates, Direction direction)
         {
             var cube = OffsetCoordinatesToCube(hexOffsetCoordinates);
             var neighbor = GetNeighbor(cube, direction);
@@ -145,7 +145,7 @@ namespace Hex
             var ring = new List<HexOffsetCoordinates>();
 
             var cube = OffsetCoordinatesToCube(offsetCoordinates);
-            var westNeighbor = GetNeighboringCube(6);
+            var westNeighbor = GetNeighboringCube(Direction.West);
             var scaledCube = westNeighbor * radius;
             cube += scaledCube;
 
@@ -158,7 +158,7 @@ namespace Hex
                     {
                         ring.Add(offset);
                     }
-                    cube = GetNeighbor(cube, i);
+                    cube = GetNeighbor(cube, (Direction)i);
                 }
             }
             var singleRing = ring.ToArray();
@@ -230,7 +230,7 @@ namespace Hex
             var neighbors = new List<HexCube>();
             for (var i = 0; i < 8; i++)
             {
-                var neighbor = GetNeighbor(hexCube, i);
+                var neighbor = GetNeighbor(hexCube, (Direction)i);
                 if (neighbor != hexCube)
                 {
                     neighbors.Add(neighbor);
@@ -240,7 +240,7 @@ namespace Hex
             return neighbors.ToArray();
         }
 
-        public HexCube GetNeighbor(HexCube hexCube, int direction)
+        public HexCube GetNeighbor(HexCube hexCube, Direction direction)
         {
             var offset = GetNeighboringCube(direction);
             var neighbor = hexCube + offset;

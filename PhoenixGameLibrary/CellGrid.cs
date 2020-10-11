@@ -94,7 +94,7 @@ namespace PhoenixGameLibrary
                 var borders = 0;
                 for (var i = 0; i < 8; i++)
                 {
-                    var neighborCell = cell.GetNeighbor(i, this);
+                    var neighborCell = cell.GetNeighbor((Direction)i, this);
                     borders = cell.ControlledByFaction == neighborCell.ControlledByFaction || cell == neighborCell ? borders.ResetBit(i) : borders.SetBit(i);
                 }
 

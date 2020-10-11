@@ -17,7 +17,7 @@ namespace Hex
         HexOffsetCoordinates RoundOffsetCoordinates(float x, float y);
 
         HexOffsetCoordinates[] GetAllNeighbors(HexOffsetCoordinates hexOffsetCoordinates);
-        HexOffsetCoordinates GetNeighbor(HexOffsetCoordinates hexOffsetCoordinates, int direction);
+        HexOffsetCoordinates GetNeighbor(HexOffsetCoordinates hexOffsetCoordinates, Direction direction);
         HexOffsetCoordinates[] GetSingleRing(HexOffsetCoordinates offsetCoordinates, int radius);
         HexOffsetCoordinates[] GetSpiralRing(HexOffsetCoordinates offsetCoordinates, int radius);
         List<HexOffsetCoordinates> GetLine(HexOffsetCoordinates fromOffsetCoordinates, HexOffsetCoordinates toOffsetCoordinates);
@@ -26,7 +26,7 @@ namespace Hex
         PointF ToPixel(HexOffsetCoordinates offsetCoordinates);
 
         HexCube[] GetAllNeighbors(HexCube hexCube);
-        HexCube GetNeighbor(HexCube hexCube, int direction);
+        HexCube GetNeighbor(HexCube hexCube, Direction direction);
         List<HexCube> GetLine(HexCube fromCube, HexCube toCube);
         int GetDistance(HexCube fromCube, HexCube toCube);
         HexCube FromPixelToCube(int x, int y);

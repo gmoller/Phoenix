@@ -132,7 +132,7 @@ namespace PhoenixGamePresentation.Views
             //if (cell.Borders.IsBitSet((byte)Direction.NorthWest)) DrawBorder(spriteBatch, cell, HexVertexDirection.NorthWest, HexVertexDirection.North);
         }
 
-        private void DrawBorder(SpriteBatch spriteBatch, Cell cell, int vertexDirection1, int vertexDirection2)
+        private void DrawBorder(SpriteBatch spriteBatch, Cell cell, Direction vertexDirection1, Direction vertexDirection2)
         {
             var centerPosition = HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
             var point1 = Hex.Hex.GetCorner(vertexDirection1).ToVector2();

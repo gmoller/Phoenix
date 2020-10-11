@@ -30,7 +30,7 @@ namespace Hex
         public HexOffsetCoordinates RoundOffsetCoordinates(float x, float y) => _hex.RoundOffsetCoordinates(x, y);
 
         public HexOffsetCoordinates[] GetAllNeighbors(HexOffsetCoordinates hexOffsetCoordinates) => _hex.GetAllNeighbors(hexOffsetCoordinates);
-        public HexOffsetCoordinates GetNeighbor(HexOffsetCoordinates hexOffsetCoordinates, int direction) => _hex.GetNeighbor(hexOffsetCoordinates, direction);
+        public HexOffsetCoordinates GetNeighbor(HexOffsetCoordinates hexOffsetCoordinates, Direction direction) => _hex.GetNeighbor(hexOffsetCoordinates, direction);
         public HexOffsetCoordinates[] GetSingleRing(HexOffsetCoordinates offsetCoordinates, int radius) => _hex.GetSingleRing(offsetCoordinates, radius);
         public HexOffsetCoordinates[] GetSpiralRing(HexOffsetCoordinates offsetCoordinates, int radius) => _hex.GetSpiralRing(offsetCoordinates, radius);
         public List<HexOffsetCoordinates> GetLine(HexOffsetCoordinates fromOffsetCoordinates, HexOffsetCoordinates toOffsetCoordinates) => _hex.GetLine(fromOffsetCoordinates, toOffsetCoordinates);
@@ -39,7 +39,7 @@ namespace Hex
         public PointF ToPixel(HexOffsetCoordinates offsetCoordinates) => _hex.ToPixel(offsetCoordinates);
 
         public HexCube[] GetAllNeighbors(HexCube hexCube) => _hex.GetAllNeighbors(hexCube);
-        public HexCube GetNeighbor(HexCube hexCube, int direction) => _hex.GetNeighbor(hexCube, direction);
+        public HexCube GetNeighbor(HexCube hexCube, Direction direction) => _hex.GetNeighbor(hexCube, direction);
         public List<HexCube> GetLine(HexCube fromCube, HexCube toCube) => _hex.GetLine(fromCube, toCube);
         public int GetDistance(HexCube fromCube, HexCube toCube) => _hex.GetDistance(fromCube, toCube);
         public HexCube FromPixelToCube(int x, int y) => _hex.FromPixelToCube(x, y);

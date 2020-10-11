@@ -21,9 +21,9 @@ namespace Hex
         }
 
 
-        protected override HexCube GetNeighboringCube(int direction)
+        protected override HexCube GetNeighboringCube(Direction direction)
         {
-            var neighboringCube = Directions[direction];
+            var neighboringCube = Directions[(int)direction];
 
             return neighboringCube;
         }
