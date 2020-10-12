@@ -30,7 +30,7 @@ namespace PhoenixGameLibrary
             Stacks = new Stacks();
             _turnNumber = 0;
             NotificationList = new NotificationList();
-            HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
+            HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd); // FlatTopped
         }
 
         internal void AddSettlement(PointI location, string raceTypeName)

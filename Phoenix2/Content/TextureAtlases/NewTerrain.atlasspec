@@ -1,0 +1,75 @@
+{
+  "SpriteSheetName": "NewTerrain",
+  "Frames": [
+    {
+      "Name": "GrassTile1_1",
+      "X": 0,
+      "Y": 0,
+      "Width": 784,
+      "Height": 679
+    },
+    {
+      "Name": "GrassTile2_1",
+      "X": 784,
+      "Y": 0,
+      "Width": 784,
+      "Height": 679
+    },
+    {
+      "Name": "GrassTile3_1",
+      "X": 1568,
+      "Y": 0,
+      "Width": 784,
+      "Height": 679
+    },
+    {
+      "Name": "GrassTile4_1",
+      "X": 2352,
+      "Y": 0,
+      "Width": 784,
+      "Height": 679
+    },
+    {
+      "Name": "GrassTile5_1",
+      "X": 3136,
+      "Y": 0,
+      "Width": 784,
+      "Height": 679
+    },
+    {
+      "Name": "GrassTile6_1",
+      "X": 0,
+      "Y": 679,
+      "Width": 784,
+      "Height": 679
+    },
+    {
+      "Name": "GrassTile7_1",
+      "X": 784,
+      "Y": 679,
+      "Width": 784,
+      "Height": 679
+    },
+    {
+      "Name": "WaterTile1_1",
+      "X": 1568,
+      "Y": 679,
+      "Width": 784,
+      "Height": 679
+    },
+    {
+      "Name": "WaterTile2_1",
+      "X": 2352,
+      "Y": 679,
+      "Width": 784,
+      "Height": 679
+    },
+    {
+      "Name": "WaterTile3_1",
+      "X": 3136,
+      "Y": 679,
+      "Width": 784,
+      "Height": 679
+    }
+  ]
+}

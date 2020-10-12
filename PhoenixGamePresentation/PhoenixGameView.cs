@@ -32,7 +32,6 @@ namespace PhoenixGamePresentation
             var pixel = new Texture2D(graphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new[] { new Color(Color.Black, 180) });
 
-            //ContentLoader.LoadContent(@"C:\PhoenixContent\", "Fonts", "Textures", "TextureAtlases", graphicsDevice);
             ContentLoader.LoadContent($@"{Directory.GetCurrentDirectory()}\Content\", "Fonts", "Textures", "TextureAtlases", graphicsDevice);
 
             AssetsManager.Instance.AddTexture("TransparentBackground", pixel);
@@ -81,6 +80,7 @@ namespace PhoenixGamePresentation
             AssetsManager.Instance.AddTexture("terrain_hextiles_basic_2", "TextureAtlases\\terrain_hextiles_basic_2");
             AssetsManager.Instance.AddTexture("terrain_hextiles_cold_1", "TextureAtlases\\terrain_hextiles_cold_1");
             AssetsManager.Instance.AddTexture("terrain_hextiles_cold_2", "TextureAtlases\\terrain_hextiles_cold_2");
+            AssetsManager.Instance.AddTexture("NewTerrain", "TextureAtlases\\NewTerrain");
 
             AssetsManager.Instance.AddTexture("GUI_Textures_1", "TextureAtlases\\GUI_Textures_1");
             AssetsManager.Instance.AddTexture("Icons_1", "TextureAtlases\\Icons_1");

@@ -47,8 +47,8 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawSettlement(SpriteBatch spriteBatch, Cell cell)
         {
-            var position = WorldView.HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row));
-            var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)(Hex.Constants.HexActualWidth * Constants.ONE_HALF), (int)(Hex.Constants.HexActualHeight * 0.75f));
+            var position = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(cell.Column, cell.Row));
+            var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)Hex.Constants.HexWidth, 192); //(int)(Hex.Constants.HexActualHeight * 0.75f)
             var sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
             var layerDepth = cell.Index / 10000.0f + 0.00001f;
             spriteBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);

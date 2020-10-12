@@ -23,17 +23,17 @@ namespace Hex
         List<HexOffsetCoordinates> GetLine(HexOffsetCoordinates fromOffsetCoordinates, HexOffsetCoordinates toOffsetCoordinates);
         int GetDistance(HexOffsetCoordinates from, HexOffsetCoordinates to);
         HexOffsetCoordinates FromPixelToOffsetCoordinates(int x, int y);
-        PointF ToPixel(HexOffsetCoordinates offsetCoordinates);
+        PointF FromOffsetCoordinatesToPixel(HexOffsetCoordinates offsetCoordinates);
 
         HexCube[] GetAllNeighbors(HexCube hexCube);
         HexCube GetNeighbor(HexCube hexCube, Direction direction);
         List<HexCube> GetLine(HexCube fromCube, HexCube toCube);
         int GetDistance(HexCube fromCube, HexCube toCube);
         HexCube FromPixelToCube(int x, int y);
-        PointF ToPixel(HexCube cube);
+        PointF FromCubeToPixel(HexCube cube);
 
         HexAxial FromPixelToAxial(int x, int y);
-        PointF ToPixel(HexAxial axial);
+        PointF FromAxialToPixel(HexAxial axial);
 
         (float x, float y, float z) Lerp(HexCube a, HexCube b, float t);
 

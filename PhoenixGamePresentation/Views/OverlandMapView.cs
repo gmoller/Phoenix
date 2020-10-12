@@ -120,19 +120,24 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawBorders(SpriteBatch spriteBatch, Cell cell)
         {
-            if (cell.Borders.IsBitSet((byte)Direction.North)) DrawBorder(spriteBatch, cell, Direction.NorthEast, Direction.SouthEast);
             if (cell.Borders.IsBitSet((byte)Direction.NorthEast)) DrawBorder(spriteBatch, cell, Direction.North, Direction.NorthEast);
             if (cell.Borders.IsBitSet((byte)Direction.East)) DrawBorder(spriteBatch, cell, Direction.NorthEast, Direction.SouthEast);
             if (cell.Borders.IsBitSet((byte)Direction.SouthEast)) DrawBorder(spriteBatch, cell, Direction.SouthEast, Direction.South);
-            if (cell.Borders.IsBitSet((byte)Direction.South)) DrawBorder(spriteBatch, cell, Direction.NorthEast, Direction.SouthEast);
             if (cell.Borders.IsBitSet((byte)Direction.SouthWest)) DrawBorder(spriteBatch, cell, Direction.South, Direction.SouthWest);
             if (cell.Borders.IsBitSet((byte)Direction.West)) DrawBorder(spriteBatch, cell, Direction.SouthWest, Direction.NorthWest);
             if (cell.Borders.IsBitSet((byte)Direction.NorthWest)) DrawBorder(spriteBatch, cell, Direction.NorthWest, Direction.North);
+
+            //if (cell.Borders.IsBitSet((byte)Direction.North)) DrawBorder(spriteBatch, cell, Direction.NorthWest, Direction.NorthEast);
+            //if (cell.Borders.IsBitSet((byte)Direction.NorthEast)) DrawBorder(spriteBatch, cell, Direction.NorthEast, Direction.East);
+            //if (cell.Borders.IsBitSet((byte)Direction.SouthEast)) DrawBorder(spriteBatch, cell, Direction.East, Direction.SouthEast);
+            //if (cell.Borders.IsBitSet((byte)Direction.South)) DrawBorder(spriteBatch, cell, Direction.SouthWest, Direction.SouthEast);
+            //if (cell.Borders.IsBitSet((byte)Direction.SouthWest)) DrawBorder(spriteBatch, cell, Direction.West, Direction.SouthWest);
+            //if (cell.Borders.IsBitSet((byte)Direction.NorthWest)) DrawBorder(spriteBatch, cell, Direction.West, Direction.NorthWest);
         }
 
         private void DrawBorder(SpriteBatch spriteBatch, Cell cell, Direction vertexDirection1, Direction vertexDirection2)
         {
-            var centerPosition = WorldView.HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
+            var centerPosition = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
             var point1 = WorldView.HexLibrary.GetCorner(vertexDirection1).ToVector2();
             var point2 = WorldView.HexLibrary.GetCorner(vertexDirection2).ToVector2();
 
@@ -141,13 +146,13 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawCell(SpriteBatch spriteBatch, Cell cell, Color color)
         {
-            bool neverSeen = cell.SeenState == SeenState.NeverSeen;
+            var neverSeen = cell.SeenState == SeenState.NeverSeen;
             var texture = AssetsManager.Instance.GetTexture(neverSeen ? cell.TextureFogOfWar.TexturePalette  : cell.Texture.TexturePalette);
             var spec = AssetsManager.Instance.GetAtlas(neverSeen ? cell.TextureFogOfWar.TexturePalette : cell.Texture.TexturePalette);
             var frame = spec.Frames[neverSeen ? cell.TextureFogOfWar.TextureId : cell.Texture.TextureId];
             var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
-            var centerPosition = WorldView.HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row));
+            var centerPosition = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(cell.Column, cell.Row));
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
             var layerDepth = cell.Index / 10000.0f;
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
@@ -155,7 +160,7 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawHexBorder(SpriteBatch spriteBatch, Cell cell)
         {
-            var centerPosition = WorldView.HexLibrary.ToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
+            var centerPosition = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
 
             var color = Color.PeachPuff;
             var point0 = WorldView.HexLibrary.GetCorner(Direction.North).ToVector2();

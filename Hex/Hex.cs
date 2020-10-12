@@ -204,15 +204,7 @@ namespace Hex
             return offsetCoordinates2;
         }
 
-        public PointF ToPixel(HexOffsetCoordinates offsetCoordinates)
-        {
-            // TODO: should this change for flat topped?
-            var x = Constants.HexSize * (Constants.SquareRootOf3 * (offsetCoordinates.Col + 0.5f * (offsetCoordinates.Row & 1)));
-            var y = Constants.HexSize * (1.5f * offsetCoordinates.Row);
-            var pixel = new PointF((float)x, (float)y);
-
-            return pixel;
-        }
+        public abstract PointF FromOffsetCoordinatesToPixel(HexOffsetCoordinates offsetCoordinates);
 
         public HexCube[] GetAllNeighbors(HexCube hexCube)
         {
@@ -268,40 +260,24 @@ namespace Hex
 
         public HexCube FromPixelToCube(int x, int y)
         {
-            var q = (Constants.OneThirdOfSquareRootOf3 * x - Constants.ONE_THIRD * y) / Constants.HexSize;
-            var r = (Constants.TWO_THIRDS * y) / Constants.HexSize;
-            var axial = RoundAxial((float)q, (float)r);
+            var axial = FromPixelToAxial(x, y);
             var cube = AxialToCube(axial);
 
             return cube;
         }
 
-        public PointF ToPixel(HexCube cube)
+        public PointF FromCubeToPixel(HexCube cube)
         {
             var axial = CubeToAxial(cube);
-            var pixel = ToPixel(axial);
+            var pixel = FromAxialToPixel(axial);
 
             return pixel;
         }
 
 
-        public HexAxial FromPixelToAxial(int x, int y)
-        {
-            var q = (Constants.OneThirdOfSquareRootOf3 * x - Constants.ONE_THIRD * y) / Constants.HexSize;
-            var r = (Constants.TWO_THIRDS * y) / Constants.HexSize;
-            var axial = RoundAxial((float)q, (float)r);
+        public abstract HexAxial FromPixelToAxial(int x, int y);
 
-            return axial;
-        }
-
-        public PointF ToPixel(HexAxial axial)
-        {
-            var x = Constants.HexSize * (Constants.SquareRootOf3 * axial.Q + Constants.HalfOfSquareRootOf3 * axial.R);
-            var y = Constants.HexSize * (1.5f * axial.R);
-            var pixel = new PointF((float)x, (float)y);
-
-            return pixel;
-        }
+        public abstract PointF FromAxialToPixel(HexAxial axial);
 
 
         public (float x, float y, float z) Lerp(HexCube a, HexCube b, float t)

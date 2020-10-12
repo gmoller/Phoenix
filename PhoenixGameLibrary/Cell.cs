@@ -46,7 +46,7 @@ namespace PhoenixGameLibrary
                 var terrainTypes = gameMetadata.TerrainTypes;
 
                 var terrainType = terrainTypes[terrainTypeId];
-                Texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, 3)];
+                Texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, terrainType.PossibleTextures.Count - 1)];
             }
             
             TextureFogOfWar = new Texture("terrain_hextiles_basic_1", (byte)RandomNumberGenerator.Instance.GetRandomInt(36, 39)); //28-31,36-39

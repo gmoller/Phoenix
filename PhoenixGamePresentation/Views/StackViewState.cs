@@ -33,7 +33,7 @@ namespace PhoenixGamePresentation.Views
         {
             foreach (var item in movementPath)
             {
-                var centerPosition = StackView.HexLibrary.ToPixel(new HexOffsetCoordinates(item)).ToVector2();
+                var centerPosition = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(item)).ToVector2();
                 spriteBatch.DrawCircle(centerPosition, radius, 10, color, thickness);
             }
         }

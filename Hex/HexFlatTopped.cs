@@ -1,4 +1,5 @@
 ﻿using System;
+using Utilities;
 
 namespace Hex
 {
@@ -38,7 +39,7 @@ namespace Hex
             {
                 OffsetCoordinatesType.Even => (col + (col & 1)) / 2,
                 OffsetCoordinatesType.Odd => (col - (col & 1)) / 2,
-                _ => throw new ArgumentOutOfRangeException(nameof(OffsetCoordinatesType), OffsetCoordinatesType, $"OffsetCoordinatesType {OffsetCoordinatesType} is not supported."),
+                _ => throw new ArgumentOutOfRangeException(nameof(OffsetCoordinatesType), OffsetCoordinatesType, $"OffsetCoordinatesType {OffsetCoordinatesType} is not supported.")
             };
             var y = -col - row;
             var cube = new HexCube(col, y, row);
@@ -55,13 +56,47 @@ namespace Hex
             {
                 OffsetCoordinatesType.Even => (col + (col & 1)) / 2,
                 OffsetCoordinatesType.Odd => (col - (col & 1)) / 2,
-                _ => throw new NotSupportedException(
-                    $"OffsetCoordinatesType [{OffsetCoordinatesType}] is not supported.")
+                _ => throw new ArgumentOutOfRangeException(nameof(OffsetCoordinatesType), OffsetCoordinatesType, $"OffsetCoordinatesType {OffsetCoordinatesType} is not supported.")
             };
 
             var offsetCoordinates = new HexOffsetCoordinates(col, row);
 
             return offsetCoordinates;
+        }
+
+        public override PointF FromOffsetCoordinatesToPixel(HexOffsetCoordinates offsetCoordinates)
+        {
+            var x = Constants.HexSize * (1.5f * offsetCoordinates.Col);
+            var y = Constants.HexSize;
+
+            y *= OffsetCoordinatesType switch
+            {
+                OffsetCoordinatesType.Even => Constants.SquareRootOf3 * (offsetCoordinates.Row - 0.5f * (offsetCoordinates.Col & 1)),
+                OffsetCoordinatesType.Odd => Constants.SquareRootOf3 * (offsetCoordinates.Row + 0.5f * (offsetCoordinates.Col & 1)),
+                _ => throw new ArgumentOutOfRangeException(nameof(OffsetCoordinatesType), OffsetCoordinatesType, $"OffsetCoordinatesType {OffsetCoordinatesType} is not supported.")
+            };
+
+            var pixel = new PointF((float)x, (float)y);
+
+            return pixel;
+        }
+
+        public override HexAxial FromPixelToAxial(int x, int y)
+        {
+            var q = Constants.TWO_THIRDS * x / Constants.HexSize;
+            var r = (-Constants.ONE_THIRD * x + Constants.OneThirdOfSquareRootOf3 * y) / Constants.HexSize;
+            var axial = RoundAxial((float)q, (float)r);
+
+            return axial;
+        }
+
+        public override PointF FromAxialToPixel(HexAxial axial)
+        {
+            var x = Constants.HexSize * (1.5f * axial.Q);
+            var y = Constants.HexSize * (Constants.HalfOfSquareRootOf3 * axial.Q + Constants.SquareRootOf3 * axial.R);
+            var pixel = new PointF((float)x, (float)y);
+
+            return pixel;
         }
 
         protected override float GetDegreesForHexCorner(Direction direction)

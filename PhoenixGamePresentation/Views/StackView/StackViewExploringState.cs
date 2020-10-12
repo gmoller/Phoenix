@@ -108,10 +108,10 @@ namespace PhoenixGamePresentation.Views.StackView
             MovementCountdownTime -= deltaTime;
 
             // determine start cell screen position
-            var startPosition = StackView.HexLibrary.ToPixel(new HexOffsetCoordinates(StackView.LocationHex)).ToVector2();
+            var startPosition = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(StackView.LocationHex)).ToVector2();
             // determine end cell screen position
             var hexToMoveTo = StackView.MovementPath[0];
-            var endPosition = StackView.HexLibrary.ToPixel(new HexOffsetCoordinates(hexToMoveTo)).ToVector2();
+            var endPosition = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(hexToMoveTo)).ToVector2();
             // lerp between the two positions
             var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
 

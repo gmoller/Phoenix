@@ -36,17 +36,17 @@ namespace Hex
         public List<HexOffsetCoordinates> GetLine(HexOffsetCoordinates fromOffsetCoordinates, HexOffsetCoordinates toOffsetCoordinates) => _hex.GetLine(fromOffsetCoordinates, toOffsetCoordinates);
         public int GetDistance(HexOffsetCoordinates from, HexOffsetCoordinates to) => _hex.GetDistance(from, to);
         public HexOffsetCoordinates FromPixelToOffsetCoordinates(int x, int y) => _hex.FromPixelToOffsetCoordinates(x, y);
-        public PointF ToPixel(HexOffsetCoordinates offsetCoordinates) => _hex.ToPixel(offsetCoordinates);
+        public PointF FromOffsetCoordinatesToPixel(HexOffsetCoordinates offsetCoordinates) => _hex.FromOffsetCoordinatesToPixel(offsetCoordinates);
 
         public HexCube[] GetAllNeighbors(HexCube hexCube) => _hex.GetAllNeighbors(hexCube);
         public HexCube GetNeighbor(HexCube hexCube, Direction direction) => _hex.GetNeighbor(hexCube, direction);
         public List<HexCube> GetLine(HexCube fromCube, HexCube toCube) => _hex.GetLine(fromCube, toCube);
         public int GetDistance(HexCube fromCube, HexCube toCube) => _hex.GetDistance(fromCube, toCube);
         public HexCube FromPixelToCube(int x, int y) => _hex.FromPixelToCube(x, y);
-        public PointF ToPixel(HexCube cube) => _hex.ToPixel(cube);
+        public PointF FromCubeToPixel(HexCube cube) => _hex.FromCubeToPixel(cube);
 
         public HexAxial FromPixelToAxial(int x, int y) => _hex.FromPixelToAxial(x, y);
-        public PointF ToPixel(HexAxial axial) => _hex.ToPixel(axial);
+        public PointF FromAxialToPixel(HexAxial axial) => _hex.FromAxialToPixel(axial);
 
         public  (float x, float y, float z) Lerp(HexCube a, HexCube b, float t) => _hex.Lerp(a, b, t);
 
