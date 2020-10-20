@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Hex;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
 using Utilities;
+using Zen.Hexagons;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -33,7 +33,7 @@ namespace PhoenixGamePresentation.Views
         {
             foreach (var item in movementPath)
             {
-                var centerPosition = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(item)).ToVector2();
+                var centerPosition = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(item.X, item.Y)).ToVector2();
                 spriteBatch.DrawCircle(centerPosition, radius, 10, color, thickness);
             }
         }

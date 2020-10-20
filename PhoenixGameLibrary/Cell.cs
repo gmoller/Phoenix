@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using Hex;
 using PhoenixGameLibrary.GameData;
 using Utilities;
+using Zen.Hexagons;
 
 namespace PhoenixGameLibrary
 {
@@ -46,10 +46,12 @@ namespace PhoenixGameLibrary
                 var terrainTypes = gameMetadata.TerrainTypes;
 
                 var terrainType = terrainTypes[terrainTypeId];
-                Texture = terrainType.PossibleTextures[RandomNumberGenerator.Instance.GetRandomInt(0, terrainType.PossibleTextures.Count - 1)];
+                var randomNumber = RandomNumberGenerator.Instance.GetRandomInt(0, terrainType.PossibleTextures.Count - 1);
+                Texture = terrainType.PossibleTextures[randomNumber];
             }
-            
-            TextureFogOfWar = new Texture("terrain_hextiles_basic_1", (byte)RandomNumberGenerator.Instance.GetRandomInt(36, 39)); //28-31,36-39
+
+            //TextureFogOfWar = new Texture("terrain_hextiles_basic_1", (byte)RandomNumberGenerator.Instance.GetRandomInt(36, 39)); //28-31,36-39
+            TextureFogOfWar = new Texture("NewTerrain", 13);
             SeenState = SeenState.NeverSeen;
             ControlledByFaction = 0; // None
             Borders = 0; // no borders

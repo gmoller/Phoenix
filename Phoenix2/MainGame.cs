@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation;
-using PhoenixGamePresentation.Views;
 using Utilities;
- 
+using Zen.Hexagons;
+
 namespace Phoenix2
 {
     public class MainGame : Game
@@ -83,7 +83,7 @@ namespace Phoenix2
             var actualWidth = graphicsDeviceManager.GraphicsDevice.Viewport.Width;
             var actualHeight = graphicsDeviceManager.GraphicsDevice.Viewport.Height;
             context.ActualResolution = new PointI(actualWidth, actualHeight);
-            context.ScreenRatio = new PointF(actualWidth / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, actualHeight / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            context.ScreenRatio = new Point2F(actualWidth / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, actualHeight / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
         }
 
         protected override void LoadContent()

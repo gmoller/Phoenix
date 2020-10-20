@@ -2,72 +2,128 @@
   "SpriteSheetName": "NewTerrain",
   "Frames": [
     {
-      "Name": "GrassTile1_1",
+      "Name": "GrassTile1_2",
       "X": 0,
       "Y": 0,
-      "Width": 784,
-      "Height": 679
+      "Width": 256,
+      "Height": 222
     },
     {
-      "Name": "GrassTile2_1",
-      "X": 784,
+      "Name": "GrassTile2_2",
+      "X": 256,
       "Y": 0,
-      "Width": 784,
-      "Height": 679
+      "Width": 256,
+      "Height": 222
     },
     {
-      "Name": "GrassTile3_1",
-      "X": 1568,
+      "Name": "GrassTile3_2",
+      "X": 512,
       "Y": 0,
-      "Width": 784,
-      "Height": 679
+      "Width": 256,
+      "Height": 222
     },
     {
-      "Name": "GrassTile4_1",
-      "X": 2352,
+      "Name": "GrassTile4_2",
+      "X": 768,
       "Y": 0,
-      "Width": 784,
-      "Height": 679
+      "Width": 256,
+      "Height": 222
     },
     {
-      "Name": "GrassTile5_1",
-      "X": 3136,
+      "Name": "GrassTile5_2",
+      "X": 1024,
       "Y": 0,
-      "Width": 784,
-      "Height": 679
+      "Width": 256,
+      "Height": 222
     },
     {
-      "Name": "GrassTile6_1",
+      "Name": "GrassTile6_2",
       "X": 0,
-      "Y": 679,
+      "Y": 222,
+      "Width": 256,
+      "Height": 222
+    },
+    {
+      "Name": "GrassTile7_2",
+      "X": 256,
+      "Y": 222,
+      "Width": 256,
+      "Height": 222
+    },
+    {
+      "Name": "WaterTile1_2",
+      "X": 512,
+      "Y": 222,
+      "Width": 256,
+      "Height": 222
+    },
+    {
+      "Name": "WaterTile2_2",
+      "X": 768,
+      "Y": 222,
+      "Width": 256,
+      "Height": 222
+    },
+    {
+      "Name": "WaterTile3_2",
+      "X": 1024,
+      "Y": 222,
+      "Width": 256,
+      "Height": 222
+    },
+    {
+      "Name": "DesertTile1_2",
+      "X": 0,
+      "Y": 444,
+      "Width": 256,
+      "Height": 222
+    },
+    {
+      "Name": "DesertTile2_2",
+      "X": 256,
+      "Y": 444,
+      "Width": 256,
+      "Height": 222
+    },
+    {
+      "Name": "DesertTile3_2",
+      "X": 512,
+      "Y": 444,
+      "Width": 256,
+      "Height": 222
+    },
+    {
+      "Name": "FogOfWar1_2",
+      "X": 768,
+      "Y": 444,
+      "Width": 256,
+      "Height": 222
+    },
+    {
+      "Name": "ForestTile1_1",
+      "X": 0,
+      "Y": 666,
       "Width": 784,
       "Height": 679
     },
     {
-      "Name": "GrassTile7_1",
+      "Name": "HillsTile1_1",
       "X": 784,
-      "Y": 679,
+      "Y": 666,
       "Width": 784,
       "Height": 679
     },
     {
-      "Name": "WaterTile1_1",
+      "Name": "MountainTile1_1",
       "X": 1568,
-      "Y": 679,
+      "Y": 666,
       "Width": 784,
       "Height": 679
     },
     {
-      "Name": "WaterTile2_1",
+      "Name": "SwampTile1_1",
       "X": 2352,
-      "Y": 679,
-      "Width": 784,
-      "Height": 679
-    },
-    {
-      "Name": "WaterTile3_1",
-      "X": 3136,
-      "Y": 679,
+      "Y": 666,
       "Width": 784,
       "Height": 679
     }

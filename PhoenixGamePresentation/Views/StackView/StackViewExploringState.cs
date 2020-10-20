@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Hex;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.Commands;
 using PhoenixGamePresentation.Handlers;
 using Utilities.ExtensionMethods;
+using Zen.Hexagons;
 
 namespace PhoenixGamePresentation.Views.StackView
 {
@@ -60,7 +60,7 @@ namespace PhoenixGamePresentation.Views.StackView
             }
 
             // find best path to unexplored cell
-            var path = MovementPathDeterminer.DetermineMovementPath(StackView.Stack, StackView.LocationHex, cell.ToPoint, cellGrid);
+            var path = MovementPathDeterminer.DetermineMovementPath(StackView.HexLibrary, StackView.Stack, StackView.LocationHex, cell.ToPoint, cellGrid);
 
             if (path.Count == 0)
             {
@@ -108,10 +108,10 @@ namespace PhoenixGamePresentation.Views.StackView
             MovementCountdownTime -= deltaTime;
 
             // determine start cell screen position
-            var startPosition = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(StackView.LocationHex)).ToVector2();
+            var startPosition = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(StackView.LocationHex.X, StackView.LocationHex.Y)).ToVector2();
             // determine end cell screen position
             var hexToMoveTo = StackView.MovementPath[0];
-            var endPosition = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(hexToMoveTo)).ToVector2();
+            var endPosition = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(hexToMoveTo.X, hexToMoveTo.Y)).ToVector2();
             // lerp between the two positions
             var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
 

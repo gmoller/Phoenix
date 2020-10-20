@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Hex;
-using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using PhoenixGameLibrary.Helpers;
 using Utilities;
+using Zen.Hexagons;
 
 namespace PhoenixGameLibrary
 {
@@ -39,7 +38,7 @@ namespace PhoenixGameLibrary
         public event EventHandler SettlementOpened;
         #endregion End State
 
-        public HexOffsetCoordinates LocationHex => new HexOffsetCoordinates(Location);
+        public HexOffsetCoordinates LocationHex => new HexOffsetCoordinates(Location.X, Location.Y);
         public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
         public int GrowthRate => DetermineGrowthRate();
         public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(Location, _catchmentCells);
@@ -272,7 +271,7 @@ namespace PhoenixGameLibrary
         private string DebuggerDisplay => $"{{Id={_id},Name={Name}}}";
     }
 
-    public struct CurrentlyBuilding
+    public readonly struct CurrentlyBuilding
     {
         public int BuildingId { get; }
         public int UnitId { get; }

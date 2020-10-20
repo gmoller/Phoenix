@@ -1,16 +1,16 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Hex;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views.StackView;
 using Utilities;
+using Zen.Hexagons;
 
 namespace PhoenixGamePresentation.Handlers
 {
     internal static class MovementHandler
     {
-        private static readonly HexLibrary HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd);
+        public static HexLibrary HexLibrary { get; set; }
 
         internal static (bool startMovement, PointI hexToMoveTo) CheckForUnitMovementFromMouseInitiation(Stack stack, object args)
         {
@@ -18,7 +18,8 @@ namespace PhoenixGamePresentation.Handlers
 
             if (!camera.GetViewport.Contains(mouseLocation)) return (false, new PointI(0, 0));
 
-            var hexToMoveTo = camera.ScreenPixelToWorldHex(mouseLocation).ToPointI();
+            var screenPixelToWorldHex = camera.ScreenPixelToWorldHex(mouseLocation);
+            var hexToMoveTo = new PointI(screenPixelToWorldHex.Col, screenPixelToWorldHex.Row);
             if (hexToMoveTo.Equals(stack.LocationHex)) return (false, new PointI(0, 0));
             var cellToMoveTo = cellGrid.GetCell(hexToMoveTo);
             if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new PointI(0, 0));
@@ -45,8 +46,8 @@ namespace PhoenixGamePresentation.Handlers
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            var neighbor = HexLibrary.GetNeighbor(new HexOffsetCoordinates(stack.LocationHex), direction);
-            var hexToMoveTo = neighbor.ToPointI();
+            var neighbor = HexLibrary.GetNeighbor(new HexOffsetCoordinates(stack.LocationHex.X, stack.LocationHex.Y), direction);
+            var hexToMoveTo = new PointI(neighbor.Col, neighbor.Row);
 
             var costToMoveIntoResult = stack.GetCostToMoveInto(hexToMoveTo);
 
@@ -67,7 +68,7 @@ namespace PhoenixGamePresentation.Handlers
 
         private static void StartMovement(StackView stackView, PointI hexToMoveTo)
         {
-            var path = MovementPathDeterminer.DetermineMovementPath(stackView.Stack, stackView.LocationHex, hexToMoveTo, stackView.CellGrid);
+            var path = MovementPathDeterminer.DetermineMovementPath(HexLibrary, stackView.Stack, stackView.LocationHex, hexToMoveTo, stackView.CellGrid);
             stackView.MovementPath = path;
             stackView.Move();
         }

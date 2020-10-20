@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Hex;
 using Utilities;
+using Zen.Hexagons;
 
 namespace MonoGameUtilities.ExtensionMethods
 {
@@ -22,7 +22,8 @@ namespace MonoGameUtilities.ExtensionMethods
 
         public static bool IsWithinHex(this Point p1, PointI p2, Matrix transform, HexLibrary hexLibrary)
         {
-            var isWithinHex = p1.IsWithinHex(new HexOffsetCoordinates(p2), transform, hexLibrary);
+            var hexOffsetCoordinates = new HexOffsetCoordinates(p2.X, p2.Y);
+            var isWithinHex = p1.IsWithinHex(hexOffsetCoordinates, transform, hexLibrary);
 
             return isWithinHex;
         }
@@ -30,7 +31,8 @@ namespace MonoGameUtilities.ExtensionMethods
         public static bool IsWithinHex(this Point p1, HexOffsetCoordinates p2, Matrix transform, HexLibrary hexLibrary)
         {
             var hexPoint = p1.ToWorldHex(transform, hexLibrary);
-            var isWithinHex = p2.ToPointI() == hexPoint;
+            var p3 = new PointI(p2.Col, p2.Row);
+            var isWithinHex = p3.X == hexPoint.X && p3.Y == hexPoint.Y;
 
             return isWithinHex;
         }

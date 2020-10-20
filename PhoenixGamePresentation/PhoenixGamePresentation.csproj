@@ -7,12 +7,12 @@
   <ItemGroup>
     <PackageReference Include="Appccelerate.StateMachine" Version="5.1.0" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" />
+    <PackageReference Include="Zen.Hexagons" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Assets\Assets.csproj" />
     <ProjectReference Include="..\GuiControls\GuiControls.csproj" />
-    <ProjectReference Include="..\Hex\Hex.csproj" />
     <ProjectReference Include="..\PhoenixGameLibrary\PhoenixGameLibrary.csproj" />
   </ItemGroup>
 

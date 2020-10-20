@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hex\Hex.csproj" />
     <ProjectReference Include="..\Noise\Noise.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
@@ -13,6 +12,10 @@
   <ItemGroup>
     <Folder Include="Commands\" />
     <Folder Include="Helpers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Zen.Hexagons" Version="1.0.1" />
   </ItemGroup>
 
 </Project>

@@ -232,7 +232,9 @@ namespace PhoenixGamePresentation.Views
         {
             foreach (var stackView in this)
             {
-                var mustSelect = stackView.MovementPoints > 0.0f && mouseLocation.IsWithinHex(stackView.LocationHex, WorldView.Camera.Transform, WorldView.HexLibrary);
+                var stackViewLocationHex = stackView.LocationHex;
+                var foo = mouseLocation.IsWithinHex(stackViewLocationHex, WorldView.Camera.Transform, WorldView.HexLibrary);
+                var mustSelect = stackView.MovementPoints > 0.0f && foo;
                 if (mustSelect)
                 {
                     if (stackView.Id != Current?.Id)

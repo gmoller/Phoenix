@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GuiControls;
 using GuiControls.PackagesClasses;
-using Hex;
 using Input;
 using MonoGameUtilities.ExtensionMethods;
 using MonoGameUtilities.ViewportAdapters;
@@ -13,6 +12,7 @@ using PhoenixGameLibrary;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
 using Utilities;
+using Zen.Hexagons;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -73,8 +73,9 @@ namespace PhoenixGamePresentation.Views
         internal Settlements Settlements => World.Settlements;
         internal Stacks Stacks => World.Stacks;
         internal GameStatus GameStatus => GameStatusHandler.GameStatus;
-        internal int WorldWidthInPixels => Constants.WORLD_MAP_WIDTH_IN_PIXELS;
-        internal int WorldHeightInPixels => Constants.WORLD_MAP_HEIGHT_IN_PIXELS;
+
+        internal int WorldWidthInPixels => HexLibrary.GetWorldWidthInPixels(PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS);
+        internal int WorldHeightInPixels => HexLibrary.GetWorldHeightInPixels(PhoenixGameLibrary.Constants.WORLD_MAP_ROWS);
         internal EnumerableDictionary<IControl> GetMovementTypeImages => new EnumerableDictionary<IControl>(MovementTypeImages);
         internal EnumerableDictionary<IControl> GetActionButtons => new EnumerableDictionary<IControl>(ActionButtons);
         internal string CurrentDate => World.CurrentDate;

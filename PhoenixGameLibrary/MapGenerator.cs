@@ -20,9 +20,9 @@ namespace PhoenixGameLibrary
         private static float[,] MakeNoise(int numberOfColumns, int numberOfRows)
         {
             var noise = new float[numberOfColumns, numberOfRows];
-            for (float y = 0.0f; y < numberOfRows; ++y)
+            for (float y = 0.0f; y < numberOfRows; y++)
             {
-                for (float x = 0.0f; x < numberOfColumns; ++x)
+                for (float x = 0.0f; x < numberOfColumns; x++)
                 {
                     float val = GetNoise(x, y, FastNoise.Interp.Linear);
                     noise[(int)x, (int)y] = val;
@@ -71,7 +71,12 @@ namespace PhoenixGameLibrary
             var ranges = new List<(float from, float to, string terrainTypeName)>
             {
                 (float.MinValue, 0.0f, "Ocean"),
-                (0.0f, 0.4f, "Grassland"),
+                (0.0f, 0.1f, "Grassland"),
+                (0.1f, 0.2f, "Grassland"),
+                (0.2f, 0.3f, "Grassland"),
+                (0.3f, 0.35f, "Grassland"),
+                (0.35f, 0.38f, "Grassland"),
+                (0.38f, 0.4f, "Grassland"),
                 (0.4f, 0.5f, "Forest"),
                 (0.5f, 0.7f, "Hill"),
                 (0.7f, float.MaxValue, "Mountain")
@@ -94,31 +99,6 @@ namespace PhoenixGameLibrary
             }
 
             throw new Exception($"That was unexpected! Val of {val} not supported.");
-        }
-
-        private static bool IsOcean(float val)
-        {
-            return val < -0.3f;
-        }
-
-        private static bool IsGrassland(float val)
-        {
-            return val >= -0.3f && val < 0.4f;
-        }
-
-        private static bool IsForest(float val)
-        {
-            return val >= 0.4f && val < 0.5f;
-        }
-
-        private static bool IsHill(float val)
-        {
-            return val >= 0.5f && val < 0.7f;
-        }
-
-        private static bool IsMountain(float val)
-        {
-            return val >= 0.7f && val <= 1.0f;
         }
     }
 }

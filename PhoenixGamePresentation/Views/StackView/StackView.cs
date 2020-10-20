@@ -6,11 +6,11 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GuiControls;
-using Hex;
 using Input;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Handlers;
 using Utilities;
+using Zen.Hexagons;
 
 namespace PhoenixGamePresentation.Views.StackView
 {
@@ -200,11 +200,13 @@ namespace PhoenixGamePresentation.Views.StackView
 
         internal void CheckForUnitMovementFromMouseInitiation(Point mouseLocation)
         {
+            MovementHandler.HexLibrary = HexLibrary;
             MovementHandler.CheckForUnitMovement(MovementHandler.CheckForUnitMovementFromMouseInitiation, Stack, (WorldView.CellGrid, mouseLocation, WorldView.Camera), this);
         }
 
         internal void CheckForUnitMovementFromKeyboardInitiation(Keys key)
         {
+            MovementHandler.HexLibrary = HexLibrary;
             MovementHandler.CheckForUnitMovement(MovementHandler.CheckForUnitMovementFromKeyboardInitiation, Stack, key, this);
         }
 

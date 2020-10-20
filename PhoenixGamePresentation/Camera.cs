@@ -3,12 +3,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Input;
-using Hex;
 using MonoGameUtilities.ExtensionMethods;
 using PhoenixGamePresentation.Events;
 using PhoenixGamePresentation.Views;
 using Utilities;
 using Utilities.ExtensionMethods;
+using Zen.Hexagons;
 
 namespace PhoenixGamePresentation
 {
@@ -104,7 +104,7 @@ namespace PhoenixGamePresentation
                 var cameraRectangle = CameraRectangleInWorld;
                 var hexTopLeft = WorldPixelToWorldHex(new PointI(cameraRectangle.Left, cameraRectangle.Top));
 
-                return hexTopLeft.ToPointI();
+                return new PointI(hexTopLeft.Col, hexTopLeft.Row);
             }
         }
 
@@ -115,7 +115,7 @@ namespace PhoenixGamePresentation
                 var cameraRectangle = CameraRectangleInWorld;
                 var hexBottomRight = WorldPixelToWorldHex(new PointI(cameraRectangle.Right, cameraRectangle.Bottom));
 
-                return hexBottomRight.ToPointI();
+                return new PointI(hexBottomRight.Col, hexBottomRight.Row);
             }
         }
 
@@ -142,7 +142,7 @@ namespace PhoenixGamePresentation
         /// <returns></returns>
         public Vector2 WorldHexToScreenPixel(PointI worldHex)
         {
-            return WorldHexToScreenPixel(new HexOffsetCoordinates(worldHex));
+            return WorldHexToScreenPixel(new HexOffsetCoordinates(worldHex.X, worldHex.Y));
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace PhoenixGamePresentation
         /// <returns></returns>
         public Vector2 WorldPixelToScreenPixel(PointI worldPosition)
         {
-            return WorldPixelToScreenPixel(worldPosition.ToVector2());
+            return WorldPixelToScreenPixel(new Vector2(worldPosition.X, worldPosition.Y));
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace PhoenixGamePresentation
         /// <returns></returns>
         public Vector2 ScreenPixelToWorldPixel(PointI screenPosition)
         {
-            return ScreenPixelToWorldPixel(screenPosition.ToVector2());
+            return ScreenPixelToWorldPixel(new Vector2(screenPosition.X, screenPosition.Y));
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace PhoenixGamePresentation
 
         public Vector2 WorldHexToWorldPixel(PointI worldHex)
         {
-            return WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(worldHex)).ToVector2();
+            return WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(worldHex.X, worldHex.Y)).ToVector2();
         }
 
         #endregion
@@ -248,7 +248,7 @@ namespace PhoenixGamePresentation
         /// <returns></returns>
         public HexOffsetCoordinates ScreenPixelToWorldHex(PointI screenPosition)
         {
-            return ScreenPixelToWorldHex(screenPosition.ToVector2());
+            return ScreenPixelToWorldHex(new Vector2(screenPosition.X, screenPosition.Y));
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace PhoenixGamePresentation
         /// <param name="hexPoint"></param>
         public void LookAtCell(HexOffsetCoordinates hexPoint)
         {
-            LookAtCell(hexPoint.ToPointI());
+            LookAtCell(new PointI(hexPoint.Col, hexPoint.Row));
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace PhoenixGamePresentation
         /// <param name="hexPoint"></param>
         public void LookAtCell(Point hexPoint)
         {
-            LookAtCell(hexPoint.ToPointI());
+            LookAtCell(new PointI(hexPoint.X, hexPoint.Y));
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace PhoenixGamePresentation
         /// <param name="hexPoint"></param>
         public void LookAtCell(PointI hexPoint)
         {
-            var newPosition = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(hexPoint));
+            var newPosition = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(hexPoint.X, hexPoint.Y));
             CameraFocusPointInWorld = newPosition.ToVector2();
         }
 
@@ -323,7 +323,7 @@ namespace PhoenixGamePresentation
         /// <param name="newPosition"></param>
         public void LookAtPixel(PointI newPosition)
         {
-            LookAtPixel(newPosition.ToVector2());
+            LookAtPixel(new Vector2(newPosition.X, newPosition.Y));
         }
 
         /// <summary>
@@ -345,7 +345,7 @@ namespace PhoenixGamePresentation
         /// <param name="mouseLocation"></param>
         public void LookAtCellPointedAtByMouse(Point mouseLocation)
         {
-            LookAtCell(mouseLocation.ToPointI());
+            LookAtCell(new PointI(mouseLocation.X, mouseLocation.Y));
         }
 
         #endregion
@@ -358,11 +358,10 @@ namespace PhoenixGamePresentation
         {
             if (ClampMode == CameraClampMode.NoClamp) return CameraFocusPointInWorld;
 
-            // TODO: sort this out
             var x = MathHelper.Clamp(CameraFocusPointInWorld.X, Viewport.Center.X * (1 / zoom),
-                Constants.WORLD_MAP_WIDTH_IN_PIXELS - Viewport.Center.X * (1 / zoom));
+                WorldView.HexLibrary.GetWorldWidthInPixels(PhoenixGameLibrary.Constants.WORLD_MAP_COLUMNS) - Viewport.Center.X * (1 / zoom));
             var y = MathHelper.Clamp(CameraFocusPointInWorld.Y, Viewport.Center.Y * (1 / zoom),
-                Constants.WORLD_MAP_HEIGHT_IN_PIXELS - Viewport.Center.Y * (1 / zoom));
+                WorldView.HexLibrary.GetWorldHeightInPixels(PhoenixGameLibrary.Constants.WORLD_MAP_ROWS) - Viewport.Center.Y * (1 / zoom));
 
             return new Vector2(x, y);
         }

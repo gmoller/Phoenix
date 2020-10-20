@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Hex;
 using Utilities;
 using Utilities.ExtensionMethods;
+using Zen.Hexagons;
 
 namespace PhoenixGameLibrary
 {
@@ -126,7 +126,7 @@ namespace PhoenixGameLibrary
             var max = Math.Max(NumberOfColumns, NumberOfRows);
             for (int i = 1; i < max; i++)
             {
-                var ring = World.HexLibrary.GetSingleRing(new HexOffsetCoordinates(location), i);
+                var ring = World.HexLibrary.GetSingleRing(new HexOffsetCoordinates(location.X, location.Y), i);
                 foreach (var coordinates in ring)
                 {
                     var cell = GetCell(coordinates.Col, coordinates.Row);

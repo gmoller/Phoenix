@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Hex;
 using PhoenixGameLibrary.GameData;
 using Utilities;
+using Zen.Hexagons;
 
 namespace PhoenixGameLibrary
 {
@@ -318,7 +318,7 @@ namespace PhoenixGameLibrary
             var settlements = World.Settlements;
             foreach (var settlement in settlements)
             {
-                var distance = World.HexLibrary.GetDistance(new HexOffsetCoordinates(thisLocationHex), new HexOffsetCoordinates(settlement.Location));
+                var distance = World.HexLibrary.GetDistance(new HexOffsetCoordinates(thisLocationHex.X, thisLocationHex.Y), new HexOffsetCoordinates(settlement.Location.X, settlement.Location.Y));
                 if (distance >= 4)
                 {
                     return true;

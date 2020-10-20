@@ -105,7 +105,7 @@ namespace PhoenixTests
 
             // Assert
             Assert.AreEqual(new Vector2(220, 192), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(2, 2), _camera.CameraFocusHexInWorld.ToPointI());
+            Assert.AreEqual(new PointI(2, 2), new PointI(_camera.CameraFocusHexInWorld.Col, _camera.CameraFocusHexInWorld.Row));
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace PhoenixTests
 
             // Assert
             Assert.AreEqual(new Vector2(3327, 1936), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(30, 20), _camera.CameraFocusHexInWorld.ToPointI());
+            Assert.AreEqual(new PointI(30, 20), new PointI(_camera.CameraFocusHexInWorld.Col, _camera.CameraFocusHexInWorld.Row));
             Assert.AreEqual(new Rectangle(2487, 1396, 1680, 1080), _camera.CameraRectangleInWorld);
         }
 
@@ -131,7 +131,7 @@ namespace PhoenixTests
 
             // Assert
             Assert.AreEqual(new Vector2(840, 540), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(8, 6), _camera.CameraFocusHexInWorld.ToPointI());
+            Assert.AreEqual(new PointI(8, 6), new PointI(_camera.CameraFocusHexInWorld.Col, _camera.CameraFocusHexInWorld.Row));
             Assert.AreEqual(new Rectangle(0, 0, 1680, 1080), _camera.CameraRectangleInWorld);
 
             Assert.AreEqual(new PointI(0, 0), _camera.CameraTopLeftHex);
@@ -149,7 +149,7 @@ namespace PhoenixTests
 
             // Assert
             Assert.AreEqual(new Vector2(840, 540), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(8, 6), _camera.CameraFocusHexInWorld.ToPointI());
+            Assert.AreEqual(new PointI(8, 6), new PointI(_camera.CameraFocusHexInWorld.Col, _camera.CameraFocusHexInWorld.Row));
             Assert.AreEqual(new Rectangle(420, 270, 840, 540), _camera.CameraRectangleInWorld);
 
             Assert.AreEqual(new PointI(3, 3), _camera.CameraTopLeftHex);
@@ -167,7 +167,7 @@ namespace PhoenixTests
 
             // Assert
             Assert.AreEqual(new Vector2(840, 540), _camera.CameraFocusPointInWorld);
-            Assert.AreEqual(new PointI(8, 6), _camera.CameraFocusHexInWorld.ToPointI());
+            Assert.AreEqual(new PointI(8, 6), new PointI(_camera.CameraFocusHexInWorld.Col, _camera.CameraFocusHexInWorld.Row));
             Assert.AreEqual(new Rectangle(-840, -540, 3360, 2160), _camera.CameraRectangleInWorld);
 
             Assert.AreEqual(new PointI(-8, -6), _camera.CameraTopLeftHex);

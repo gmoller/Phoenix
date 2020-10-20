@@ -35,7 +35,7 @@ namespace PhoenixGamePresentation.Views.StackView
             var (potentialMovement, hexToMoveTo) = CheckForPotentialUnitMovement(stack, cellGrid, mouseLocation, camera);
             if (!potentialMovement) return new List<PointI>();
 
-            var path = MovementPathDeterminer.DetermineMovementPath(stack, stack.LocationHex, hexToMoveTo, cellGrid);
+            var path = MovementPathDeterminer.DetermineMovementPath(StackView.HexLibrary, stack, stack.LocationHex, hexToMoveTo, cellGrid);
 
             return path;
 
@@ -48,7 +48,7 @@ namespace PhoenixGamePresentation.Views.StackView
             if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new PointI(0, 0));
             var costToMoveIntoResult = stack.GetCostToMoveInto(cellToMoveTo);
 
-            return (costToMoveIntoResult.CanMoveInto, hexToMoveTo.ToPointI());
+            return (costToMoveIntoResult.CanMoveInto, new PointI(hexToMoveTo.Col, hexToMoveTo.Row));
         }
 
         public override string ToString()

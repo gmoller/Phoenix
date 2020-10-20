@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using System.Linq;
-using Hex;
 using PhoenixGameLibrary.Commands;
 using PhoenixGameLibrary.GameData;
 using Utilities;
+using Zen.Hexagons;
 
 namespace PhoenixGameLibrary
 {
@@ -30,7 +30,8 @@ namespace PhoenixGameLibrary
             Stacks = new Stacks();
             _turnNumber = 0;
             NotificationList = new NotificationList();
-            HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd); // FlatTopped
+            HexLibrary = new HexLibrary(HexType.FlatTopped, OffsetCoordinatesType.Odd, 64.0f);
+            //HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd, 64.0f);
         }
 
         internal void AddSettlement(PointI location, string raceTypeName)

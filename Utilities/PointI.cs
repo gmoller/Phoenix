@@ -31,32 +31,32 @@ namespace Utilities
             return obj is PointI point && this == point;
         }
 
-        public static bool operator ==(PointI a, PointI b)
+        public static bool operator == (PointI a, PointI b)
         {
             return a.X == b.X && a.Y == b.Y;
         }
 
-        public static bool operator !=(PointI a, PointI b)
+        public static bool operator != (PointI a, PointI b)
         {
             return !(a == b);
         }
 
-        public static PointI operator +(PointI a, PointI b)
+        public static PointI operator + (PointI a, PointI b)
         {
             return new PointI(a.X + b.X, a.Y + b.Y);
         }
 
-        public static PointI operator -(PointI a, PointI b)
+        public static PointI operator - (PointI a, PointI b)
         {
             return new PointI(a.X - b.X, a.Y - b.Y);
         }
 
-        public static PointI operator *(PointI a, PointI b)
+        public static PointI operator * (PointI a, PointI b)
         {
             return new PointI(a.X * b.X, a.Y * b.Y);
         }
 
-        public static PointI operator *(PointI a, int scalar)
+        public static PointI operator * (PointI a, int scalar)
         {
             return new PointI(a.X * scalar, a.Y * scalar);
         }

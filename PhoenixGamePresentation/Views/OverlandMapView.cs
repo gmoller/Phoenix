@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Input;
 using Assets;
 using GuiControls;
 using GuiControls.PackagesClasses;
-using Hex;
 using Input;
 using MonoGameUtilities;
 using MonoGameUtilities.ExtensionMethods;
@@ -14,6 +13,7 @@ using PhoenixGameLibrary;
 using PhoenixGamePresentation.Events;
 using Utilities;
 using Utilities.ExtensionMethods;
+using Zen.Hexagons;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -120,26 +120,31 @@ namespace PhoenixGamePresentation.Views
 
         private void DrawBorders(SpriteBatch spriteBatch, Cell cell)
         {
-            if (cell.Borders.IsBitSet((byte)Direction.NorthEast)) DrawBorder(spriteBatch, cell, Direction.North, Direction.NorthEast);
-            if (cell.Borders.IsBitSet((byte)Direction.East)) DrawBorder(spriteBatch, cell, Direction.NorthEast, Direction.SouthEast);
-            if (cell.Borders.IsBitSet((byte)Direction.SouthEast)) DrawBorder(spriteBatch, cell, Direction.SouthEast, Direction.South);
-            if (cell.Borders.IsBitSet((byte)Direction.SouthWest)) DrawBorder(spriteBatch, cell, Direction.South, Direction.SouthWest);
-            if (cell.Borders.IsBitSet((byte)Direction.West)) DrawBorder(spriteBatch, cell, Direction.SouthWest, Direction.NorthWest);
-            if (cell.Borders.IsBitSet((byte)Direction.NorthWest)) DrawBorder(spriteBatch, cell, Direction.NorthWest, Direction.North);
+            var points = WorldView.HexLibrary.GetCorners();
 
-            //if (cell.Borders.IsBitSet((byte)Direction.North)) DrawBorder(spriteBatch, cell, Direction.NorthWest, Direction.NorthEast);
-            //if (cell.Borders.IsBitSet((byte)Direction.NorthEast)) DrawBorder(spriteBatch, cell, Direction.NorthEast, Direction.East);
-            //if (cell.Borders.IsBitSet((byte)Direction.SouthEast)) DrawBorder(spriteBatch, cell, Direction.East, Direction.SouthEast);
-            //if (cell.Borders.IsBitSet((byte)Direction.South)) DrawBorder(spriteBatch, cell, Direction.SouthWest, Direction.SouthEast);
-            //if (cell.Borders.IsBitSet((byte)Direction.SouthWest)) DrawBorder(spriteBatch, cell, Direction.West, Direction.SouthWest);
-            //if (cell.Borders.IsBitSet((byte)Direction.NorthWest)) DrawBorder(spriteBatch, cell, Direction.West, Direction.NorthWest);
+            if (WorldView.HexLibrary.HexType == HexType.PointyTopped)
+            {
+                if (cell.Borders.IsBitSet((byte)Direction.NorthEast)) DrawBorder(spriteBatch, cell, points[0].ToVector2(), points[1].ToVector2());
+                if (cell.Borders.IsBitSet((byte)Direction.East)) DrawBorder(spriteBatch, cell, points[1].ToVector2(), points[2].ToVector2());
+                if (cell.Borders.IsBitSet((byte)Direction.SouthEast)) DrawBorder(spriteBatch, cell, points[2].ToVector2(), points[3].ToVector2());
+                if (cell.Borders.IsBitSet((byte)Direction.SouthWest)) DrawBorder(spriteBatch, cell, points[3].ToVector2(), points[4].ToVector2());
+                if (cell.Borders.IsBitSet((byte)Direction.West)) DrawBorder(spriteBatch, cell, points[4].ToVector2(), points[5].ToVector2());
+                if (cell.Borders.IsBitSet((byte)Direction.NorthWest)) DrawBorder(spriteBatch, cell, points[5].ToVector2(), points[0].ToVector2());
+            }
+            else
+            {
+                if (cell.Borders.IsBitSet((byte)Direction.North)) DrawBorder(spriteBatch, cell, points[5].ToVector2(), points[0].ToVector2());
+                if (cell.Borders.IsBitSet((byte)Direction.NorthEast)) DrawBorder(spriteBatch, cell, points[0].ToVector2(), points[1].ToVector2());
+                if (cell.Borders.IsBitSet((byte)Direction.SouthEast)) DrawBorder(spriteBatch, cell, points[1].ToVector2(), points[2].ToVector2());
+                if (cell.Borders.IsBitSet((byte)Direction.South)) DrawBorder(spriteBatch, cell, points[2].ToVector2(), points[3].ToVector2());
+                if (cell.Borders.IsBitSet((byte)Direction.SouthWest)) DrawBorder(spriteBatch, cell, points[3].ToVector2(), points[4].ToVector2());
+                if (cell.Borders.IsBitSet((byte)Direction.NorthWest)) DrawBorder(spriteBatch, cell, points[4].ToVector2(), points[5].ToVector2());
+            }
         }
 
-        private void DrawBorder(SpriteBatch spriteBatch, Cell cell, Direction vertexDirection1, Direction vertexDirection2)
+        private void DrawBorder(SpriteBatch spriteBatch, Cell cell, Vector2 point1, Vector2 point2)
         {
             var centerPosition = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
-            var point1 = WorldView.HexLibrary.GetCorner(vertexDirection1).ToVector2();
-            var point2 = WorldView.HexLibrary.GetCorner(vertexDirection2).ToVector2();
 
             spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, cell.ControlledByFaction == 1 ? Color.Yellow : Color.Red, 5.0f, 0.5f); // DarkGreen
         }
@@ -153,9 +158,11 @@ namespace PhoenixGamePresentation.Views
             var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
             var centerPosition = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(cell.Column, cell.Row));
-            var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, 111, 192);
+            var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, WorldView.HexLibrary.GetHexWidth(), WorldView.HexLibrary.GetHexHeight()); // + 64
             var layerDepth = cell.Index / 10000.0f;
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, Constants.HEX_ORIGIN, SpriteEffects.None, layerDepth);
+            //var origin = new Vector2(sourceRectangle.Width * 0.5f, (sourceRectangle.Height * 2/3.0f + sourceRectangle.Height * 1/3.0f + sourceRectangle.Height * 1/3.0f) * 0.5f);
+            var origin = new Vector2(sourceRectangle.Width * 0.5f, sourceRectangle.Height * 0.5f);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, 0.0f, origin, SpriteEffects.None, layerDepth);
         }
 
         private void DrawHexBorder(SpriteBatch spriteBatch, Cell cell)
@@ -163,12 +170,15 @@ namespace PhoenixGamePresentation.Views
             var centerPosition = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(cell.Column, cell.Row)).ToVector2();
 
             var color = Color.PeachPuff;
-            var point0 = WorldView.HexLibrary.GetCorner(Direction.North).ToVector2();
-            var point1 = WorldView.HexLibrary.GetCorner(Direction.NorthEast).ToVector2();
-            var point2 = WorldView.HexLibrary.GetCorner(Direction.SouthEast).ToVector2();
-            var point3 = WorldView.HexLibrary.GetCorner(Direction.South).ToVector2();
-            var point4 = WorldView.HexLibrary.GetCorner(Direction.SouthWest).ToVector2();
-            var point5 = WorldView.HexLibrary.GetCorner(Direction.NorthWest).ToVector2();
+
+            var points = WorldView.HexLibrary.GetCorners();
+
+            var point0 = points[0].ToVector2();
+            var point1 = points[1].ToVector2();
+            var point2 = points[2].ToVector2();
+            var point3 = points[3].ToVector2();
+            var point4 = points[4].ToVector2();
+            var point5 = points[5].ToVector2();
 
             spriteBatch.DrawLine(centerPosition + point0, centerPosition + point1, color, 1.0f);
             spriteBatch.DrawLine(centerPosition + point1, centerPosition + point2, color, 1.0f);
