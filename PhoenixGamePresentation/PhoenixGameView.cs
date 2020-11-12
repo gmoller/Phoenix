@@ -2,11 +2,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Assets;
-using Input;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
-using Utilities;
+using Zen.Assets;
+using Zen.Input;
+using Zen.Utilities;
 
 namespace PhoenixGamePresentation
 {
@@ -33,6 +33,7 @@ namespace PhoenixGamePresentation
             pixel.SetData(new[] { new Color(Color.Black, 180) });
 
             ContentLoader.LoadContent($@"{Directory.GetCurrentDirectory()}\Content\", "Fonts", "Textures", "TextureAtlases", graphicsDevice);
+            var foo = AssetsManager.Instance.GetSpriteFont("DarkXShadowX21s Skyrim Font");
 
             AssetsManager.Instance.AddTexture("TransparentBackground", pixel);
 

@@ -2,13 +2,12 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
-using Input;
-using MonoGameUtilities.ExtensionMethods;
 using PhoenixGamePresentation.Events;
 using PhoenixGamePresentation.Views;
-using Utilities;
-using Utilities.ExtensionMethods;
 using Zen.Hexagons;
+using Zen.Input;
+using Zen.Utilities;
+using Zen.Utilities.ExtensionMethods;
 
 namespace PhoenixGamePresentation
 {
@@ -153,7 +152,7 @@ namespace PhoenixGamePresentation
         public Vector2 WorldHexToScreenPixel(HexOffsetCoordinates worldHex)
         {
             var worldPosition = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(worldHex);
-            var screenPosition = WorldPixelToScreenPixel(worldPosition.ToVector2());
+            var screenPosition = WorldPixelToScreenPixel(new Vector2(worldPosition.X, worldPosition.Y));
 
             return screenPosition;
         }
@@ -224,7 +223,10 @@ namespace PhoenixGamePresentation
 
         public Vector2 WorldHexToWorldPixel(PointI worldHex)
         {
-            return WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(worldHex.X, worldHex.Y)).ToVector2();
+            var pixel = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(worldHex.X, worldHex.Y));
+            var worldHexToWorldPixel = new Vector2(pixel.X, pixel.Y);
+
+            return worldHexToWorldPixel;
         }
 
         #endregion
@@ -301,7 +303,7 @@ namespace PhoenixGamePresentation
         public void LookAtCell(PointI hexPoint)
         {
             var newPosition = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(hexPoint.X, hexPoint.Y));
-            CameraFocusPointInWorld = newPosition.ToVector2();
+            CameraFocusPointInWorld = new Vector2(newPosition.X, newPosition.Y);
         }
 
         #endregion

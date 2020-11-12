@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using Utilities;
+using Zen.Utilities;
 
 namespace PhoenixGameLibrary.GameData
 {
@@ -16,8 +16,6 @@ namespace PhoenixGameLibrary.GameData
         public int Id { get; }
         public string Name { get; }
         public MovementCosts MovementCosts { get; }
-        public float FoodOutput => GetFoodOutput();
-        public float ProductionPercentage => GetProductionPercentage();
         public bool CanSettleOn => GetCanSettleOn();
         public ColorRgba MinimapColor { get; }
         public List<Texture> PossibleTextures { get; }
@@ -36,6 +34,9 @@ namespace PhoenixGameLibrary.GameData
 
             MinimapColor = minimapColor;
         }
+
+        public float FoodOutput => GetFoodOutput();
+        public float ProductionPercentage => GetProductionPercentage();
 
         public static TerrainType Create(int id, string name, MovementCosts movementCosts, ColorRgba minimapColor, params Texture[] possibleTextures)
         {

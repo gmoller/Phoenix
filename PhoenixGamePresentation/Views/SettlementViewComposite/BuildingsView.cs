@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Assets;
-using GuiControls;
-using Input;
-using MonoGameUtilities;
 using PhoenixGameLibrary;
-using Utilities;
-using Color = Microsoft.Xna.Framework.Color;
+using Zen.Assets;
+using Zen.GuiControls;
+using Zen.Input;
+using Zen.MonoGameUtilities;
+using Zen.Utilities;
 
 namespace PhoenixGamePresentation.Views.SettlementViewComposite
 {
@@ -23,11 +22,15 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         #endregion State
 
         internal BuildingsView(string name, SettlementView settlementView, string textureAtlas) :
-            base(Vector2.Zero, Alignment.TopLeft, new Vector2(515.0f, 450.0f), name)
+            base(name)
         {
+            Size = new PointI(515, 450);
             _settlementView = settlementView;
 
-            _slots = new DynamicSlots(new Vector2(0.0f, 0.0f), Alignment.TopLeft, new Vector2(515.0f, 450.0f), $"{textureAtlas}.slot", 10, 13, 10.0f, "slots");
+            _slots = new DynamicSlots("slots", $"{textureAtlas}.slot", 10, 13, 10.0f)
+            {
+                Size = new PointI(515, 450)
+            };
         }
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)

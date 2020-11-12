@@ -1,0 +1,69 @@
+﻿btnSubtractFarmer : Button
+{
+  TextureNormal: GUI_Textures_1.minus_n
+  TextureActive: GUI_Textures_1.minus_a
+  TextureHover: GUI_Textures_1.minus_h
+  TextureDisabled: GUI_Textures_1.minus_a
+  Size: 19;19
+  Position: %position1%
+  
+  OnClick: 'SubtractFarmerButtonClick'
+  //Packages: ['Zen.GuiControls.PackagesClasses.ControlClick, Zen.GuiControls - PhoenixGamePresentation.Views.SettlementViewComposite.CitizenViewEventHandlers.SubtractFarmerButtonClick']
+}
+
+btnAddFarmer : Button
+{
+  TextureNormal: GUI_Textures_1.plus_n
+  TextureActive: GUI_Textures_1.plus_a
+  TextureHover: GUI_Textures_1.plus_h
+  TextureDisabled: GUI_Textures_1.plus_a
+  Size: 19;19
+  Position: %position2%
+
+  OnClick: 'AddFarmerButtonClick'
+  //Packages: ['Zen.GuiControls.PackagesClasses.ControlClick, Zen.GuiControls - PhoenixGamePresentation.Views.SettlementViewComposite.CitizenViewEventHandlers.AddFarmerButtonClick']
+}
+
+btnSubtractWorker : Button
+{
+  TextureNormal: GUI_Textures_1.minus_n
+  TextureActive: GUI_Textures_1.minus_a
+  TextureHover: GUI_Textures_1.minus_h
+  TextureDisabled: GUI_Textures_1.minus_a
+  Size: 19;19
+  Position: %position3%
+
+  OnClick: 'SubtractWorkerButtonClick'
+  //Packages: ['Zen.GuiControls.PackagesClasses.ControlClick, Zen.GuiControls - PhoenixGamePresentation.Views.SettlementViewComposite.CitizenViewEventHandlers.SubtractWorkerButtonClick']
+}
+
+btnAddWorker : Button
+{
+  TextureNormal: GUI_Textures_1.plus_n
+  TextureActive: GUI_Textures_1.plus_a
+  TextureHover: GUI_Textures_1.plus_h
+  TextureDisabled: GUI_Textures_1.plus_a
+  Size: 19;19
+  Position: %position4%
+
+  OnClick: 'AddWorkerButtonClick'
+  //Packages: ['Zen.GuiControls.PackagesClasses.ControlClick, Zen.GuiControls - PhoenixGamePresentation.Views.SettlementViewComposite.CitizenViewEventHandlers.AddWorkerButtonClick']
+}
+
+imgFarmer : Image
+{
+  TextureName: %textureName1%
+  Size: 20;30
+}
+
+imgWorker : Image
+{
+  TextureName: %textureName2%
+  Size: 20;30
+}
+
+imgRebel : Image
+{
+  TextureName: %textureName3%
+  Size: 20;30
+}

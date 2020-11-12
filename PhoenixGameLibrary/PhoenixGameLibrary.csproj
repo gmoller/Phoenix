@@ -5,17 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Noise\Noise.csproj" />
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Commands\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Zen.Hexagons" Version="1.0.1" />
+    <PackageReference Include="Zen.Hexagons" Version="1.0.7" />
+    <PackageReference Include="Zen.Noise" Version="0.1.3" />
+    <PackageReference Include="Zen.Utilities" Version="0.1.10" />
   </ItemGroup>
 
 </Project>

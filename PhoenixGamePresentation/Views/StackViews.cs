@@ -5,11 +5,11 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Assets;
-using Input;
 using Microsoft.Xna.Framework;
-using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
+using Zen.Assets;
+using Zen.Input;
+using Zen.MonoGameUtilities.ExtensionMethods;
 
 namespace PhoenixGamePresentation.Views
 {

@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Assets;
-using Input;
 using PhoenixGameLibrary;
+using Zen.Assets;
+using Zen.Input;
 using Zen.Hexagons;
 
 namespace PhoenixGamePresentation.Views
@@ -48,7 +48,7 @@ namespace PhoenixGamePresentation.Views
         private void DrawSettlement(SpriteBatch spriteBatch, Cell cell)
         {
             var position = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(cell.Column, cell.Row));
-            var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, WorldView.HexLibrary.GetHexWidth(), WorldView.HexLibrary.GetHexHeight() + 64);
+            var destinationRectangle = new Rectangle((int)position.X, (int)position.Y, (int)WorldView.HexLibrary.Width, (int)WorldView.HexLibrary.Height + 64);
             var sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
             var layerDepth = cell.Index / 10000.0f + 0.00001f;
             var origin = new Vector2(sourceRectangle.Width * 0.5f, (sourceRectangle.Height * 2 / 3.0f + sourceRectangle.Height * 1 / 3.0f + sourceRectangle.Height * 1 / 3.0f) * 0.5f);

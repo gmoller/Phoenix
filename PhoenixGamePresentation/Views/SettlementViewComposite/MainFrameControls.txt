@@ -1,0 +1,271 @@
+﻿frmMain : Frame
+{
+  TextureName: %textureName1%
+  Position: %position1%
+  Size: %size1%
+  Contains: [frmHeader;frmPopulation;frmResources;frmProducing;frmFooter]
+}
+
+frmHeader : Frame
+{
+  TextureName: %textureName2%
+  Size: 560;146
+
+  Contains: [lblSettlementName1;lblSettlementName2;btnClose]
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: 0;-100
+}
+
+lblSettlementName1 : Label
+{
+  FontName: Carolingia-Regular-24
+  Size: 100;15
+  ContentAlignment: MiddleCenter
+  GetTextFunc: 'GetTextFuncForSettlementType'
+  //GetTextFunc: 'PhoenixGamePresentation.Views.SettlementViewComposite.MainFrameEventHandlers.GetTextFuncForSettlementType'
+  //GetTextFunc: 'PhoenixGamePresentation.Views.SettlementViewComposite.MainFrameEventHandlers, PhoenixGamePresentation - GetTextFuncForSettlementType'
+  TextColor: Purple
+  TextShadowColor: DarkBlue
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: 0;45
+}
+
+lblSettlementName2 : Label
+{
+  FontName: Carolingia-Regular-24
+  Size: 100;15
+  ContentAlignment: MiddleCenter
+  GetTextFunc: 'GetTextFuncForSettlementName'
+  //GetTextFunc: 'PhoenixGamePresentation.Views.SettlementViewComposite.MainFrameEventHandlers.GetTextFuncForSettlementName'
+  //GetTextFunc: 'PhoenixGamePresentation.Views.SettlementViewComposite.MainFrameEventHandlers, PhoenixGamePresentation - GetTextFuncForSettlementName'
+  TextColor: Purple
+  TextShadowColor: DarkBlue
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: 0;75
+}
+
+btnClose : Button
+{
+  TextureNormal: %textureNormal1%
+  TextureActive: %textureActive1%
+  TextureHover: %textureHover1%
+  TextureDisabled: %textureActive1%
+  Size: 43;44
+
+  OnClick: 'CloseButtonClick'
+  //Packages: ['Zen.GuiControls.PackagesClasses.ControlClick - CloseButtonClick']
+  //Packages: ['Zen.GuiControls.PackagesClasses.ControlClick, Zen.GuiControls - PhoenixGamePresentation.Views.SettlementViewComposite.MainFrameEventHandlers, PhoenixGamePresentation - CloseButtonClick']
+  //Packages: ['Zen.GuiControls.PackagesClasses.ControlClick - PhoenixGamePresentation.Views.SettlementViewComposite.MainFrameEventHandlers.CloseButtonClick']
+
+  ParentContainerAlignment: ParentTopRightAlignsWithChildTopRight
+  Offset: -8;8
+}
+
+frmPopulation : Frame
+{
+  TextureName: %textureName3%
+  Size: 515;120
+  TopPadding: 50
+  BottomPadding: 50
+  LeftPadding: 50
+  RightPadding: 50
+
+  Contains: [lblRace;lblPopulationGrowth;lblFarmers;lblWorkers;lblRebels]
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: 0;50
+}
+
+lblRace : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  GetTextFunc: 'GetTextFuncForRace'
+  //GetTextFunc: 'PhoenixGamePresentation.Views.SettlementViewComposite.MainFrameEventHandlers.GetTextFuncForRace'
+  //GetTextFunc: 'PhoenixGamePresentation.Views.SettlementViewComposite.MainFrameEventHandlers, PhoenixGamePresentation - GetTextFuncForRace'
+  TextColor: Orange
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 0;-20
+}
+
+lblPopulationGrowth : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  ContentAlignment: TopRight
+  GetTextFunc: 'GetTextFuncForPopulationGrowth'
+  //GetTextFunc: 'PhoenixGamePresentation.Views.SettlementViewComposite.MainFrameEventHandlers.GetTextFuncForPopulationGrowth'
+  //GetTextFunc: 'PhoenixGamePresentation.Views.SettlementViewComposite.MainFrameEventHandlers, PhoenixGamePresentation - GetTextFuncForPopulationGrowth'
+  TextColor: Orange
+
+  ParentContainerAlignment: ParentTopRightAlignsWithChildTopRight
+  Offset: 0;-20
+}
+
+lblFarmers : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  Text: Farmers:
+  TextColor: Orange
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;25
+}
+
+lblWorkers : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  Text: Workers:
+  TextColor: Orange
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;55
+}
+
+lblRebels : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  Text: Rebels:
+  TextColor: Orange
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;85
+}
+
+frmResources : Frame
+{
+  TextureName: %textureName3%
+  Size: 515;175
+  TopPadding: 50
+  BottomPadding: 50
+  LeftPadding: 50
+  RightPadding: 50
+
+  Contains: [lblResources;lblFood;lblProduction;lblGold;lblPower;lblResearch]
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: 0;190
+}
+
+lblResources : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  Text: Resources
+  TextColor: Orange
+  TextShadowColor: DarkBlue
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;0
+}
+
+lblFood : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  Text: Food
+  TextColor: Orange
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;25
+}
+
+lblProduction : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  Text: Production
+  TextColor: Orange
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;55
+}
+
+lblGold : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  Text: Gold
+  TextColor: Orange
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;85
+}
+
+lblPower : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  Text: Power
+  TextColor: Orange
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;115
+}
+
+lblResearch : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  Text: Research
+  TextColor: Orange
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;145
+}
+
+frmProducing : Frame
+{
+  TextureName: %textureName3%
+  Size: 515;160
+  TopPadding: 50
+  BottomPadding: 50
+  LeftPadding: 50
+  RightPadding: 50
+
+  Contains: [lblProducing;lblCurrent]
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: 0;400
+}
+
+lblProducing : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  Text: Producing
+  TextColor: Orange
+  TextShadowColor: DarkBlue
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;0
+}
+
+lblCurrent : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  GetTextFunc: 'GetTextFuncForCurrentlyProducing'
+  //GetTextFunc: 'PhoenixGamePresentation.Views.SettlementViewComposite.MainFrameEventHandlers.GetTextFuncForCurrentlyProducing'
+  //GetTextFunc: 'PhoenixGamePresentation.Views.SettlementViewComposite.MainFrameEventHandlers, PhoenixGamePresentation - GetTextFuncForCurrentlyProducing'
+  TextColor: Orange
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;25
+}
+
+frmFooter : Frame
+{
+  TextureName: %textureName4%
+  Size: 563;71
+
+  ParentContainerAlignment: ParentBottomCenterAlignsWithChildBottomCenter
+  Offset: 0;5
+}

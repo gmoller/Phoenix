@@ -1,5 +1,5 @@
-﻿using Input;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Zen.Input;
 
 namespace PhoenixGamePresentation.Events
 {

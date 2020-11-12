@@ -1,0 +1,96 @@
+﻿frmHudView : Frame
+{
+  TextureName: GUI_Textures_1.frame3_whole
+  Position: %position1%
+  Size: %size1%
+  TopPadding: 47
+  BottomPadding: 47
+  LeftPadding: 47
+  RightPadding: 47
+
+  Contains: [lblCurrentDate;frmMinimap;frmUnits;btnEndTurn]
+}
+
+lblCurrentDate : Label
+{
+  FontName: DarkXShadowX21s Skyrim Font
+  Size: 150;15
+  ContentAlignment: MiddleCenter
+  GetTextFunc: 'GetTextFuncForDate'
+  //GetTextFunc: 'PhoenixGamePresentation.Views.HudView.GetTextFuncForDate'
+  TextColor: Aquamarine
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: 0;20
+}
+
+frmMinimap : Frame
+{
+  TextureName: GUI_Textures_1.frame1_whole
+  Size: %size2%
+
+  Contains: [imgMinimap]
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: 0;50
+}
+
+imgMinimap : Image
+{
+  Size: 200;116
+
+  OnClick: 'MinimapClick'
+
+  ParentContainerAlignment: ParentMiddleCenterAlignsWithChildMiddleCenter
+}
+
+frmUnits : Frame
+{
+  TextureName: GUI_Textures_1.frame1_whole
+  Size: %size3%
+
+  Contains: [lblMoves]
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: 0;500
+}
+
+lblMoves : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 130;20
+  ContentAlignment: MiddleLeft
+  GetTextFunc: 'GetTextFuncForMoves'
+  TextColor: White
+
+  ParentContainerAlignment: ParentBottomLeftAlignsWithChildBottomLeft
+  Offset: 10;-13
+}
+
+btnEndTurn : Button
+{
+  TextureNormal: GUI_Textures_1.reg_button_n
+  TextureActive: GUI_Textures_1.reg_button_a
+  TextureHover: GUI_Textures_1.reg_button_h
+  TextureDisabled: GUI_Textures_1.reg_button_a
+  Size: 245;56
+
+  OnClick: 'EndTurn'
+  //Packages: [Zen.GuiControls.PackagesClasses.ControlClick, Zen.GuiControls - PhoenixGamePresentation.Views.HudView.EndTurn]
+
+  Contains: [lblEndTurn]
+
+  ParentContainerAlignment: ParentBottomCenterAlignsWithChildTopCenter
+}
+
+lblEndTurn : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 245;56
+  ContentAlignment: MiddleCenter
+  Text: Next Turn
+  TextColor: White
+  TextShadowColor: Blue
+
+  ParentContainerAlignment: ParentMiddleCenterAlignsWithChildMiddleCenter
+}

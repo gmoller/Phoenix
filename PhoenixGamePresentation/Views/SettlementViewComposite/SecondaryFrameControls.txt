@@ -1,0 +1,101 @@
+﻿frmSecondary: Frame
+{
+  TextureName: %textureName1%
+  Position: %position1%
+  Size: %size1%
+
+  Contains: [frmBuildings;frmUnits;frmOther;frmFooter]
+}
+
+frmBuildings : Frame
+{
+  TextureName: %textureName2%
+  Size: 515;450
+  TopPadding: 50
+  BottomPadding: 50
+  LeftPadding: 50
+  RightPadding: 50
+
+  Contains: [lblBuildings]
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: 0;50
+}
+
+lblBuildings : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  ContentAlignment: TopLeft
+  Text: Buildings
+  TextColor: Orange
+  TextShadowColor: DarkBlue
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;0
+}
+
+frmUnits : Frame
+{
+  TextureName: %textureName2%
+  Size: 515;75
+  TopPadding: 50
+  BottomPadding: 50
+  LeftPadding: 50
+  RightPadding: 50
+
+  Contains: [lblUnits]
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: 0;535
+}
+
+lblUnits : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  ContentAlignment: TopLeft
+  Text: Units
+  TextColor: Orange
+  TextShadowColor: DarkBlue
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;0
+}
+
+frmOther : Frame
+{
+  TextureName: %textureName2%
+  Size: 515;65
+  TopPadding: 50
+  BottomPadding: 50
+  LeftPadding: 50
+  RightPadding: 50
+
+  Contains: [lblOther]
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: 0;640
+}
+
+lblOther : Label
+{
+  FontName: CrimsonText-Regular-12
+  Size: 100;15
+  ContentAlignment: TopLeft
+  Text: Other
+  TextColor: Orange
+  TextShadowColor: DarkBlue
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: 20;0
+}
+
+frmFooter : Frame
+{
+  TextureName: %textureName3%
+  Size: 563;71
+
+  ParentContainerAlignment: ParentBottomCenterAlignsWithChildBottomCenter
+  Offset: 0;5
+}

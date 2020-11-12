@@ -9,7 +9,7 @@
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
 // copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions :
+// furnished to do so, subject to the following conditions : 
 //
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
@@ -157,7 +157,7 @@ public class FastNoise
     // Default: 1.0
     public void SetGradientPerturbAmp(FN_DECIMAL gradientPerturbAmp) { m_gradientPerturbAmp = gradientPerturbAmp; }
 
-    private struct Float2
+    private readonly struct Float2
     {
         public readonly FN_DECIMAL x, y;
         public Float2(FN_DECIMAL x, FN_DECIMAL y)
@@ -167,7 +167,7 @@ public class FastNoise
         }
     }
 
-    private struct Float3
+    private readonly struct Float3
     {
         public readonly FN_DECIMAL x, y, z;
         public Float3(FN_DECIMAL x, FN_DECIMAL y, FN_DECIMAL z)
@@ -867,8 +867,13 @@ public class FastNoise
                 break;
         }
 
-        FN_DECIMAL xf0 = Lerp(ValCoord2D(seed, x0, y0), ValCoord2D(seed, x1, y0), xs);
-        FN_DECIMAL xf1 = Lerp(ValCoord2D(seed, x0, y1), ValCoord2D(seed, x1, y1), xs);
+        var a = ValCoord2D(seed, x0, y0);
+        var b = ValCoord2D(seed, x1, y0);
+        FN_DECIMAL xf0 = Lerp(a, b, xs);
+
+        var c = ValCoord2D(seed, x0, y1);
+        var d = ValCoord2D(seed, x1, y1);
+        FN_DECIMAL xf1 = Lerp(c, d, xs);
 
         return Lerp(xf0, xf1, ys);
     }

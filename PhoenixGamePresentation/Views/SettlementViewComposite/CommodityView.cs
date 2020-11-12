@@ -1,9 +1,11 @@
-﻿using GuiControls;
-using Input;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using PointI = Utilities.PointI;
+using Zen.GuiControls;
+using Zen.Input;
+using Zen.MonoGameUtilities.ExtensionMethods;
+using Zen.Utilities;
 
 namespace PhoenixGamePresentation.Views.SettlementViewComposite
 {
@@ -11,26 +13,46 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
     {
         #region State
         protected readonly SettlementView SettlementView;
-
-        private Image _image1;
-        private Image _image2;
-        //protected ToolTip ToolTip;
-        //protected Rectangle Area2;
+        private Controls Controls { get; }
         #endregion State
 
         internal CommodityView(Vector2 position, Alignment positionAlignment, SettlementView settlementView, string imageTextureName1, string imageTextureName2, string name) :
-            base(position, positionAlignment, new Vector2(100.0f, 30.0f), name)
+            base(name)
         {
+            Size = new PointI(100, 30);
+            PositionAlignment = positionAlignment;
+            SetPosition(position.ToPointI());
+
             SettlementView = settlementView;
 
-            _image1 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(30.0f, 30.0f), $"Icons_1.{imageTextureName1}", "image1");
-            _image2 = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(20.0f, 20.0f), $"Icons_1.{imageTextureName2}", "image2");
+            var pairs = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("textureName1", $"Icons_1.{imageTextureName1}"),
+                new KeyValuePair<string, string>("textureName2", $"Icons_1.{imageTextureName2}")
+            };
+
+            Controls = ControlCreator.CreateFromSpecification(
+                @"
+image1 : Image
+{
+  TextureName: %textureName1%
+  Size: 30;30
+}
+
+image2 : Image
+{
+  TextureName: %textureName2%
+  Size: 20;20
+}", pairs);
+            Controls.SetOwner(this);
         }
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
-            _image1.LoadContent(content);
-            _image2.LoadContent(content);
+            foreach (var control in Controls)
+            {
+                control.LoadContent(content, true);
+            }
         }
 
         public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
@@ -44,18 +66,20 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             var numberOfItem1 = commodity / 10;
             var numberOfItem2 = commodity % 10;
 
-            for (var i = 0; i < numberOfItem1; ++i)
+            for (var i = 0; i < numberOfItem1; i++)
             {
-                _image1.SetTopLeftPosition(new PointI(x, y));
-                _image1.Draw(spriteBatch);
-                x += 30;
+                var image = (Image)Controls["image1"];
+                image.SetPosition(new PointI(x, y));
+                image.Draw(spriteBatch);
+                x += image.Width;
             }
 
-            for (var i = 0; i < numberOfItem2; ++i)
+            for (var i = 0; i < numberOfItem2; i++)
             {
-                _image2.SetTopLeftPosition(new PointI(x, y));
-                _image2.Draw(spriteBatch);
-                x += 20;
+                var image = (Image)Controls["image2"];
+                image.SetPosition(new PointI(x, y));
+                image.Draw(spriteBatch);
+                x += image.Width;
             }
 
             return x;

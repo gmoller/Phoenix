@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
-using GuiControls;
+using Zen.GuiControls;
 
 namespace PhoenixGamePresentation.ExtensionMethods
 {

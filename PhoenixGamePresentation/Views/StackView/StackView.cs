@@ -5,12 +5,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using GuiControls;
-using Input;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Handlers;
-using Utilities;
+using Zen.GuiControls;
 using Zen.Hexagons;
+using Zen.Input;
+using Zen.Utilities;
 
 namespace PhoenixGamePresentation.Views.StackView
 {

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using PhoenixGameLibrary.GameData;
-using Utilities;
+using Zen.Noise;
+using Zen.Utilities;
 
 namespace PhoenixGameLibrary
 {
@@ -24,7 +25,7 @@ namespace PhoenixGameLibrary
             {
                 for (float x = 0.0f; x < numberOfColumns; x++)
                 {
-                    float val = GetNoise(x, y, FastNoise.Interp.Linear);
+                    float val = GetNoise(x, y, InterpolationMethod.Linear);
                     noise[(int)x, (int)y] = val;
                 }
             }
@@ -32,14 +33,9 @@ namespace PhoenixGameLibrary
             return noise;
         }
 
-        private static float GetNoise(float x, float y, FastNoise.Interp interp)
+        private static float GetNoise(float x, float y, InterpolationMethod interpolationMethod)
         {
-            var fastNoise = new FastNoise();
-            fastNoise.SetNoiseType(FastNoise.NoiseType.Value);
-            fastNoise.SetInterp(interp);
-            fastNoise.SetSeed(1336);
-            fastNoise.SetFrequency(0.5f);
-            float val = fastNoise.GetNoise(x, y);
+            var val = ValueNoise.GetSingleValue((int)x, (int)y, 0.5f, 1336, InterpolationMethod.Linear);
 
             return val;
         }
@@ -50,9 +46,9 @@ namespace PhoenixGameLibrary
             var numberOfRows = noise.GetLength(1);
             var terrain = new TerrainType[numberOfColumns, numberOfRows];
 
-            for (var y = 0; y < numberOfRows; ++y)
+            for (var y = 0; y < numberOfRows; y++)
             {
-                for (var x = 0; x < numberOfColumns; ++x)
+                for (var x = 0; x < numberOfColumns; x++)
                 {
                     var val = noise[x, y];
                     var terrainType = DetermineTerrainTypeId(val);

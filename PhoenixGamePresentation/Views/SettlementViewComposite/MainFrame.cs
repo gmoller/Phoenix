@@ -1,130 +1,114 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using GuiControls;
-using GuiControls.PackagesClasses;
-using Input;
-using MonoGameUtilities.ExtensionMethods;
-using Utilities;
+using Zen.GuiControls;
+using Zen.Input;
+using Zen.MonoGameUtilities.ExtensionMethods;
+using Zen.MonoGameUtilities.ViewportAdapters;
+using Zen.Utilities;
 
 namespace PhoenixGamePresentation.Views.SettlementViewComposite
 {
     internal class MainFrame : Control
     {
         #region State
-        private readonly SettlementView _settlementView;
-
-        private Frame _frmMain;
+        private SettlementView SettlementView { get; }
+        private Controls Controls { get; }
         #endregion State
 
         public MainFrame(SettlementView settlementView, Vector2 topLeftPosition, string textureAtlas) :
-            base(topLeftPosition, Alignment.TopLeft, new Vector2(556.0f, 741.0f), "MainFrame")
+            base("MainFrame")
         {
-            _settlementView = settlementView;
+            Size = new PointI(556, 741);
+            SetPosition(topLeftPosition.ToPointI());
 
-            _frmMain = new Frame(topLeftPosition, Alignment.TopLeft, Size.ToVector2(), $"{textureAtlas}.frame_main", "frmMain");
+            SettlementView = settlementView;
 
-            _frmMain.AddControl(new Frame("frmHeader", new Vector2(560.0f, 146.0f), $"{textureAtlas}.frame_big_heading"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, -100));
-            _frmMain["frmHeader"].AddControl(new LabelSized("lblSettlementName1", new Vector2(100.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForSettlementType, "Carolingia-Regular-24", Color.Purple, Color.DarkBlue), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 45));
-            _frmMain["frmHeader"].AddControl(new LabelSized("lblSettlementName2", new Vector2(100.0f, 15.0f), Alignment.MiddleCenter, GetTextFuncForSettlementName, "Carolingia-Regular-24", Color.Purple, Color.DarkBlue), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 75));
-            _frmMain["frmHeader"].AddControl(new Button("btnClose", new Vector2(43.0f, 44.0f), $"{textureAtlas}.close_button_n", $"{textureAtlas}.close_button_a", $"{textureAtlas}.close_button_h", $"{textureAtlas}.close_button_a"), Alignment.TopRight, Alignment.TopRight, new PointI(-8, 8));
-            _frmMain["frmHeader.btnClose"].AddPackage(new ControlClick((o, args) => CloseButtonClick(o, new EventArgs())));
+            var pairs = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("textureName1", $"{textureAtlas}.frame_main"),
+                new KeyValuePair<string, string>("textureName2", $"{textureAtlas}.frame_big_heading"),
+                new KeyValuePair<string, string>("textureName3", $"{textureAtlas}.frame2_whole"),
+                new KeyValuePair<string, string>("textureName4", $"{textureAtlas}.frame_bottom"),
+                new KeyValuePair<string, string>("position1", $"{Convert.ToInt32(topLeftPosition.X)};{Convert.ToInt32(topLeftPosition.Y)}"),
+                new KeyValuePair<string, string>("size1", $"{Size.X};{Size.Y}"),
+                new KeyValuePair<string, string>("textureNormal1", $"{textureAtlas}.close_button_n"),
+                new KeyValuePair<string, string>("textureActive1", $"{textureAtlas}.close_button_a"),
+                new KeyValuePair<string, string>("textureHover1", $"{textureAtlas}.close_button_h"),
+            };
 
-            _frmMain.AddControl(new Frame("frmPopulation", new Vector2(515.0f, 120.0f), $"{textureAtlas}.frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 50));
-            _frmMain["frmPopulation"].AddControl(new LabelSized("lblRace", new Vector2(100.0f, 15.0f), Alignment.TopLeft, GetTextFuncForRace, "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(0, -20));
-            _frmMain["frmPopulation"].AddControl(new LabelSized("lblPopulationGrowth", new Vector2(100.0f, 15.0f), Alignment.TopRight, GetTextFuncForPopulationGrowth, "CrimsonText-Regular-12", Color.Orange), Alignment.TopRight, Alignment.TopRight, new PointI(0, -20));
-            _frmMain["frmPopulation"].AddControl(new LabelSized("lblFarmers", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Farmers:", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 25));
-            _frmMain["frmPopulation"].AddControl(new LabelSized("lblWorkers", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Workers:", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 55));
-            _frmMain["frmPopulation"].AddControl(new LabelSized("lblRebels", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Rebels:", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 85));
-            _frmMain["frmPopulation"].AddControl(new CitizenView("citizenView", new Vector2(90.0f, 135.0f), Alignment.TopLeft, settlementView, "Citizens"), Alignment.TopLeft, Alignment.TopLeft, new PointI(130, 20));
-
-            _frmMain.AddControl(new Frame("frmResources", new Vector2(515.0f, 175.0f), $"{textureAtlas}.frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 190));
-            _frmMain["frmResources"].AddControl(new LabelSized("lblResources", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Resources", "CrimsonText-Regular-12", Color.Orange, Color.DarkBlue), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 0));
-            _frmMain["frmResources"].AddControl(new LabelSized("lblFood", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Food", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 25));
-            _frmMain["frmResources.lblFood"].AddControl(new FoodView("foodView", new Vector2(130.0f, 0.0f), Alignment.TopLeft, settlementView, "Bread", "Corn"), Alignment.TopLeft, Alignment.TopLeft, new PointI(130, 0));
-            _frmMain["frmResources"].AddControl(new LabelSized("lblProduction", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Production", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 55));
-            _frmMain["frmResources.lblProduction"].AddControl(new ProductionView("productionView", new Vector2(130.0f, 0.0f), Alignment.TopLeft, settlementView, "Anvil", "Pickaxe"), Alignment.TopLeft, Alignment.TopLeft, new PointI(130, 0));
-            _frmMain["frmResources"].AddControl(new LabelSized("lblGold", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Gold", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 85));
-            _frmMain["frmResources"].AddControl(new LabelSized("lblPower", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Power", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 115));
-            _frmMain["frmResources"].AddControl(new LabelSized("lblResearch", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Research", "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 145));
-
-            _frmMain.AddControl(new Frame("frmProducing", new Vector2(515.0f, 160.0f), $"{textureAtlas}.frame2_whole", 50, 50, 50, 50), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 400));
-            _frmMain["frmProducing"].AddControl(new LabelSized("lblProducing", new Vector2(100.0f, 15.0f), Alignment.TopLeft, "Producing", "CrimsonText-Regular-12", Color.Orange, Color.DarkBlue), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 0));
-            _frmMain["frmProducing"].AddControl(new LabelSized("lblCurrent", new Vector2(100.0f, 15.0f), Alignment.TopLeft, GetTextFuncForCurrentlyProducing, "CrimsonText-Regular-12", Color.Orange), Alignment.TopLeft, Alignment.TopLeft, new PointI(20, 25));
-
-            _frmMain.AddControl(new Frame("frmFooter", new Vector2(563.0f, 71.0f), $"{textureAtlas}.frame_bottom"), Alignment.BottomCenter, Alignment.BottomCenter, new PointI(0, 5));
+            var spec = File.ReadAllText(@".\Views\SettlementViewComposite\MainFrameControls.txt");
+            Controls = ControlCreator.CreateFromSpecification(spec, pairs);
+            Controls.SetOwner(this);
+            Controls["frmMain.frmPopulation"].AddControl(new CitizenView("citizenView", new Vector2(90.0f, 135.0f), Alignment.TopLeft, settlementView, "Citizens"));
+            Controls["frmMain.frmResources"].AddControl(new FoodView("foodView", new Vector2(130.0f, 0.0f), Alignment.TopLeft, settlementView, "Bread", "Corn"), Alignment.TopLeft, Alignment.TopLeft, new PointI(130, 20));
+            Controls["frmMain.frmResources"].AddControl(new ProductionView("productionView", new Vector2(130.0f, 0.0f), Alignment.TopLeft, settlementView, "Anvil", "Pickaxe"), Alignment.TopLeft, Alignment.TopLeft, new PointI(130, 50));
         }
-
-        #region Funcs
-        private string GetTextFuncForRace()
-        {
-            return $"{_settlementView.Settlement.RaceType.Name}";
-        }
-
-        private string GetTextFuncForPopulationGrowth()
-        {
-            return $"Population: {_settlementView.Settlement.Population} (+{_settlementView.Settlement.GrowthRate})";
-        }
-
-        private string GetTextFuncForSettlementType()
-        {
-            return $"{_settlementView.Settlement.SettlementType} of";
-        }
-
-        private string GetTextFuncForSettlementName()
-        {
-            return $"{_settlementView.Settlement.Name}";
-        }
-
-        private string GetTextFuncForCurrentlyProducing()
-        {
-            return $"{_settlementView.Settlement.CurrentlyBuilding}";
-        }
-        #endregion
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
-            _frmMain.LoadContent(content);
-            _frmMain["frmHeader"].LoadContent(content);
-            _frmMain["frmHeader.lblSettlementName1"].LoadContent(content);
-            _frmMain["frmHeader.lblSettlementName2"].LoadContent(content);
-            _frmMain["frmHeader.btnClose"].LoadContent(content);
-            _frmMain["frmPopulation"].LoadContent(content);
-            _frmMain["frmPopulation.lblRace"].LoadContent(content);
-            _frmMain["frmPopulation.lblPopulationGrowth"].LoadContent(content);
-            _frmMain["frmPopulation.lblFarmers"].LoadContent(content);
-            _frmMain["frmPopulation.lblWorkers"].LoadContent(content);
-            _frmMain["frmPopulation.lblRebels"].LoadContent(content);
-            _frmMain["frmPopulation.citizenView"].LoadContent(content);
-            _frmMain["frmResources"].LoadContent(content);
-            _frmMain["frmResources.lblResources"].LoadContent(content);
-            _frmMain["frmResources.lblFood"].LoadContent(content);
-            _frmMain["frmResources.lblFood.foodView"].LoadContent(content);
-            _frmMain["frmResources.lblProduction"].LoadContent(content);
-            _frmMain["frmResources.lblProduction.productionView"].LoadContent(content);
-            _frmMain["frmResources.lblGold"].LoadContent(content);
-            _frmMain["frmResources.lblPower"].LoadContent(content);
-            _frmMain["frmResources.lblResearch"].LoadContent(content);
-            _frmMain["frmProducing"].LoadContent(content);
-            _frmMain["frmProducing.lblProducing"].LoadContent(content);
-            _frmMain["frmProducing.lblCurrent"].LoadContent(content);
-            _frmMain["frmFooter"].LoadContent(content);
+            Controls.LoadContent(content, true);
         }
 
         public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
         {
-            _frmMain.Update(input, deltaTime, viewport);
+            Controls.Update(input, deltaTime, viewport);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            _frmMain.Draw(spriteBatch);
+            Controls.Draw(spriteBatch);
         }
 
-        private void CloseButtonClick(object sender, EventArgs e)
+        public static string GetTextFuncForRace(object sender)
         {
-            _settlementView.CloseButtonClick(sender, e);
+            var label = (Label)sender;
+            var mainFrame = (MainFrame)label.Owner;
+            var settlementView = mainFrame.SettlementView;
+            return $"{settlementView.Settlement.RaceType.Name}";
+        }
+
+        public static string GetTextFuncForPopulationGrowth(object sender)
+        {
+            var label = (Label)sender;
+            var mainFrame = (MainFrame)label.Owner;
+            var settlementView = mainFrame.SettlementView;
+            return $"Population: {settlementView.Settlement.Population} (+{settlementView.Settlement.GrowthRate})";
+        }
+
+        public static string GetTextFuncForSettlementType(object sender)
+        {
+            var label = (Label)sender;
+            var mainFrame = (MainFrame)label.Owner;
+            var settlementView = mainFrame.SettlementView;
+            return $"{settlementView.Settlement.SettlementType} of";
+        }
+
+        public static string GetTextFuncForSettlementName(object sender)
+        {
+            var label = (Label)sender;
+            var mainFrame = (MainFrame)label.Owner;
+            var settlementView = mainFrame.SettlementView;
+            return $"{settlementView.Settlement.Name}";
+        }
+
+        public static string GetTextFuncForCurrentlyProducing(object sender)
+        {
+            var label = (Label)sender;
+            var mainFrame = (MainFrame)label.Owner;
+            var settlementView = mainFrame.SettlementView;
+            return $"{settlementView.Settlement.CurrentlyBuilding}";
+        }
+
+        public static void CloseButtonClick(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var mainFrame = (MainFrame)button.Owner;
+            var settlementView = mainFrame.SettlementView;
+            settlementView.CloseButtonClick(sender, e);
         }
     }
 }

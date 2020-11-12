@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using GuiControls;
-using Input;
-using Utilities;
+using Zen.GuiControls;
+using Zen.Input;
+using Zen.Utilities;
 
 namespace PhoenixGamePresentation.ExtensionMethods
 {

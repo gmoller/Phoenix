@@ -4,8 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation;
-using Utilities;
 using Zen.Hexagons;
+using Zen.Utilities;
 
 namespace Phoenix2
 {

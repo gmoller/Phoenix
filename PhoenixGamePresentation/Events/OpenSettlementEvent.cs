@@ -1,8 +1,8 @@
-﻿using Input;
-using Microsoft.Xna.Framework;
-using MonoGameUtilities.ExtensionMethods;
+﻿using Microsoft.Xna.Framework;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
+using Zen.Input;
+using Zen.MonoGameUtilities.ExtensionMethods;
 
 namespace PhoenixGamePresentation.Events
 {
@@ -10,7 +10,7 @@ namespace PhoenixGamePresentation.Events
     {
         internal static void HandleEvent(object sender, MouseEventArgs e)
         {
-            var worldView = (WorldView)e.WorldView;
+            var worldView = (WorldView)e.State;
             
             var settlement = IsMouseOnSettlement(worldView, e.Mouse.Location);
             if (settlement == null) return;
@@ -20,7 +20,7 @@ namespace PhoenixGamePresentation.Events
 
         internal static void HandleEvent2(object sender, MouseEventArgs e)
         {
-            var worldView = (WorldView)e.WorldView;
+            var worldView = (WorldView)e.State;
             var settlement = (Settlement)sender;
 
             OpenSettlement(settlement, worldView);

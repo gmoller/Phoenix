@@ -1,10 +1,10 @@
-using Input;
 using Microsoft.Xna.Framework;
 using NUnit.Framework;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation;
 using PhoenixGamePresentation.Views;
-using Utilities;
+using Zen.Input;
+using Zen.Utilities;
 
 namespace PhoenixTests
 {

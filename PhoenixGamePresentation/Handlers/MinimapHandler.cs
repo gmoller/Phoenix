@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
-using Utilities;
-using Utilities.ExtensionMethods;
+using Zen.MonoGameUtilities.ExtensionMethods;
+using Zen.Utilities;
+using Zen.Utilities.ExtensionMethods;
 
 namespace PhoenixGamePresentation.Handlers
 {

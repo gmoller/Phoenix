@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using GuiControls;
-using GuiControls.PackagesClasses;
-using Input;
-using MonoGameUtilities.ExtensionMethods;
-using MonoGameUtilities.ViewportAdapters;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
-using Utilities;
+using Zen.GuiControls;
+using Zen.GuiControls.PackagesClasses;
 using Zen.Hexagons;
+using Zen.Input;
+using Zen.MonoGameUtilities.ExtensionMethods;
+using Zen.MonoGameUtilities.ViewportAdapters;
+using Zen.Utilities;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -160,7 +160,8 @@ namespace PhoenixGamePresentation.Views
             var movementTypeImages = new Dictionary<string, IControl>();
             foreach (var movementType in movementTypes)
             {
-                var image = new Image(Vector2.Zero, Alignment.TopLeft, new Vector2(18.0f, 12.0f), $"MovementTypes.{movementType.Name}", "image");
+                var image = new Image("image", $"MovementTypes.{movementType.Name}");
+                image.Size = new PointI(18, 12);
                 movementTypeImages.Add(movementType.Name, image);
             }
 
@@ -185,9 +186,19 @@ namespace PhoenixGamePresentation.Views
                 i++;
 
                 var textureString = "GUI_Textures_1.simpleb_";
-                var button = new Button(position, Alignment.TopLeft, buttonSize, $"{textureString}n", $"{textureString}a", $"{textureString}h", $"{textureString}a", actionType.Name);
+                var button = new Button(actionType.Name, $"{textureString}n", $"{textureString}a", $"{textureString}h", $"{textureString}a")
+                {
+                    Size = buttonSize.ToPointI()
+                };
+                button.SetPosition(position.ToPointI());
                 button.AddPackage(new ControlClick((o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name))));
-                var label = new LabelSized($"label{i}", button.Size.ToVector2(), Alignment.MiddleCenter, actionType.ButtonName, "Maleficio-Regular-12", Color.Black);
+                var label = new Label($"label{i}", "Maleficio-Regular-12")
+                {
+                    Size = button.Size,
+                    ContentAlignment = Alignment.MiddleCenter,
+                    Text = actionType.ButtonName,
+                    TextColor = Color.Black
+                };
                 button.AddControl(label, Alignment.MiddleCenter, Alignment.MiddleCenter);
 
                 actionButtons.Add(actionType.Name, button);
@@ -210,7 +221,7 @@ namespace PhoenixGamePresentation.Views
         {
             Tooltip.Enabled = true;
             var position = Camera.WorldHexToScreenPixel(stackView.LocationHex).ToPointI() + new PointI(25, 25);
-            Tooltip.SetTopLeftPosition(position);
+            Tooltip.SetPosition(position);
             Tooltip.SetText();
         }
 
@@ -218,7 +229,7 @@ namespace PhoenixGamePresentation.Views
         {
             Tooltip.Enabled = false;
             Tooltip.StopHover();
-            Tooltip.SetTopLeftPosition(PointI.Zero);
+            Tooltip.SetPosition(PointI.Zero);
         }
 
         internal void CheckForSelectionOfStack(Point mouseLocation)

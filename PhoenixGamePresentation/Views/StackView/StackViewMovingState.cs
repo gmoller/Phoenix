@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameUtilities.ExtensionMethods;
 using PhoenixGameLibrary.Commands;
 using Zen.Hexagons;
 
@@ -78,10 +77,12 @@ namespace PhoenixGamePresentation.Views.StackView
             MovementCountdownTime -= deltaTime;
 
             // determine start cell screen position
-            var startPosition = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(StackView.LocationHex.X, StackView.LocationHex.Y)).ToVector2();
+            var pixel = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(StackView.LocationHex.X, StackView.LocationHex.Y));
+            var startPosition = new Vector2(pixel.X, pixel.Y);
             // determine end cell screen position
             var hexToMoveTo = StackView.MovementPath[0];
-            var endPosition = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(hexToMoveTo.X, hexToMoveTo.Y)).ToVector2();
+            pixel = StackView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(hexToMoveTo.X, hexToMoveTo.Y));
+            var endPosition = new Vector2(pixel.X, pixel.Y);
             // lerp between the two positions
             var newPosition = Vector2.Lerp(startPosition, endPosition, 1.0f - MovementCountdownTime / MOVEMENT_TIME_BETWEEN_CELLS_IN_MILLISECONDS);
 

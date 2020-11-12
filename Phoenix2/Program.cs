@@ -1,7 +1,7 @@
 ﻿using System;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation;
-using Utilities;
+using Zen.Utilities;
 
 namespace Phoenix2
 {
@@ -27,10 +27,8 @@ namespace Phoenix2
             CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
 
             //using (var game = new Game1())
-            using (var game = new MainGame())
-            {
-                game.Run();
-            }
+            using var game = new MainGame();
+            game.Run();
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using Input;
-using Microsoft.Xna.Framework.Graphics;
-using MonoGameUtilities.ViewportAdapters;
-using Utilities;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Zen.Input;
+using Zen.MonoGameUtilities.ViewportAdapters;
+using Zen.Utilities;
 
 namespace PhoenixGamePresentation.Views
 {

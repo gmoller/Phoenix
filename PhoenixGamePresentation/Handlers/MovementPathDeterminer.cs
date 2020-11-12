@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using PhoenixGameLibrary;
-using Utilities;
 using Zen.Hexagons;
+using Zen.Utilities;
 
 namespace PhoenixGamePresentation.Handlers
 {
@@ -43,12 +43,13 @@ namespace PhoenixGamePresentation.Handlers
         {
             var neighbors = _hexLibrary.GetAllNeighbors(new HexOffsetCoordinates(point.X, point.Y));
 
-            var allNeighbors  = new PointI[6];
-            for (int i = 0; i < 6; ++i)
-            {
-                var allNeighborsHexOffsetCoordinate = neighbors[i];
-                allNeighbors[i] = new PointI(allNeighborsHexOffsetCoordinate.Col, allNeighborsHexOffsetCoordinate.Row);
-            }
+            var allNeighbors = new PointI[6];
+            allNeighbors[0] = new PointI(neighbors.HexOffsetCoordinates0.Col, neighbors.HexOffsetCoordinates0.Row);
+            allNeighbors[1] = new PointI(neighbors.HexOffsetCoordinates1.Col, neighbors.HexOffsetCoordinates1.Row);
+            allNeighbors[2] = new PointI(neighbors.HexOffsetCoordinates2.Col, neighbors.HexOffsetCoordinates2.Row);
+            allNeighbors[3] = new PointI(neighbors.HexOffsetCoordinates3.Col, neighbors.HexOffsetCoordinates3.Row);
+            allNeighbors[4] = new PointI(neighbors.HexOffsetCoordinates4.Col, neighbors.HexOffsetCoordinates4.Row);
+            allNeighbors[5] = new PointI(neighbors.HexOffsetCoordinates5.Col, neighbors.HexOffsetCoordinates5.Row);
 
             return allNeighbors;
         }
