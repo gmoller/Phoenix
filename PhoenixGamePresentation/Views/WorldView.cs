@@ -13,6 +13,7 @@ using Zen.Input;
 using Zen.MonoGameUtilities.ExtensionMethods;
 using Zen.MonoGameUtilities.ViewportAdapters;
 using Zen.Utilities;
+using Tooltip = PhoenixGamePresentation.ControlsX.Tooltip;
 
 namespace PhoenixGamePresentation.Views
 {

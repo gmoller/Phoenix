@@ -7,6 +7,7 @@ using Zen.GuiControls;
 using Zen.Input;
 using Zen.MonoGameUtilities;
 using Zen.Utilities;
+using DynamicSlots = PhoenixGamePresentation.ControlsX.DynamicSlots;
 
 namespace PhoenixGamePresentation.Views.SettlementViewComposite
 {
@@ -27,10 +28,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             Size = new PointI(515, 450);
             _settlementView = settlementView;
 
-            _slots = new DynamicSlots("slots", $"{textureAtlas}.slot", 10, 13, 10.0f)
-            {
-                Size = new PointI(515, 450)
-            };
+            _slots = new DynamicSlots("slots", $"{textureAtlas}.slot", new PointI(515, 450), 10, 13, 10.0f);
         }
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)

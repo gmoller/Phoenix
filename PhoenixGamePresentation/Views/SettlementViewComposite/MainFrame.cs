@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Zen.GuiControls;
 using Zen.Input;
 using Zen.MonoGameUtilities.ExtensionMethods;
-using Zen.MonoGameUtilities.ViewportAdapters;
 using Zen.Utilities;
 
 namespace PhoenixGamePresentation.Views.SettlementViewComposite
