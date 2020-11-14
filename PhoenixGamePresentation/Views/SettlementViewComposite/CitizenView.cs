@@ -74,6 +74,8 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 
         private void DrawCitizens(SpriteBatch spriteBatch, Vector2 position, IControl image, int citizenCount)
         {
+            image.Visible = true;
+
             var x = (int)position.X;
             var y = (int)position.Y;
             for (var i = 0; i < citizenCount; i++)
@@ -83,6 +85,8 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 
                 x += image.Width;
             }
+
+            image.Visible = false;
         }
 
         private void EnableOrDisableButtons()

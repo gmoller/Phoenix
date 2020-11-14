@@ -36,18 +36,23 @@ namespace PhoenixGamePresentation.Handlers
             var direction = key switch
             {
                 Keys.NumPad1 => Direction.SouthWest,
-                Keys.NumPad2 => Direction.South, //None,
+                Keys.NumPad2 => Direction.South,
                 Keys.NumPad3 => Direction.SouthEast,
-                Keys.NumPad4 => Direction.West, // None
-                Keys.NumPad6 => Direction.East, // None
+                Keys.NumPad4 => Direction.West,
+                Keys.NumPad6 => Direction.East,
                 Keys.NumPad7 => Direction.NorthWest,
-                Keys.NumPad8 => Direction.North, //None,
+                Keys.NumPad8 => Direction.North,
                 Keys.NumPad9 => Direction.NorthEast,
                 _ => throw new ArgumentOutOfRangeException()
             };
 
             var neighbor = HexLibrary.GetNeighbor(new HexOffsetCoordinates(stack.LocationHex.X, stack.LocationHex.Y), direction);
             var hexToMoveTo = new PointI(neighbor.Col, neighbor.Row);
+
+            if (stack.LocationHex == hexToMoveTo)
+            {
+                return (false, new PointI(0, 0));
+            }
 
             var costToMoveIntoResult = stack.GetCostToMoveInto(hexToMoveTo);
 

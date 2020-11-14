@@ -37,13 +37,15 @@ namespace PhoenixGamePresentation.Views
             Input.Register(5, this, MouseInputActionType.RightButtonReleased, (sender, e) => { WorldView.CurrentlySelectedStackView?.ResetPotentialMovement(); });
             Input.Register(6, this, MouseInputActionType.LeftButtonReleased, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromMouseInitiation(e.Mouse.Location); });
             Input.Register(7, this, Keys.NumPad1, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(8, this, Keys.NumPad3, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(9, this, Keys.NumPad4, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(10, this, Keys.NumPad6, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(11, this, Keys.NumPad7, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(12, this, Keys.NumPad9, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(13, this, MouseInputActionType.RightButtonReleased, (sender, e) => { WorldView.CheckForSelectionOfStack(e.Mouse.Location); });
-            Input.Register(14, this, MouseInputActionType.CheckForHoverOver, (sender, e) => { WorldView.CheckIfMouseIsHoveringOverStack(e.Mouse.Location); });
+            Input.Register(8, this, Keys.NumPad2, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(9, this, Keys.NumPad3, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(10, this, Keys.NumPad4, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(11, this, Keys.NumPad6, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(12, this, Keys.NumPad7, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(13, this, Keys.NumPad8, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(14, this, Keys.NumPad9, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
+            Input.Register(15, this, MouseInputActionType.RightButtonReleased, (sender, e) => { WorldView.CheckForSelectionOfStack(e.Mouse.Location); });
+            Input.Register(16, this, MouseInputActionType.CheckForHoverOver, (sender, e) => { WorldView.CheckIfMouseIsHoveringOverStack(e.Mouse.Location); });
             Input.EndRegistration();
 
             Input.Subscribe(GameStatus.OverlandMap.ToString(), "OverlandMapView");

@@ -1,4 +1,8 @@
-﻿btnSubtractFarmer : Button
+﻿btnSubtract : <Button>
+{
+}
+
+btnSubtractFarmer : Button
 {
   TextureNormal: GUI_Textures_1.minus_n
   TextureActive: GUI_Textures_1.minus_a

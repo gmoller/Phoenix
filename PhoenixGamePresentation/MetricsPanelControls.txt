@@ -1,181 +1,93 @@
-﻿lblFps1 : Label
+﻿lblTemplate1 : <Label>
 {
   FontName: Arial-12
+  Size: 160;20
+  ContentAlignment: MiddleLeft
+  TextColor: LawnGreen
+  TextShadowColor: DarkRed
+  BorderColor: White
+  BackgroundColor: DarkSlateGray
+}
+
+lblTemplate2 : <lblTemplate1>
+{
+  Size: 80;20
+  Text: N/A
+}
+
+lblFps1 : lblTemplate1
+{
   Position: 0;0
-  Size: 160;20
-  ContentAlignment: MiddleLeft
   Text: FPS (Update/Draw):
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblFps2 : Label
+lblFps2 : lblTemplate2
 {
-  FontName: Arial-12
   Position: 160;0
-  Size: 80;20
-  ContentAlignment: MiddleLeft
-  Text: N/A
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblGcCount1 : Label
+lblGcCount1 : lblTemplate1
 {
-  FontName: Arial-12
   Position: 280;0
-  Size: 160;20
-  ContentAlignment: MiddleLeft
   Text: GC COUNT:
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblGcCount2 : Label
+lblGcCount2 : lblTemplate2
 {
-  FontName: Arial-12
   Position: 440;0
-  Size: 80;20
-  ContentAlignment: MiddleLeft
-  Text: N/A
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblMemory1 : Label
+lblMemory1 : lblTemplate1
 {
-  FontName: Arial-12
   Position: 560;0
-  Size: 160;20
-  ContentAlignment: MiddleLeft
   Text: MEMORY:
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblMemory2 : Label
+lblMemory2 : lblTemplate2
 {
-  FontName: Arial-12
   Position: 720;0
-  Size: 80;20
-  ContentAlignment: MiddleLeft
-  Text: N/A
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblScreenPosition1 : Label
+lblScreenPosition1 : lblTemplate1
 {
-  FontName: Arial-12
   Position: 840;0
-  Size: 160;20
-  ContentAlignment: MiddleLeft
   Text: SCREEN POS:
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblScreenPosition2 : Label
+lblScreenPosition2 : lblTemplate2
 {
-  FontName: Arial-12
   Position: 1000;0
-  Size: 80;20
-  ContentAlignment: MiddleLeft
-  Text: N/A
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblWorldPosition1 : Label
+lblWorldPosition1 : lblTemplate1
 {
-  FontName: Arial-12
   Position: 1120;0
-  Size: 160;20
-  ContentAlignment: MiddleLeft
   Text: WORLD POS:
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblWorldPosition2 : Label
+lblWorldPosition2 : lblTemplate2
 {
-  FontName: Arial-12
   Position: 1280;0
-  Size: 80;20
-  ContentAlignment: MiddleLeft
-  Text: N/A
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblWorldHex1 : Label
+lblWorldHex1 : lblTemplate1
 {
-  FontName: Arial-12
   Position: 1400;0
-  Size: 160;20
-  ContentAlignment: MiddleLeft
   Text: WORLD HEX:
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblWorldHex2 : Label
+lblWorldHex2 : lblTemplate2
 {
-  FontName: Arial-12
   Position: 1560;0
-  Size: 80;20
-  ContentAlignment: MiddleLeft
-  Text: N/A
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblZoom1 : Label
+lblZoom1 : lblTemplate1
 {
-  FontName: Arial-12
   Position: 1680;0
-  Size: 160;20
-  ContentAlignment: MiddleLeft
   Text: ZOOM:
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
 
-lblZoom2 : Label
+lblZoom2 : lblTemplate2
 {
-  FontName: Arial-12
   Position: 1840;0
-  Size: 80;20
-  ContentAlignment: MiddleLeft
-  Text: N/A
-  TextColor: LawnGreen
-  TextShadowColor: DarkRed
-  BorderColor: White
-  BackgroundColor: DarkSlateGray
 }
