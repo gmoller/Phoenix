@@ -39,7 +39,6 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
                 new KeyValuePair<string, string>("textureName3", $"{textureAtlas}.Citizen_{settlementView.Settlement.RaceType.Name}_Rebel")
             };
 
-            //var spec = File.ReadAllText(path);
             var spec = ResourceReader.ReadResource("PhoenixGamePresentation.Views.SettlementViewComposite.CitizenViewControls.txt", Assembly.GetExecutingAssembly());
             Controls = ControlCreator.CreateFromSpecification(spec, kvps);
             Controls.SetOwner(this);

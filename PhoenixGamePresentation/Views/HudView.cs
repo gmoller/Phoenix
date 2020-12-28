@@ -41,28 +41,13 @@ namespace PhoenixGamePresentation.Views
                 new KeyValuePair<string, string>("position1", "0;0"),
                 new KeyValuePair<string, string>("size1", $"{width};{height}"),
                 new KeyValuePair<string, string>("size2", $"{width - 20};{Convert.ToInt32(height * 0.15f)}"), // 15% of parent
-                new KeyValuePair<string, string>("size3", $"{width - 20};{Convert.ToInt32(height * 0.30f)}")  // 30% of parent
+                new KeyValuePair<string, string>("size3", $"{width - 20};{Convert.ToInt32(height * 0.20f)}"),  // 20% of parent
+                new KeyValuePair<string, string>("size4", $"{width - 20};{Convert.ToInt32(height * 0.30f)}")  // 30% of parent
             };
 
             var spec = ResourceReader.ReadResource("PhoenixGamePresentation.Views.HudViewControls.txt", Assembly.GetExecutingAssembly());
             Controls = ControlCreator.CreateFromSpecification(spec, pairs);
             Controls.SetOwner(this);
-
-            #region ResourceFrame
-
-            //HudViewFrame.AddControl(new Frame("resourceFrame", new Vector2(Area.Width - 20.0f, Area.Height * 0.20f /* 20% of parent */), "GUI_Textures_1.frame1_whole"), Alignment.TopCenter, Alignment.TopCenter, new PointI(0, 250));
-            //HudViewFrame["resourceFrame"].AddControl(new Image("imgGold", new Vector2(50.0f, 50.0f), "Icons_1.Coin_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 10));
-            //HudViewFrame["resourceFrame"].AddControl(new Image("imgMana", new Vector2(50.0f, 50.0f), "Icons_1.Potion_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 70));
-            //HudViewFrame["resourceFrame"].AddControl(new Image("imgFood", new Vector2(50.0f, 50.0f), "Icons_1.Bread_R"), Alignment.TopLeft, Alignment.TopLeft, new PointI(10, 130));
-
-            //string GetTextFuncForGold() => $"{WorldView.PlayerFaction.GoldInTreasury} GP (+{WorldView.PlayerFaction.GoldPerTurn})";
-            //HudViewFrame["resourceFrame.imgGold"].AddControl(new Label("lblGold", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForGold, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
-            //string GetTextFuncForMana() => "5 MP (+1)";
-            //HudViewFrame["resourceFrame.imgMana"].AddControl(new Label("lblMana", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForMana, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
-            //string GetTextFuncForFood() => $"{WorldView.PlayerFaction.FoodPerTurn} Food";
-            //HudViewFrame["resourceFrame.imgFood"].AddControl(new Label("lblFood", new Vector2(130.0f, 15.0f), Alignment.TopLeft, GetTextFuncForFood, "CrimsonText-Regular-12", Color.Yellow), Alignment.MiddleRight, Alignment.MiddleLeft, new PointI(20, 0));
-
-            #endregion
 
             WorldView = worldView;
             StackViews = stackViews;
@@ -87,6 +72,33 @@ namespace PhoenixGamePresentation.Views
             var currentDate = owner.WorldView.CurrentDate;
 
             return currentDate;
+        }
+
+        public static string GetTextFuncForGold(object sender)
+        {
+            var lbl = (Label)sender;
+            var owner = (HudView)lbl.Owner;
+            var gold = $"{owner.WorldView.PlayerFaction.GoldInTreasury} GP (+{owner.WorldView.PlayerFaction.GoldPerTurn})";
+
+            return gold;
+        }
+
+        public static string GetTextFuncForMana(object sender)
+        {
+            var lbl = (Label)sender;
+            var owner = (HudView)lbl.Owner;
+            var mana = $"{owner.WorldView.PlayerFaction.ManaInTreasury} MP (+{owner.WorldView.PlayerFaction.ManaPerTurn})";
+
+            return mana;
+        }
+
+        public static string GetTextFuncForFood(object sender)
+        {
+            var lbl = (Label)sender;
+            var owner = (HudView)lbl.Owner;
+            var food = $"{owner.WorldView.PlayerFaction.FoodPerTurn} Food";
+
+            return food;
         }
 
         public static string GetTextFuncForMoves(object sender)

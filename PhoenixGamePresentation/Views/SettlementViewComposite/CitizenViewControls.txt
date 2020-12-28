@@ -52,18 +52,18 @@ btnAddWorker : Button
 
 imgFarmer : Image
 {
-  TextureName: '%textureName1%'
+  TextureNormal: '%textureName1%'
   Size: [20;30]
 }
 
 imgWorker : Image
 {
-  TextureName: '%textureName2%'
+  TextureNormal: '%textureName2%'
   Size: [20;30]
 }
 
 imgRebel : Image
 {
-  TextureName: '%textureName3%'
+  TextureNormal: '%textureName3%'
   Size: [20;30]
 }

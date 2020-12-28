@@ -33,4 +33,12 @@
     <ProjectReference Include="..\PhoenixGameLibrary\PhoenixGameLibrary.csproj" />
     <ProjectReference Include="..\PhoenixGamePresentation\PhoenixGamePresentation.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Zen.Hexagons">
+      <HintPath>..\..\ZenHexagons\Hexagons\bin\Debug\netcoreapp3.1\Zen.Hexagons.dll</HintPath>
+    </Reference>
+    <Reference Include="Zen.Utilities">
+      <HintPath>..\..\ZenUtilities\Utilities\bin\Debug\netcoreapp3.1\Zen.Utilities.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

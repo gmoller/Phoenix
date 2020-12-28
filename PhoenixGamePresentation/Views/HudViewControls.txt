@@ -8,7 +8,7 @@
   BorderSizeLeft: 47
   BorderSizeRight: 47
 
-  Contains: [lblCurrentDate;frmMinimap;frmUnits;btnEndTurn]
+  Contains: [lblCurrentDate;frmMinimap;frmResources;frmUnits;btnEndTurn]
 }
 
 lblCurrentDate : Label
@@ -43,10 +43,84 @@ imgMinimap : Image
   ParentContainerAlignment: ParentMiddleCenterAlignsWithChildMiddleCenter
 }
 
-frmUnits : Frame
+frmResources : Frame
 {
   TextureNormal: 'GUI_Textures_1.frame1_whole'
   Size: [%size3%]
+
+  Contains: [imgGold;lblGold;imgMana;lblMana;imgFood;lblFood]
+
+  ParentContainerAlignment: ParentTopCenterAlignsWithChildTopCenter
+  Offset: [0;250]
+}
+
+imgGold : Image
+{
+  TextureNormal: 'Icons_1.Coin_R'
+  Size: [50;50]
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: [10;15]
+}
+
+lblGold : Label
+{
+  FontName: 'CrimsonText-Regular-12'
+  Size: [130;15]
+  ContentAlignment: TopLeft
+  GetTextFunc: 'GetTextFuncForGold'
+  Color: Yellow
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: [80;30]
+}
+
+imgMana : Image
+{
+  TextureNormal: 'Icons_1.Potion_R'
+  Size: [50;50]
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: [10;75]
+}
+
+lblMana : Label
+{
+  FontName: 'CrimsonText-Regular-12'
+  Size: [130;15]
+  ContentAlignment: TopLeft
+  GetTextFunc: 'GetTextFuncForMana'
+  Color: Yellow
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: [80;90]
+}
+
+imgFood : Image
+{
+  TextureNormal: 'Icons_1.Bread_R'
+  Size: [50;50]
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: [10;135]
+}
+
+lblFood : Label
+{
+  FontName: 'CrimsonText-Regular-12'
+  Size: [130;15]
+  ContentAlignment: TopLeft
+  GetTextFunc: 'GetTextFuncForFood'
+  Color: Yellow
+
+  ParentContainerAlignment: ParentTopLeftAlignsWithChildTopLeft
+  Offset: [80;150]
+}
+
+frmUnits : Frame
+{
+  TextureNormal: 'GUI_Textures_1.frame1_whole'
+  Size: [%size4%]
   BorderSizeTop: 50
   BorderSizeBottom: 50
   BorderSizeLeft: 50

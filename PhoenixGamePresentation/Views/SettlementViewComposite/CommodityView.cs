@@ -36,13 +36,13 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
                 @"
 image1 : Image
 {
-  TextureName: '%textureName1%'
+  TextureNormal: '%textureName1%'
   Size: [30;30]
 }
 
 image2 : Image
 {
-  TextureName: '%textureName2%'
+  TextureNormal: '%textureName2%'
   Size: [20;20]
 }", pairs);
             Controls.SetOwner(this);
