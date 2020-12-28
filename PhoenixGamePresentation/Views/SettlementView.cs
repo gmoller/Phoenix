@@ -56,12 +56,12 @@ namespace PhoenixGamePresentation.Views
             SecondaryFrame.LoadContent(content);
         }
 
-        internal void Update(float deltaTime, Viewport? viewport)
+        internal void Update(GameTime gameTime, Viewport? viewport)
         {
             if (WorldView.GameStatus != GameStatus.CityView) return;
 
-            MainFrame.Update(Input, deltaTime, viewport);
-            SecondaryFrame.Update(Input, deltaTime, viewport);
+            MainFrame.Update(Input, gameTime, viewport);
+            SecondaryFrame.Update(Input, gameTime, viewport);
         }
 
         internal void Draw(SpriteBatch spriteBatch)

@@ -1,32 +1,32 @@
 ﻿using System.Diagnostics;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Zen.GuiControls;
-using Zen.MonoGameUtilities.ExtensionMethods;
 
 namespace PhoenixGamePresentation.ControlsX
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class Slot : ControlWithSingleTexture
+    public class Slot : Control
     {
+        public string TextureNormal
+        {
+            get => Textures.ContainsKey("TextureNormal") ? Textures["TextureNormal"].TextureString : string.Empty;
+            set => AddTexture("TextureNormal", new Texture("TextureNormal", value, ControlHelper.TextureNormalIsValid, control => Bounds));
+        }
+
         /// <summary>
         /// A satisfying little slot.
         /// </summary>
         /// <param name="name">Name of control.</param>
-        /// <param name="textureName">Texture to use for control.</param>
-        public Slot(
-            string name,
-            string textureName) :
-            base(name, textureName)
+        public Slot(string name) : base(name)
         {
         }
 
-        protected override void InDraw(SpriteBatch spriteBatch)
+        private Slot(Slot other) : base(other)
         {
-            if (Texture.HasValue())
-            {
-                spriteBatch.Draw(Texture, ActualDestinationRectangle, SourceRectangle, Color, 0.0f, Vector2.Zero, SpriteEffects.None, LayerDepth);
-            }
+        }
+
+        public override IControl Clone()
+        {
+            return new Slot(this);
         }
     }
 }

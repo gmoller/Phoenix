@@ -98,10 +98,11 @@ namespace PhoenixGamePresentation
             WorldView.BeginTurn();
         }
 
-        public void Update(float deltaTime)
+        public void Update(GameTime gameTime)
         {
+            var deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             Input.Update(WorldView, deltaTime);
-            WorldView.Update(deltaTime);
+            WorldView.Update(gameTime);
             CursorView.Update(deltaTime);
         }
 

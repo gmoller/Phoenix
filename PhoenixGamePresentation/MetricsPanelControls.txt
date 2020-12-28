@@ -1,9 +1,9 @@
 ﻿lblTemplate1 : <Label>
 {
-  FontName: Arial-12
-  Size: 160;20
+  FontName: 'Arial-12'
+  Size: [160;20]
   ContentAlignment: MiddleLeft
-  TextColor: LawnGreen
+  Color: LawnGreen
   TextShadowColor: DarkRed
   BorderColor: White
   BackgroundColor: DarkSlateGray
@@ -11,83 +11,83 @@
 
 lblTemplate2 : <lblTemplate1>
 {
-  Size: 80;20
-  Text: N/A
+  Size: [80;20]
+  Text: 'N/A'
 }
 
 lblFps1 : lblTemplate1
 {
-  Position: 0;0
-  Text: FPS (Update/Draw):
+  Position: [0;0]
+  Text: 'FPS (Update/Draw):'
 }
 
 lblFps2 : lblTemplate2
 {
-  Position: 160;0
+  Position: [160;0]
 }
 
 lblGcCount1 : lblTemplate1
 {
-  Position: 280;0
-  Text: GC COUNT:
+  Position: [280;0]
+  Text: 'GC COUNT:'
 }
 
 lblGcCount2 : lblTemplate2
 {
-  Position: 440;0
+  Position: [440;0]
 }
 
 lblMemory1 : lblTemplate1
 {
-  Position: 560;0
-  Text: MEMORY:
+  Position: [560;0]
+  Text: 'MEMORY:'
 }
 
 lblMemory2 : lblTemplate2
 {
-  Position: 720;0
+  Position: [720;0]
 }
 
 lblScreenPosition1 : lblTemplate1
 {
-  Position: 840;0
-  Text: SCREEN POS:
+  Position: [840;0]
+  Text: 'SCREEN POS:'
 }
 
 lblScreenPosition2 : lblTemplate2
 {
-  Position: 1000;0
+  Position: [1000;0]
 }
 
 lblWorldPosition1 : lblTemplate1
 {
-  Position: 1120;0
-  Text: WORLD POS:
+  Position: [1120;0]
+  Text: 'WORLD POS:'
 }
 
 lblWorldPosition2 : lblTemplate2
 {
-  Position: 1280;0
+  Position: [1280;0]
 }
 
 lblWorldHex1 : lblTemplate1
 {
-  Position: 1400;0
-  Text: WORLD HEX:
+  Position: [1400;0]
+  Text: 'WORLD HEX:'
 }
 
 lblWorldHex2 : lblTemplate2
 {
-  Position: 1560;0
+  Position: [1560;0]
 }
 
 lblZoom1 : lblTemplate1
 {
-  Position: 1680;0
-  Text: ZOOM:
+  Position: [1680;0]
+  Text: 'ZOOM:'
 }
 
 lblZoom2 : lblTemplate2
 {
-  Position: 1840;0
+  Position: [1840;0]
 }

@@ -11,11 +11,16 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         {
         }
 
+        public override IControl Clone()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
-            var x = Draw(spriteBatch, Area.X, Area.Y, SettlementView.Settlement.FoodSubsistence);
+            var x = Draw(spriteBatch, Bounds.X, Bounds.Y, SettlementView.Settlement.FoodSubsistence);
             x += 20;
-            Draw(spriteBatch, x, Area.Y, SettlementView.Settlement.FoodSurplus);
+            Draw(spriteBatch, x, Bounds.Y, SettlementView.Settlement.FoodSurplus);
         }
     }
 }

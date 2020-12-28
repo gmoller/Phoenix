@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PhoenixGamePresentation.Events;
 using Zen.GuiControls;
+using Zen.GuiControls.TheControls;
 using Zen.Input;
 using Zen.MonoGameUtilities.ExtensionMethods;
 using Zen.Utilities;
@@ -22,8 +23,9 @@ namespace PhoenixGamePresentation.Views
         {
             WorldView = worldView;
 
-            CursorImage = new Image("Cursor", "Cursor")
+            CursorImage = new Image("Cursor")
             {
+                TextureNormal = "Cursor",
                 PositionAlignment = Alignment.TopLeft,
                 Size = new PointI(28, 32)
             };
@@ -65,7 +67,7 @@ namespace PhoenixGamePresentation.Views
 
         internal void SetPosition(PointI pointI)
         {
-            CursorImage.SetPosition(pointI);
+            CursorImage.Position = pointI;
         }
 
         public void Dispose()

@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using PhoenixGameLibrary;
 using Zen.GuiControls;
 using Zen.GuiControls.PackagesClasses;
+using Zen.GuiControls.TheControls;
 using Zen.Input;
 using Zen.MonoGameUtilities.ExtensionMethods;
 using Zen.Utilities;
@@ -25,7 +26,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             base("SecondaryFrame")
         {
             Size = new PointI(556, 741);
-            SetPosition(topLeftPosition.ToPointI());
+            Position = topLeftPosition.ToPointI();
 
             SettlementView = settlementView;
 
@@ -41,12 +42,29 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             var spec = ResourceReader.ReadResource("PhoenixGamePresentation.Views.SettlementViewComposite.SecondaryFrameControls.txt", Assembly.GetExecutingAssembly());
             Controls = ControlCreator.CreateFromSpecification(spec, pairs);
 
-            Controls["frmSecondary.frmBuildings"].AddControl(new BuildingsView("buildingsView", settlementView, textureAtlas), Alignment.TopCenter);
-            var slots20 = new DynamicSlots("slots20", $"{textureAtlas}.slot", new PointI(515, 65), 10, 2, 10.0f);
-            Controls["frmSecondary.frmUnits"].AddControl(slots20, Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
-            CreateUnitLabels(Controls["frmSecondary.frmUnits.slots20"]);
-            var slots2 = new DynamicSlots("slots2", $"{textureAtlas}.slot", new PointI(515, 65), 2, 1, 10.0f);
-            Controls["frmSecondary.frmOther"].AddControl(slots2, Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
+            var ctrl = new BuildingsView("buildingsView", settlementView, textureAtlas);
+            var frmBuildings = Controls["frmSecondary.frmBuildings"];
+            frmBuildings.AddControl(ctrl, Alignment.TopCenter);
+            var slots20 = new DynamicSlots("slots20", $"{textureAtlas}.slot", 10, 2, 10.0f)
+            {
+                Size = new PointI(515, 65)
+            };
+
+            var frmUnits = Controls["frmSecondary.frmUnits"];
+            frmUnits.AddControl(slots20, Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
+            var slots20_ = Controls["frmSecondary.frmUnits.slots20"];
+            CreateUnitLabels(slots20_);
+            var slots2 = new DynamicSlots("slots2", $"{textureAtlas}.slot", 2, 1, 10.0f)
+            {
+                Size = new PointI(515, 65)
+            };
+            var frmOther = Controls["frmSecondary.frmOther"];
+            frmOther.AddControl(slots2, Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
+        }
+
+        public override IControl Clone()
+        {
+            throw new NotImplementedException();
         }
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
@@ -54,9 +72,9 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             Controls.LoadContent(content, true);
         }
 
-        public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
+        public override void Update(InputHandler input, GameTime gameTime, Viewport? viewport)
         {
-            Controls.Update(input, deltaTime, viewport);
+            Controls.Update(input, gameTime, viewport);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -73,16 +91,19 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             {
                 if (SettlementView.Settlement.UnitCanBeBuilt(unit.Name))
                 {
-                    var lbl = new Label(unit.Name, "CrimsonText-Regular-6")
+                    var lbl = new Label(unit.Name)
                     {
+                        FontName = "CrimsonText-Regular-6",
                         Size = new PointI(42, 20),
                         ContentAlignment = Alignment.MiddleCenter,
                         Text = unit.ShortName,
-                        TextColor = Color.Red,
+                        Color = Color.Red,
                         BackgroundColor = Color.PowderBlue
                     };
-                    slots[i].AddControl(lbl, Alignment.TopLeft, Alignment.TopLeft);
-                    slots[i][unit.Name].AddPackage(new ControlClick((o, args) => UnitClick(o, new EventArgs())));
+                    var slot = slots[i];
+                    slot.AddControl(lbl, Alignment.TopLeft, Alignment.TopLeft);
+                    var unitLabel = slot[unit.Name];
+                    unitLabel.AddPackage(new ControlClick((o, args) => UnitClick(o, new EventArgs())));
 
                     i++;
                 }

@@ -1,49 +1,48 @@
 ﻿using System.Diagnostics;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Zen.GuiControls;
-using Zen.MonoGameUtilities.ExtensionMethods;
 using Zen.Utilities;
 
 namespace PhoenixGamePresentation.ControlsX
 {
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public class DynamicSlots : ControlWithSingleTexture
+    public class DynamicSlots : Control
     {
         #region State
-        private int NumberOfSlotsX { get; }
-        private int NumberOfSlotsY { get; }
-        private float SlotPadding { get; }
+        public int NumberOfSlotsX { get; set; }
+        public int NumberOfSlotsY { get; set; }
+        public float SlotPadding { get; set; }
         #endregion
 
         /// <summary>
-        /// A nice little dynamicslot.
+        /// 
         /// </summary>
-        /// <param name="name">Name of control.</param>
-        /// <param name="textureName">Texture to use for control.</param>
-        /// <param name="size"></param>
-        /// <param name="numberOfSlotsX">Number of columns.</param>
-        /// <param name="numberOfSlotsY">Number of rows.</param>
-        /// <param name="slotPadding">Number of pixels between slots.</param>
-        public DynamicSlots(
-            string name,
-            string textureName,
-            PointI size,
-            int numberOfSlotsX,
-            int numberOfSlotsY,
-            float slotPadding) :
-            base(name, textureName)
+        /// <param name="name"></param>
+        /// <param name="textureName"></param>
+        /// <param name="numberOfSlotsX"></param>
+        /// <param name="numberOfSlotsY"></param>
+        /// <param name="slotPadding"></param>
+        public DynamicSlots(string name, string textureName, int numberOfSlotsX, int numberOfSlotsY, float slotPadding) : base(name)
         {
-            Size = size;
             NumberOfSlotsX = numberOfSlotsX;
             NumberOfSlotsY = numberOfSlotsY;
             SlotPadding = slotPadding;
 
-            var startX = TopLeft.X + SlotPadding;
-            var startY = TopLeft.Y + SlotPadding;
-            var slotWidth = (Size.X - SlotPadding * 2.0f) / NumberOfSlotsX;
-            var slotHeight = (Size.Y - SlotPadding * 2.0f) / NumberOfSlotsY;
-            CreateSlots(new Vector2(startX, startY), new Vector2(slotWidth, slotHeight), NumberOfSlotsX, NumberOfSlotsY);
+            CreateSlots(textureName, slotPadding, numberOfSlotsX, numberOfSlotsY);
+        }
+
+        private DynamicSlots(DynamicSlots other) : base(other)
+        {
+            NumberOfSlotsX = other.NumberOfSlotsX;
+            NumberOfSlotsY = other.NumberOfSlotsY;
+            SlotPadding = other.SlotPadding;
+
+            CreateSlots(other["TextureNormal"].Name, SlotPadding, NumberOfSlotsX, NumberOfSlotsY);
+        }
+
+        public override IControl Clone()
+        {
+            return new DynamicSlots(this);
         }
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
@@ -53,22 +52,31 @@ namespace PhoenixGamePresentation.ControlsX
             ChildControls.LoadContent(content, loadChildrenContent);
         }
 
-        private void CreateSlots(Vector2 startPosition, Vector2 size, int numberOfSlotsX, int numberOfSlotsY)
+        private void CreateSlots(string textureName, float slotPadding, int numberOfSlotsX, int numberOfSlotsY)
         {
-            var x = startPosition.X;
-            var y = startPosition.Y;
+            var startPositionX = TopLeft.X + slotPadding;
+            var startPositionY = TopLeft.Y + slotPadding;
+            var slotWidth = (Size.X - slotPadding * 2.0f) / numberOfSlotsX;
+            var slotHeight = (Size.Y - slotPadding * 2.0f) / numberOfSlotsY;
 
-            for (var j = 0; j < numberOfSlotsY; ++j)
+            var x = startPositionX;
+            var y = startPositionY;
+
+            for (var j = 0; j < numberOfSlotsY; j++)
             {
-                for (var i = 0; i < numberOfSlotsX; ++i)
+                for (var i = 0; i < numberOfSlotsX; i++)
                 {
-                    var slot = new Slot($"slot[{i}.{j}]", $"{TextureAtlas}.{TextureName}") { Size = size.ToPointI() };
+                    var slot = new Slot($"slot[{i}.{j}]")
+                    {
+                        TextureNormal = textureName,
+                        Size = new PointI((int) slotWidth, (int) slotHeight)
+                    };
                     AddControl(slot, Alignment.TopLeft, Alignment.TopLeft, new PointI((int)x, (int)y));
-                    x += size.X;
+                    x += slotWidth;
                 }
 
-                x = startPosition.X;
-                y += size.Y;
+                x = startPositionX;
+                y += slotHeight;
             }
         }
     }

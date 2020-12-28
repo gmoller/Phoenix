@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Zen.GuiControls;
+using Zen.GuiControls.TheControls;
 using Zen.Input;
 using Zen.MonoGameUtilities.ExtensionMethods;
 using Zen.Utilities;
@@ -22,7 +23,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             base("MainFrame")
         {
             Size = new PointI(556, 741);
-            SetPosition(topLeftPosition.ToPointI());
+            Position = topLeftPosition.ToPointI();
 
             SettlementView = settlementView;
 
@@ -47,14 +48,19 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             Controls["frmMain.frmResources"].AddControl(new ProductionView("productionView", new Vector2(130.0f, 0.0f), Alignment.TopLeft, settlementView, "Anvil", "Pickaxe"), Alignment.TopLeft, Alignment.TopLeft, new PointI(130, 50));
         }
 
+        public override IControl Clone()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
         {
             Controls.LoadContent(content, true);
         }
 
-        public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
+        public override void Update(InputHandler input, GameTime gameTime, Viewport? viewport)
         {
-            Controls.Update(input, deltaTime, viewport);
+            Controls.Update(input, gameTime, viewport);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

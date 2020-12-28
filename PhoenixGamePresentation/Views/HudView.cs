@@ -5,10 +5,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PhoenixGameLibrary;
+using PhoenixGameLibrary.GameData;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
 using Zen.Assets;
 using Zen.GuiControls;
+using Zen.GuiControls.TheControls;
+using Zen.Hexagons;
 using Zen.Input;
 using Zen.MonoGameUtilities;
 using Zen.Utilities;
@@ -18,16 +21,8 @@ namespace PhoenixGamePresentation.Views
     internal class HudView : ViewBase, IDisposable
     {
         #region State
-        private SpriteFont Font { get; set; }
         private Rectangle Area { get; }
-
         private Controls Controls { get; }
-        private EnumerableDictionary<IControl> ActionButtons { get; set; }
-
-        //TODO: these should be label controls
-        private string _text1;
-        private string _text2;
-
         private StackViews StackViews { get; }
         #endregion
 
@@ -44,9 +39,9 @@ namespace PhoenixGamePresentation.Views
             var pairs = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("position1", "0;0"),
-                new KeyValuePair<string, string>("size1", $"{Area.Width};{Area.Height}"),
-                new KeyValuePair<string, string>("size2", $"{Area.Width - 20};{Convert.ToInt32(Area.Height * 0.15f)}"), // 15% of parent
-                new KeyValuePair<string, string>("size3", $"{Area.Width - 20};{Convert.ToInt32(Area.Height * 0.30f)}")  // 30% of parent
+                new KeyValuePair<string, string>("size1", $"{width};{height}"),
+                new KeyValuePair<string, string>("size2", $"{width - 20};{Convert.ToInt32(height * 0.15f)}"), // 15% of parent
+                new KeyValuePair<string, string>("size3", $"{width - 20};{Convert.ToInt32(height * 0.30f)}")  // 30% of parent
             };
 
             var spec = ResourceReader.ReadResource("PhoenixGamePresentation.Views.HudViewControls.txt", Assembly.GetExecutingAssembly());
@@ -74,7 +69,7 @@ namespace PhoenixGamePresentation.Views
 
             worldView.CellGrid.NewCellSeen += NewCellSeen;
 
-            SetupViewport(Area.X, Area.Y, Area.Width, Area.Height + Controls["frmHudView.btnEndTurn"].Height); // 1680,0,240,1020 + 56 : btnEndTurn.Height = 56
+            SetupViewport(x, y, width, height + Controls["frmHudView.btnEndTurn"].Height); // 1680,0,240,1020 + 56 : btnEndTurn.Height = 56
 
             Input = input;
             Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "HudView");
@@ -105,44 +100,22 @@ namespace PhoenixGamePresentation.Views
 
         internal void LoadContent(ContentManager content)
         {
-            Font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
             Controls.LoadContent(content, true);
 
             var createdImage = MinimapHandler.Create(WorldView.CellGrid);
+            AssetsManager.Instance.AddTexture("MapImage", createdImage);
             var mapImage = (Image)Controls["frmHudView.frmMinimap.imgMinimap"];
-            mapImage.SetTexture(createdImage);
-
-            ActionButtons = WorldView.GetActionButtons;
+            mapImage.TextureNormal = "MapImage";
         }
 
-        public void Update(float deltaTime)
+        public void Update(GameTime gameTime)
         {
-            _text1 = string.Empty;
-            _text2 = string.Empty;
             if (WorldView.GameStatus == GameStatus.CityView) return;
 
             Controls["frmHudView.btnEndTurn"].Enabled = WorldView.AllStacksHaveBeenGivenOrders;
 
-            Controls.Update(Input, deltaTime, Viewport);
-            ActionButtons.Update(Input, deltaTime, Viewport);
-
-            // get tile mouse is over
-            var cellGrid = WorldView.CellGrid;
-            var hexPoint = WorldView.Camera.ScreenPixelToWorldHex(Input.MousePosition);
-
-            var cell = cellGrid.GetCell(hexPoint);
-            if (cell.SeenState == SeenState.NeverSeen) return;
-
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var terrainTypes = gameMetadata.TerrainTypes;
-            var terrainType = terrainTypes[cell.TerrainTypeId];
-            _text1 = $"{terrainType.Name} - {terrainType.FoodOutput} food";
-
-            if (!terrainType.CanSettleOn) return;
-
-            var catchment = cellGrid.GetCatchment(hexPoint.Col, hexPoint.Row, 2);
-            var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new PointI(hexPoint.Col, hexPoint.Row), catchment);
-            _text2 = $"Maximum Pop - {maxPop}";
+            Controls.Update(Input, gameTime, Viewport);
+            WorldView.GetActionButtons.Update(Input, gameTime, Viewport);
         }
 
         internal void Draw(SpriteBatch spriteBatch)
@@ -162,52 +135,56 @@ namespace PhoenixGamePresentation.Views
             spriteBatch.DrawRectangle(minimapViewedRectangle, Color.White);
             spriteBatch.DrawPoint(minimapViewedRectangle.Center.ToVector2(), Color.White);
 
-            DrawUnits(spriteBatch);
-            DrawNotifications(spriteBatch);
-            DrawTileInfo(spriteBatch);
+            var font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
+
+            var frmUnits = Controls["frmHudView.frmUnits"];
+            var frmUnitsBottomRight = frmUnits.BottomRight;
+            var hexPoint = WorldView.Camera.ScreenPixelToWorldHex(Input.MousePosition); // get tile mouse is over
+
+            DrawUnits(spriteBatch, StackViews, SelectedStackView, Area.Height, frmUnitsBottomRight, WorldView.GetActionButtons);
+            DrawNotifications(spriteBatch, font, WorldView.NotificationList);
+            DrawTileInfo(spriteBatch, font, 10.0f, Area.Height * 0.96f, WorldView.CellGrid, hexPoint);
 
             spriteBatch.End();
             spriteBatch.GraphicsDevice.Viewport = originalViewport;
         }
 
-        private void DrawUnits(SpriteBatch spriteBatch)
+        private static void DrawUnits(SpriteBatch spriteBatch, StackViews stackViews, StackView.StackView selectedStackView, int height, PointI frmUnitsBottomRight, EnumerableDictionary<IControl> actionButtons)
         {
-            if (SelectedStackView == null) return;
+            if (selectedStackView == null) return;
 
-            DrawUnitBadges(spriteBatch);
-            DrawMovementTypeImages(spriteBatch);
-            DrawActionButtons(spriteBatch);
+            DrawUnitBadges(spriteBatch, stackViews, selectedStackView, 20.0f, height * Constants.ONE_HALF + 10.0f);
+            DrawMovementTypeImages(spriteBatch, frmUnitsBottomRight, selectedStackView.GetMovementTypeImages());
+            DrawActionButtons(spriteBatch, selectedStackView.Actions, actionButtons);
         }
 
-        private void DrawUnitBadges(SpriteBatch spriteBatch)
+        private static void DrawUnitBadges(SpriteBatch spriteBatch, StackViews stackViews, StackView.StackView selectedStackView, float x, float y)
         {
-            var stackViews = GetStackViewsSharingSameLocation(SelectedStackView);
+            var stackViews2 = GetStackViewsSharingSameLocation(stackViews, selectedStackView);
 
-            var x = 20.0f;
-            var y = Area.Height * Constants.ONE_HALF + 10.0f;
-            int i = 0;
-            foreach (var stackView in stackViews)
+            var i = 0;
+            foreach (var stackView in stackViews2)
             {
-                DrawUnitBadges(spriteBatch, new Vector2(x, y), i, stackView);
+                DrawUnitBadges(spriteBatch, stackViews, new Vector2(x, y), i, stackView);
                 i += stackView.Count;
             }
         }
 
-        private List<StackView.StackView> GetStackViewsSharingSameLocation(StackView.StackView selectedStackView)
+        private static List<StackView.StackView> GetStackViewsSharingSameLocation(StackViews stackViews, StackView.StackView selectedStackView)
         {
-            var stackViews = new List<StackView.StackView>();
-            foreach (var stackView in StackViews)
+            var stackViews2 = new List<StackView.StackView>();
+            foreach (var stackView in stackViews)
             {
                 if (stackView.LocationHex == selectedStackView.LocationHex) // same location
                 {
-                    stackViews.Add(stackView);
+                    stackViews2.Add(stackView);
                 }
             }
 
-            return stackViews;
+            return stackViews2;
         }
 
-        private void DrawUnitBadges(SpriteBatch spriteBatch, Vector2 topLeftPosition, int index, StackView.StackView stackView)
+        private static void DrawUnitBadges(SpriteBatch spriteBatch, StackViews stackViews, Vector2 topLeftPosition, int index, StackView.StackView stackView)
         {
             var x = topLeftPosition.X + 30;
             var y = topLeftPosition.Y + 30;
@@ -217,79 +194,105 @@ namespace PhoenixGamePresentation.Views
                 var indexDividedBy3 = index / 3; // Floor
                 var xOffset = (stackView.ScreenFrame.Width + 10.0f) * indexMod3;
                 var yOffset = (stackView.ScreenFrame.Height + 10.0f) * indexDividedBy3;
-                DrawUnitBadge(spriteBatch, new Vector2(x + xOffset, y + yOffset), unit, stackView);
+                DrawUnitBadge(spriteBatch, stackViews, new Vector2(x + xOffset, y + yOffset), unit, stackView);
                 index++;
             }
         }
 
-        private void DrawUnitBadge(SpriteBatch spriteBatch, Vector2 centerPosition, Unit unit, StackView.StackView stackView)
+        private static void DrawUnitBadge(SpriteBatch spriteBatch, StackViews stackViews, Vector2 centerPosition, Unit unit, StackView.StackView stackView)
         {
             // draw background
-            var sourceRectangle = stackView.IsSelected ? StackViews.SquareGreenFrame.ToRectangle() : StackViews.SquareGrayFrame.ToRectangle();
+            var sourceRectangle = stackView.IsSelected ? stackViews.SquareGreenFrame.ToRectangle() : stackViews.SquareGrayFrame.ToRectangle();
             var destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, stackView.ScreenFrame.Width, stackView.ScreenFrame.Height);
-            spriteBatch.Draw(StackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.FlipVertically, 0.0f);
+            spriteBatch.Draw(stackViews.GuiTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.FlipVertically, 0.0f);
 
             // draw unit icon
-            var frame = StackViews.UnitAtlas.Frames[unit.UnitTypeTextureName];
+            var frame = stackViews.UnitAtlas.Frames[unit.UnitTypeTextureName];
             sourceRectangle = frame.ToRectangle();
             destinationRectangle = new Rectangle((int)centerPosition.X, (int)centerPosition.Y, sourceRectangle.Width, sourceRectangle.Height);
-            spriteBatch.Draw(StackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(stackViews.UnitTextures, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(sourceRectangle.Width * Constants.ONE_HALF, sourceRectangle.Height * Constants.ONE_HALF), SpriteEffects.None, 0.0f);
         }
 
-        private void DrawMovementTypeImages(SpriteBatch spriteBatch)
+        private static void DrawMovementTypeImages(SpriteBatch spriteBatch, PointI frmUnitsBottomRight, List<IControl> imgMovementTypes)
         {
-            var imgMovementTypes = SelectedStackView.GetMovementTypeImages();
             var i = 0;
             //size: (18;12)
-            var x = Controls["frmHudView.frmUnits"].BottomRight.X - 18 - 12;
-            var y = Controls["frmHudView.frmUnits"].BottomRight.Y - 12 - 20;
+            var x = frmUnitsBottomRight.X - 18 - 12;
+            var y = frmUnitsBottomRight.Y - 12 - 20;
             foreach (var imgMovementType in imgMovementTypes)
             {
-                imgMovementType.SetPosition(new PointI(x - 19 * i, y));
+                imgMovementType.Position = new PointI(x - 19 * i, y);
                 imgMovementType.Draw(spriteBatch);
                 i++;
             }
         }
 
-        private void DrawActionButtons(SpriteBatch spriteBatch)
+        private static void DrawActionButtons(SpriteBatch spriteBatch, EnumerableList<string> actions, EnumerableDictionary<IControl> actionButtons)
         {
-            var selectedStackViewActions = SelectedStackView.Actions;
-            foreach (var actionButton in ActionButtons)
+            var selectedStackViewActions = actions;
+            foreach (var actionButton in actionButtons)
             {
                 actionButton.Enabled = selectedStackViewActions.Contains(actionButton.Name);
                 actionButton.Draw(spriteBatch);
             }
         }
 
-        private void DrawNotifications(SpriteBatch spriteBatch)
+        private static void DrawNotifications(SpriteBatch spriteBatch, SpriteFont font, NotificationList notificationList)
         {
             var x = 10.0f;
             var y = 460.0f;
-            foreach (var item in WorldView.NotificationList)
+            foreach (var item in notificationList)
             {
-                var lines = TextWrapper.WrapText(item, 150.0f, Font);
+                var lines = TextWrapper.WrapText(item, 150.0f, font);
                 foreach (var line in lines)
                 {
-                    spriteBatch.DrawString(Font, line, new Vector2(x, y), Color.Pink);
+                    spriteBatch.DrawString(font, line, new Vector2(x, y), Color.Pink);
                     y += 20.0f;
                 }
             }
         }
 
-        private void DrawTileInfo(SpriteBatch spriteBatch)
+        private static void DrawTileInfo(SpriteBatch spriteBatch, SpriteFont font, float x, float y, CellGrid cellGrid, HexOffsetCoordinates hexPoint)
         {
-            const float x = 10.0f;
-            var y = Area.Height * 0.96f;
+            var cell = cellGrid.GetCell(hexPoint);
+            if (cell.SeenState == SeenState.NeverSeen) return;
 
-            spriteBatch.DrawString(Font, _text1, new Vector2(x, y), Color.White);
-            spriteBatch.DrawString(Font, _text2, new Vector2(x, y + 15.0f), Color.White);
+            var terrainType = GetTerrainType(cell);
+            var terrainTypeText = $"{terrainType.Name} - {terrainType.FoodOutput} food";
+            var maximumPopulationText = GetMaximumPopulationText(terrainType, cellGrid, hexPoint);
+
+            spriteBatch.DrawString(font, terrainTypeText, new Vector2(x, y), Color.White);
+            spriteBatch.DrawString(font, maximumPopulationText, new Vector2(x, y + 15.0f), Color.White);
+        }
+
+        private static TerrainType GetTerrainType(Cell cell)
+        {
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var terrainTypes = gameMetadata.TerrainTypes;
+            var terrainType = terrainTypes[cell.TerrainTypeId];
+
+            return terrainType;
+        }
+
+        private static string GetMaximumPopulationText(TerrainType terrainType, CellGrid cellGrid, HexOffsetCoordinates hexPoint)
+        {
+            if (!terrainType.CanSettleOn) return string.Empty;
+
+            var catchment = cellGrid.GetCatchment(hexPoint.Col, hexPoint.Row, 2);
+            var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new PointI(hexPoint.Col, hexPoint.Row), catchment);
+            var text = $"Maximum Pop - {maxPop}";
+
+            return text;
         }
 
         private void NewCellSeen(object sender, EventArgs e)
         {
-            var createdImage = MinimapHandler.Create(WorldView.CellGrid);
-            var imgMinimap = (Image)Controls["frmHudView.frmMinimap.imgMinimap"];
-            imgMinimap.SetTexture(createdImage);
+            var cellGrid = (CellGrid)sender;
+
+            var createdImage = MinimapHandler.Create(cellGrid);
+            AssetsManager.Instance.AddTexture("MapImage", createdImage);
+            var mapImage = (Image)Controls["frmHudView.frmMinimap.imgMinimap"];
+            mapImage.TextureNormal = "MapImage";
         }
 
         #region Event Handlers
@@ -325,16 +328,15 @@ namespace PhoenixGamePresentation.Views
 
         public void Dispose()
         {
-            if (!IsDisposed)
-            {
-                // dispose managed state (managed objects)
-                Input.UnsubscribeAllFromEventHandler("HudView");
+            if (IsDisposed) return;
 
-                // set large fields to null
-                ViewportAdapter = null;
+            // dispose managed state (managed objects)
+            Input.UnsubscribeAllFromEventHandler("HudView");
 
-                IsDisposed = true;
-            }
+            // set large fields to null
+            ViewportAdapter = null;
+
+            IsDisposed = true;
         }
     }
 }

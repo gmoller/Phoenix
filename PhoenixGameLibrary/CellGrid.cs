@@ -7,15 +7,11 @@ using Zen.Utilities.ExtensionMethods;
 
 namespace PhoenixGameLibrary
 {
-    /// <summary>
-    /// This class is immutable.
-    /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class CellGrid
     {
         #region State
-        private readonly Cell[,] _cellGrid;
-
+        private Cell[,] Cells { get; }
         private World World { get; }
         public int NumberOfColumns { get; }
         public int NumberOfRows { get; }
@@ -30,14 +26,14 @@ namespace PhoenixGameLibrary
 
             NumberOfColumns = numberOfColumns;
             NumberOfRows = numberOfRows;
-            _cellGrid = new Cell[numberOfColumns, numberOfRows];
+            Cells = new Cell[numberOfColumns, numberOfRows];
             for (var r = 0; r < numberOfRows; ++r)
             {
                 for (var q = 0; q < numberOfColumns; ++q)
                 {
                     var terrainType = map[q, r];
                     var cell = new Cell(World, q, r, terrainType.Id);
-                    _cellGrid[q, r] = cell;
+                    Cells[q, r] = cell;
                 }
             }
         }
@@ -54,7 +50,7 @@ namespace PhoenixGameLibrary
 
         public Cell GetCell(int column, int row)
         {
-            return IsWithinBounds(column, row) ? _cellGrid[column, row] : Cell.Empty;
+            return IsWithinBounds(column, row) ? Cells[column, row] : Cell.Empty;
         }
 
         private bool IsWithinBounds(int column, int row)
@@ -76,10 +72,11 @@ namespace PhoenixGameLibrary
             if (cell.SeenState != newCell.SeenState)
             {
                 // raise event
-                OnNewCellSeen(new EventArgs());
+                var args = new EventArgs();
+                OnNewCellSeen(args);
             }
 
-            _cellGrid[cell.Column, cell.Row] = newCell;
+            Cells[cell.Column, cell.Row] = newCell;
         }
 
         private void OnNewCellSeen(EventArgs e)
@@ -95,11 +92,11 @@ namespace PhoenixGameLibrary
                 for (var i = 0; i < 8; i++)
                 {
                     var neighborCell = cell.GetNeighbor((Direction)i, this);
-                    borders = cell.ControlledByFaction == neighborCell.ControlledByFaction || cell == neighborCell ? borders.ResetBit(i) : borders.SetBit(i);
+                    borders = cell.ControlledByFaction == neighborCell.ControlledByFaction || cell == neighborCell ? borders.UnsetBit(i) : borders.SetBit(i);
                 }
 
                 var newCell = new Cell(cell, cell.SeenState, cell.ControlledByFaction, (byte)borders);
-                _cellGrid[cell.Column, cell.Row] = newCell;
+                Cells[cell.Column, cell.Row] = newCell;
             }
         }
 

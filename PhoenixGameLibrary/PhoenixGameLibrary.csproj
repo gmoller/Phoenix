@@ -10,15 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Zen.Hexagons">
-      <HintPath>..\..\ZenHexagons\Hexagons\bin\Debug\netcoreapp3.1\Zen.Hexagons.dll</HintPath>
-    </Reference>
-    <Reference Include="Zen.Noise">
-      <HintPath>..\..\ZenNoise\Noise\bin\Debug\netcoreapp3.1\Zen.Noise.dll</HintPath>
-    </Reference>
-    <Reference Include="Zen.Utilities">
-      <HintPath>..\..\ZenUtilities\Utilities\bin\Debug\netcoreapp3.1\Zen.Utilities.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Zen.Hexagons" Version="1.0.7" />
+    <PackageReference Include="Zen.Noise" Version="0.1.3" />
+    <PackageReference Include="Zen.Utilities" Version="0.1.20" />
   </ItemGroup>
 
 </Project>

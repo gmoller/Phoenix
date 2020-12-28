@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Zen.GuiControls;
+using Zen.GuiControls.TheControls;
 using Zen.MonoGameUtilities;
 using Zen.MonoGameUtilities.ViewportAdapters;
 using Zen.Utilities;

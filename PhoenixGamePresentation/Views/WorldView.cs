@@ -8,12 +8,12 @@ using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
 using Zen.GuiControls;
 using Zen.GuiControls.PackagesClasses;
+using Zen.GuiControls.TheControls;
 using Zen.Hexagons;
 using Zen.Input;
 using Zen.MonoGameUtilities.ExtensionMethods;
 using Zen.MonoGameUtilities.ViewportAdapters;
 using Zen.Utilities;
-using Tooltip = PhoenixGamePresentation.ControlsX.Tooltip;
 
 namespace PhoenixGamePresentation.Views
 {
@@ -27,7 +27,7 @@ namespace PhoenixGamePresentation.Views
         private StackViews StackViews { get; }
         private SettlementView SettlementView { get; }
         private HudView HudView { get; }
-        private Tooltip Tooltip { get; }
+        //private Tooltip Tooltip { get; }
         private Dictionary<string, IControl> MovementTypeImages { get; }
         private Dictionary<string, IControl> ActionButtons { get; }
 
@@ -57,7 +57,7 @@ namespace PhoenixGamePresentation.Views
             StackViews = new StackViews(this, World.Stacks, Input);
             SettlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid), Input);
             HudView = new HudView(this, StackViews, Input);
-            Tooltip = new Tooltip(Vector2.Zero, Alignment.TopLeft, new Vector2(200.0f, 300.0f), "GUI_Textures_1.sp_frame", 25, 25, 25, 25, "tooltip") { Enabled = false };
+            //Tooltip = new Tooltip(Vector2.Zero, Alignment.TopLeft, new Vector2(200.0f, 300.0f), "GUI_Textures_1.sp_frame", 25, 25, 25, 25, "tooltip") { Enabled = false };
 
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
             Viewport = new Viewport(0, 0, Camera.GetViewport.Width, Camera.GetViewport.Height, 0.0f, 1.0f);
@@ -93,14 +93,15 @@ namespace PhoenixGamePresentation.Views
             StackViews.LoadContent(content);
             SettlementView.LoadContent(content);
             HudView.LoadContent(content);
-            Tooltip.LoadContent(content);
+            //Tooltip.LoadContent(content);
 
             MovementTypeImages.LoadContent(content);
             ActionButtons.LoadContent(content, true);
         }
 
-        internal void Update(float deltaTime)
+        internal void Update(GameTime gameTime)
         {
+            var deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             Camera.Update(deltaTime);
 
             OverlandMapView.Update(deltaTime);
@@ -110,10 +111,10 @@ namespace PhoenixGamePresentation.Views
             SettlementView.Settlement = World.Settlements.Selected;
             if (SettlementView.Settlement != null)
             {
-                SettlementView.Update(deltaTime, null);
+                SettlementView.Update(gameTime, null);
             }
 
-            HudView.Update(deltaTime);
+            HudView.Update(gameTime);
             StackViews.RemoveDeadUnits();
         }
 
@@ -125,15 +126,15 @@ namespace PhoenixGamePresentation.Views
 
             HudView.Draw(spriteBatch);
 
-            if (Tooltip.Enabled)
-            {
-                var originalViewport = spriteBatch.GraphicsDevice.Viewport;
-                spriteBatch.GraphicsDevice.Viewport = Viewport;
-                spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: ViewportAdapter.GetScaleMatrix());
-                Tooltip.Draw(spriteBatch);
-                spriteBatch.End();
-                spriteBatch.GraphicsDevice.Viewport = originalViewport;
-            }
+            //if (Tooltip.Enabled)
+            //{
+            //    var originalViewport = spriteBatch.GraphicsDevice.Viewport;
+            //    spriteBatch.GraphicsDevice.Viewport = Viewport;
+            //    spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: ViewportAdapter.GetScaleMatrix());
+            //    Tooltip.Draw(spriteBatch);
+            //    spriteBatch.End();
+            //    spriteBatch.GraphicsDevice.Viewport = originalViewport;
+            //}
 
             SettlementView.Draw(spriteBatch);
         }
@@ -161,8 +162,11 @@ namespace PhoenixGamePresentation.Views
             var movementTypeImages = new Dictionary<string, IControl>();
             foreach (var movementType in movementTypes)
             {
-                var image = new Image("image", $"MovementTypes.{movementType.Name}");
-                image.Size = new PointI(18, 12);
+                var image = new Image("image")
+                {
+                    TextureNormal = $"MovementTypes.{movementType.Name}",
+                    Size = new PointI(18, 12)
+                };
                 movementTypeImages.Add(movementType.Name, image);
             }
 
@@ -187,18 +191,23 @@ namespace PhoenixGamePresentation.Views
                 i++;
 
                 var textureString = "GUI_Textures_1.simpleb_";
-                var button = new Button(actionType.Name, $"{textureString}n", $"{textureString}a", $"{textureString}h", $"{textureString}a")
+                var button = new Button(actionType.Name)
                 {
-                    Size = buttonSize.ToPointI()
+                    TextureNormal = $"{textureString}n",
+                    TextureActive = $"{textureString}a",
+                    TextureHover = $"{textureString}h",
+                    TextureDisabled = $"{textureString}a",
+                    Size = buttonSize.ToPointI(),
+                    Position = position.ToPointI()
                 };
-                button.SetPosition(position.ToPointI());
                 button.AddPackage(new ControlClick((o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name))));
-                var label = new Label($"label{i}", "Maleficio-Regular-12")
+                var label = new Label($"label{i}")
                 {
+                    FontName = "Maleficio-Regular-12",
                     Size = button.Size,
                     ContentAlignment = Alignment.MiddleCenter,
                     Text = actionType.ButtonName,
-                    TextColor = Color.Black
+                    Color = Color.Black
                 };
                 button.AddControl(label, Alignment.MiddleCenter, Alignment.MiddleCenter);
 
@@ -210,27 +219,27 @@ namespace PhoenixGamePresentation.Views
 
         private void HoveringOverTooltip(StackView.StackView stackView)
         {
-            var enable = Tooltip.StartHover();
+            //var enable = Tooltip.StartHover();
 
-            if (enable)
-            {
-                EnableTooltip(stackView);
-            }
+            //if (enable)
+            //{
+            //    EnableTooltip(stackView);
+            //}
         }
 
         private void EnableTooltip(StackView.StackView stackView)
         {
-            Tooltip.Enabled = true;
-            var position = Camera.WorldHexToScreenPixel(stackView.LocationHex).ToPointI() + new PointI(25, 25);
-            Tooltip.SetPosition(position);
-            Tooltip.SetText();
+            //Tooltip.Enabled = true;
+            //var position = Camera.WorldHexToScreenPixel(stackView.LocationHex).ToPointI() + new PointI(25, 25);
+            //Tooltip.SetPosition(position);
+            //Tooltip.SetText();
         }
 
         private void DisableTooltip()
         {
-            Tooltip.Enabled = false;
-            Tooltip.StopHover();
-            Tooltip.SetPosition(PointI.Zero);
+            //Tooltip.Enabled = false;
+            //Tooltip.StopHover();
+            //Tooltip.SetPosition(PointI.Zero);
         }
 
         internal void CheckForSelectionOfStack(Point mouseLocation)

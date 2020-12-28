@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Zen.GuiControls;
+using Zen.GuiControls.TheControls;
 using Zen.Input;
 using Zen.MonoGameUtilities.ExtensionMethods;
 using Zen.Utilities;
@@ -21,7 +22,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         {
             Size = new PointI(100, 30);
             PositionAlignment = positionAlignment;
-            SetPosition(position.ToPointI());
+            Position = position.ToPointI();
 
             SettlementView = settlementView;
 
@@ -35,14 +36,14 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
                 @"
 image1 : Image
 {
-  TextureName: %textureName1%
-  Size: 30;30
+  TextureName: '%textureName1%'
+  Size: [30;30]
 }
 
 image2 : Image
 {
-  TextureName: %textureName2%
-  Size: 20;20
+  TextureName: '%textureName2%'
+  Size: [20;20]
 }", pairs);
             Controls.SetOwner(this);
         }
@@ -55,7 +56,7 @@ image2 : Image
             }
         }
 
-        public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
+        public override void Update(InputHandler input, GameTime gameTime, Viewport? viewport)
         {
         }
 
@@ -69,7 +70,7 @@ image2 : Image
             for (var i = 0; i < numberOfItem1; i++)
             {
                 var image = (Image)Controls["image1"];
-                image.SetPosition(new PointI(x, y));
+                image.Position = new PointI(x, y);
                 image.Draw(spriteBatch);
                 x += image.Width;
             }
@@ -77,7 +78,7 @@ image2 : Image
             for (var i = 0; i < numberOfItem2; i++)
             {
                 var image = (Image)Controls["image2"];
-                image.SetPosition(new PointI(x, y));
+                image.Position = new PointI(x, y);
                 image.Draw(spriteBatch);
                 x += image.Width;
             }

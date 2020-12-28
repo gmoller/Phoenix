@@ -9,23 +9,14 @@
   <ItemGroup>
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+    <PackageReference Include="Zen.Hexagons" Version="1.0.7" />
+    <PackageReference Include="Zen.Input" Version="0.1.10" />
+    <PackageReference Include="Zen.Utilities" Version="0.1.20" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PhoenixGamePresentation\PhoenixGamePresentation.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Zen.Hexagons">
-      <HintPath>..\..\ZenHexagons\Hexagons\bin\Debug\netcoreapp3.1\Zen.Hexagons.dll</HintPath>
-    </Reference>
-    <Reference Include="Zen.Input">
-      <HintPath>..\..\ZenInput\Input\bin\Debug\netcoreapp3.1\Zen.Input.dll</HintPath>
-    </Reference>
-    <Reference Include="Zen.Utilities">
-      <HintPath>..\..\ZenUtilities\Utilities\bin\Debug\netcoreapp3.1\Zen.Utilities.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

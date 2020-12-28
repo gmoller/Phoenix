@@ -11,9 +11,14 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         {
         }
 
+        public override IControl Clone()
+        {
+            throw null;
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Draw(spriteBatch, Area.X, Area.Y, SettlementView.Settlement.SettlementProduction);
+            Draw(spriteBatch, Bounds.X, Bounds.Y, SettlementView.Settlement.SettlementProduction);
         }
     }
 }

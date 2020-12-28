@@ -2,12 +2,12 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PhoenixGameLibrary;
+using PhoenixGamePresentation.ControlsX;
 using Zen.Assets;
 using Zen.GuiControls;
 using Zen.Input;
 using Zen.MonoGameUtilities;
 using Zen.Utilities;
-using DynamicSlots = PhoenixGamePresentation.ControlsX.DynamicSlots;
 
 namespace PhoenixGamePresentation.Views.SettlementViewComposite
 {
@@ -16,7 +16,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         #region State
         private readonly SettlementView _settlementView;
 
-        private readonly IControl _slots;
+        private readonly DynamicSlots _slots;
 
         private Texture2D _texture;
         private AtlasSpec2 _atlas;
@@ -28,7 +28,16 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             Size = new PointI(515, 450);
             _settlementView = settlementView;
 
-            _slots = new DynamicSlots("slots", $"{textureAtlas}.slot", new PointI(515, 450), 10, 13, 10.0f);
+            _slots = new DynamicSlots("slots", $"{textureAtlas}.slot", 10, 13, 10.0f)
+            {
+                Size = new PointI(515, 450)
+            };
+        }
+
+        public override IControl Clone()
+        {
+            return null;
+            //return new BuildingsView(this);
         }
 
         public override void LoadContent(ContentManager content, bool loadChildrenContent = false)
@@ -39,7 +48,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             _atlas = AssetsManager.Instance.GetAtlas("Buildings");
         }
 
-        public override void Update(InputHandler input, float deltaTime, Viewport? viewport)
+        public override void Update(InputHandler input, GameTime gameTime, Viewport? viewport)
         {
             if (input.IsLeftMouseButtonReleased)
             {
