@@ -182,7 +182,7 @@ namespace PhoenixGamePresentation.Views
             var i = 0;
             var x = 10;
             var y = 806;
-            var buttonSize = new Vector2(115.0f, 30.0f);
+            var buttonSize = new Vector2(110.0f, 30.0f);
             foreach (var actionType in actionTypes)
             {
                 var xOffset = buttonSize.X * (i % 2);
