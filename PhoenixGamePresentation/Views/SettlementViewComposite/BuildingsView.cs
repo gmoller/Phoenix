@@ -28,10 +28,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             Size = new PointI(515, 450);
             _settlementView = settlementView;
 
-            _slots = new DynamicSlots("slots", $"{textureAtlas}.slot", 10, 13, 10.0f)
-            {
-                Size = new PointI(515, 450)
-            };
+            _slots = new DynamicSlots("slots", $"{textureAtlas}.slot", new PointI(515, 450), 10, 13, 10.0f);
         }
 
         public override IControl Clone()

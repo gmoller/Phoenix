@@ -42,22 +42,16 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             var spec = ResourceReader.ReadResource("PhoenixGamePresentation.Views.SettlementViewComposite.SecondaryFrameControls.txt", Assembly.GetExecutingAssembly());
             Controls = ControlCreator.CreateFromSpecification(spec, pairs);
 
-            var ctrl = new BuildingsView("buildingsView", settlementView, textureAtlas);
+            var buildingsView = new BuildingsView("buildingsView", settlementView, textureAtlas);
             var frmBuildings = Controls["frmSecondary.frmBuildings"];
-            frmBuildings.AddControl(ctrl, Alignment.TopCenter);
-            var slots20 = new DynamicSlots("slots20", $"{textureAtlas}.slot", 10, 2, 10.0f)
-            {
-                Size = new PointI(515, 65)
-            };
+            frmBuildings.AddControl(buildingsView, Alignment.TopCenter);
 
+            var slots20 = new DynamicSlots("slots20", $"{textureAtlas}.slot", new PointI(515, 65), 10, 2, 10.0f);
             var frmUnits = Controls["frmSecondary.frmUnits"];
             frmUnits.AddControl(slots20, Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
-            var slots20_ = Controls["frmSecondary.frmUnits.slots20"];
-            CreateUnitLabels(slots20_);
-            var slots2 = new DynamicSlots("slots2", $"{textureAtlas}.slot", 2, 1, 10.0f)
-            {
-                Size = new PointI(515, 65)
-            };
+
+            CreateUnitLabels(slots20);
+            var slots2 = new DynamicSlots("slots2", $"{textureAtlas}.slot", new PointI(515, 65), 2, 1, 10.0f);
             var frmOther = Controls["frmSecondary.frmOther"];
             frmOther.AddControl(slots2, Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
         }
@@ -101,7 +95,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
                         BackgroundColor = Color.PowderBlue
                     };
                     var slot = slots[i];
-                    slot.AddControl(lbl, Alignment.TopLeft, Alignment.TopLeft);
+                    slot.AddControl(lbl, Alignment.MiddleCenter, Alignment.MiddleCenter);
                     var unitLabel = slot[unit.Name];
                     unitLabel.AddPackage(new ControlClick((o, args) => UnitClick(o, new EventArgs())));
 
