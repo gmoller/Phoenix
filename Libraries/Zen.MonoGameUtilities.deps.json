@@ -1,0 +1,115 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Zen.MonoGameUtilities/0.1.10": {
+        "dependencies": {
+          "MonoGame.Framework.DesktopGL": "3.8.0.1641",
+          "Zen.Hexagons": "1.0.7",
+          "Zen.Utilities": "0.1.20"
+        },
+        "runtime": {
+          "Zen.MonoGameUtilities.dll": {}
+        }
+      },
+      "MonoGame.Framework.DesktopGL/3.8.0.1641": {
+        "runtime": {
+          "lib/netstandard2.0/MonoGame.Framework.dll": {
+            "assemblyVersion": "3.8.0.1641",
+            "fileVersion": "3.8.0.1641"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libSDL2-2.0.so.0": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libopenal.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx/native/libSDL2-2.0.0.dylib": {
+            "rid": "osx",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx/native/libopenal.1.dylib": {
+            "rid": "osx",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/SDL2.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "2.0.12.0"
+          },
+          "runtimes/win-x64/native/soft_oal.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x86/native/SDL2.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "2.0.12.0"
+          },
+          "runtimes/win-x86/native/soft_oal.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Zen.Hexagons/1.0.7": {
+        "runtime": {
+          "lib/netcoreapp3.1/Zen.Hexagons.dll": {
+            "assemblyVersion": "1.0.7.0",
+            "fileVersion": "1.0.7.0"
+          }
+        }
+      },
+      "Zen.Utilities/0.1.20": {
+        "runtime": {
+          "lib/netcoreapp3.1/Zen.Utilities.dll": {
+            "assemblyVersion": "0.1.20.0",
+            "fileVersion": "0.1.20.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Zen.MonoGameUtilities/0.1.10": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MonoGame.Framework.DesktopGL/3.8.0.1641": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rJQlrlHQbnOECYV6EcQ8GlGRQ2lzPTroXQcyyOZ0ki+BQRSJEN2zVBm9skqLiXya348aGAfTSSGTaSKjAy9NaA==",
+      "path": "monogame.framework.desktopgl/3.8.0.1641",
+      "hashPath": "monogame.framework.desktopgl.3.8.0.1641.nupkg.sha512"
+    },
+    "Zen.Hexagons/1.0.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hfycrlOWYB6cnRGEIDlwRbZ/cwcUw1dFdBU19VKZ8piK6BmXK1YjrQJZpgv5MsxYUoFFB8YYYD73X86w1n4uEg==",
+      "path": "zen.hexagons/1.0.7",
+      "hashPath": "zen.hexagons.1.0.7.nupkg.sha512"
+    },
+    "Zen.Utilities/0.1.20": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-A5jlQEaHzwdZ5p8nS3JhinzkcdsA/JD0becsjpsxHK+q9WbuM78Pm0CeseVjrv8xIFtyjlvvIUAest9KwNd3bQ==",
+      "path": "zen.utilities/0.1.20",
+      "hashPath": "zen.utilities.0.1.20.nupkg.sha512"
+    }
+  }
+}

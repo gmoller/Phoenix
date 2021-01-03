@@ -29,22 +29,22 @@
 
   <ItemGroup>
     <Reference Include="Zen.Assets">
-      <HintPath>..\..\ZenAssets\Assets\bin\Debug\netcoreapp3.1\Zen.Assets.dll</HintPath>
+      <HintPath>..\Libraries\Zen.Assets.dll</HintPath>
     </Reference>
     <Reference Include="Zen.GuiControls">
-      <HintPath>..\..\ZenGuiControls\GuiControls\bin\Debug\netcoreapp3.1\Zen.GuiControls.dll</HintPath>
+      <HintPath>..\Libraries\Zen.GuiControls.dll</HintPath>
     </Reference>
     <Reference Include="Zen.Hexagons">
-      <HintPath>..\..\ZenHexagons\Hexagons\bin\Debug\netcoreapp3.1\Zen.Hexagons.dll</HintPath>
+      <HintPath>..\Libraries\Zen.Hexagons.dll</HintPath>
     </Reference>
     <Reference Include="Zen.Input">
-      <HintPath>..\..\ZenInput\Input\bin\Debug\netcoreapp3.1\Zen.Input.dll</HintPath>
+      <HintPath>..\Libraries\Zen.Input.dll</HintPath>
     </Reference>
     <Reference Include="Zen.MonoGameUtilities">
-      <HintPath>..\..\ZenMonoGameUtilities\MonoGameUtilities\bin\Debug\netcoreapp3.1\Zen.MonoGameUtilities.dll</HintPath>
+      <HintPath>..\Libraries\Zen.MonoGameUtilities.dll</HintPath>
     </Reference>
     <Reference Include="Zen.Utilities">
-      <HintPath>..\..\ZenUtilities\Utilities\bin\Debug\netcoreapp3.1\Zen.Utilities.dll</HintPath>
+      <HintPath>..\Libraries\Zen.Utilities.dll</HintPath>
     </Reference>
   </ItemGroup>
 

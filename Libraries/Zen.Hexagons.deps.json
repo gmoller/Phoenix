@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Zen.Hexagons/1.0.8": {
+        "runtime": {
+          "Zen.Hexagons.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Zen.Hexagons/1.0.8": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
