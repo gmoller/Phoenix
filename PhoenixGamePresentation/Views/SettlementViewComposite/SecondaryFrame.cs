@@ -46,14 +46,15 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             var frmBuildings = Controls["frmSecondary.frmBuildings"];
             frmBuildings.AddControl(buildingsView, Alignment.TopCenter);
 
-            var slots20 = new DynamicSlots("slots20", $"{textureAtlas}.slot", new PointI(515, 65), 10, 2, 10.0f);
+            var slots10 = new DynamicSlots("slots20", $"{textureAtlas}.slot", new PointI(515, 65), 5, 2, 10.0f);
             var frmUnits = Controls["frmSecondary.frmUnits"];
-            frmUnits.AddControl(slots20, Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
+            frmUnits.AddControl(slots10, Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
+            CreateUnitLabels(slots10);
 
-            CreateUnitLabels(slots20);
-            var slots2 = new DynamicSlots("slots2", $"{textureAtlas}.slot", new PointI(515, 65), 2, 1, 10.0f);
+            var slots5 = new DynamicSlots("slots2", $"{textureAtlas}.slot", new PointI(515, 65), 5, 1, 10.0f);
             var frmOther = Controls["frmSecondary.frmOther"];
-            frmOther.AddControl(slots2, Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
+            frmOther.AddControl(slots5, Alignment.TopLeft, Alignment.TopLeft, new PointI(0, 5));
+            CreateOtherLabels(slots5);
         }
 
         public override IControl Clone()
@@ -85,23 +86,43 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             {
                 if (SettlementView.Settlement.UnitCanBeBuilt(unit.Name))
                 {
-                    var lbl = new Label(unit.Name)
-                    {
-                        FontName = "CrimsonText-Regular-6",
-                        Size = new PointI(42, 20),
-                        ContentAlignment = Alignment.MiddleCenter,
-                        Text = unit.ShortName,
-                        Color = Color.Red,
-                        BackgroundColor = Color.PowderBlue
-                    };
+                    var lbl = InstantiateLabel("CrimsonText-Regular-8", new PointI(84, 20), unit.Name, unit.ShortName);
                     var slot = slots[i];
                     slot.AddControl(lbl, Alignment.MiddleCenter, Alignment.MiddleCenter);
-                    var unitLabel = slot[unit.Name];
-                    unitLabel.AddPackage(new ControlClick((o, args) => UnitClick(o, new EventArgs())));
+                    lbl.AddPackage(new ControlClick((o, args) => UnitClick(o, new EventArgs())));
 
                     i++;
                 }
             }
+        }
+
+        private void CreateOtherLabels(IControl slots)
+        {
+            var lbl1 = InstantiateLabel("CrimsonText-Regular-10", new PointI(84, 40), "Housing", "Housing");
+            var lbl2 = InstantiateLabel("CrimsonText-Regular-10", new PointI(84, 40), "TradeGoods", $"Trade{Environment.NewLine}Goods");
+
+            var slot0 = slots[0];
+            slot0.AddControl(lbl1, Alignment.MiddleCenter, Alignment.MiddleCenter);
+            lbl1.AddPackage(new ControlClick((o, args) => OtherClick(o, new EventArgs())));
+
+            var slot1 = slots[1];
+            slot1.AddControl(lbl2, Alignment.MiddleCenter, Alignment.MiddleCenter);
+            lbl2.AddPackage(new ControlClick((o, args) => OtherClick(o, new EventArgs())));
+        }
+
+        private Label InstantiateLabel(string font, PointI size, string name, string text)
+        {
+            var lbl = new Label(name)
+            {
+                FontName = font,
+                Size = size,
+                ContentAlignment = Alignment.MiddleCenter,
+                Text = text,
+                Color = Color.Red,
+                BackgroundColor = Color.PowderBlue
+            };
+
+            return lbl;
         }
 
         private void UnitClick(object sender, EventArgs e)
@@ -112,6 +133,16 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             var unit = (Label)sender;
             var unitType = unitTypes[unit.Name];
             SettlementView.Settlement.AddToProductionQueue(unitType);
+        }
+
+        private void OtherClick(object sender, EventArgs e)
+        {
+            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            //var otherTypes = gameMetadata.OtherTypes;
+
+            var other = (Label)sender;
+            //var otherType = otherTypes[other.Name];
+            //SettlementView.Settlement.AddToProductionQueue(otherType);
         }
     }
 }

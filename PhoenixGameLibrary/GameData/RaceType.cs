@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
 using Zen.Utilities;
 
 namespace PhoenixGameLibrary.GameData
@@ -8,7 +10,7 @@ namespace PhoenixGameLibrary.GameData
     /// This struct is immutable.
     /// </summary>
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
-    public struct RaceType : IIdentifiedByIdAndName
+    public readonly struct RaceType : IIdentifiedByIdAndName
     {
         public static readonly RaceType Invalid = new RaceType(-1, "None", 0.0f, 0, 0.0f, 0.0f, null);
 
@@ -46,6 +48,17 @@ namespace PhoenixGameLibrary.GameData
         private string DebuggerDisplay => $"{{Id={Id},Name={Name}}}";
     }
 
+    public struct RaceTypeForDeserialization
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public float FarmingRate { get; set; }
+        public int GrowthRateModifier { get; set; }
+        public float WorkerProductionRate { get; set; }
+        public float FarmerProductionRate { get; set; }
+        public string[] TownNames { get; set; }
+    }
+
     public static class RaceTypesLoader
     {
         public static NamedDataDictionary<RaceType> Load()
@@ -69,6 +82,19 @@ namespace PhoenixGameLibrary.GameData
             };
 
             return NamedDataDictionary<RaceType>.Create(raceTypes);
+        }
+
+        public static List<RaceType> LoadFromJsonFile(string fileName)
+        {
+            var jsonString = File.ReadAllText($@".\Content\GameMetadata\{fileName}.json");
+            var deserialized = JsonSerializer.Deserialize<List<RaceTypeForDeserialization>>(jsonString);
+            var list = new List<RaceType>();
+            foreach (var item in deserialized)
+            {
+                list.Add(RaceType.Create(item.Id, item.Name, item.FarmingRate, item.GrowthRateModifier, item.WorkerProductionRate, item.FarmerProductionRate, item.TownNames));
+            }
+
+            return list;
         }
     }
 }

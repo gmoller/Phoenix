@@ -1,12 +1,12 @@
 [
   {
     "Id": 1,
-    "BuildingId": 26,
+    "Building": "Granary",
     "MaximumPopulationIncrease": 2
   },
   {
     "Id": 2,
-    "BuildingId": 27,
+    "Building": "Farmers Market",
     "MaximumPopulationIncrease": 3
   }
 ]

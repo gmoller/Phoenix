@@ -37,12 +37,6 @@ namespace PhoenixGamePresentation.Views
             Settlement.SettlementOpened += SettlementOpened;
 
             Input = input;
-            Input.BeginRegistration(GameStatus.CityView.ToString(), "SettlementView");
-            Input.EndRegistration();
-
-            Input.Subscribe(GameStatus.CityView.ToString(), "SettlementView");
-
-            WorldView.SubscribeToStatusChanges("SettlementView", worldView.HandleStatusChange);
         }
 
         private void SettlementOpened(object sender, EventArgs e)
@@ -103,7 +97,6 @@ namespace PhoenixGamePresentation.Views
             if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
-                Input.UnsubscribeAllFromEventHandler("SettlementView");
 
                 // set large fields to null
                 ViewportAdapter = null;

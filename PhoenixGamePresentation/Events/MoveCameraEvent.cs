@@ -9,10 +9,10 @@ namespace PhoenixGamePresentation.Events
         {
             var camera = (Camera)sender;
 
-            var panCameraDistance = e.Mouse.IsMouseIsAtTopOfScreen() ? new Vector2(0.0f, -1.0f) * e.DeltaTime : Vector2.Zero;
-            panCameraDistance += e.Mouse.MouseIsAtBottomOfScreen() ? new Vector2(0.0f, 1.0f) * e.DeltaTime : Vector2.Zero;
-            panCameraDistance += e.Mouse.MouseIsAtLeftOfScreen() ? new Vector2(-1.0f, 0.0f) * e.DeltaTime : Vector2.Zero;
-            panCameraDistance += e.Mouse.MouseIsAtRightOfScreen() ? new Vector2(1.0f, 0.0f) * e.DeltaTime : Vector2.Zero;
+            var panCameraDistance = e.Mouse.IsMouseAtTopOfScreen() ? new Vector2(0.0f, -1.0f) * e.DeltaTime : Vector2.Zero;
+            panCameraDistance += e.Mouse.IsMouseAtBottomOfScreen() ? new Vector2(0.0f, 1.0f) * e.DeltaTime : Vector2.Zero;
+            panCameraDistance += e.Mouse.IsMouseAtLeftOfScreen() ? new Vector2(-1.0f, 0.0f) * e.DeltaTime : Vector2.Zero;
+            panCameraDistance += e.Mouse.IsMouseAtRightOfScreen() ? new Vector2(1.0f, 0.0f) * e.DeltaTime : Vector2.Zero;
 
             camera.MoveCamera(panCameraDistance);
 

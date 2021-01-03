@@ -41,7 +41,7 @@ namespace PhoenixGameLibrary.GameData
     public struct BuildingFoodOutputIncreaseTypeForDeserialization
     {
         public int Id { get; set; }
-        public int BuildingId { get; set; }
+        public string Building { get; set; }
         public float FoodOutputIncrease { get; set; }
     }
 
@@ -59,14 +59,14 @@ namespace PhoenixGameLibrary.GameData
             return DataDictionary<BuildingFoodOutputIncreaseType>.Create(buildingFoodOutputIncreaseTypes);
         }
 
-        public static List<BuildingFoodOutputIncreaseType> LoadFromJsonFile(string fileName)
+        public static List<BuildingFoodOutputIncreaseType> LoadFromJsonFile(string fileName, NamedDataDictionary<BuildingType> buildingTypes)
         {
             var jsonString = File.ReadAllText($@".\Content\GameMetadata\{fileName}.json");
             var deserialized = JsonSerializer.Deserialize<List<BuildingFoodOutputIncreaseTypeForDeserialization>>(jsonString);
             var list = new List<BuildingFoodOutputIncreaseType>();
             foreach (var item in deserialized)
             {
-                list.Add(BuildingFoodOutputIncreaseType.Create(item.Id, item.BuildingId, item.FoodOutputIncrease));
+                list.Add(BuildingFoodOutputIncreaseType.Create(item.Id, buildingTypes[item.Building].Id, item.FoodOutputIncrease));
             }
 
             return list;

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using PhoenixGamePresentation.Events;
 using Zen.GuiControls;
 using Zen.GuiControls.TheControls;
 using Zen.Input;
@@ -34,16 +31,6 @@ namespace PhoenixGamePresentation.Views
             SetupViewport(0, 0, 1920, 1080);
 
             Input = input;
-            Input.BeginRegistration(new List<string> { GameStatus.OverlandMap.ToString(), GameStatus.CityView.ToString() }, "CursorView");
-            Input.Register(0, this, MouseInputActionType.Moved, UpdateCursorPositionEvent.HandleEvent);
-            input.Register(1, this, Keys.F1, KeyboardInputActionType.Released, (sender, e) => { Input.SetMousePosition(new Point(840, 540)); }); // for testing
-            Input.Register(2, this, MouseInputActionType.Moved, UpdateCursorPositionEvent.HandleEvent);
-            input.Register(3, this, Keys.F1, KeyboardInputActionType.Released, (sender, e) => { Input.SetMousePosition(new Point(840, 540)); }); // for testing
-            Input.EndRegistration();
-
-            Input.Subscribe(GameStatus.OverlandMap.ToString(), "CursorView");
-
-            WorldView.SubscribeToStatusChanges("CursorView", worldView.HandleStatusChange);
         }
 
         internal void LoadContent(ContentManager content)
@@ -75,7 +62,6 @@ namespace PhoenixGamePresentation.Views
             if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
-                Input.UnsubscribeAllFromEventHandler("CursorView");
 
                 // set large fields to null
                 ViewportAdapter = null;

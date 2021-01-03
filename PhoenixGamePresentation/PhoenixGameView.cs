@@ -55,6 +55,7 @@ namespace PhoenixGamePresentation
             AssetsManager.Instance.AddSpriteFont("Maleficio-Regular-72", "Fonts\\Maleficio-Regular-72");
             AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-6", "Fonts\\Carolingia-Regular-6");
             AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-8", "Fonts\\Carolingia-Regular-8");
+            AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-10", "Fonts\\Carolingia-Regular-10");
             AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-12", "Fonts\\Carolingia-Regular-12");
             AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-18", "Fonts\\Carolingia-Regular-18");
             AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-24", "Fonts\\Carolingia-Regular-24");
@@ -64,6 +65,7 @@ namespace PhoenixGamePresentation
             AssetsManager.Instance.AddSpriteFont("Carolingia-Regular-72", "Fonts\\Carolingia-Regular-72");
             AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-6", "Fonts\\CrimsonText-Regular-6");
             AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-8", "Fonts\\CrimsonText-Regular-8");
+            AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-10", "Fonts\\CrimsonText-Regular-10");
             AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-12", "Fonts\\CrimsonText-Regular-12");
             AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-18", "Fonts\\CrimsonText-Regular-18");
             AssetsManager.Instance.AddSpriteFont("CrimsonText-Regular-24", "Fonts\\CrimsonText-Regular-24");
@@ -102,6 +104,7 @@ namespace PhoenixGamePresentation
         {
             var deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             Input.Update(WorldView, deltaTime);
+            InputWallah.Update(Input, CursorView, WorldView, deltaTime);
             WorldView.Update(gameTime);
             CursorView.Update(deltaTime);
         }

@@ -57,12 +57,6 @@ namespace PhoenixGamePresentation.Views
             SetupViewport(x, y, width, height + Controls["frmHudView.btnEndTurn"].Height); // 1680,0,240,1020 + 56 : btnEndTurn.Height = 56
 
             Input = input;
-            Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "HudView");
-            Input.EndRegistration();
-
-            Input.Subscribe(GameStatus.OverlandMap.ToString(), "HudView");
-
-            WorldView.SubscribeToStatusChanges("HudView", worldView.HandleStatusChange);
         }
 
         public static string GetTextFuncForDate(object sender)
@@ -343,7 +337,6 @@ namespace PhoenixGamePresentation.Views
             if (IsDisposed) return;
 
             // dispose managed state (managed objects)
-            Input.UnsubscribeAllFromEventHandler("HudView");
 
             // set large fields to null
             ViewportAdapter = null;

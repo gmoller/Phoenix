@@ -24,12 +24,6 @@ namespace PhoenixGamePresentation.Views
             SetupViewport(0, 0, WorldView.Camera.GetViewport.Width, WorldView.Camera.GetViewport.Height);
 
             Input = input;
-            Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "OverlandSettlementViews");
-            Input.EndRegistration();
-
-            Input.Subscribe(GameStatus.OverlandMap.ToString(), "OverlandSettlementViews");
-
-            WorldView.SubscribeToStatusChanges("OverlandSettlementViews", worldView.HandleStatusChange);
         }
 
         public void LoadContent(ContentManager content)
@@ -69,7 +63,6 @@ namespace PhoenixGamePresentation.Views
             if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
-                Input.UnsubscribeAllFromEventHandler("OverlandSettlementViews");
                 OverlandSettlementView.Dispose();
 
                 // set large fields to null

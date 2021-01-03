@@ -41,7 +41,7 @@ namespace PhoenixGameLibrary.GameData
     public struct BuildingMaximumPopulationIncreaseTypeForDeserialization
     {
         public int Id { get; set; }
-        public int BuildingId { get; set; }
+        public string Building { get; set; }
         public int MaximumPopulationIncrease { get; set; }
     }
 
@@ -58,14 +58,14 @@ namespace PhoenixGameLibrary.GameData
             return DataDictionary<BuildingMaximumPopulationIncreaseType>.Create(buildingMaximumPopulationIncreaseTypes);
         }
 
-        public static List<BuildingMaximumPopulationIncreaseType> LoadFromJsonFile(string fileName)
+        public static List<BuildingMaximumPopulationIncreaseType> LoadFromJsonFile(string fileName, NamedDataDictionary<BuildingType> buildingTypes)
         {
             var jsonString = File.ReadAllText($@".\Content\GameMetadata\{fileName}.json");
             var deserialized = JsonSerializer.Deserialize<List<BuildingMaximumPopulationIncreaseTypeForDeserialization>>(jsonString);
             var list = new List<BuildingMaximumPopulationIncreaseType>();
             foreach (var item in deserialized)
             {
-                list.Add(BuildingMaximumPopulationIncreaseType.Create(item.Id, item.BuildingId, item.MaximumPopulationIncrease));
+                list.Add(BuildingMaximumPopulationIncreaseType.Create(item.Id, buildingTypes[item.Building].Id, item.MaximumPopulationIncrease));
             }
 
             return list;

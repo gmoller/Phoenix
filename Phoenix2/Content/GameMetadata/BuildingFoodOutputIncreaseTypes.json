@@ -1,17 +1,17 @@
 [
   {
     "Id": 1,
-    "BuildingId": 26,
+    "Building": "Granary",
     "FoodOutputIncrease": 2
   },
   {
     "Id": 2,
-    "BuildingId": 27,
+    "Building": "Farmers Market",
     "FoodOutputIncrease": 3
   },
   {
     "Id": 3,
-    "BuildingId": 28,
+    "Building": "Foresters Guild",
     "FoodOutputIncrease": 2
   }
 ]

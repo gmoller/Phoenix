@@ -41,7 +41,7 @@ namespace PhoenixGameLibrary.GameData
     public struct BuildingPopulationGrowthTypeForDeserialization
     {
         public int Id { get; set; }
-        public int BuildingId { get; set; }
+        public string Building { get; set; }
         public int PopulationGrowthRateIncrease { get; set; }
     }
 
@@ -58,14 +58,14 @@ namespace PhoenixGameLibrary.GameData
             return DataDictionary<BuildingPopulationGrowthType>.Create(buildingPopulationGrowthTypes);
         }
 
-        public static List<BuildingPopulationGrowthType> LoadFromJsonFile(string fileName)
+        public static List<BuildingPopulationGrowthType> LoadFromJsonFile(string fileName, NamedDataDictionary<BuildingType> buildingTypes)
         {
             var jsonString = File.ReadAllText($@".\Content\GameMetadata\{fileName}.json");
             var deserialized = JsonSerializer.Deserialize<List<BuildingPopulationGrowthTypeForDeserialization>>(jsonString);
             var list = new List<BuildingPopulationGrowthType>();
             foreach (var item in deserialized)
             {
-                list.Add(BuildingPopulationGrowthType.Create(item.Id, item.BuildingId, item.PopulationGrowthRateIncrease));
+                list.Add(BuildingPopulationGrowthType.Create(item.Id, buildingTypes[item.Building].Id, item.PopulationGrowthRateIncrease));
             }
 
             return list;

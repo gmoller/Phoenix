@@ -2,13 +2,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using PhoenixGameLibrary;
-using PhoenixGamePresentation.Events;
 using Zen.Assets;
 using Zen.Input;
 using Zen.MonoGameUtilities;
-using Zen.Utilities;
 using Zen.Utilities.ExtensionMethods;
 using Zen.Hexagons;
 
@@ -28,29 +25,6 @@ namespace PhoenixGamePresentation.Views
             SetupViewport(0, 0, WorldView.Camera.GetViewport.Width, WorldView.Camera.GetViewport.Height);
 
             Input = input;
-            Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "OverlandMapView");
-            Input.Register(0, this, Keys.Enter, KeyboardInputActionType.Released, (sender, e) => { worldView.EndTurn(); });
-            Input.Register(1, this, Keys.D1, KeyboardInputActionType.Released, (sender, e) => { WorldView.Camera.LookAtPixel(new PointI(840, 540)); }); // for testing
-            Input.Register(2, this, Keys.C, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.FocusCameraOn(); });
-            Input.Register(3, this, MouseInputActionType.RightButtonPressed, OpenSettlementEvent.HandleEvent);
-            Input.Register(4, this, MouseInputActionType.RightButtonPressed, (sender, e) => { WorldView.CurrentlySelectedStackView?.SetPotentialMovement(); });
-            Input.Register(5, this, MouseInputActionType.RightButtonReleased, (sender, e) => { WorldView.CurrentlySelectedStackView?.ResetPotentialMovement(); });
-            Input.Register(6, this, MouseInputActionType.LeftButtonReleased, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromMouseInitiation(e.Mouse.Location); });
-            Input.Register(7, this, Keys.NumPad1, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(8, this, Keys.NumPad2, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(9, this, Keys.NumPad3, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(10, this, Keys.NumPad4, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(11, this, Keys.NumPad6, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(12, this, Keys.NumPad7, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(13, this, Keys.NumPad8, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(14, this, Keys.NumPad9, KeyboardInputActionType.Released, (sender, e) => { WorldView.CurrentlySelectedStackView?.CheckForUnitMovementFromKeyboardInitiation(e.Key); });
-            Input.Register(15, this, MouseInputActionType.RightButtonReleased, (sender, e) => { WorldView.CheckForSelectionOfStack(e.Mouse.Location); });
-            Input.Register(16, this, MouseInputActionType.CheckForHoverOver, (sender, e) => { WorldView.CheckIfMouseIsHoveringOverStack(e.Mouse.Location); });
-            Input.EndRegistration();
-
-            Input.Subscribe(GameStatus.OverlandMap.ToString(), "OverlandMapView");
-
-            WorldView.SubscribeToStatusChanges("OverlandMapView", worldView.HandleStatusChange);
         }
 
         internal void LoadContent(ContentManager content)
@@ -183,7 +157,6 @@ namespace PhoenixGamePresentation.Views
             if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
-                Input.UnsubscribeAllFromEventHandler("OverlandMapView");
 
                 // set large fields to null
                 ViewportAdapter = null;

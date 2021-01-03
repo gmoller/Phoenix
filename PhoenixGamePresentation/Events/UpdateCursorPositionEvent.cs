@@ -10,7 +10,8 @@ namespace PhoenixGamePresentation.Events
         {
             var cursorView = (CursorView)sender;
 
-            cursorView.SetPosition(e.Mouse.Location.ToPointI());
+            var mouseLocation = e.Mouse.Location.ToPointI();
+            cursorView.SetPosition(mouseLocation);
         }
     }
 }

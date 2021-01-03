@@ -38,12 +38,6 @@ namespace PhoenixGamePresentation.Views.StackView
             Stack = stack;
 
             Input = input;
-            Input.BeginRegistration(GameStatus.OverlandMap.ToString(), $"StackView:{Id}");
-            Input.EndRegistration();
-
-            Input.Subscribe(GameStatus.OverlandMap.ToString(), $"StackView:{Id}");
-
-            WorldView.SubscribeToStatusChanges($"StackView:{Id}", WorldView.HandleStatusChange);
 
             StackViewState = new StackViewNormalState(this);
             StateMachine = new StackViewStateMachine();
@@ -86,7 +80,7 @@ namespace PhoenixGamePresentation.Views.StackView
             get
             {
                 var locationInWorld = WorldView.Camera.WorldHexToWorldPixel(Stack.LocationHex);
-                var frame = MakeRectangle(locationInWorld);
+                var frame = InstantiateRectangle(locationInWorld);
 
                 return frame;
             }
@@ -97,13 +91,13 @@ namespace PhoenixGamePresentation.Views.StackView
             get
             {
                 var screenPixel = WorldView.Camera.WorldHexToScreenPixel(Stack.LocationHex);
-                var frame = MakeRectangle(screenPixel);
+                var frame = InstantiateRectangle(screenPixel);
 
                 return frame;
             }
         }
 
-        private Rectangle MakeRectangle(Vector2 pos)
+        private Rectangle InstantiateRectangle(Vector2 pos)
         {
             var rectangle = new Rectangle((int)(pos.X - _frameSize.X * Constants.ONE_HALF), (int)(pos.Y - _frameSize.Y * Constants.ONE_HALF), _frameSize.X, _frameSize.Y);
 
@@ -198,16 +192,20 @@ namespace PhoenixGamePresentation.Views.StackView
             StateMachine.ResetPotentialMovement(this);
         }
 
-        internal void CheckForUnitMovementFromMouseInitiation(Point mouseLocation)
+        internal (bool startMovement, PointI hexToMoveTo) CheckForUnitMovementFromMouseInitiation(Point mouseLocation)
         {
             MovementHandler.HexLibrary = HexLibrary;
-            MovementHandler.CheckForUnitMovement(MovementHandler.CheckForUnitMovementFromMouseInitiation, Stack, (WorldView.CellGrid, mouseLocation, WorldView.Camera), this);
+            var startUnitMovement = MovementHandler.CheckForUnitMovement(MovementHandler.CheckForUnitMovementFromMouseInitiation, Stack, (WorldView.CellGrid, mouseLocation, WorldView.Camera));
+
+            return startUnitMovement;
         }
 
-        internal void CheckForUnitMovementFromKeyboardInitiation(Keys key)
+        internal (bool startMovement, PointI hexToMoveTo) CheckForUnitMovementFromKeyboardInitiation(Keys key)
         {
             MovementHandler.HexLibrary = HexLibrary;
-            MovementHandler.CheckForUnitMovement(MovementHandler.CheckForUnitMovementFromKeyboardInitiation, Stack, key, this);
+            var startUnitMovement = MovementHandler.CheckForUnitMovement(MovementHandler.CheckForUnitMovementFromKeyboardInitiation, Stack, key);
+
+            return startUnitMovement;
         }
 
         internal void Select()
@@ -242,7 +240,6 @@ namespace PhoenixGamePresentation.Views.StackView
             if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
-                Input.UnsubscribeAllFromEventHandler($"StackView:{Id}");
 
                 // set large fields to null
                 StackViewState = null;

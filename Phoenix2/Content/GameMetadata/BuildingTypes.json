@@ -23,10 +23,7 @@
     "UpkeepGold": 2,
     "UpkeepMana": 0,
     "WhichRacesCanNotBuild": [],
-    "DependsOnBuildings": [
-      "Barracks",
-      "Smithy"
-    ]
+    "DependsOnBuildings": [ "Barracks", "Smithy" ]
   },
   {
     "Id": 2,
@@ -39,9 +36,7 @@
     "UpkeepGold": 3,
     "UpkeepMana": 0,
     "WhichRacesCanNotBuild": [],
-    "DependsOnBuildings": [
-      "Armory"
-    ]
+    "DependsOnBuildings": [ "Armory" ]
   },
   {
     "Id": 3,
@@ -53,13 +48,8 @@
     "ConstructionCost": 350,
     "UpkeepGold": 4,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Halflings",
-      "Gnolls"
-    ],
-    "DependsOnBuildings": [
-      "Fighters Guild"
-    ]
+    "WhichRacesCanNotBuild": [ "Halflings", "Gnolls" ],
+    "DependsOnBuildings": [ "Fighters Guild" ]
   },
   {
     "Id": 4,
@@ -71,19 +61,8 @@
     "ConstructionCost": 500,
     "UpkeepGold": 5,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Barbarians",
-      "Dwarves",
-      "Gnolls",
-      "Halflings",
-      "Klackons",
-      "Lizardmen",
-      "Trolls"
-    ],
-    "DependsOnBuildings": [
-      "University",
-      "Armorers Guild"
-    ]
+    "WhichRacesCanNotBuild": [ "Barbarians", "Dwarves", "Gnolls", "Halflings", "Klackons", "Lizardmen", "Trolls" ],
+    "DependsOnBuildings": [ "University", "Armorers Guild" ]
   },
   {
     "Id": 5,
@@ -108,13 +87,8 @@
     "ConstructionCost": 80,
     "UpkeepGold": 2,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Dwarves",
-      "Halflings"
-    ],
-    "DependsOnBuildings": [
-      "Smithy"
-    ]
+    "WhichRacesCanNotBuild": [ "Dwarves", "Halflings" ],
+    "DependsOnBuildings": [ "Smithy" ]
   },
   {
     "Id": 7,
@@ -126,18 +100,8 @@
     "ConstructionCost": 300,
     "UpkeepGold": 5,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Barbarians",
-      "Dwarves",
-      "Gnolls",
-      "Halflings",
-      "Klackons",
-      "Lizardmen"
-    ],
-    "DependsOnBuildings": [
-      "Stables",
-      "Temple"
-    ]
+    "WhichRacesCanNotBuild": [ "Barbarians", "Dwarves", "Gnolls", "Halflings", "Klackons", "Lizardmen" ],
+    "DependsOnBuildings": [ "Stables", "Temple" ]
   },
   {
     "Id": 8,
@@ -149,21 +113,8 @@
     "ConstructionCost": 600,
     "UpkeepGold": 6,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Barbarians",
-      "Beastmen",
-      "Draconians",
-      "Dwarves",
-      "Gnolls",
-      "Halflings",
-      "Klackons",
-      "Lizardmen",
-      "Trolls"
-    ],
-    "DependsOnBuildings": [
-      "Animists Guild",
-      "Armorers Guild"
-    ]
+    "WhichRacesCanNotBuild": [ "Barbarians", "Beastmen", "Draconians", "Dwarves", "Gnolls", "Halflings", "Klackons", "Lizardmen", "Trolls" ],
+    "DependsOnBuildings": [ "Animists Guild", "Armorers Guild" ]
   },
   {
     "Id": 9,
@@ -175,9 +126,7 @@
     "ConstructionCost": 100,
     "UpkeepGold": 1,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Lizardmen"
-    ],
+    "WhichRacesCanNotBuild": [ "Lizardmen" ],
     "DependsOnBuildings": []
   },
   {
@@ -190,18 +139,8 @@
     "ConstructionCost": 200,
     "UpkeepGold": 2,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Beastmen",
-      "Dwarves",
-      "Halflings",
-      "Klackons",
-      "Lizardmen",
-      "Trolls"
-    ],
-    "DependsOnBuildings": [
-      "Shipwrights Guild",
-      "Sawmill"
-    ]
+    "WhichRacesCanNotBuild": [ "Beastmen", "Dwarves", "Halflings", "Klackons", "Lizardmen", "Trolls" ],
+    "DependsOnBuildings": [ "Shipwrights Guild", "Sawmill" ]
   },
   {
     "Id": 11,
@@ -213,23 +152,8 @@
     "ConstructionCost": 400,
     "UpkeepGold": 4,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Beastmen",
-      "DarkElves",
-      "Draconians",
-      "Dwarves",
-      "Gnolls",
-      "Halflings",
-      "HighElves",
-      "Klackons",
-      "Lizardmen",
-      "Nomads",
-      "Trolls"
-    ],
-    "DependsOnBuildings": [
-      "Armory",
-      "Shipyard"
-    ]
+    "WhichRacesCanNotBuild": [ "Beastmen", "DarkElves", "Draconians", "Dwarves", "Gnolls", "Halflings", "HighElves", "Klackons", "Lizardmen", "Nomads", "Trolls" ],
+    "DependsOnBuildings": [ "Armory", "Shipyard" ]
   },
   {
     "Id": 12,
@@ -241,9 +165,7 @@
     "ConstructionCost": 100,
     "UpkeepGold": 2,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Lizardmen"
-    ],
+    "WhichRacesCanNotBuild": [ "Lizardmen" ],
     "DependsOnBuildings": []
   },
   {
@@ -257,9 +179,7 @@
     "UpkeepGold": 1,
     "UpkeepMana": 0,
     "WhichRacesCanNotBuild": [],
-    "DependsOnBuildings": [
-      "Builders Hall"
-    ]
+    "DependsOnBuildings": [ "Builders Hall" ]
   },
   {
     "Id": 14,
@@ -271,15 +191,8 @@
     "ConstructionCost": 120,
     "UpkeepGold": 2,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Gnolls",
-      "Klackons",
-      "Lizardmen",
-      "Trolls"
-    ],
-    "DependsOnBuildings": [
-      "Library"
-    ]
+    "WhichRacesCanNotBuild": [ "Gnolls", "Klackons", "Lizardmen", "Trolls" ],
+    "DependsOnBuildings": [ "Library" ]
   },
   {
     "Id": 15,
@@ -291,20 +204,8 @@
     "ConstructionCost": 500,
     "UpkeepGold": 4,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Barbarians",
-      "Dwarves",
-      "Gnolls",
-      "Halflings",
-      "HighElves",
-      "Klackons",
-      "Lizardmen",
-      "Trolls"
-    ],
-    "DependsOnBuildings": [
-      "University",
-      "Parthenon"
-    ]
+    "WhichRacesCanNotBuild": [ "Barbarians", "Dwarves", "Gnolls", "Halflings", "HighElves", "Klackons", "Lizardmen", "Trolls" ],
+    "DependsOnBuildings": [ "University", "Parthenon" ]
   },
   {
     "Id": 16,
@@ -316,15 +217,8 @@
     "ConstructionCost": 250,
     "UpkeepGold": 3,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Gnolls",
-      "Klackons",
-      "Lizardmen",
-      "Trolls"
-    ],
-    "DependsOnBuildings": [
-      "Sages Guild"
-    ]
+    "WhichRacesCanNotBuild": [ "Gnolls", "Klackons", "Lizardmen", "Trolls" ],
+    "DependsOnBuildings": [ "Sages Guild" ]
   },
   {
     "Id": 17,
@@ -336,18 +230,8 @@
     "ConstructionCost": 300,
     "UpkeepGold": 3,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Barbarians",
-      "Dwarves",
-      "Gnolls",
-      "Halflings",
-      "Klackons",
-      "Lizardmen",
-      "Trolls"
-    ],
-    "DependsOnBuildings": [
-      "Sages Guild"
-    ]
+    "WhichRacesCanNotBuild": [ "Barbarians", "Dwarves", "Gnolls", "Halflings", "Klackons", "Lizardmen", "Trolls" ],
+    "DependsOnBuildings": [ "Sages Guild" ]
   },
   {
     "Id": 18,
@@ -359,20 +243,8 @@
     "ConstructionCost": 1000,
     "UpkeepGold": 5,
     "UpkeepMana": 3,
-    "WhichRacesCanNotBuild": [
-      "Barbarians",
-      "Dwarves",
-      "Gnolls",
-      "Halflings",
-      "Klackons",
-      "Lizardmen",
-      "Trolls",
-      "Nomads"
-    ],
-    "DependsOnBuildings": [
-      "University",
-      "Alchemists Guild"
-    ]
+    "WhichRacesCanNotBuild": [ "Barbarians", "Dwarves", "Gnolls", "Halflings", "Klackons", "Lizardmen", "Trolls", "Nomads" ],
+    "DependsOnBuildings": [ "University", "Alchemists Guild" ]
   },
   {
     "Id": 19,
@@ -385,9 +257,7 @@
     "UpkeepGold": 1,
     "UpkeepMana": 0,
     "WhichRacesCanNotBuild": [],
-    "DependsOnBuildings": [
-      "Builders Hall"
-    ]
+    "DependsOnBuildings": [ "Builders Hall" ]
   },
   {
     "Id": 20,
@@ -399,12 +269,8 @@
     "ConstructionCost": 200,
     "UpkeepGold": 2,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Klackons"
-    ],
-    "DependsOnBuildings": [
-      "Shrine"
-    ]
+    "WhichRacesCanNotBuild": [ "Klackons" ],
+    "DependsOnBuildings": [ "Shrine" ]
   },
   {
     "Id": 21,
@@ -416,16 +282,8 @@
     "ConstructionCost": 400,
     "UpkeepGold": 3,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Dwarves",
-      "Gnolls",
-      "HighElves",
-      "Klackons",
-      "Lizardmen"
-    ],
-    "DependsOnBuildings": [
-      "Temple"
-    ]
+    "WhichRacesCanNotBuild": [ "Dwarves", "Gnolls", "HighElves", "Klackons", "Lizardmen" ],
+    "DependsOnBuildings": [ "Temple" ]
   },
   {
     "Id": 22,
@@ -437,18 +295,8 @@
     "ConstructionCost": 800,
     "UpkeepGold": 4,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Barbarians",
-      "DarkElves",
-      "Dwarves",
-      "Gnolls",
-      "HighElves",
-      "Klackons",
-      "Lizardmen"
-    ],
-    "DependsOnBuildings": [
-      "Parthenon"
-    ]
+    "WhichRacesCanNotBuild": [ "Barbarians", "DarkElves", "Dwarves", "Gnolls", "HighElves", "Klackons", "Lizardmen" ],
+    "DependsOnBuildings": [ "Parthenon" ]
   },
   {
     "Id": 23,
@@ -461,9 +309,7 @@
     "UpkeepGold": 1,
     "UpkeepMana": 0,
     "WhichRacesCanNotBuild": [],
-    "DependsOnBuildings": [
-      "Smithy"
-    ]
+    "DependsOnBuildings": [ "Smithy" ]
   },
   {
     "Id": 24,
@@ -475,19 +321,8 @@
     "ConstructionCost": 250,
     "UpkeepGold": 3,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Barbarians",
-      "Dwarves",
-      "Gnolls",
-      "Halflings",
-      "Klackons",
-      "Lizardmen",
-      "Trolls"
-    ],
-    "DependsOnBuildings": [
-      "Marketplace",
-      "University"
-    ]
+    "WhichRacesCanNotBuild": [ "Barbarians", "Dwarves", "Gnolls", "Halflings", "Klackons", "Lizardmen", "Trolls" ],
+    "DependsOnBuildings": [ "Marketplace", "University" ]
   },
   {
     "Id": 25,
@@ -499,20 +334,8 @@
     "ConstructionCost": 600,
     "UpkeepGold": 5,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Barbarians",
-      "Beastmen",
-      "Dwarves",
-      "Gnolls",
-      "Halflings",
-      "Klackons",
-      "Lizardmen",
-      "Trolls"
-    ],
-    "DependsOnBuildings": [
-      "Bank",
-      "Shipyard"
-    ]
+    "WhichRacesCanNotBuild": [ "Barbarians", "Beastmen", "Dwarves", "Gnolls", "Halflings", "Klackons", "Lizardmen", "Trolls" ],
+    "DependsOnBuildings": [ "Bank", "Shipyard" ]
   },
   {
     "Id": 26,
@@ -525,9 +348,7 @@
     "UpkeepGold": 1,
     "UpkeepMana": 0,
     "WhichRacesCanNotBuild": [],
-    "DependsOnBuildings": [
-      "Builders Hall"
-    ]
+    "DependsOnBuildings": [ "Builders Hall" ]
   },
   {
     "Id": 27,
@@ -540,10 +361,7 @@
     "UpkeepGold": 2,
     "UpkeepMana": 0,
     "WhichRacesCanNotBuild": [],
-    "DependsOnBuildings": [
-      "Granary",
-      "Marketplace"
-    ]
+    "DependsOnBuildings": [ "Granary", "Marketplace" ]
   },
   {
     "Id": 28,
@@ -555,12 +373,8 @@
     "ConstructionCost": 200,
     "UpkeepGold": 2,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Lizardmen"
-    ],
-    "DependsOnBuildings": [
-      "Sawmill"
-    ]
+    "WhichRacesCanNotBuild": [ "Lizardmen" ],
+    "DependsOnBuildings": [ "Sawmill" ]
   },
   {
     "Id": 29,
@@ -585,20 +399,8 @@
     "ConstructionCost": 600,
     "UpkeepGold": 5,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Barbarians",
-      "Beastmen",
-      "Draconians",
-      "Dwarves",
-      "Gnolls",
-      "Halflings",
-      "Klackons",
-      "Lizardmen"
-    ],
-    "DependsOnBuildings": [
-      "University",
-      "Miners Guild"
-    ]
+    "WhichRacesCanNotBuild": [ "Barbarians", "Beastmen", "Draconians", "Dwarves", "Gnolls", "Halflings", "Klackons", "Lizardmen" ],
+    "DependsOnBuildings": [ "University", "Miners Guild" ]
   },
   {
     "Id": 31,
@@ -610,13 +412,8 @@
     "ConstructionCost": 300,
     "UpkeepGold": 3,
     "UpkeepMana": 0,
-    "WhichRacesCanNotBuild": [
-      "Lizardmen",
-      "Trolls"
-    ],
-    "DependsOnBuildings": [
-      "Builders Hall"
-    ]
+    "WhichRacesCanNotBuild": [ "Lizardmen", "Trolls" ],
+    "DependsOnBuildings": [ "Builders Hall" ]
   },
   {
     "Id": 32,
@@ -629,8 +426,6 @@
     "UpkeepGold": 2,
     "UpkeepMana": 0,
     "WhichRacesCanNotBuild": [],
-    "DependsOnBuildings": [
-      "Builders Hall"
-    ]
+    "DependsOnBuildings": [ "Builders Hall" ]
   }
 ]

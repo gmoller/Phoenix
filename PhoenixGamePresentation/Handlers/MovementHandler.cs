@@ -59,19 +59,16 @@ namespace PhoenixGamePresentation.Handlers
             return costToMoveIntoResult.CanMoveInto ? (true, hexToMoveTo) : (false, new PointI(0, 0));
         }
 
-        internal static void CheckForUnitMovement(Func<Stack, object, (bool startMovement, PointI hexToMoveTo)> func, Stack stack, object args, StackView stackView)
+        internal static (bool startMovement, PointI hexToMoveTo) CheckForUnitMovement(Func<Stack, object, (bool startMovement, PointI hexToMoveTo)> func, Stack stack, object args)
         {
-            if (!(stack.MovementPoints > 0.0f)) return;
+            if (!(stack.MovementPoints > 0.0f)) return (false, PointI.Empty);
 
             var mustStartMovement = func(stack, args);
 
-            if (mustStartMovement.startMovement)
-            {
-                StartMovement(stackView, mustStartMovement.hexToMoveTo);
-            }
+            return mustStartMovement;
         }
 
-        private static void StartMovement(StackView stackView, PointI hexToMoveTo)
+        internal static void StartMovement(StackView stackView, PointI hexToMoveTo)
         {
             var path = MovementPathDeterminer.DetermineMovementPath(HexLibrary, stackView.Stack, stackView.LocationHex, hexToMoveTo, stackView.CellGrid);
             stackView.MovementPath = path;

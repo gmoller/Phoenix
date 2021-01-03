@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
@@ -69,7 +70,7 @@ namespace PhoenixGamePresentation.Views
 
         #region Accessors
         internal HexLibrary HexLibrary => World.HexLibrary;
-        internal StackView.StackView CurrentlySelectedStackView => StackViews.Current?.IsSelected == true ? StackViews.Current : null;
+        private StackView.StackView CurrentlySelectedStackView => StackViews.Current?.IsSelected == true ? StackViews.Current : null;
         internal CellGrid CellGrid => World.OverlandMap.CellGrid;
         internal Settlements Settlements => World.Settlements;
         internal Stacks Stacks => World.Stacks;
@@ -137,6 +138,44 @@ namespace PhoenixGamePresentation.Views
             //}
 
             SettlementView.Draw(spriteBatch);
+        }
+
+        internal (bool startMovement, PointI hexToMoveTo) CheckForUnitMovementOfCurrentlySelectedStackView(Keys key)
+        {
+            if (CurrentlySelectedStackView == null) return (false, PointI.Empty);
+
+            var startUnitMovement = CurrentlySelectedStackView.CheckForUnitMovementFromKeyboardInitiation(key);
+
+            return startUnitMovement;
+        }
+
+        internal (bool startMovement, PointI hexToMoveTo) CheckForUnitMovementOfCurrentlySelectedStackView(Point mouseLocation)
+        {
+            if (CurrentlySelectedStackView == null) return (false, PointI.Empty);
+            
+            var startUnitMovement = CurrentlySelectedStackView.CheckForUnitMovementFromMouseInitiation(mouseLocation);
+
+            return startUnitMovement;
+        }
+
+        internal void StartUnitMovementOfCurrentlySelectedStackView(PointI hexToMoveTo)
+        {
+            MovementHandler.StartMovement(CurrentlySelectedStackView, hexToMoveTo);
+        }
+
+        internal void FocusCameraOnCurrentlySelectedStackView()
+        {
+            CurrentlySelectedStackView?.FocusCameraOn();
+        }
+
+        internal void SetPotentialMovementOfCurrentlySelectedStackView()
+        {
+            CurrentlySelectedStackView?.SetPotentialMovement();
+        }
+
+        internal void ResetPotentialMovementOfCurrentlySelectedStackView()
+        {
+            CurrentlySelectedStackView?.ResetPotentialMovement();
         }
 
         public void BeginTurn()
@@ -242,9 +281,16 @@ namespace PhoenixGamePresentation.Views
             //Tooltip.SetPosition(PointI.Zero);
         }
 
-        internal void CheckForSelectionOfStack(Point mouseLocation)
+        internal (bool selectStack, StackView.StackView stackToSelect) CheckForSelectionOfStack(Point mouseLocation)
         {
-            StackViews.CheckForSelectionOfStack(mouseLocation);
+            var selectStack = StackViews.CheckForSelectionOfStack(mouseLocation);
+
+            return selectStack;
+        }
+
+        internal void SelectStack(StackView.StackView stackView)
+        {
+            StackViews.SelectStack(stackView);
         }
 
         internal void CheckIfMouseIsHoveringOverStack(Point mouseLocation)

@@ -1,8 +1,6 @@
-﻿using System;
+﻿ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Input;
-using PhoenixGamePresentation.Events;
 using PhoenixGamePresentation.Views;
 using Zen.Hexagons;
 using Zen.Input;
@@ -56,20 +54,6 @@ namespace PhoenixGamePresentation
             //_rotation = 0.0f;
 
             Input = input;
-            Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "Camera");
-            Input.Register(0, this, Keys.OemTilde, KeyboardInputActionType.Released, ResetCameraZoomEvent.HandleEvent);
-            Input.Register(1, this, MouseInputActionType.WheelUp, IncreaseCameraZoomEvent.HandleEvent);
-            Input.Register(2, this, MouseInputActionType.WheelDown, DecreaseCameraZoomEvent.HandleEvent);
-            Input.Register(3, this, MouseInputActionType.RightButtonDrag, DragCameraEvent.HandleEvent);
-            Input.Register(4, this, MouseInputActionType.AtTopOfScreen, MoveCameraEvent.HandleEvent);
-            Input.Register(5, this, MouseInputActionType.AtBottomOfScreen, MoveCameraEvent.HandleEvent);
-            Input.Register(6, this, MouseInputActionType.AtLeftOfScreen, MoveCameraEvent.HandleEvent);
-            Input.Register(7, this, MouseInputActionType.AtRightOfScreen, MoveCameraEvent.HandleEvent);
-            Input.EndRegistration();
-
-            Input.Subscribe(GameStatus.OverlandMap.ToString(), "Camera");
-
-            WorldView.SubscribeToStatusChanges("Camera", WorldView.HandleStatusChange);
         }
 
         public Rectangle GetViewport => Viewport;
@@ -406,7 +390,6 @@ namespace PhoenixGamePresentation
             if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
-                Input.UnsubscribeAllFromEventHandler("Camera");
 
                 // set large fields to null
 

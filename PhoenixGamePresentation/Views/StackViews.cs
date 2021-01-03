@@ -42,12 +42,6 @@ namespace PhoenixGamePresentation.Views
             SetupViewport(0, 0, WorldView.Camera.GetViewport.Width, WorldView.Camera.GetViewport.Height);
 
             Input = input;
-            Input.BeginRegistration(GameStatus.OverlandMap.ToString(), "StackViews");
-            Input.EndRegistration();
-
-            Input.Subscribe(GameStatus.OverlandMap.ToString(), "StackViews");
-
-            WorldView.SubscribeToStatusChanges("StackViews", worldView.HandleStatusChange);
         }
 
         #region Accessors
@@ -228,24 +222,26 @@ namespace PhoenixGamePresentation.Views
             return this.FirstOrDefault(stackView => mouseLocation.IsWithinRectangle(stackView.ScreenFrame));
         }
 
-        internal void CheckForSelectionOfStack(Point mouseLocation)
+        internal (bool selectStack, StackView.StackView stackToSelect) CheckForSelectionOfStack(Point mouseLocation)
         {
             foreach (var stackView in this)
             {
-                var stackViewLocationHex = stackView.LocationHex;
-                var foo = mouseLocation.IsWithinHex(stackViewLocationHex, WorldView.Camera.Transform, WorldView.HexLibrary);
-                var mustSelect = stackView.MovementPoints > 0.0f && foo;
-                if (mustSelect)
-                {
-                    if (stackView.Id != Current?.Id)
-                    {
-                        Current?.Unselect();
+                var isMouseWithinStackViewBounds = mouseLocation.IsWithinRectangle(stackView.ScreenFrame, WorldView.Camera.Transform);
+                
+                if (!isMouseWithinStackViewBounds) continue;
+                if (stackView.Id == Current?.Id) continue;
 
-                        stackView.Select();
-                        Current = stackView;
-                    }
-                }
+                return (true, stackView);
             }
+
+            return (false, null);
+        }
+
+        internal void SelectStack(StackView.StackView stackView)
+        {
+            Current?.Unselect();
+            stackView.Select();
+            Current = stackView;
         }
 
         public IEnumerator<StackView.StackView> GetEnumerator()
@@ -273,7 +269,6 @@ namespace PhoenixGamePresentation.Views
             if (!IsDisposed)
             {
                 // dispose managed state (managed objects)
-                Input.UnsubscribeAllFromEventHandler("StackViews");
 
                 // set large fields to null
                 ViewportAdapter = null;

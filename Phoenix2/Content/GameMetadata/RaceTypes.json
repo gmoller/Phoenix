@@ -1,0 +1,128 @@
+[
+  {
+    "Id": 0,
+    "Name": "Barbarians",
+    "FarmingRate": 2,
+    "GrowthRateModifier": 20,
+    "WorkerProductionRate": 2,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Norport", "Bromburg", "Burglitz", "Danzig", "Flensburg", "Hannover", "Kufstein", "Strassburg", "Schleswig", "Zwolle", "Bradenburg", "Bamburg", "Deventor", "Freiburg", "Hamburg", "Konstanz", "Linz", "Rostock", "Stettin", "Soest" ]
+  },
+  {
+    "Id": 1,
+    "Name": "Beastmen",
+    "FarmingRate": 2,
+    "GrowthRateModifier": 0,
+    "WorkerProductionRate": 2,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Kempen" ]
+  },
+  {
+    "Id": 2,
+    "Name": "Dark Elves",
+    "FarmingRate": 2,
+    "GrowthRateModifier": -20,
+    "WorkerProductionRate": 2,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Leer" ]
+  },
+  {
+    "Id": 3,
+    "Name": "Draconians",
+    "FarmingRate": 2,
+    "GrowthRateModifier": -10,
+    "WorkerProductionRate": 2,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Vallis" ]
+  },
+  {
+    "Id": 4,
+    "Name": "Dwarves",
+    "FarmingRate": 2,
+    "GrowthRateModifier": -20,
+    "WorkerProductionRate": 3,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Ebonsway" ]
+  },
+  {
+    "Id": 5,
+    "Name": "Gnolls",
+    "FarmingRate": 2,
+    "GrowthRateModifier": -10,
+    "WorkerProductionRate": 2,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Basel" ]
+  },
+  {
+    "Id": 6,
+    "Name": "Halflings",
+    "FarmingRate": 3,
+    "GrowthRateModifier": 0,
+    "WorkerProductionRate": 2,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Miroban" ]
+  },
+  {
+    "Id": 7,
+    "Name": "High Elves",
+    "FarmingRate": 2,
+    "GrowthRateModifier": -20,
+    "WorkerProductionRate": 2,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Silverdale" ]
+  },
+  {
+    "Id": 8,
+    "Name": "High Men",
+    "FarmingRate": 2,
+    "GrowthRateModifier": 0,
+    "WorkerProductionRate": 2,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Coventry" ]
+  },
+  {
+    "Id": 9,
+    "Name": "Klackons",
+    "FarmingRate": 2,
+    "GrowthRateModifier": -10,
+    "WorkerProductionRate": 3,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Fa-rul" ]
+  },
+  {
+    "Id": 10,
+    "Name": "Lizardmen",
+    "FarmingRate": 2,
+    "GrowthRateModifier": 10,
+    "WorkerProductionRate": 2,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "South Wash" ]
+  },
+  {
+    "Id": 11,
+    "Name": "Nomads",
+    "FarmingRate": 2,
+    "GrowthRateModifier": -10,
+    "WorkerProductionRate": 2,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Mecca" ]
+  },
+  {
+    "Id": 12,
+    "Name": "Orcs",
+    "FarmingRate": 2,
+    "GrowthRateModifier": 0,
+    "WorkerProductionRate": 2,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Robenaar" ]
+  },
+  {
+    "Id": 13,
+    "Name": "Trolls",
+    "FarmingRate": 2,
+    "GrowthRateModifier": -20,
+    "WorkerProductionRate": 2,
+    "FarmerProductionRate": 0.5,
+    "TownNames": [ "Erfurt" ]
+  }
+]

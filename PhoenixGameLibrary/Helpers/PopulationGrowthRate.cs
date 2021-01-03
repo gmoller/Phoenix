@@ -9,19 +9,20 @@ namespace PhoenixGameLibrary.Helpers
     {
         public static int DetermineGrowthRate(int maxSettlementSize, int numberOfCitizens, RaceType raceType, List<int> buildingsBuilt)
         {
-            // TODO: Housing Bonus, Dark Rituals, Stream of Life
-
+            // base
             if (numberOfCitizens >= maxSettlementSize) return 0;
 
-            float baseGrowthRate = (maxSettlementSize - numberOfCitizens + 1) / 2.0f;
-            int baseGrowthRateRoundedUp = (int)Math.Ceiling(baseGrowthRate);
+            var baseGrowthRate = (maxSettlementSize - numberOfCitizens + 1) * Zen.Utilities.Constants.OneHalf;
+            var baseGrowthRateFloored = (int)Math.Floor(baseGrowthRate);
 
-            int adjustedGrowthRate = baseGrowthRateRoundedUp * 10;
+            var adjustedGrowthRate = baseGrowthRateFloored * 10;
 
-            // buildings
+            // racial modifiers
+            adjustedGrowthRate += raceType.GrowthRateModifier;
+
+            // settlement buildings (granary +20, farmers market +30)
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var buildingPopulationGrowthTypes = gameMetadata.BuildingPopulationGrowthTypes;
-
             foreach (var item in buildingPopulationGrowthTypes)
             {
                 if (buildingsBuilt.Contains(item.BuildingId))
@@ -30,7 +31,13 @@ namespace PhoenixGameLibrary.Helpers
                 }
             }
 
-            adjustedGrowthRate += raceType.GrowthRateModifier;
+            // TODO: spells (stream of life, dark rituals)
+
+            // TODO: random events (population boom)
+
+            // TODO: housing
+
+            // TODO: starvation
 
             return adjustedGrowthRate;
         }

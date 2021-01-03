@@ -37,12 +37,13 @@ namespace PhoenixGameLibrary
             TerrainProductionPercentageTypes = DataDictionary<TerrainProductionPercentageType>.Create(TerrainProductionPercentageTypesLoader.Load());
             TerrainCanSettleOnTypes = DataDictionary<TerrainCanSettleOnType>.Create(TerrainCanSettleOnTypesLoader.Load());
 
-            RaceTypes = NamedDataDictionary<RaceType>.Create(RaceTypesLoader.Load());
+            RaceTypes = NamedDataDictionary<RaceType>.Create(RaceTypesLoader.LoadFromJsonFile("RaceTypes"));
 
-            BuildingTypes = NamedDataDictionary<BuildingType>.Create(BuildingTypesLoader.Load());
-            BuildingPopulationGrowthTypes = DataDictionary<BuildingPopulationGrowthType>.Create(BuildingPopulationGrowthTypesLoader.LoadFromJsonFile("BuildingPopulationGrowthTypes"));
-            BuildingMaximumPopulationIncreaseTypes = DataDictionary<BuildingMaximumPopulationIncreaseType>.Create(BuildingMaximumPopulationIncreaseTypesLoader.LoadFromJsonFile("BuildingMaximumPopulationIncreaseTypes"));
-            BuildingFoodOutputIncreaseTypes = DataDictionary<BuildingFoodOutputIncreaseType>.Create(BuildingFoodOutputIncreaseTypesLoader.LoadFromJsonFile("BuildingFoodOutputIncreaseTypes"));
+            //BuildingTypes = NamedDataDictionary<BuildingType>.Create(BuildingTypesLoader.Load());
+            BuildingTypes = NamedDataDictionary<BuildingType>.Create(BuildingTypesLoader.LoadFromJsonFile("BuildingTypes"));
+            BuildingPopulationGrowthTypes = DataDictionary<BuildingPopulationGrowthType>.Create(BuildingPopulationGrowthTypesLoader.LoadFromJsonFile("BuildingPopulationGrowthTypes", BuildingTypes));
+            BuildingMaximumPopulationIncreaseTypes = DataDictionary<BuildingMaximumPopulationIncreaseType>.Create(BuildingMaximumPopulationIncreaseTypesLoader.LoadFromJsonFile("BuildingMaximumPopulationIncreaseTypes", BuildingTypes));
+            BuildingFoodOutputIncreaseTypes = DataDictionary<BuildingFoodOutputIncreaseType>.Create(BuildingFoodOutputIncreaseTypesLoader.LoadFromJsonFile("BuildingFoodOutputIncreaseTypes", BuildingTypes));
 
             MovementTypes = NamedDataDictionary<MovementType>.Create(MovementTypesLoader.Load());
             //MineralTypes = MineralTypes.Create(MineralTypesLoader.GetMineralTypes());

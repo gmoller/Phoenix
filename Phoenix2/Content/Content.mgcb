@@ -20,6 +20,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Arial.spritefont;Fonts/Arial-12.spritefont
 
+#begin Fonts/Carolingia-Regular-10.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Carolingia-Regular-10.spritefont
+
 #begin Fonts/Carolingia-Regular-12.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -82,6 +89,13 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Carolingia-Regular-8.spritefont
+
+#begin Fonts/CrimsonText-Regular-10.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/CrimsonText-Regular-10.spritefont
 
 #begin Fonts/CrimsonText-Regular-12.spritefont
 /importer:FontDescriptionImporter
