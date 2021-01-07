@@ -19,7 +19,7 @@ namespace PhoenixGameLibrary.GameData2
         }
     }
 
-    public class Units : DataList<UnitRecord>
+    public class UnitsCollection : DataList<UnitRecord>
     {
         public DataList<UnitRecord> GetByStackId(int stackId)
         {

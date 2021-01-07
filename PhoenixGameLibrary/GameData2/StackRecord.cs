@@ -21,7 +21,7 @@ namespace PhoenixGameLibrary.GameData2
         }
     }
 
-    public class Stacks : DataList<StackRecord>
+    public class StacksCollection : DataList<StackRecord>
     {
         public DataList<StackRecord> GetByFactionId(int factionId)
         {

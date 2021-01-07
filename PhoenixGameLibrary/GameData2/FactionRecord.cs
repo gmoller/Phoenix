@@ -22,7 +22,7 @@ namespace PhoenixGameLibrary.GameData2
         }
     }
 
-    public class Factions : DataList<FactionRecord>
+    public class FactionsCollection : DataList<FactionRecord>
     {
     }
 }

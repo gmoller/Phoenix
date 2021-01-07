@@ -21,10 +21,22 @@ namespace Phoenix2
         private MetricsPanel _metricsPanel;
         #endregion
 
-        public MainGame()
+        public MainGame(PointI desiredResolution)
         {
             _graphicsDeviceManager = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            var gameMetadata = new GameMetadata();
+            CallContext<GameMetadata>.SetData("GameMetadata", gameMetadata);
+            var gameDataRepository = new GameDataRepository();
+            CallContext<GameDataRepository>.SetData("GameDataRepository", gameDataRepository);
+
+            var presentationContext = new GlobalContextPresentation();
+            if (desiredResolution != PointI.Empty)
+            {
+                presentationContext.DesiredResolution = desiredResolution;
+            }
+            CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
         }
 
         protected override void Initialize()

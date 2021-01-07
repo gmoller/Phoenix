@@ -1,6 +1,4 @@
 ﻿using System;
-using PhoenixGameLibrary;
-using PhoenixGamePresentation;
 using Zen.Utilities;
 
 namespace Phoenix2
@@ -10,26 +8,17 @@ namespace Phoenix2
         [STAThread]
         public static void Main(string[] args)
         {
-            var presentationContext = new GlobalContextPresentation();
-
             //--resolution 800x600
+            var desiredResolution = PointI.Empty;
             if (args.Length == 2 && args[0].ToLower() == "--resolution")
             {
                 var splitString = args[1].Split('x');
                 var width = Convert.ToInt32(splitString[0]);
                 var height = Convert.ToInt32(splitString[1]);
-                var desiredResolution = new PointI(width, height);
-                presentationContext.DesiredResolution = desiredResolution;
+                desiredResolution = new PointI(width, height);
             }
 
-            var gameMetadata = new GameMetadata();
-            CallContext<GameMetadata>.SetData("GameMetadata", gameMetadata);
-            var gameDataRepository = new GameDataRepository();
-            CallContext<GameDataRepository>.SetData("GameDataRepository", gameDataRepository);
-            CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
-
-            //using (var game = new Game1())
-            using var game = new MainGame();
+            using var game = new MainGame(desiredResolution);
             game.Run();
         }
     }

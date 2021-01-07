@@ -10,15 +10,15 @@ namespace PhoenixGameLibrary
         private static int _unitSequence;
         private static int _stackSequence;
 
-        private Factions Factions { get; }
-        private GameData2.Units Units { get; }
-        private GameData2.Stacks Stacks { get; }
+        private FactionsCollection Factions { get; }
+        private UnitsCollection Units { get; }
+        private StacksCollection Stacks { get; }
 
         public GameDataRepository()
         {
-            Factions = new Factions();
-            Units = new GameData2.Units();
-            Stacks = new GameData2.Stacks();
+            Factions = new FactionsCollection();
+            Units = new UnitsCollection();
+            Stacks = new StacksCollection();
         }
 
         public void Add(FactionRecord faction)
