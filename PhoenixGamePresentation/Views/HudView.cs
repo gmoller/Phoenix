@@ -14,6 +14,7 @@ using Zen.GuiControls.TheControls;
 using Zen.Hexagons;
 using Zen.Input;
 using Zen.MonoGameUtilities;
+using Zen.MonoGameUtilities.ExtensionMethods;
 using Zen.Utilities;
 
 namespace PhoenixGamePresentation.Views
@@ -70,27 +71,28 @@ namespace PhoenixGamePresentation.Views
 
         public static string GetTextFuncForGold(object sender)
         {
-            var lbl = (Label)sender;
-            var owner = (HudView)lbl.Owner;
-            var gold = $"{owner.WorldView.PlayerFaction.GoldInTreasury} GP (+{owner.WorldView.PlayerFaction.GoldPerTurn})";
+            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
+            var playerFaction = gameDataRepository.GetFactionById(1);
+            var gold = $"{playerFaction.GoldInTreasury} GP (+{playerFaction.GoldPerTurn})";
 
             return gold;
         }
 
         public static string GetTextFuncForMana(object sender)
         {
-            var lbl = (Label)sender;
-            var owner = (HudView)lbl.Owner;
-            var mana = $"{owner.WorldView.PlayerFaction.ManaInTreasury} MP (+{owner.WorldView.PlayerFaction.ManaPerTurn})";
+            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
+            var playerFaction = gameDataRepository.GetFactionById(1);
+            var mana = $"{playerFaction.ManaInTreasury} MP (+{playerFaction.ManaPerTurn})";
 
             return mana;
         }
 
         public static string GetTextFuncForFood(object sender)
         {
-            var lbl = (Label)sender;
-            var owner = (HudView)lbl.Owner;
-            var food = $"{owner.WorldView.PlayerFaction.FoodPerTurn} Food";
+            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
+            var playerFaction = gameDataRepository.GetFactionById(1);
+            var food = "0 Food";
+            //var food = $"{playerFaction.FoodPerTurn} Food";
 
             return food;
         }
@@ -144,10 +146,11 @@ namespace PhoenixGamePresentation.Views
             var font = AssetsManager.Instance.GetSpriteFont("CrimsonText-Regular-12");
 
             var frmUnits = Controls["frmHudView.frmUnits"];
+            var frmUnitsTopLeft = frmUnits.TopLeft;
             var frmUnitsBottomRight = frmUnits.BottomRight;
             var hexPoint = WorldView.Camera.ScreenPixelToWorldHex(Input.MousePosition); // get tile mouse is over
 
-            DrawUnits(spriteBatch, StackViews, SelectedStackView, Area.Height, frmUnitsBottomRight, WorldView.GetActionButtons);
+            DrawUnits(spriteBatch, StackViews, SelectedStackView, frmUnitsTopLeft, frmUnitsBottomRight, WorldView.GetActionButtons);
             DrawNotifications(spriteBatch, font, WorldView.NotificationList);
             DrawTileInfo(spriteBatch, font, 10.0f, Area.Height * 0.96f, WorldView.CellGrid, hexPoint);
 
@@ -155,23 +158,43 @@ namespace PhoenixGamePresentation.Views
             spriteBatch.GraphicsDevice.Viewport = originalViewport;
         }
 
-        private static void DrawUnits(SpriteBatch spriteBatch, StackViews stackViews, StackView.StackView selectedStackView, int height, PointI frmUnitsBottomRight, EnumerableDictionary<IControl> actionButtons)
+        private static void DrawUnits(SpriteBatch spriteBatch, StackViews stackViews, StackView.StackView selectedStackView, PointI frmUnitsTopLeft, PointI frmUnitsBottomRight, EnumerableDictionary<IControl> actionButtons)
         {
             if (selectedStackView == null) return;
 
-            DrawUnitBadges(spriteBatch, stackViews, selectedStackView, 20.0f, height * Constants.ONE_HALF + 10.0f);
+            var topLeftPosition = frmUnitsTopLeft.ToVector2() + new Vector2(10.0f, 10.0f);
+            DrawUnitBadges(spriteBatch, stackViews, selectedStackView, topLeftPosition);
             DrawMovementTypeImages(spriteBatch, frmUnitsBottomRight, selectedStackView.GetMovementTypeImages());
             DrawActionButtons(spriteBatch, selectedStackView.Actions, actionButtons);
         }
 
-        private static void DrawUnitBadges(SpriteBatch spriteBatch, StackViews stackViews, StackView.StackView selectedStackView, float x, float y)
+        internal static List<UnitView> GetUnitsToDraw(StackViews stackViews, StackView.StackView selectedStackView)
         {
-            var stackViews2 = GetStackViewsSharingSameLocation(stackViews, selectedStackView);
+            var topLeftPosition = new Vector2(20, 510);
+
+            var unitViews = new List<UnitView>();
+
+            var stackViewsSharingSameLocation = GetStackViewsSharingSameLocation(stackViews, selectedStackView);
 
             var i = 0;
-            foreach (var stackView in stackViews2)
+            foreach (var stackView in stackViewsSharingSameLocation)
             {
-                DrawUnitBadges(spriteBatch, stackViews, new Vector2(x, y), i, stackView);
+                var unitViewsToAdd = GetUnitBadgesToDraw(topLeftPosition, i, stackView);
+                unitViews.AddRange(unitViewsToAdd);
+                i += stackView.Count;
+            }
+
+            return unitViews;
+        }
+
+        private static void DrawUnitBadges(SpriteBatch spriteBatch, StackViews stackViews, StackView.StackView selectedStackView, Vector2 topLeftPosition)
+        {
+            var stackViewsSharingSameLocation = GetStackViewsSharingSameLocation(stackViews, selectedStackView);
+
+            var i = 0;
+            foreach (var stackView in stackViewsSharingSameLocation)
+            {
+                DrawUnitBadges(spriteBatch, stackViews, topLeftPosition, i, stackView);
                 i += stackView.Count;
             }
         }
@@ -190,6 +213,26 @@ namespace PhoenixGamePresentation.Views
             return stackViews2;
         }
 
+        private static List<UnitView> GetUnitBadgesToDraw(Vector2 topLeftPosition, int index, StackView.StackView stackView)
+        {
+            var unitViews = new List<UnitView>();
+
+            var x = topLeftPosition.X + 30;
+            var y = topLeftPosition.Y + 30;
+            foreach (var unit in stackView.Stack)
+            {
+                var indexMod3 = index % 3;
+                var indexDividedBy3 = index / 3; // Floor
+                var xOffset = (stackView.ScreenFrame.Width + 10.0f) * indexMod3;
+                var yOffset = (stackView.ScreenFrame.Height + 10.0f) * indexDividedBy3;
+                var destinationRectangle = GetUnitBadgesToDraw(new Vector2(x + xOffset, y + yOffset), stackView);
+                unitViews.Add(new UnitView(unit, destinationRectangle));
+                index++;
+            }
+
+            return unitViews;
+        }
+
         private static void DrawUnitBadges(SpriteBatch spriteBatch, StackViews stackViews, Vector2 topLeftPosition, int index, StackView.StackView stackView)
         {
             var x = topLeftPosition.X + 30;
@@ -203,6 +246,13 @@ namespace PhoenixGamePresentation.Views
                 DrawUnitBadge(spriteBatch, stackViews, new Vector2(x + xOffset, y + yOffset), unit, stackView);
                 index++;
             }
+        }
+
+        private static Rectangle GetUnitBadgesToDraw(Vector2 centerPosition, StackView.StackView stackView)
+        {
+            var destinationRectangle = new Rectangle((int)centerPosition.X - 50, (int)centerPosition.Y - 50, stackView.ScreenFrame.Width, stackView.ScreenFrame.Height);
+
+            return destinationRectangle;
         }
 
         private static void DrawUnitBadge(SpriteBatch spriteBatch, StackViews stackViews, Vector2 centerPosition, Unit unit, StackView.StackView stackView)

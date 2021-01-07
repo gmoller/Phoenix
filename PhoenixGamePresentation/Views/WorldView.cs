@@ -82,8 +82,8 @@ namespace PhoenixGamePresentation.Views
         internal EnumerableDictionary<IControl> GetActionButtons => new EnumerableDictionary<IControl>(ActionButtons);
         internal string CurrentDate => World.CurrentDate;
         internal NotificationList NotificationList => World.NotificationList;
-        internal Faction PlayerFaction => World.PlayerFaction;
         internal bool AllStacksHaveBeenGivenOrders => StackViews.AllStacksHaveBeenGivenOrders;
+        internal Faction PlayerFaction => World.PlayerFaction;
         #endregion
 
         internal void LoadContent(ContentManager content)
@@ -140,6 +140,11 @@ namespace PhoenixGamePresentation.Views
             SettlementView.Draw(spriteBatch);
         }
 
+        internal void AddToCurrentlySelectedStack(Unit unit)
+        {
+            //CurrentlySelectedStackView.Stack.AddUnit(unit);
+        }
+
         internal (bool startMovement, PointI hexToMoveTo) CheckForUnitMovementOfCurrentlySelectedStackView(Keys key)
         {
             if (CurrentlySelectedStackView == null) return (false, PointI.Empty);
@@ -156,6 +161,22 @@ namespace PhoenixGamePresentation.Views
             var startUnitMovement = CurrentlySelectedStackView.CheckForUnitMovementFromMouseInitiation(mouseLocation);
 
             return startUnitMovement;
+        }
+
+        internal (bool unitClicked, UnitView unitView) CheckForUnitSelectionInHudView(Point mouseLocation)
+        {
+            var mouseLocation2 = new Point(mouseLocation.X - 1680, mouseLocation.Y);
+            var unitsToDraw = HudView.GetUnitsToDraw(StackViews, CurrentlySelectedStackView);
+
+            foreach (var unitToDraw in unitsToDraw)
+            {
+                if (unitToDraw.DestinationRectangle.Contains(mouseLocation2))
+                {
+                    return (true, unitToDraw);
+                }
+            }
+
+            return (false, null);
         }
 
         internal void StartUnitMovementOfCurrentlySelectedStackView(PointI hexToMoveTo)
@@ -293,17 +314,11 @@ namespace PhoenixGamePresentation.Views
             StackViews.SelectStack(stackView);
         }
 
-        internal void CheckIfMouseIsHoveringOverStack(Point mouseLocation)
+        internal bool IsMouseHoveringOverAStack(Point mouseLocation)
         {
             var stackViewHoveredOver = StackViews.GetStackViewFromLocation(mouseLocation);
-            if (stackViewHoveredOver == null)
-            {
-                DisableTooltip();
-            }
-            else
-            {
-                HoveringOverTooltip(stackViewHoveredOver);
-            }
+
+            return stackViewHoveredOver != null;
         }
 
         internal void ChangeState(GameStatus from, GameStatus to)

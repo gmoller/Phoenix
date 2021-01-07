@@ -27,7 +27,6 @@ namespace PhoenixGamePresentation.Views.StackView
 
         private StackViewState StackViewState { get; set; }
         private StackViewStateMachine StateMachine { get; }
-
         #endregion
 
         internal StackView(WorldView worldView, StackViews stackViews, Stack stack, InputHandler input)

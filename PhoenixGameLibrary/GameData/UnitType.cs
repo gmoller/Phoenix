@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
 using Zen.Utilities;
 using Zen.Utilities.ExtensionMethods;
 
@@ -99,6 +101,20 @@ namespace PhoenixGameLibrary.GameData
         #endregion
     }
 
+    public struct UnitTypeForDeserialization
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string ShortName { get; set; }
+        public float ConstructionCost { get; set; }
+        public float MovementPoints { get; set; }
+        public string TextureName { get; set; }
+        public List<string> MovementTypes { get; }
+        public List<string> Actions { get; }
+        public List<string> WhichRacesCanBuild;
+        public List<string> DependsOnBuildings;
+    }
+
     public static class UnitTypesLoader
     {
         public static NamedDataDictionary<UnitType> Load()
@@ -126,7 +142,22 @@ namespace PhoenixGameLibrary.GameData
                 UnitType.Create(100, "Test Dude", "Test", 1.0f, 4000.0f, new List<string> { "Walking", "Flying", "Mountaineer", "Pathfinding", "PlaneShift" }, "Unit_Icon_Griffins_Transparent", new List<string> { "Barbarians" }, new List<string>(), new List<string>()),
             };
 
+            //var foo = JsonSerializer.Serialize(unitTypes);
+
             return NamedDataDictionary<UnitType>.Create(unitTypes);
+        }
+
+        public static List<UnitType> LoadFromJsonFile(string fileName)
+        {
+            var jsonString = File.ReadAllText($@".\Content\GameMetadata\{fileName}.json");
+            var deserialized = JsonSerializer.Deserialize<List<UnitTypeForDeserialization>>(jsonString);
+            var list = new List<UnitType>();
+            foreach (var item in deserialized)
+            {
+                list.Add(UnitType.Create(item.Id, item.Name, item.ShortName, item.ConstructionCost, item.MovementPoints, item.MovementTypes, item.TextureName, item.WhichRacesCanBuild, item.DependsOnBuildings, item.Actions));
+            }
+
+            return list;
         }
     }
 }

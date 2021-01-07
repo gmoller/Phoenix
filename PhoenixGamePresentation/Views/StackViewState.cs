@@ -13,7 +13,7 @@ namespace PhoenixGamePresentation.Views
         internal abstract void Update(WorldView worldView, float deltaTime);
         internal abstract void DrawUnit(SpriteBatch spriteBatch, Camera camera);
 
-        protected void DrawUnitBackground(SpriteBatch spriteBatch, Vector2 location)
+        protected void DrawUnitBackground(SpriteBatch spriteBatch)
         {
             var sourceRectangle = StackView.StackViews.SquareGreenFrame.ToRectangle();
             var destinationRectangle = StackView.WorldFrame;

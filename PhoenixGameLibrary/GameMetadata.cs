@@ -47,6 +47,7 @@ namespace PhoenixGameLibrary
 
             MovementTypes = NamedDataDictionary<MovementType>.Create(MovementTypesLoader.Load());
             //MineralTypes = MineralTypes.Create(MineralTypesLoader.GetMineralTypes());
+            //UnitTypes = NamedDataDictionary<UnitType>.Create(UnitTypesLoader.LoadFromJsonFile("UnitTypes"));
             UnitTypes = NamedDataDictionary<UnitType>.Create(UnitTypesLoader.Load());
             ActionTypes = NamedDataDictionary<ActionType>.Create(ActionTypesLoader.LoadFromJsonFile("Actions"));
         }

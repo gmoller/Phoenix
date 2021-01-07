@@ -1,0 +1,152 @@
+[
+  {
+    "Id": 0,
+    "Name": "Barbarian Settlers",
+    "ShortName": "Settlers",
+    "ConstructionCost": 60,
+    "MovementPoints": 1,
+    "TextureName": "Unit_Icon_Settlers_Transparent",
+    "MovementTypes": [ "Walking" ],
+    "Actions": [ "BuildOutpost" ]
+  },
+  {
+    "Id": 1,
+    "Name": "Barbarian Spearmen",
+    "ShortName": "Spearmen",
+    "ConstructionCost": 15,
+    "MovementPoints": 1,
+    "TextureName": "Unit_Icon_BarbarianSpearmen_Transparent",
+    "MovementTypes": [ "Walking" ],
+    "Actions": []
+  },
+  {
+    "Id": 2,
+    "Name": "Barbarian Swordsmen",
+    "ShortName": "Swordsmen",
+    "ConstructionCost": 30,
+    "MovementPoints": 1,
+    "TextureName": "Unit_Icon_BarbarianSwordsmen_Transparent",
+    "MovementTypes": [ "Walking" ],
+    "Actions": []
+  },
+  {
+    "Id": 3,
+    "Name": "Barbarian Bowmen",
+    "ShortName": "Bowmen",
+    "ConstructionCost": 30,
+    "MovementPoints": 1,
+    "TextureName": "Unit_Icon_BarbarianBowmen_Transparent",
+    "MovementTypes": [ "Walking" ],
+    "Actions": []
+  },
+  {
+    "Id": 4,
+    "Name": "Barbarian Cavalry",
+    "ShortName": "Cavalry",
+    "ConstructionCost": 60,
+    "MovementPoints": 2,
+    "TextureName": "Unit_Icon_BarbarianCavalry_Transparent",
+    "MovementTypes": [ "Walking" ],
+    "Actions": []
+  },
+  {
+    "Id": 5,
+    "Name": "Barbarian Shamans",
+    "ShortName": "Shamans",
+    "ConstructionCost": 50,
+    "MovementPoints": 1,
+    "TextureName": "Unit_Icon_BarbarianShamans_Transparent",
+    "MovementTypes": [ "Walking" ],
+    "Actions": []
+  },
+  {
+    "Id": 6,
+    "Name": "Barbarian Trireme",
+    "ShortName": "Trireme",
+    "ConstructionCost": 60,
+    "MovementPoints": 2,
+    "TextureName": "Unit_Icon_Trireme_Transparent",
+    "MovementTypes": [ "Sailing" ],
+    "Actions": []
+  },
+  {
+    "Id": 7,
+    "Name": "Barbarian Galley",
+    "ShortName": "Galley",
+    "ConstructionCost": 100,
+    "MovementPoints": 3,
+    "TextureName": "Unit_Icon_Galley_Transparent",
+    "MovementTypes": [ "Sailing" ],
+    "Actions": []
+  },
+  {
+    "Id": 8,
+    "Name": "Barbarian Warship",
+    "ShortName": "Warship",
+    "ConstructionCost": 160,
+    "MovementPoints": 4,
+    "TextureName": "Unit_Icon_Warship_Transparent",
+    "MovementTypes": [ "Sailing" ],
+    "Actions": []
+  },
+  {
+    "Id": 9,
+    "Name": "Barbarian Beserkers",
+    "ShortName": "Beserkers",
+    "ConstructionCost": 120,
+    "MovementPoints": 1,
+    "TextureName": "Unit_Icon_Berserkers_Transparent",
+    "MovementTypes": [ "Walking" ],
+    "Actions": []
+  },
+  {
+    "Id": 10,
+    "Name": "Beastmen Settlers",
+    "ShortName": "Settlers",
+    "ConstructionCost": 120,
+    "MovementPoints": 1,
+    "TextureName": "Unit_Icon_Settlers_Transparent",
+    "MovementTypes": [ "Walking" ],
+    "Actions": [ "BuildOutpost" ]
+  },
+  {
+    "Id": 11,
+    "Name": "Beastmen Spearmen",
+    "ShortName": "Spearmen",
+    "ConstructionCost": 20,
+    "MovementPoints": 1,
+    "TextureName": "Unit_Icon_BeastmenSpearmen_Transparent",
+    "MovementTypes": [ "Walking" ],
+    "Actions": []
+  },
+  {
+    "Id": 12,
+    "Name": "Lizardmen Spearmen",
+    "ShortName": "Spearmen",
+    "ConstructionCost": 10,
+    "MovementPoints": 1,
+    "TextureName": "Unit_Icon_BarbarianBowmen_Transparent",
+    "MovementTypes": [ "Walking", "Swimming" ],
+    "Actions": []
+  },
+  {
+    "Id": 13,
+    "Name": "Nomad Griffins",
+    "ShortName": "Griffins",
+    "ConstructionCost": 200,
+    "MovementPoints": 2,
+    "TextureName": "Unit_Icon_Griffins_Transparent",
+    "MovementTypes": [ "Flying" ],
+    "Actions": []
+  },
+  {
+    "Id": 100,
+    "Name": "Test Dude",
+    "ShortName": "Test",
+    "ConstructionCost": 1,
+    "MovementPoints": 4000,
+    "TextureName": "Unit_Icon_Griffins_Transparent",
+    "MovementTypes": [ "Walking", "Flying", "Mountaineer", "Pathfinding", "PlaneShift" ],
+    "Actions": []
+  }
+]

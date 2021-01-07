@@ -13,6 +13,8 @@ namespace PhoenixGamePresentation
     {
         internal static void Update(InputHandler input, CursorView cursorView, WorldView worldView, float deltaTime)
         {
+            // if (predicate is true) do something
+
             if (worldView.GameStatus == GameStatus.OverlandMap || worldView.GameStatus == GameStatus.CityView)
             {
                 if (input.HasMouseMoved)
@@ -24,7 +26,14 @@ namespace PhoenixGamePresentation
 
             if (worldView.GameStatus == GameStatus.OverlandMap)
             {
-                worldView.CheckIfMouseIsHoveringOverStack(input.Mouse.Location);
+                if (worldView.IsMouseHoveringOverAStack(input.Mouse.Location))
+                {
+                    // enabled tooltip
+                }
+                else
+                {
+                    // disable tooltip
+                }
 
                 if (input.IsKeyReleased(Keys.Enter))
                 {
@@ -53,10 +62,18 @@ namespace PhoenixGamePresentation
                 if (input.IsLeftMouseButtonReleased)
                 {
                     var startUnitMovement  = worldView.CheckForUnitMovementOfCurrentlySelectedStackView(input.Mouse.Location);
-
                     if (startUnitMovement.startMovement)
                     {
                         worldView.StartUnitMovementOfCurrentlySelectedStackView(startUnitMovement.hexToMoveTo);
+                    }
+
+                    // check for click of unit in hudview
+                    var unitClicked = worldView.CheckForUnitSelectionInHudView(input.Mouse.Location);
+                    if (unitClicked.unitClicked)
+                    {
+                        // select/unselect unit
+                        worldView.AddToCurrentlySelectedStack(unitClicked.unitView.Unit);
+                        // TODO: need to remove the unit from its pre-existing stack
                     }
                 }
 

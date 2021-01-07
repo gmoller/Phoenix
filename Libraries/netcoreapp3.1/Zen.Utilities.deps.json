@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Zen.Utilities/0.1.21": {
+        "runtime": {
+          "Zen.Utilities.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Zen.Utilities/0.1.21": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

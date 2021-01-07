@@ -33,7 +33,6 @@ namespace PhoenixGamePresentation
             pixel.SetData(new[] { new Color(Color.Black, 180) });
 
             ContentLoader.LoadContent($@"{Directory.GetCurrentDirectory()}\Content\", "Fonts", "Textures", "TextureAtlases", graphicsDevice);
-            var foo = AssetsManager.Instance.GetSpriteFont("DarkXShadowX21s Skyrim Font");
 
             AssetsManager.Instance.AddTexture("TransparentBackground", pixel);
 

@@ -38,7 +38,7 @@
       <HintPath>..\Libraries\Zen.Hexagons.dll</HintPath>
     </Reference>
     <Reference Include="Zen.Utilities">
-      <HintPath>..\Libraries\Zen.Utilities.dll</HintPath>
+      <HintPath>..\Libraries\netcoreapp3.1\Zen.Utilities.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

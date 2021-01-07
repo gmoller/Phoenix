@@ -10,7 +10,6 @@ namespace Phoenix2
         [STAThread]
         public static void Main(string[] args)
         {
-            var gameMetadata = new GameMetadata();
             var presentationContext = new GlobalContextPresentation();
 
             //--resolution 800x600
@@ -23,7 +22,10 @@ namespace Phoenix2
                 presentationContext.DesiredResolution = desiredResolution;
             }
 
+            var gameMetadata = new GameMetadata();
             CallContext<GameMetadata>.SetData("GameMetadata", gameMetadata);
+            var gameDataRepository = new GameDataRepository();
+            CallContext<GameDataRepository>.SetData("GameDataRepository", gameDataRepository);
             CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
 
             //using (var game = new Game1())
