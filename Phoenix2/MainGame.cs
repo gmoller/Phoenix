@@ -16,7 +16,6 @@ namespace Phoenix2
 
         private SpriteBatch _spriteBatch;
 
-        private PhoenixGame _phoenixGame;
         private PhoenixGameView _phoenixGameView;
         private MetricsPanel _metricsPanel;
         #endregion
@@ -32,10 +31,7 @@ namespace Phoenix2
             CallContext<GameDataRepository>.SetData("GameDataRepository", gameDataRepository);
 
             var presentationContext = new GlobalContextPresentation();
-            if (desiredResolution != PointI.Empty)
-            {
-                presentationContext.DesiredResolution = desiredResolution;
-            }
+            presentationContext.DesiredResolution = desiredResolution;
             CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
         }
 
@@ -61,8 +57,10 @@ namespace Phoenix2
                 SetScreenResolution(_graphicsDeviceManager, context.DesiredResolution.X, context.DesiredResolution.Y);
             }
 
-            _phoenixGame = new PhoenixGame();
-            _phoenixGameView = new PhoenixGameView(_phoenixGame);
+            var world = PhoenixGame.MakeWorld();
+            CallContext<World>.SetData("GameWorld", world);
+
+            _phoenixGameView = new PhoenixGameView();
             _metricsPanel = new MetricsPanel();
 
             Logger.Instance.LogComplete();

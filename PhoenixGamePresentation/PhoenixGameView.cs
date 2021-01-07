@@ -18,10 +18,11 @@ namespace PhoenixGamePresentation
         private InputHandler Input { get; }
         #endregion
 
-        public PhoenixGameView(PhoenixGame phoenixGame)
+        public PhoenixGameView()
         {
             Input = new InputHandler();
-            WorldView = new WorldView(phoenixGame.World, CameraClampMode.NoClamp, Input);
+            var world = CallContext<World>.GetData("GameWorld");
+            WorldView = new WorldView(world, CameraClampMode.NoClamp, Input);
             CursorView = new CursorView(WorldView, Input);
         } 
 

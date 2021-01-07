@@ -9,7 +9,6 @@ namespace PhoenixTests
     [TestFixture]
     public class GamePlayTests
     {
-        private PhoenixGame _phoenixGame;
         private PhoenixGameView _phoenixGameView;
 
         [SetUp]
@@ -21,8 +20,7 @@ namespace PhoenixTests
             CallContext<GameMetadata>.SetData("GameMetadata", gameMetadata);
             CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
 
-            _phoenixGame = new PhoenixGame();
-            _phoenixGameView = new PhoenixGameView(_phoenixGame);
+            _phoenixGameView = new PhoenixGameView();
 
             ContentManager content = new ContentManager(null);
             _phoenixGameView.LoadContent(content);

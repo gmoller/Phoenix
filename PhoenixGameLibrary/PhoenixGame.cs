@@ -3,13 +3,11 @@ using Zen.Utilities;
 
 namespace PhoenixGameLibrary
 {
-    public class PhoenixGame
+    public static class PhoenixGame
     {
-        public World World { get; }
-
-        public PhoenixGame()
+        public static World MakeWorld()
         {
-            World = new World(Constants.WORLD_MAP_COLUMNS, Constants.WORLD_MAP_ROWS);
+            var world = new World(Constants.WORLD_MAP_COLUMNS, Constants.WORLD_MAP_ROWS);
 
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var unitTypes = gameMetadata.UnitTypes;
@@ -32,10 +30,12 @@ namespace PhoenixGameLibrary
             var unit3 = new UnitRecord(100, stack1.Id); // barbarian spearmen
             gameDataRepository.Add(unit3);
 
-            World.AddSettlement(new PointI(12, 9), "Barbarians");
-            World.AddUnit(new PointI(12, 9), unitTypes["Test Dude"]);
-            World.AddUnit(new PointI(15, 7), unitTypes["Barbarian Settlers"]);
-            World.AddUnit(new PointI(12, 9), unitTypes["Barbarian Spearmen"]);
+            world.AddSettlement(new PointI(12, 9), "Barbarians");
+            world.AddUnit(new PointI(12, 9), unitTypes["Test Dude"]);
+            world.AddUnit(new PointI(15, 7), unitTypes["Barbarian Settlers"]);
+            world.AddUnit(new PointI(12, 9), unitTypes["Barbarian Spearmen"]);
+
+            return world;
         }
     }
 }
