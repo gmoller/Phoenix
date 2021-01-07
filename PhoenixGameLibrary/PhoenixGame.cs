@@ -8,6 +8,7 @@ namespace PhoenixGameLibrary
         public static World MakeWorld()
         {
             var world = new World(Constants.WORLD_MAP_COLUMNS, Constants.WORLD_MAP_ROWS);
+            CallContext<World>.SetData("GameWorld", world);
 
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var unitTypes = gameMetadata.UnitTypes;

@@ -12,16 +12,14 @@ namespace PhoenixGameLibrary
     {
         #region State
         private Cell[,] Cells { get; }
-        private World World { get; }
         public int NumberOfColumns { get; }
         public int NumberOfRows { get; }
 
         public event EventHandler NewCellSeen;
         #endregion
 
-        public CellGrid(World world, int numberOfColumns, int numberOfRows)
+        public CellGrid(int numberOfColumns, int numberOfRows)
         {
-            World = world;
             var map = MapGenerator.Generate(numberOfColumns, numberOfRows);
 
             NumberOfColumns = numberOfColumns;
@@ -32,7 +30,7 @@ namespace PhoenixGameLibrary
                 for (var q = 0; q < numberOfColumns; ++q)
                 {
                     var terrainType = map[q, r];
-                    var cell = new Cell(World, q, r, terrainType.Id);
+                    var cell = new Cell(q, r, terrainType.Id);
                     Cells[q, r] = cell;
                 }
             }
@@ -103,7 +101,8 @@ namespace PhoenixGameLibrary
         public List<Cell> GetCatchment(int column, int row, int radius)
         {
             var catchmentCells = new List<Cell>();
-            var catchment = World.HexLibrary.GetSpiralRing(new HexOffsetCoordinates(column, row), radius);
+            var world = CallContext<World>.GetData("GameWorld");
+            var catchment = world.HexLibrary.GetSpiralRing(new HexOffsetCoordinates(column, row), radius);
             foreach (var tile in catchment)
             {
                 var cell = GetCell(tile.Col, tile.Row);
@@ -123,7 +122,8 @@ namespace PhoenixGameLibrary
             var max = Math.Max(NumberOfColumns, NumberOfRows);
             for (int i = 1; i < max; i++)
             {
-                var ring = World.HexLibrary.GetSingleRing(new HexOffsetCoordinates(location.X, location.Y), i);
+                var world = CallContext<World>.GetData("GameWorld");
+                var ring = world.HexLibrary.GetSingleRing(new HexOffsetCoordinates(location.X, location.Y), i);
                 foreach (var coordinates in ring)
                 {
                     var cell = GetCell(coordinates.Col, coordinates.Row);

@@ -4,9 +4,9 @@
     {
         public CellGrid CellGrid { get; }
 
-        internal OverlandMap(World world, int numberOfColumns, int numberOfRows)
+        internal OverlandMap(int numberOfColumns, int numberOfRows)
         {
-            CellGrid = new CellGrid(world, numberOfColumns, numberOfRows);
+            CellGrid = new CellGrid(numberOfColumns, numberOfRows);
         }
     }
 }

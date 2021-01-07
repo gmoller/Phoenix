@@ -25,7 +25,7 @@ namespace PhoenixGameLibrary
         public World(int numberOfColumns, int numberOfRows)
         {
             PlayerFaction = new Faction(this);
-            OverlandMap = new OverlandMap(this, numberOfColumns, numberOfRows);
+            OverlandMap = new OverlandMap(numberOfColumns, numberOfRows);
             Settlements = new Settlements();
             Stacks = new Stacks();
             _turnNumber = 0;

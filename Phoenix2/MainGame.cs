@@ -57,9 +57,7 @@ namespace Phoenix2
                 SetScreenResolution(_graphicsDeviceManager, context.DesiredResolution.X, context.DesiredResolution.Y);
             }
 
-            var world = PhoenixGame.MakeWorld();
-            CallContext<World>.SetData("GameWorld", world);
-
+            PhoenixGame.MakeWorld();
             _phoenixGameView = new PhoenixGameView();
             _metricsPanel = new MetricsPanel();
 
