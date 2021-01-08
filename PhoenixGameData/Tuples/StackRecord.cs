@@ -1,7 +1,8 @@
 ﻿using System.Linq;
+using PhoenixGameData.Enumerations;
 using Zen.Utilities;
 
-namespace PhoenixGameLibrary.GameData2
+namespace PhoenixGameData.Tuples
 {
     public class StackRecord : IIdentifiedById
     {
@@ -21,9 +22,9 @@ namespace PhoenixGameLibrary.GameData2
         }
     }
 
-    public class StacksCollection : DataList<StackRecord>
+    internal class StacksCollection : DataList<StackRecord>
     {
-        public DataList<StackRecord> GetByFactionId(int factionId)
+        internal DataList<StackRecord> GetByFactionId(int factionId)
         {
             var list = Create();
             foreach (var item in Items.Where(item => item.FactionId == factionId))
@@ -34,7 +35,7 @@ namespace PhoenixGameLibrary.GameData2
             return list;
         }
 
-        public DataList<StackRecord> GetByOrdersNotBeenGivenThisTurn()
+        internal DataList<StackRecord> GetByOrdersNotBeenGivenThisTurn()
         {
             var list = Create();
             foreach (var item in Items.Where(item => item.HaveOrdersBeenGivenThisTurn == false))
@@ -45,7 +46,7 @@ namespace PhoenixGameLibrary.GameData2
             return list;
         }
 
-        public DataList<StackRecord> GetByLocationHex(PointI locationHex)
+        internal DataList<StackRecord> GetByLocationHex(PointI locationHex)
         {
             var list = Create();
             foreach (var item in Items.Where(item => item.LocationHex == locationHex))

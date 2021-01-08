@@ -1,4 +1,4 @@
-﻿namespace PhoenixGameLibrary.GameData2
+﻿namespace PhoenixGameData.Tuples
 {
     public struct SettlementProducingRecord
     {

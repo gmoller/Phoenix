@@ -1,8 +1,9 @@
 ﻿using System;
-using PhoenixGameLibrary.GameData2;
+using System.Linq;
+using PhoenixGameData.Tuples;
 using Zen.Utilities;
 
-namespace PhoenixGameLibrary
+namespace PhoenixGameData
 {
     public class GameDataRepository
     {
@@ -28,11 +29,25 @@ namespace PhoenixGameLibrary
 
         public void Add(UnitRecord unit)
         {
+            // referential integrity:
+            var stack = Stacks.FirstOrDefault(x => x.Id == unit.StackId);
+            if (stack == null)
+            {
+                throw new Exception($"Inconsistent data: Stack [{unit.StackId}] not found in Stacks.");
+            }
+
             Units.Add(unit);
         }
 
         public void Add(StackRecord stack)
         {
+            // referential integrity:
+            var faction = Factions.FirstOrDefault(x => x.Id == stack.FactionId);
+            if (faction == null)
+            {
+                throw new Exception($"Inconsistent data: Faction [{stack.FactionId}] not found in Factions.");
+            }
+
             Stacks.Add(stack);
         }
 
@@ -43,6 +58,20 @@ namespace PhoenixGameLibrary
             return faction;
         }
 
+        public UnitRecord GetUnitById(int id)
+        {
+            var unit = Units.GetById(id);
+
+            return unit;
+        }
+
+        public StackRecord GetStackById(int id)
+        {
+            var stack = Stacks.GetById(id);
+
+            return stack;
+        }
+
         public DataList<StackRecord> GetStacksByFactionId(int factionId)
         {
             var stacks = Stacks.GetByFactionId(factionId);
@@ -50,9 +79,40 @@ namespace PhoenixGameLibrary
             return stacks;
         }
 
+        public DataList<StackRecord> GetStacksByLocationHex(PointI locationHex)
+        {
+            var stacks = Stacks.GetByLocationHex(locationHex);
+
+            return stacks;
+        }
+
+        public DataList<StackRecord> GetStacksByOrdersNotBeenGivenThisTurn()
+        {
+            var stacks = Stacks.GetByOrdersNotBeenGivenThisTurn();
+
+            return stacks;
+        }
+
         public DataList<UnitRecord> GetUnitsByStackId(int stackId)
         {
             var units = Units.GetByStackId(stackId);
+
+            return units;
+        }
+
+        public DataList<UnitRecord> GetUnitsByFactionId(int factionId)
+        {
+            var stacks = Stacks.GetByFactionId(factionId);
+
+            var units = DataList<UnitRecord>.Create();
+            foreach (var stack in stacks)
+            {
+                var unitsForStack = GetUnitsByStackId(stack.Id);
+                foreach (var unit in unitsForStack)
+                {
+                    units.Add(unit);
+                }
+            }
 
             return units;
         }

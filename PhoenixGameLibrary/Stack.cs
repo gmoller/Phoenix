@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using PhoenixGameData;
+using PhoenixGameData.Enumerations;
+using PhoenixGameData.Tuples;
 using PhoenixGameLibrary.GameData;
 using Zen.Hexagons;
 using Zen.Utilities;
@@ -13,23 +16,55 @@ namespace PhoenixGameLibrary
     public class Stack : IEnumerable<Unit>
     {
         #region State
-        private World World { get; }
-        private Units Units { get; }
+        private readonly StackRecord _stackRecord;
 
-        public UnitStatus Status { get; private set; }
-        public bool OrdersGiven { get; private set; }
+        private Units Units
+        {
+            get
+            {
+                var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
+                var units2 = gameDataRepository.GetUnitsByStackId(_stackRecord.Id);
+
+                var units = new Units();
+                foreach (var item in units2)
+                {
+                    var unit = new Unit(item);
+                    units.Add(unit);
+                }
+
+                return units;
+            }
+        }
+
+        public int Id => _stackRecord.Id;
+
+        public UnitStatus Status
+        {
+            get => _stackRecord.Status;
+            private set => _stackRecord.Status = value;
+        }
+
+        public bool OrdersGiven
+        {
+            get => _stackRecord.HaveOrdersBeenGivenThisTurn;
+            private set => _stackRecord.HaveOrdersBeenGivenThisTurn = value;
+        }
+
+        public PointI LocationHex
+        {
+            get => _stackRecord.LocationHex;
+            private set => _stackRecord.LocationHex = value;
+        }
         #endregion
 
-        public Stack(World world, Units units)
+        public Stack(int factionId, PointI locationHex)
         {
-            World = world;
-            Units = units;
-            Status = UnitStatus.None;
+            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
+            _stackRecord = new StackRecord(factionId, locationHex);
+            gameDataRepository.Add(_stackRecord);
         }
 
         #region Accessors
-        public PointI LocationHex => Units.Count > 0 ? Units[0].LocationHex : PointI.Empty;
-
         public int SightRange => GetSightRange();
 
         public float MovementPoints => DetermineMovementPoints();
@@ -111,12 +146,13 @@ namespace PhoenixGameLibrary
 
         internal void MoveTo(PointI locationToMoveTo)
         {
-            var cellToMoveTo = World.OverlandMap.CellGrid.GetCell(locationToMoveTo);
+            var world = CallContext<World>.GetData("GameWorld");
+            var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(locationToMoveTo);
             var movementCost = GetCostToMoveInto(cellToMoveTo);
 
             foreach (var unit in Units)
             {
-                unit.LocationHex = locationToMoveTo;
+                LocationHex = locationToMoveTo;
                 unit.SetSeenCells(LocationHex);
 
                 unit.MovementPoints -= movementCost.CostToMoveInto;
@@ -130,7 +166,8 @@ namespace PhoenixGameLibrary
 
         public GetCostToMoveIntoResult GetCostToMoveInto(PointI location)
         {
-            var cellToMoveTo = World.OverlandMap.CellGrid.GetCell(location);
+            var world = CallContext<World>.GetData("GameWorld");
+            var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(location);
 
             return GetCostToMoveInto(cellToMoveTo);
         }
@@ -309,16 +346,17 @@ namespace PhoenixGameLibrary
             var terrainTypes = gameMetadata.TerrainTypes;
 
             // if terrain is settle-able
-            var cell = World.OverlandMap.CellGrid.GetCell(thisLocationHex);
+            var world = CallContext<World>.GetData("GameWorld");
+            var cell = world.OverlandMap.CellGrid.GetCell(thisLocationHex);
             var terrainType = terrainTypes[cell.TerrainTypeId];
 
             if (!terrainType.CanSettleOn) return false;
             
             // and not within 4 distance from another settlement
-            var settlements = World.Settlements;
+            var settlements = world.Settlements;
             foreach (var settlement in settlements)
             {
-                var distance = World.HexLibrary.GetDistance(new HexOffsetCoordinates(thisLocationHex.X, thisLocationHex.Y), new HexOffsetCoordinates(settlement.Location.X, settlement.Location.Y));
+                var distance = world.HexLibrary.GetDistance(new HexOffsetCoordinates(thisLocationHex.X, thisLocationHex.Y), new HexOffsetCoordinates(settlement.Location.X, settlement.Location.Y));
                 if (distance >= 4)
                 {
                     return true;

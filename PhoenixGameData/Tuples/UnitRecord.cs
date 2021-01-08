@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Zen.Utilities;
 
-namespace PhoenixGameLibrary.GameData2
+namespace PhoenixGameData.Tuples
 {
     public class UnitRecord : IIdentifiedById
     {
@@ -19,9 +19,9 @@ namespace PhoenixGameLibrary.GameData2
         }
     }
 
-    public class UnitsCollection : DataList<UnitRecord>
+    internal class UnitsCollection : DataList<UnitRecord>
     {
-        public DataList<UnitRecord> GetByStackId(int stackId)
+        internal DataList<UnitRecord> GetByStackId(int stackId)
         {
             var list = Create();
             foreach (var item in Items.Where(item => item.StackId == stackId))

@@ -1,4 +1,5 @@
-﻿using PhoenixGameLibrary.GameData2;
+﻿using PhoenixGameData;
+using PhoenixGameData.Tuples;
 using Zen.Utilities;
 
 namespace PhoenixGameLibrary
@@ -25,7 +26,7 @@ namespace PhoenixGameLibrary
             set => _factionRecord.GoldInTreasury = value;
         }
 
-        public int GoldPerTurn => _factionRecord.GoldPerTurn;
+        public int GoldPerTurn => 0;
 
         public int ManaInTreasury
         {
@@ -33,7 +34,7 @@ namespace PhoenixGameLibrary
             set => _factionRecord.ManaInTreasury = value;
         }
 
-        public int ManaPerTurn => _factionRecord.ManaPerTurn;
+        public int ManaPerTurn => 0;
 
         public int FoodPerTurn
         {

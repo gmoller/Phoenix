@@ -1,4 +1,5 @@
-﻿using PhoenixGameLibrary.GameData2;
+﻿using PhoenixGameData;
+using PhoenixGameData.Tuples;
 using Zen.Utilities;
 
 namespace PhoenixGameLibrary

@@ -52,7 +52,7 @@ namespace PhoenixGameLibrary
 
         internal void AddUnit(PointI location, UnitType unitType)
         {
-            var addUnitCommand = new AddUnitCommand { Payload = (location, unitType, Stacks, this) };
+            var addUnitCommand = new AddUnitCommand { Payload = (location, unitType, Stacks) };
             addUnitCommand.Execute();
         }
 

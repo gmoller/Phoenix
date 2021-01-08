@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PhoenixGameData;
 using PhoenixGameLibrary;
 using PhoenixGameLibrary.GameData;
 using PhoenixGamePresentation.ExtensionMethods;
@@ -73,7 +74,7 @@ namespace PhoenixGamePresentation.Views
         {
             var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
             var playerFaction = gameDataRepository.GetFactionById(1);
-            var gold = $"{playerFaction.GoldInTreasury} GP (+{playerFaction.GoldPerTurn})";
+            var gold = $"{playerFaction.GoldInTreasury} GP (+{0})";
 
             return gold;
         }
@@ -82,7 +83,7 @@ namespace PhoenixGamePresentation.Views
         {
             var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
             var playerFaction = gameDataRepository.GetFactionById(1);
-            var mana = $"{playerFaction.ManaInTreasury} MP (+{playerFaction.ManaPerTurn})";
+            var mana = $"{playerFaction.ManaInTreasury} MP (+{0})";
 
             return mana;
         }

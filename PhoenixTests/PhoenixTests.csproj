@@ -12,11 +12,17 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
     <PackageReference Include="Zen.Hexagons" Version="1.0.8" />
     <PackageReference Include="Zen.Input" Version="0.1.11" />
-    <PackageReference Include="Zen.Utilities" Version="0.1.20" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PhoenixGameData\PhoenixGameData.csproj" />
     <ProjectReference Include="..\PhoenixGamePresentation\PhoenixGamePresentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Zen.Utilities">
+      <HintPath>..\Libraries\netcoreapp3.1\Zen.Utilities.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

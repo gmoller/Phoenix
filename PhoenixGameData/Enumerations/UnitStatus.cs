@@ -1,4 +1,4 @@
-﻿namespace PhoenixGameLibrary
+﻿namespace PhoenixGameData.Enumerations
 {
     public enum UnitStatus
     {
