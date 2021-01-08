@@ -202,6 +202,8 @@ namespace PhoenixGamePresentation.Views
         private static List<StackView.StackView> GetStackViewsSharingSameLocation(StackViews stackViews, StackView.StackView selectedStackView)
         {
             var stackViews2 = new List<StackView.StackView>();
+            if (selectedStackView == null) return stackViews2;
+
             foreach (var stackView in stackViews)
             {
                 if (stackView.LocationHex == selectedStackView.LocationHex) // same location

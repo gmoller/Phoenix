@@ -18,7 +18,6 @@ namespace PhoenixGameLibrary
     {
         #region State
         private readonly GameMetadata _gameMetadata;
-        private readonly World _world;
 
         private readonly int _id;
 
@@ -52,13 +51,12 @@ namespace PhoenixGameLibrary
         public string CurrentlyBuilding => GetCurrentlyBuilding();
         public SettlementType SettlementType => GetSettlementType();
 
-        public Settlement(World world, string name, string raceTypeName, PointI location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
+        public Settlement(string name, string raceTypeName, PointI location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
         {
             _gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var raceTypes = _gameMetadata.RaceTypes;
             var buildingTypes = _gameMetadata.BuildingTypes;
 
-            _world = world;
             _id = location.Y * Constants.WORLD_MAP_COLUMNS + location.X;
 
             Name = name;
@@ -163,7 +161,8 @@ namespace PhoenixGameLibrary
             {
                 Citizens.IncreaseByOne(_buildingsBuilt);
                 _populationGrowth = 0;
-                _world.NotificationList.Add($"- {Name} has grown to a population of {Citizens.TotalPopulation}");
+                var world = CallContext<World>.GetData("GameWorld");
+                world.NotificationList.Add($"- {Name} has grown to a population of {Citizens.TotalPopulation}");
             }
 
             if (_currentlyBuilding.BuildingId >= 0)
@@ -174,7 +173,8 @@ namespace PhoenixGameLibrary
                 if (_currentlyBuilding.ProductionAccrued >= buildingTypes[_currentlyBuilding.BuildingId].ConstructionCost)
                 {
                     _buildingsBuilt.Add(_currentlyBuilding.BuildingId);
-                    _world.NotificationList.Add($"- {Name} has produced a {buildingTypes[_currentlyBuilding.BuildingId].Name}");
+                    var world = CallContext<World>.GetData("GameWorld");
+                    world.NotificationList.Add($"- {Name} has produced a {buildingTypes[_currentlyBuilding.BuildingId].Name}");
                     _currentlyBuilding = new CurrentlyBuilding(-1, -1, -1, 0);
 
                     OnSettlementOpened(EventArgs.Empty);
@@ -188,8 +188,9 @@ namespace PhoenixGameLibrary
                 if (_currentlyBuilding.ProductionAccrued >= unitTypes[_currentlyBuilding.UnitId].ConstructionCost)
                 {
                     var unitType = unitTypes[_currentlyBuilding.UnitId];
-                    _world.AddUnit(Location, unitType);
-                    _world.NotificationList.Add($"- {Name} has produced a {unitType.Name}");
+                    var world = CallContext<World>.GetData("GameWorld");
+                    world.AddUnit(Location, unitType);
+                    world.NotificationList.Add($"- {Name} has produced a {unitType.Name}");
                     _currentlyBuilding = new CurrentlyBuilding(-1, _currentlyBuilding.UnitId, -1, 0);
                 }
             }

@@ -56,7 +56,7 @@ namespace PhoenixGamePresentation.Views
             OverlandMapView = new OverlandMapView(this, World.OverlandMap, Input);
             OverlandSettlementViews = new OverlandSettlementViews(this, World.Settlements, Input);
             StackViews = new StackViews(this, World.Stacks, Input);
-            SettlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement(World, "Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid), Input);
+            SettlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement("Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid), Input);
             HudView = new HudView(this, StackViews, Input);
             //Tooltip = new Tooltip(Vector2.Zero, Alignment.TopLeft, new Vector2(200.0f, 300.0f), "GUI_Textures_1.sp_frame", 25, 25, 25, 25, "tooltip") { Enabled = false };
 

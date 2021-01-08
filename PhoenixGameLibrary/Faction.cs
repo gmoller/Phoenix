@@ -19,11 +19,19 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public int GoldInTreasury => _factionRecord.GoldInTreasury;
+        public int GoldInTreasury
+        {
+            get => _factionRecord.GoldInTreasury;
+            set => _factionRecord.GoldInTreasury = value;
+        }
 
         public int GoldPerTurn => _factionRecord.GoldPerTurn;
 
-        public int ManaInTreasury => _factionRecord.ManaInTreasury;
+        public int ManaInTreasury
+        {
+            get => _factionRecord.ManaInTreasury;
+            set => _factionRecord.ManaInTreasury = value;
+        }
 
         public int ManaPerTurn => _factionRecord.ManaPerTurn;
 

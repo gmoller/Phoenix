@@ -2,13 +2,13 @@
 
 namespace PhoenixGameLibrary.GameData2
 {
-    public readonly struct FactionRecord : IIdentifiedById
+    public class FactionRecord : IIdentifiedById
     {
         public int Id { get; } // Primary key
         public int RaceTypeId { get; } // Foreign key -> Config.RaceType
-        public int GoldInTreasury { get; }
+        public int GoldInTreasury { get; set; }
         public int GoldPerTurn { get; }
-        public int ManaInTreasury { get; }
+        public int ManaInTreasury { get; set; }
         public int ManaPerTurn { get; }
 
         public FactionRecord(int raceType)
