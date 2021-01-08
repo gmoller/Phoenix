@@ -24,7 +24,7 @@ namespace PhoenixGameLibrary
 
         public World(int numberOfColumns, int numberOfRows)
         {
-            PlayerFaction = new Faction(this);
+            PlayerFaction = new Faction(0); // Barbarians
             OverlandMap = new OverlandMap(numberOfColumns, numberOfRows);
             Settlements = new Settlements();
             Stacks = new Stacks();
