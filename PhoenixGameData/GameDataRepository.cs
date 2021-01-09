@@ -10,16 +10,22 @@ namespace PhoenixGameData
         private static int _factionSequence;
         private static int _unitSequence;
         private static int _stackSequence;
+        private static int _settlementSequence;
+        private static int _settlementCitizenSequence;
+        private static int _settlementBuildingSequence;
+        private static int _settlementProducingSequence;
 
         private FactionsCollection Factions { get; }
         private UnitsCollection Units { get; }
         private StacksCollection Stacks { get; }
+        private SettlementsCollection Settlements { get; }
 
         public GameDataRepository()
         {
             Factions = new FactionsCollection();
             Units = new UnitsCollection();
             Stacks = new StacksCollection();
+            Settlements = new SettlementsCollection();
         }
 
         public void Add(FactionRecord faction)
@@ -51,6 +57,18 @@ namespace PhoenixGameData
             Stacks.Add(stack);
         }
 
+        public void Add(SettlementRecord settlement)
+        {
+            // referential integrity:
+            var faction = Factions.FirstOrDefault(x => x.Id == settlement.FactionId);
+            if (faction == null)
+            {
+                throw new Exception($"Inconsistent data: Faction [{settlement.FactionId}] not found in Factions.");
+            }
+
+            Settlements.Add(settlement);
+        }
+
         public FactionRecord GetFactionById(int id)
         {
             var faction = Factions.GetById(id);
@@ -72,6 +90,13 @@ namespace PhoenixGameData
             return stack;
         }
 
+        public SettlementRecord GetSettlementById(int id)
+        {
+            var settlement = Settlements.GetById(id);
+
+            return settlement;
+        }
+
         public DataList<StackRecord> GetStacksByFactionId(int factionId)
         {
             var stacks = Stacks.GetByFactionId(factionId);
@@ -86,9 +111,9 @@ namespace PhoenixGameData
             return stacks;
         }
 
-        public DataList<StackRecord> GetStacksByOrdersNotBeenGivenThisTurn()
+        public DataList<StackRecord> GetStacksByOrdersNotBeenGivenThisTurnAndFactionId(int factionId)
         {
-            var stacks = Stacks.GetByOrdersNotBeenGivenThisTurn();
+            var stacks = Stacks.GetByOrdersNotBeenGivenThisTurnAndFactionId(factionId);
 
             return stacks;
         }
@@ -117,6 +142,13 @@ namespace PhoenixGameData
             return units;
         }
 
+        public DataList<SettlementRecord> GetSettlementsByFactionId(int factionId)
+        {
+            var settlements = Settlements.GetByFactionId(factionId);
+
+            return settlements;
+        }
+
         public static int GetNextSequence(string sequenceName)
         {
             switch (sequenceName)
@@ -130,6 +162,18 @@ namespace PhoenixGameData
                 case "Stack":
                     _stackSequence++;
                     return _stackSequence;
+                case "Settlement":
+                    _settlementSequence++;
+                    return _settlementSequence;
+                case "SettlementCitizen":
+                    _settlementCitizenSequence++;
+                    return _settlementCitizenSequence;
+                case "SettlementBuilding":
+                    _settlementBuildingSequence++;
+                    return _settlementBuildingSequence;
+                case "SettlementProducing":
+                    _settlementProducingSequence++;
+                    return _settlementProducingSequence;
             }
 
             throw new Exception($"Unknown sequence requested: [{sequenceName}].");

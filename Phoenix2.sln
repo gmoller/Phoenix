@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhoenixTests", "PhoenixTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoenixGameData", "PhoenixGameData\PhoenixGameData.csproj", "{335746F8-D6CE-4123-9665-607B2463C239}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoenixGameConfig", "PhoenixGameConfig\PhoenixGameConfig.csproj", "{0E74EA72-C6AB-4E71-A77B-8E067C3E254E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{335746F8-D6CE-4123-9665-607B2463C239}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{335746F8-D6CE-4123-9665-607B2463C239}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{335746F8-D6CE-4123-9665-607B2463C239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E74EA72-C6AB-4E71-A77B-8E067C3E254E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E74EA72-C6AB-4E71-A77B-8E067C3E254E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E74EA72-C6AB-4E71-A77B-8E067C3E254E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E74EA72-C6AB-4E71-A77B-8E067C3E254E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

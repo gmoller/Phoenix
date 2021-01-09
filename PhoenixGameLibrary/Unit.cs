@@ -70,7 +70,7 @@ namespace PhoenixGameLibrary
             }
         }
 
-        public int SightRange => GetSightRange();
+        public int SightRange => GetSightRange(_unitRecord.UnitTypeId, _unitRecord.StackId);
 
         public Unit(UnitRecord unit)
         {
@@ -225,7 +225,7 @@ namespace PhoenixGameLibrary
         {
             var world = CallContext<World>.GetData("GameWorld");
             var cellGrid = world.OverlandMap.CellGrid;
-            _seenCells = cellGrid.GetCatchment(locationHex.X, locationHex.Y, GetSightRange());
+            _seenCells = cellGrid.GetCatchment(locationHex.X, locationHex.Y, GetSightRange(_unitRecord.UnitTypeId, _unitRecord.StackId));
             foreach (var item in _seenCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
@@ -233,7 +233,7 @@ namespace PhoenixGameLibrary
             }
         }
 
-        private int GetSightRange()
+        internal static int GetSightRange(int unitTypeId, int stackId)
         {
             var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
             var movementTypes = gameMetadata.MovementTypes;
@@ -242,7 +242,7 @@ namespace PhoenixGameLibrary
             var scoutingRange = 1;
 
             var incrementByForMovementType = 0;
-            foreach (var movementTypeKey in unitTypes[_unitRecord.UnitTypeId].MovementTypes)
+            foreach (var movementTypeKey in unitTypes[unitTypeId].MovementTypes)
             {
                 var movementType = movementTypes[movementTypeKey];
                 var incrementSightBy = movementType.IncrementSightBy;
@@ -254,7 +254,7 @@ namespace PhoenixGameLibrary
             scoutingRange += incrementByForMovementType;
 
             var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
-            var stackRecord = gameDataRepository.GetStackById(_unitRecord.StackId);
+            var stackRecord = gameDataRepository.GetStackById(stackId);
             if (stackRecord.Status == UnitStatus.Patrol)
             {
                 scoutingRange += 1;

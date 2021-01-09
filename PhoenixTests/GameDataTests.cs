@@ -63,7 +63,7 @@ namespace PhoenixTests
             Assert.AreEqual(1, stacks.Count);
             Assert.AreEqual(2, stacks[0].Id);
 
-            stacks = _repo.GetStacksByOrdersNotBeenGivenThisTurn();
+            stacks = _repo.GetStacksByOrdersNotBeenGivenThisTurnAndFactionId(1);
             Assert.AreEqual(1, stacks.Count);
             Assert.AreEqual(1, stacks[0].Id);
         }
@@ -90,6 +90,24 @@ namespace PhoenixTests
             units = _repo.GetUnitsByFactionId(1);
             Assert.AreEqual(1, units.Count);
             Assert.AreEqual(1, units[0].Id);
+        }
+
+        [Test]
+        public void Settlement_can_be_added()
+        {
+            var settlementRecord = new SettlementRecord(0, 1, new PointI(12, 9), "Gregville");
+            _repo.Add(settlementRecord);
+            var id = settlementRecord.Id;
+            settlementRecord = _repo.GetSettlementById(id);
+            var settlements = _repo.GetSettlementsByFactionId(1);
+
+            Assert.AreEqual(id, settlementRecord.Id);
+            Assert.AreEqual(1, settlementRecord.FactionId);
+            Assert.AreEqual(0, settlementRecord.RaceTypeId);
+            Assert.AreEqual(new PointI(12, 9), settlementRecord.LocationHex);
+            Assert.AreEqual("Gregville", settlementRecord.Name);
+            Assert.AreEqual(1, settlements.Count);
+            Assert.AreEqual(1, settlements[0].Id);
         }
     }
 }

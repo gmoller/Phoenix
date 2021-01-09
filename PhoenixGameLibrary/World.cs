@@ -14,24 +14,25 @@ namespace PhoenixGameLibrary
 
         public HexLibrary HexLibrary { get; }
         public OverlandMap OverlandMap { get; }
+        public NotificationList NotificationList { get; }
+        public Faction PlayerFaction { get; }
         public Settlements Settlements { get; }
         public Stacks Stacks { get; }
-        public Faction PlayerFaction { get; }
-        public NotificationList NotificationList { get; }
         #endregion
 
         public string CurrentDate => GetCurrentDate();
 
         public World(int numberOfColumns, int numberOfRows)
         {
-            PlayerFaction = new Faction(0); // Barbarians
+            _turnNumber = 0;
+
+            HexLibrary = new HexLibrary(HexType.FlatTopped, OffsetCoordinatesType.Odd, 64.0f); // new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd, 64.0f);
             OverlandMap = new OverlandMap(numberOfColumns, numberOfRows);
+            NotificationList = new NotificationList();
+
+            PlayerFaction = new Faction(0); // Barbarians
             Settlements = new Settlements();
             Stacks = new Stacks();
-            _turnNumber = 0;
-            NotificationList = new NotificationList();
-            HexLibrary = new HexLibrary(HexType.FlatTopped, OffsetCoordinatesType.Odd, 64.0f);
-            //HexLibrary = new HexLibrary(HexType.PointyTopped, OffsetCoordinatesType.Odd, 64.0f);
         }
 
         internal void AddSettlement(PointI location, string raceTypeName)

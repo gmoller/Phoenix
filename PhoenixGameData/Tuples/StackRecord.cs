@@ -35,10 +35,10 @@ namespace PhoenixGameData.Tuples
             return list;
         }
 
-        internal DataList<StackRecord> GetByOrdersNotBeenGivenThisTurn()
+        internal DataList<StackRecord> GetByOrdersNotBeenGivenThisTurnAndFactionId(int factionId)
         {
             var list = Create();
-            foreach (var item in Items.Where(item => item.HaveOrdersBeenGivenThisTurn == false))
+            foreach (var item in Items.Where(item => item.HaveOrdersBeenGivenThisTurn == false && item.FactionId == factionId))
             {
                 list.Add(item);
             }
