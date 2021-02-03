@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PhoenixGameLibrary;
+using PhoenixGameLibrary.Helpers;
 using Zen.Hexagons;
 using Zen.Utilities;
 
@@ -28,7 +29,7 @@ namespace PhoenixGamePresentation.Handlers
 
             GetCostToMoveIntoResult GetCostToMoveIntoFunc(PointI point)
             {
-                return stack.GetCostToMoveInto(point);
+                return MovementCosts.GetCostToMoveInto(point, stack.MovementTypes, stack.MovementPoints);
             }
         }
 

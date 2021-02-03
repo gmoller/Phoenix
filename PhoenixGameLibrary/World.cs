@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
-using System.Linq;
+using PhoenixGameConfig;
+using PhoenixGameData;
 using PhoenixGameLibrary.Commands;
-using PhoenixGameLibrary.GameData;
 using Zen.Hexagons;
 using Zen.Utilities;
 
@@ -22,7 +22,7 @@ namespace PhoenixGameLibrary
 
         public string CurrentDate => GetCurrentDate();
 
-        public World(int numberOfColumns, int numberOfRows)
+        public World(int numberOfColumns, int numberOfRows, Faction faction)
         {
             _turnNumber = 0;
 
@@ -30,31 +30,24 @@ namespace PhoenixGameLibrary
             OverlandMap = new OverlandMap(numberOfColumns, numberOfRows);
             NotificationList = new NotificationList();
 
-            PlayerFaction = new Faction(0); // Barbarians
+            PlayerFaction = faction;
             Settlements = new Settlements();
             Stacks = new Stacks();
         }
 
-        internal void AddSettlement(PointI location, string raceTypeName)
+        internal void AddSettlement(PointI location, int raceId)
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var raceTypes = gameMetadata.RaceTypes;
+            var gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+            var race = gameConfigCache.GetRaceConfigById(1);
+            var townName = race.GetRandomTownName();
 
-            var raceType = raceTypes[raceTypeName];
-            var townNames = raceType.TownNames;
-            var chosenIndex = RandomNumberGenerator.Instance.GetRandomInt(0, townNames.Length - 1);
-            var name = townNames[chosenIndex];
-
-            var foo = townNames.ToList();
-
-            var addNewOutpostCommand = new AddNewOutpostCommand { Payload = (location, name, raceTypeName, Settlements, this) };
+            var addNewOutpostCommand = new AddNewOutpostCommand { Payload = (location, townName, raceId, Settlements, this) };
             addNewOutpostCommand.Execute();
         }
 
-        internal void AddUnit(PointI location, UnitType unitType)
+        internal void AddUnit(Stack stack)
         {
-            var addUnitCommand = new AddUnitCommand { Payload = (location, unitType, Stacks) };
-            addUnitCommand.Execute();
+            Stacks.Add(stack);
         }
 
         public void BeginTurn()

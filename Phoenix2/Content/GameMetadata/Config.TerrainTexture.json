@@ -1,0 +1,110 @@
+[
+  {
+    "Id": 1,
+    "Name": "GrassTile1_2",
+    "TerrainId": 1,
+    "TextureId": 1
+  },
+  {
+    "Id": 2,
+    "Name": "GrassTile2_2",
+    "TerrainId": 1,
+    "TextureId": 2
+  },
+  {
+    "Id": 3,
+    "Name": "GrassTile3_2",
+    "TerrainId": 1,
+    "TextureId": 3
+  },
+  {
+    "Id": 4,
+    "Name": "GrassTile4_2",
+    "TerrainId": 1,
+    "TextureId": 4
+  },
+  {
+    "Id": 5,
+    "Name": "GrassTile5_2",
+    "TerrainId": 1,
+    "TextureId": 5
+  },
+  {
+    "Id": 6,
+    "Name": "GrassTile6_2",
+    "TerrainId": 1,
+    "TextureId": 6
+  },
+  {
+    "Id": 7,
+    "Name": "GrassTile7_2",
+    "TerrainId": 1,
+    "TextureId": 7
+  },
+  {
+    "Id": 8,
+    "Name": "ForestTile1_1",
+    "TerrainId": 2,
+    "TextureId": 15
+  },
+  {
+    "Id": 9,
+    "Name": "DesertTile1_2",
+    "TerrainId": 3,
+    "TextureId": 11
+  },
+  {
+    "Id": 10,
+    "Name": "DesertTile2_2",
+    "TerrainId": 3,
+    "TextureId": 12
+  },
+  {
+    "Id": 11,
+    "Name": "DesertTile3_2",
+    "TerrainId": 3,
+    "TextureId": 13
+  },
+  {
+    "Id": 12,
+    "Name": "SwampTile1_1",
+    "TerrainId": 4,
+    "TextureId": 18
+  },
+  {
+    "Id": 13,
+    "Name": "HillsTile1_1",
+    "TerrainId": 7,
+    "TextureId": 16
+  },
+  {
+    "Id": 14,
+    "Name": "MountainTile1_1",
+    "TerrainId": 8,
+    "TextureId": 17
+  },
+  {
+    "Id": 15,
+    "Name": "Should be Tundra",
+    "TerrainId": 10,
+    "TextureId": 1
+  },
+  {
+    "Id": 16,
+    "Name": "WaterTile1_2",
+    "TerrainId": 12,
+    "TextureId": 8
+  },
+  {
+    "Id": 17,
+    "Name": "WaterTile2_2",
+    "TerrainId": 12,
+    "TextureId": 9
+  },
+  {
+    "Id": 18,
+    "Name": "WaterTile3_2",
+    "TerrainId": 12,
+    "TextureId": 10
+  }
+]

@@ -34,9 +34,9 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
                 new KeyValuePair<string, string>("position2", $"{Convert.ToInt32(position.X + Bounds.X + 20)};{Convert.ToInt32(position.Y + Bounds.Y)}"),
                 new KeyValuePair<string, string>("position3", $"{Convert.ToInt32(position.X + Bounds.X)};{Convert.ToInt32(position.Y + Bounds.Y + 30)}"),
                 new KeyValuePair<string, string>("position4", $"{Convert.ToInt32(position.X + Bounds.X + 20)};{Convert.ToInt32(position.Y + Bounds.Y + 30)}"),
-                new KeyValuePair<string, string>("textureName1", $"{textureAtlas}.Citizen_{settlementView.Settlement.RaceType.Name}_Farmer"),
-                new KeyValuePair<string, string>("textureName2", $"{textureAtlas}.Citizen_{settlementView.Settlement.RaceType.Name}_Worker"),
-                new KeyValuePair<string, string>("textureName3", $"{textureAtlas}.Citizen_{settlementView.Settlement.RaceType.Name}_Rebel")
+                new KeyValuePair<string, string>("textureName1", $"{textureAtlas}.Citizen_{settlementView.Settlement.Race.Name}_Farmer"),
+                new KeyValuePair<string, string>("textureName2", $"{textureAtlas}.Citizen_{settlementView.Settlement.Race.Name}_Worker"),
+                new KeyValuePair<string, string>("textureName3", $"{textureAtlas}.Citizen_{settlementView.Settlement.Race.Name}_Rebel")
             };
 
             var spec = ResourceReader.ReadResource("PhoenixGamePresentation.Views.SettlementViewComposite.CitizenViewControls.txt", Assembly.GetExecutingAssembly());

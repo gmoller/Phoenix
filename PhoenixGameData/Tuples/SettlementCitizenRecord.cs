@@ -1,20 +1,29 @@
-﻿using Zen.Utilities;
+﻿using PhoenixGameData.StrongTypes;
+using Zen.Utilities;
 
 namespace PhoenixGameData.Tuples
 {
-    public class SettlementCitizenRecord : IIdentifiedById
+    public readonly struct SettlementCitizenRecord : IIdentifiedById
     {
         public int Id { get; } // Primary key
-        public int SettlementId { get; } // Foreign key -> GameData.Settlement
-        public int CitizenTypeId { get; } // Foreign key -> GameMetadata.CitizenType *undefined
-        public int Amount { get; set; }
+        public SettlementId SettlementId { get; } // Foreign key -> GameData.Settlement
+        public CitizenTypeId CitizenTypeId { get; } // Foreign key -> GameMetadata.CitizenType *undefined
+        public Amount Amount { get; }
 
-        public SettlementCitizenRecord(int settlementId, int citizenTypeId)
+        public SettlementCitizenRecord(int settlementId, int citizenTypeId, int amount)
         {
-            Id = GameDataRepository.GetNextSequence("SettlementCitizen");
-            SettlementId = settlementId;
-            CitizenTypeId = citizenTypeId;
-            Amount = 0;
+            Id = GameDataSequences.GetNextSequence("SettlementCitizen");
+            SettlementId = new SettlementId(settlementId);
+            CitizenTypeId = new CitizenTypeId(citizenTypeId);
+            Amount = new Amount(amount);
+        }
+
+        public SettlementCitizenRecord(SettlementCitizenRecord settlementCitizenRecord, Amount amount)
+        {
+            Id = settlementCitizenRecord.Id;
+            SettlementId = settlementCitizenRecord.SettlementId;
+            CitizenTypeId = settlementCitizenRecord.CitizenTypeId;
+            Amount = amount;
         }
     }
 

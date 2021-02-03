@@ -56,10 +56,7 @@ namespace PhoenixGameLibrary
             return UnitsList.Where(unit => unit.Actions.Contains(actionType)).ToList();
         }
 
-        public override string ToString()
-        {
-            return DebuggerDisplay;
-        }
+        public override string ToString() => DebuggerDisplay;
 
         private string DebuggerDisplay => $"{{Count={UnitsList.Count}}}";
 

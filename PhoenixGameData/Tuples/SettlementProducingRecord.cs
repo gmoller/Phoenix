@@ -1,22 +1,32 @@
-﻿using Zen.Utilities;
+﻿using PhoenixGameData.StrongTypes;
+using Zen.Utilities;
 
 namespace PhoenixGameData.Tuples
 {
-    public class SettlementProducingRecord : IIdentifiedById
+    public readonly struct SettlementProducingRecord : IIdentifiedById
     {
         public int Id { get; } // Primary key
-        public int SettlementId { get; } // Foreign key -> GameData.Settlement
-        public int ProductionTypeId { get; } // Foreign key -> GameMetadata.ProductionType *undefined
-        public int ProductionId { get; } // Foreign key -> GameMetadata.BuildingType/GameMetadata.UnitType/GameMetadata.OtherType *undefined
-        public int ProductionAccrued { get; set; }
+        public SettlementId SettlementId { get; } // Foreign key -> GameData.Settlement
+        public ProductionTypeId ProductionTypeId { get; } // Foreign key -> GameMetadata.ProductionType *undefined
+        public ProductionId ProductionId { get; } // Foreign key -> GameMetadata.BuildingType/GameMetadata.UnitType/GameMetadata.OtherType *undefined
+        public ProductionAccrued ProductionAccrued { get; }
 
-        public SettlementProducingRecord(int settlementId, int productionTypeId, int productionId)
+        public SettlementProducingRecord(int settlementId, int productionTypeId, int productionId, int productionAccrued)
         {
-            Id = GameDataRepository.GetNextSequence("SettlementProducing");
-            SettlementId = settlementId;
-            ProductionTypeId = productionTypeId;
-            ProductionId = productionId;
-            ProductionAccrued = 0;
+            Id = GameDataSequences.GetNextSequence("SettlementProducing");
+            SettlementId = new SettlementId(settlementId);
+            ProductionTypeId = new ProductionTypeId(productionTypeId);
+            ProductionId = new ProductionId(productionId);
+            ProductionAccrued = new ProductionAccrued(productionAccrued);
+        }
+
+        public SettlementProducingRecord(SettlementProducingRecord settlementProducingRecord, ProductionAccrued productionAccrued)
+        {
+            Id = settlementProducingRecord.Id;
+            SettlementId = settlementProducingRecord.SettlementId;
+            ProductionTypeId = settlementProducingRecord.ProductionTypeId;
+            ProductionId = settlementProducingRecord.ProductionId;
+            ProductionAccrued = productionAccrued;
         }
     }
 

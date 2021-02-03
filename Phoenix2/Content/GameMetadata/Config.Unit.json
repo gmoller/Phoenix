@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 1,
+    "Name": "Barbarian Settlers",
+    "ShortName": "Settlers",
+    "ConstructionCost": 60.0,
+    "MovementPoints": 1.0,
+    "TextureName": "Unit_Icon_Settlers_Transparent"
+  },
+  {
+    "Id": 2,
+    "Name": "Barbarian Spearmen",
+    "ShortName": "Spearmen",
+    "ConstructionCost": 15.0,
+    "MovementPoints": 1.0,
+    "TextureName": "Unit_Icon_BarbarianSpearmen_Transparent"
+  },
+  {
+    "Id": 100,
+    "Name": "Test Dude",
+    "ShortName": "Test",
+    "ConstructionCost": 1.0,
+    "MovementPoints": 4000.0,
+    "TextureName": "Unit_Icon_Griffins_Transparent"
+  }
+]

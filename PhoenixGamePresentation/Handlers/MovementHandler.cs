@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using PhoenixGameLibrary;
+using PhoenixGameLibrary.Helpers;
 using PhoenixGamePresentation.Views.StackView;
 using Zen.Hexagons;
 using Zen.Utilities;
@@ -24,7 +25,7 @@ namespace PhoenixGamePresentation.Handlers
             var cellToMoveTo = cellGrid.GetCell(hexToMoveTo);
             if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new PointI(0, 0));
 
-            var costToMoveIntoResult = stack.GetCostToMoveInto(cellToMoveTo);
+            var costToMoveIntoResult = MovementCosts.GetCostToMoveInto(cellToMoveTo, stack.MovementTypes, stack.MovementPoints);
 
             return costToMoveIntoResult.CanMoveInto ? (true, hexToMoveTo) : (false, new PointI(0, 0));
         }
@@ -54,7 +55,7 @@ namespace PhoenixGamePresentation.Handlers
                 return (false, new PointI(0, 0));
             }
 
-            var costToMoveIntoResult = stack.GetCostToMoveInto(hexToMoveTo);
+            var costToMoveIntoResult = MovementCosts.GetCostToMoveInto(hexToMoveTo, stack.MovementTypes, stack.MovementPoints);
 
             return costToMoveIntoResult.CanMoveInto ? (true, hexToMoveTo) : (false, new PointI(0, 0));
         }

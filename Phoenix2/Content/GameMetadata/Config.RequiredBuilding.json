@@ -1,0 +1,202 @@
+[
+  {
+    "Id": 1,
+    "BuildingId": 2,
+    "RequiredBuildingId": 1
+  },
+  {
+    "Id": 2,
+    "BuildingId": 2,
+    "RequiredBuildingId": 6
+  },
+  {
+    "Id": 3,
+    "BuildingId": 3,
+    "RequiredBuildingId": 2
+  },
+  {
+    "Id": 4,
+    "BuildingId": 4,
+    "RequiredBuildingId": 3
+  },
+  {
+    "Id": 5,
+    "BuildingId": 5,
+    "RequiredBuildingId": 4
+  },
+  {
+    "Id": 6,
+    "BuildingId": 5,
+    "RequiredBuildingId": 18
+  },
+  {
+    "Id": 7,
+    "BuildingId": 7,
+    "RequiredBuildingId": 6
+  },
+  {
+    "Id": 8,
+    "BuildingId": 8,
+    "RequiredBuildingId": 7
+  },
+  {
+    "Id": 9,
+    "BuildingId": 8,
+    "RequiredBuildingId": 21
+  },
+  {
+    "Id": 10,
+    "BuildingId": 9,
+    "RequiredBuildingId": 4
+  },
+  {
+    "Id": 11,
+    "BuildingId": 9,
+    "RequiredBuildingId": 8
+  },
+  {
+    "Id": 12,
+    "BuildingId": 11,
+    "RequiredBuildingId": 10
+  },
+  {
+    "Id": 13,
+    "BuildingId": 11,
+    "RequiredBuildingId": 13
+  },
+  {
+    "Id": 14,
+    "BuildingId": 12,
+    "RequiredBuildingId": 2
+  },
+  {
+    "Id": 15,
+    "BuildingId": 12,
+    "RequiredBuildingId": 11
+  },
+  {
+    "Id": 16,
+    "BuildingId": 14,
+    "RequiredBuildingId": 30
+  },
+  {
+    "Id": 17,
+    "BuildingId": 15,
+    "RequiredBuildingId": 14
+  },
+  {
+    "Id": 18,
+    "BuildingId": 16,
+    "RequiredBuildingId": 18
+  },
+  {
+    "Id": 19,
+    "BuildingId": 16,
+    "RequiredBuildingId": 22
+  },
+  {
+    "Id": 20,
+    "BuildingId": 17,
+    "RequiredBuildingId": 15
+  },
+  {
+    "Id": 21,
+    "BuildingId": 18,
+    "RequiredBuildingId": 15
+  },
+  {
+    "Id": 22,
+    "BuildingId": 19,
+    "RequiredBuildingId": 17
+  },
+  {
+    "Id": 23,
+    "BuildingId": 19,
+    "RequiredBuildingId": 18
+  },
+  {
+    "Id": 24,
+    "BuildingId": 20,
+    "RequiredBuildingId": 30
+  },
+  {
+    "Id": 25,
+    "BuildingId": 21,
+    "RequiredBuildingId": 20
+  },
+  {
+    "Id": 26,
+    "BuildingId": 22,
+    "RequiredBuildingId": 21
+  },
+  {
+    "Id": 27,
+    "BuildingId": 23,
+    "RequiredBuildingId": 22
+  },
+  {
+    "Id": 28,
+    "BuildingId": 24,
+    "RequiredBuildingId": 6
+  },
+  {
+    "Id": 29,
+    "BuildingId": 25,
+    "RequiredBuildingId": 18
+  },
+  {
+    "Id": 30,
+    "BuildingId": 25,
+    "RequiredBuildingId": 24
+  },
+  {
+    "Id": 31,
+    "BuildingId": 26,
+    "RequiredBuildingId": 11
+  },
+  {
+    "Id": 32,
+    "BuildingId": 26,
+    "RequiredBuildingId": 25
+  },
+  {
+    "Id": 33,
+    "BuildingId": 27,
+    "RequiredBuildingId": 30
+  },
+  {
+    "Id": 34,
+    "BuildingId": 28,
+    "RequiredBuildingId": 24
+  },
+  {
+    "Id": 35,
+    "BuildingId": 28,
+    "RequiredBuildingId": 27
+  },
+  {
+    "Id": 36,
+    "BuildingId": 29,
+    "RequiredBuildingId": 13
+  },
+  {
+    "Id": 37,
+    "BuildingId": 31,
+    "RequiredBuildingId": 18
+  },
+  {
+    "Id": 38,
+    "BuildingId": 31,
+    "RequiredBuildingId": 32
+  },
+  {
+    "Id": 39,
+    "BuildingId": 32,
+    "RequiredBuildingId": 30
+  },
+  {
+    "Id": 40,
+    "BuildingId": 33,
+    "RequiredBuildingId": 30
+  }
+]

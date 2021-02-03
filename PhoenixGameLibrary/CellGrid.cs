@@ -29,8 +29,8 @@ namespace PhoenixGameLibrary
             {
                 for (var q = 0; q < numberOfColumns; ++q)
                 {
-                    var terrainType = map[q, r];
-                    var cell = new Cell(q, r, terrainType.Id);
+                    var terrainId = map[q, r];
+                    var cell = new Cell(q, r, terrainId);
                     Cells[q, r] = cell;
                 }
             }
@@ -149,10 +149,7 @@ namespace PhoenixGameLibrary
             return closestCells[random];
         }
 
-        public override string ToString()
-        {
-            return DebuggerDisplay;
-        }
+        public override string ToString() => DebuggerDisplay;
 
         private string DebuggerDisplay => $"{{NumberOfColumns={NumberOfColumns},NumberOfRows={NumberOfRows}}}";
     }

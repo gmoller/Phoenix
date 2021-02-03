@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using PhoenixGameLibrary.GameData;
+using PhoenixGameConfig;
 using Zen.Noise;
 using Zen.Utilities;
 
@@ -8,12 +8,12 @@ namespace PhoenixGameLibrary
 {
     public static class MapGenerator
     {
-        internal static TerrainType[,] Generate(int numberOfColumns, int numberOfRows)
+        internal static int[,] Generate(int numberOfColumns, int numberOfRows)
         {
             // make some noise!
             float[,] noise = MakeNoise(numberOfColumns, numberOfRows);
 
-            TerrainType[,] terrain = TurnNoiseIntoTerrain(noise);
+            int[,] terrain = TurnNoiseIntoTerrain(noise);
 
             return terrain;
         }
@@ -40,57 +40,53 @@ namespace PhoenixGameLibrary
             return val;
         }
 
-        private static TerrainType[,] TurnNoiseIntoTerrain(float[,] noise)
+        private static int[,] TurnNoiseIntoTerrain(float[,] noise)
         {
             var numberOfColumns = noise.GetLength(0);
             var numberOfRows = noise.GetLength(1);
-            var terrain = new TerrainType[numberOfColumns, numberOfRows];
+            var terrain = new int[numberOfColumns, numberOfRows];
 
             for (var y = 0; y < numberOfRows; y++)
             {
                 for (var x = 0; x < numberOfColumns; x++)
                 {
                     var val = noise[x, y];
-                    var terrainType = DetermineTerrainTypeId(val);
-                    terrain[x, y] = terrainType;
+                    var terrainId = DetermineTerrainId(val);
+                    terrain[x, y] = terrainId;
                 }
             }
 
             return terrain;
         }
 
-        private static TerrainType DetermineTerrainTypeId(float val)
+        private static int DetermineTerrainId(float val)
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var terrainTypes = gameMetadata.TerrainTypes;
-
-            var ranges = new List<(float from, float to, string terrainTypeName)>
+            var ranges = new List<(float from, float to, int terrainId)>
             {
-                (float.MinValue, 0.0f, "Ocean"),
-                (0.0f, 0.1f, "Grassland"),
-                (0.1f, 0.2f, "Grassland"),
-                (0.2f, 0.3f, "Grassland"),
-                (0.3f, 0.35f, "Grassland"),
-                (0.35f, 0.38f, "Grassland"),
-                (0.38f, 0.4f, "Grassland"),
-                (0.4f, 0.5f, "Forest"),
-                (0.5f, 0.7f, "Hill"),
-                (0.7f, float.MaxValue, "Mountain")
+                (float.MinValue, 0.0f, 12), // "Ocean"
+                (0.0f, 0.1f, 1), // "Grassland"
+                (0.1f, 0.2f, 1),
+                (0.2f, 0.3f, 1),
+                (0.3f, 0.35f, 1),
+                (0.35f, 0.38f, 1),
+                (0.38f, 0.4f, 1),
+                (0.4f, 0.5f, 2), // "Forest"
+                (0.5f, 0.7f, 7), // "Hill"
+                (0.7f, float.MaxValue, 8) // "Mountain"
             };
 
-            var terrainTypeName = GetTerrainTypeName(val, ranges);
-            var terrainType = terrainTypes[terrainTypeName];
+            var terrainId = GetTerrainId(val, ranges);
 
-            return terrainType;
+            return terrainId;
         }
 
-        private static string GetTerrainTypeName(float val, List<(float from, float to, string terrainTypeName)> ranges)
+        private static int GetTerrainId(float val, List<(float from, float to, int terrainId)> ranges)
         {
             foreach (var range in ranges)
             {
                 if (val >= range.from && val < range.to)
                 {
-                    return range.terrainTypeName;
+                    return range.terrainId;
                 }
             }
 

@@ -4,9 +4,11 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PhoenixGameConfig;
 using PhoenixGameData;
+using PhoenixGameData.GameData;
 using PhoenixGameLibrary;
-using PhoenixGameLibrary.GameData;
+using PhoenixGameLibrary.Helpers;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
 using Zen.Assets;
@@ -258,7 +260,7 @@ namespace PhoenixGamePresentation.Views
             return destinationRectangle;
         }
 
-        private static void DrawUnitBadge(SpriteBatch spriteBatch, StackViews stackViews, Vector2 centerPosition, Unit unit, StackView.StackView stackView)
+        private static void DrawUnitBadge(SpriteBatch spriteBatch, StackViews stackViews, Vector2 centerPosition, PhoenixGameLibrary.Unit unit, StackView.StackView stackView)
         {
             // draw background
             var sourceRectangle = stackView.IsSelected ? stackViews.SquareGreenFrame.ToRectangle() : stackViews.SquareGrayFrame.ToRectangle();
@@ -316,29 +318,31 @@ namespace PhoenixGamePresentation.Views
             var cell = cellGrid.GetCell(hexPoint);
             if (cell.SeenState == SeenState.NeverSeen) return;
 
-            var terrainType = GetTerrainType(cell);
-            var terrainTypeText = $"{terrainType.Name} - {terrainType.FoodOutput} food";
-            var maximumPopulationText = GetMaximumPopulationText(terrainType, cellGrid, hexPoint);
+            var terrain = GetTerrain(cell.TerrainId);
+            var terrainTypeText = $"{terrain.Name} - {terrain.FoodOutput} food";
+            var maximumPopulationText = GetMaximumPopulationText(cell.TerrainId, cellGrid, hexPoint);
 
             spriteBatch.DrawString(font, terrainTypeText, new Vector2(x, y), Color.White);
             spriteBatch.DrawString(font, maximumPopulationText, new Vector2(x, y + 15.0f), Color.White);
         }
 
-        private static TerrainType GetTerrainType(Cell cell)
+        private static TerrainConfig GetTerrain(int terrainId)
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var terrainTypes = gameMetadata.TerrainTypes;
-            var terrainType = terrainTypes[cell.TerrainTypeId];
+            var gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+            var terrain = gameConfigCache.GetTerrainConfigById(terrainId);
 
-            return terrainType;
+            return terrain;
         }
 
-        private static string GetMaximumPopulationText(TerrainType terrainType, CellGrid cellGrid, HexOffsetCoordinates hexPoint)
+        private static string GetMaximumPopulationText(int terrainId, CellGrid cellGrid, HexOffsetCoordinates hexPoint)
         {
-            if (!terrainType.CanSettleOn) return string.Empty;
+            var gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+            var terrain = gameConfigCache.GetTerrainConfigById(terrainId);
+            
+            if (!terrain.CanSettleOn) return string.Empty;
 
             var catchment = cellGrid.GetCatchment(hexPoint.Col, hexPoint.Row, 2);
-            var maxPop = PhoenixGameLibrary.Helpers.BaseFoodLevel.DetermineBaseFoodLevel(new PointI(hexPoint.Col, hexPoint.Row), catchment);
+            var maxPop = BaseFoodLevel.DetermineBaseFoodLevel(catchment);
             var text = $"Maximum Pop - {maxPop}";
 
             return text;

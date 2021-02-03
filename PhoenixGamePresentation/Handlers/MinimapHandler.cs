@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PhoenixGameConfig;
+using PhoenixGameData;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.Views;
 using Zen.MonoGameUtilities.ExtensionMethods;
@@ -30,11 +32,10 @@ namespace PhoenixGamePresentation.Handlers
 
         internal static Texture2D Create(CellGrid cellGrid)
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
             var context = CallContext<GlobalContextPresentation>.GetData("GlobalContextPresentation");
 
             var graphicsDevice = context.GraphicsDevice;
-            var terrainTypes = gameMetadata.TerrainTypes;
 
             var scalingFactorX = 7;
             var scalingFactorY = 6;
@@ -50,8 +51,9 @@ namespace PhoenixGamePresentation.Handlers
                 for (var column1 = 0; column1 < width; column1++)
                 {
                     var cell = cellGrid.GetCell(column1, row1);
-                    var terrainTypeId = cell.TerrainTypeId;
-                    var color = terrainTypes[terrainTypeId].MinimapColor.ToColor();
+                    var terrainId = cell.TerrainId;
+                    var terrain = gameConfigCache.GetTerrainConfigById(terrainId);
+                    var color = terrain.MinimapColor.ToColor();
 
                     var hexColors = GetHexColors(color, Color.DarkSlateGray, cell.SeenState);
 

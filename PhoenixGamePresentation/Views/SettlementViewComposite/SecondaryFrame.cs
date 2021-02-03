@@ -4,7 +4,8 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using PhoenixGameLibrary;
+using PhoenixGameConfig;
+using PhoenixGameData;
 using Zen.GuiControls;
 using Zen.GuiControls.PackagesClasses;
 using Zen.GuiControls.TheControls;
@@ -17,6 +18,8 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 {
     internal class SecondaryFrame : Control
     {
+        private readonly GameConfigCache _gameConfigCache;
+
         #region State
         private SettlementView SettlementView { get; }
         private Controls Controls { get; }
@@ -25,6 +28,8 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         internal SecondaryFrame(SettlementView settlementView, Vector2 topLeftPosition, string textureAtlas) :
             base("SecondaryFrame")
         {
+            _gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+
             Size = new PointI(556, 741);
             Position = topLeftPosition.ToPointI();
 
@@ -79,12 +84,13 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 
         private void CreateUnitLabels(IControl slots)
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var unitTypes = gameMetadata.UnitTypes;
+            var gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+            var unitIds = gameConfigCache.GetUnitConfigIds();
             var i = 0;
-            foreach (var unit in unitTypes)
+            foreach (var unitId in unitIds)
             {
-                if (SettlementView.Settlement.UnitCanBeBuilt(unit.Name))
+                var unit = gameConfigCache.GetUnitConfigById(unitId);
+                if (SettlementView.Settlement.UnitCanBeBuilt(unit.Id))
                 {
                     var lbl = InstantiateLabel("CrimsonText-Regular-8", new PointI(84, 20), unit.Name, unit.ShortName);
                     var slot = slots[i];
@@ -127,20 +133,17 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 
         private void UnitClick(object sender, EventArgs e)
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var unitTypes = gameMetadata.UnitTypes;
-
-            var unit = (Label)sender;
-            var unitType = unitTypes[unit.Name];
-            SettlementView.Settlement.AddToProductionQueue(unitType);
+            var unitLabel = (Label)sender;
+            var unit = _gameConfigCache.GetUnitConfigByName(unitLabel.Name);
+            SettlementView.Settlement.AddToProductionQueue(unit);
         }
 
         private void OtherClick(object sender, EventArgs e)
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
+            var gameMetadata = CallContext<GameConfigCache>.GetData("GameMetadata");
             //var otherTypes = gameMetadata.OtherTypes;
 
-            var other = (Label)sender;
+            var otherLabel = (Label)sender;
             //var otherType = otherTypes[other.Name];
             //SettlementView.Settlement.AddToProductionQueue(otherType);
         }

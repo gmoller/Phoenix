@@ -5,7 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Tuples\" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Zen.Utilities">
+      <HintPath>..\Libraries\netcoreapp3.1\Zen.Utilities.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

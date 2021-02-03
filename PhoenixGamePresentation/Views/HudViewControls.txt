@@ -65,7 +65,7 @@ imgGold : Image
 
 lblGold : Label
 {
-  FontName: 'CrimsonText-Regular-12'
+  FontName: 'Pelagiad'
   Size: [130;15]
   ContentAlignment: TopLeft
   GetTextFunc: 'GetTextFuncForGold'
@@ -86,7 +86,7 @@ imgMana : Image
 
 lblMana : Label
 {
-  FontName: 'CrimsonText-Regular-12'
+  FontName: 'Pelagiad'
   Size: [130;15]
   ContentAlignment: TopLeft
   GetTextFunc: 'GetTextFuncForMana'
@@ -107,7 +107,7 @@ imgFood : Image
 
 lblFood : Label
 {
-  FontName: 'CrimsonText-Regular-12'
+  FontName: 'Pelagiad'
   Size: [130;15]
   ContentAlignment: TopLeft
   GetTextFunc: 'GetTextFuncForFood'
@@ -161,7 +161,7 @@ btnEndTurn : Button
 
 lblEndTurn : Label
 {
-  FontName: 'CrimsonText-Regular-12'
+  FontName: 'Pelagiad'
   Size: [245;56]
   ContentAlignment: MiddleCenter
   Text: 'Next Turn'

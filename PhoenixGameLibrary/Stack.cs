@@ -2,11 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using PhoenixGameData;
 using PhoenixGameData.Enumerations;
+using PhoenixGameData.StrongTypes;
 using PhoenixGameData.Tuples;
-using PhoenixGameLibrary.GameData;
 using Zen.Hexagons;
 using Zen.Utilities;
 
@@ -15,66 +14,44 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Stack : IEnumerable<Unit>
     {
-        #region State
-        private readonly StackRecord _stackRecord;
+        private readonly GameConfigCache _gameConfigCache;
+        private readonly GameDataRepository _gameDataRepository;
 
-        private Units Units
-        {
-            get
-            {
-                var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
-                var units2 = gameDataRepository.GetUnitsByStackId(_stackRecord.Id);
+        private StackRecord _stackRecord;
+        private Units Units { get; }
 
-                var units = new Units();
-                foreach (var item in units2)
-                {
-                    var unit = new Unit(item);
-                    units.Add(unit);
-                }
-
-                return units;
-            }
-        }
-
-        public int Id => _stackRecord.Id;
-
-        public UnitStatus Status
-        {
-            get => _stackRecord.Status;
-            private set => _stackRecord.Status = value;
-        }
-
-        public bool OrdersGiven
-        {
-            get => _stackRecord.HaveOrdersBeenGivenThisTurn;
-            private set => _stackRecord.HaveOrdersBeenGivenThisTurn = value;
-        }
-
-        public PointI LocationHex
-        {
-            get => _stackRecord.LocationHex;
-            private set => _stackRecord.LocationHex = value;
-        }
-        #endregion
-
-        public Stack(int factionId, PointI locationHex)
-        {
-            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
-            _stackRecord = new StackRecord(factionId, locationHex);
-            gameDataRepository.Add(_stackRecord);
-        }
-
-        #region Accessors
+        public UnitStatus Status => _stackRecord.Status.Value;
+        public bool OrdersGiven => _stackRecord.HaveOrdersBeenGivenThisTurn.Value;
+        public PointI LocationHex => _stackRecord.LocationHex.Value;
         public int SightRange => GetSightRange();
-
         public float MovementPoints => DetermineMovementPoints();
         public EnumerableList<string> MovementTypes => new EnumerableList<string>(DetermineMovementTypes());
         public EnumerableList<string> Actions => new EnumerableList<string>(DetermineActions(Units));
-
         public int Count => Units.Count;
-
         public Unit this[int index] => Units[index];
-        #endregion
+
+        public Stack(int stackId)
+        {
+            _gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+            _gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
+            _stackRecord = _gameDataRepository.GetStackById(stackId);
+            var unitRecords = _gameDataRepository.GetUnitsByStackId(stackId);
+            Units = new Units();
+            foreach (var unitRecord in unitRecords)
+            {
+                Units.Add(new Unit(unitRecord.Id));
+            }
+
+            _gameDataRepository.StackUpdated += StackUpdated;
+        }
+
+        private void StackUpdated(object sender, StackRecord stackRecord)
+        {
+            if (stackRecord.Id == _stackRecord.Id)
+            {
+                _stackRecord = stackRecord;
+            }
+        }
 
         public void DoAction(string action)
         {
@@ -103,29 +80,29 @@ namespace PhoenixGameLibrary
 
         private void DoDoneAction()
         {
-            Status = UnitStatus.None;
-            OrdersGiven = true;
+            var updatedStack = new StackRecord(_stackRecord, _stackRecord.LocationHex, new Status(UnitStatus.None), new HaveOrdersBeenGivenThisTurn(true));
+            _gameDataRepository.Update(updatedStack);
         }
 
         private void DoPatrolAction()
         {
-            Status = UnitStatus.Patrol;
+            var updatedStack = new StackRecord(_stackRecord, _stackRecord.LocationHex, new Status(UnitStatus.Patrol), new HaveOrdersBeenGivenThisTurn(true));
+            _gameDataRepository.Update(updatedStack);
             Units.DoPatrolAction();
-            OrdersGiven = true;
         }
 
         private void DoFortifyAction()
         {
-            Status = UnitStatus.Fortify;
+            var updatedStack = new StackRecord(_stackRecord, _stackRecord.LocationHex, new Status(UnitStatus.Fortify), new HaveOrdersBeenGivenThisTurn(true));
+            _gameDataRepository.Update(updatedStack);
             Units.DoFortifyAction();
-            OrdersGiven = true;
         }
 
         private void DoExploreAction()
         {
-            Status = UnitStatus.Explore;
+            var updatedStack = new StackRecord(_stackRecord, _stackRecord.LocationHex, new Status(UnitStatus.Explore), new HaveOrdersBeenGivenThisTurn(true));
+            _gameDataRepository.Update(updatedStack);
             Units.DoExploreAction();
-            OrdersGiven = true;
         }
 
         private void DoBuildAction()
@@ -139,95 +116,39 @@ namespace PhoenixGameLibrary
 
         public void SetStatusToNone()
         {
-            Status = UnitStatus.None;
+            var updatedStack = new StackRecord(_stackRecord, _stackRecord.LocationHex, new Status(UnitStatus.None), new HaveOrdersBeenGivenThisTurn(false));
+            _gameDataRepository.Update(updatedStack);
             Units.SetStatusToNone();
-            OrdersGiven = false;
         }
 
         internal void MoveTo(PointI locationToMoveTo)
         {
             var world = CallContext<World>.GetData("GameWorld");
             var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(locationToMoveTo);
-            var movementCost = GetCostToMoveInto(cellToMoveTo);
+            var movementCost = Helpers.MovementCosts.GetCostToMoveInto(cellToMoveTo, MovementTypes, MovementPoints);
 
             foreach (var unit in Units)
             {
-                LocationHex = locationToMoveTo;
+                var updatedStack = new StackRecord(_stackRecord, new LocationHex(locationToMoveTo));
+                _gameDataRepository.Update(updatedStack);
                 unit.SetSeenCells(LocationHex);
 
-                unit.MovementPoints -= movementCost.CostToMoveInto;
-                if (unit.MovementPoints <= 0.0f)
-                {
-                    unit.MovementPoints = 0.0f;
-                    OrdersGiven = true;
-                }
+                //var newMovementPoints = unit.MovementPoints - movementCost.CostToMoveInto;
+                //var unitRecord = gameDataRepository.GetUnitById(unit.Id);
+                //var updatedUnit = new UnitRecord(updatedUnit, updatedUnit.Stackid, newMovementPoints);
+                //gameDataRepository.Update(updatedUnit);
+                //if (unit.MovementPoints <= 0.0f)
+                //{
+                //    unit.MovementPoints = 0.0f;
+                //    updatedStack = new StackRecord(_stackRecord, _stackRecord.LocationHex, _stackRecord.Status, true);
+                //    gameDataRepository.Update(updatedStack);
+                //}
             }
-        }
-
-        public GetCostToMoveIntoResult GetCostToMoveInto(PointI location)
-        {
-            var world = CallContext<World>.GetData("GameWorld");
-            var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(location);
-
-            return GetCostToMoveInto(cellToMoveTo);
-        }
-
-        public GetCostToMoveIntoResult GetCostToMoveInto(Cell cell)
-        {
-            if (MovementPoints <= 0.0f) return new GetCostToMoveIntoResult(false);
-            if (cell == Cell.Empty) return new GetCostToMoveIntoResult(false);
-            if (cell.SeenState == SeenState.NeverSeen) return new GetCostToMoveIntoResult(true, 9999999.9f);
-
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var terrainTypes = gameMetadata.TerrainTypes;
-            var terrainType = terrainTypes[cell.TerrainTypeId];
-
-            return GetCostToMoveInto(terrainType);
-        }
-
-        private GetCostToMoveIntoResult GetCostToMoveInto(TerrainType terrainType)
-        {
-            var potentialMovementCosts = GetPotentialMovementCosts(terrainType);
-            var canMoveInto = potentialMovementCosts.Count > 0;
-
-            if (!canMoveInto) return new GetCostToMoveIntoResult(false);
-
-            float costToMoveInto = float.MaxValue;
-            bool foundCost = false;
-            foreach (var potentialMovementCost in potentialMovementCosts)
-            {
-                if (potentialMovementCost.Cost < costToMoveInto)
-                {
-                    costToMoveInto = potentialMovementCost.Cost;
-                    foundCost = true;
-                }
-            }
-
-            if (!foundCost) throw new Exception($"No cost found for Terrain Type [{terrainType}], MovementTypes [{MovementTypes}].");
-
-            return new GetCostToMoveIntoResult(true, costToMoveInto);
-        }
-
-        private List<MovementCost> GetPotentialMovementCosts(TerrainType terrainType)
-        {
-            var potentialMovementCosts = new List<MovementCost>();
-            foreach (var unitMovementType in MovementTypes)
-            {
-                foreach (var movementCost in terrainType.MovementCosts)
-                {
-                    if (unitMovementType != movementCost.MovementType.Name) continue;
-                    if (movementCost.Cost > 0.0)
-                    {
-                        potentialMovementCosts.Add(movementCost);
-                    }
-                }
-            }
-
-            return potentialMovementCosts;
         }
 
         private int GetSightRange()
         {
+            // Could be cached, could be moved to units
             var sightRange = 0;
             foreach (var unit in Units)
             {
@@ -242,7 +163,9 @@ namespace PhoenixGameLibrary
 
         internal void BeginTurn()
         {
-            OrdersGiven = Status == UnitStatus.Fortify || Status == UnitStatus.Patrol; // TODO: de-hardcode these, a persistent flag?
+            var ordersGiven = Status == UnitStatus.Fortify || Status == UnitStatus.Patrol; // TODO: de-hardcode these, a persistent flag?
+            var updatedStack = new StackRecord(_stackRecord, _stackRecord.LocationHex, _stackRecord.Status, new HaveOrdersBeenGivenThisTurn(ordersGiven));
+            _gameDataRepository.Update(updatedStack);
         }
 
         internal void EndTurn()
@@ -299,58 +222,65 @@ namespace PhoenixGameLibrary
 
         private List<string> DetermineActions(Units units)
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var actionTypes = gameMetadata.ActionTypes;
-
             // first add actions that apply to all
-            var filteredActionTypes = (from actionType in actionTypes where actionType.AppliesToAll select actionType).ToList();
+            var filteredActions = Helpers.Actions.GetActionsThatApplyToAll();
 
             // then add any other actions that apply to units
             foreach (var unit in units)
             {
                 var unitActions = unit.Actions;
-                foreach (var action in unitActions)
+                foreach (var unitAction in unitActions)
                 {
-                    var actionType = actionTypes[action];
-                    var addAction = false;
                     // don't add if there's already an action added (i.e. no duplicates)
-                    if (filteredActionTypes.All(at => at.ButtonName != action))
+                    var alreadyThere = false;
+                    foreach (var item in filteredActions)
                     {
-                        // do a specific check for this action
-                        // TODO: move this into a Func on the ActionType: addAction = actionType.DoSpecificCheck(Location);
-                        if (action == "BuildOutpost")
+                        if (item.ButtonName == unitAction)
                         {
-                            addAction = CanSettleOnTerrain(LocationHex);
+                            alreadyThere = true;
+                            break;
                         }
-                        else
-                        {
-                            addAction = true;
-                        }
+                    }
+
+                    if (alreadyThere) continue;
+
+                    // do a specific check for this action
+                    // TODO: move this into a Func on the ActionType: addAction = actionType.DoSpecificCheck(Location);
+                    bool addAction;
+                    if (unitAction == "BuildOutpost")
+                    {
+                        addAction = CanSettleOnTerrain(LocationHex);
+                    }
+                    else
+                    {
+                        addAction = true;
                     }
 
                     if (addAction)
                     {
-                        filteredActionTypes.Add(actionType);
+                        var action = _gameConfigCache.GetActionConfigByName(unitAction);
+                        filteredActions.Add(action);
                     }
                 }
             }
 
-            var actionsNames = (from action in filteredActionTypes select action.Name).ToList();
+            var actionNames = new List<string>();
+            foreach (var item in filteredActions)
+            {
+                actionNames.Add((string)item.Name);
+            }
 
-            return actionsNames;
+            return actionNames;
         }
 
         private bool CanSettleOnTerrain(PointI thisLocationHex)
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var terrainTypes = gameMetadata.TerrainTypes;
-
             // if terrain is settle-able
             var world = CallContext<World>.GetData("GameWorld");
             var cell = world.OverlandMap.CellGrid.GetCell(thisLocationHex);
-            var terrainType = terrainTypes[cell.TerrainTypeId];
+            var terrain = _gameConfigCache.GetTerrainConfigById(cell.TerrainId);
 
-            if (!terrainType.CanSettleOn) return false;
+            if (!terrain.CanSettleOn) return false;
             
             // and not within 4 distance from another settlement
             var settlements = world.Settlements;
@@ -560,10 +490,7 @@ namespace PhoenixGameLibrary
             return GetEnumerator();
         }
 
-        public override string ToString()
-        {
-            return DebuggerDisplay;
-        }
+        public override string ToString() => DebuggerDisplay;
 
         private string DebuggerDisplay => $"{{Count={Units.Count}}}";
     }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using PhoenixGameConfig;
+using PhoenixGameData;
 using Zen.Utilities;
 
 namespace PhoenixGameLibrary
@@ -71,21 +73,18 @@ namespace PhoenixGameLibrary
             // TODO: wild game not being factored in
 
             // buildings
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var buildingFoodOutputIncreaseTypes = gameMetadata.BuildingFoodOutputIncreaseTypes;
+            var gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
 
             var freeFood = 0.0;
-            foreach (var item in buildingFoodOutputIncreaseTypes)
+            foreach (var item in buildingsBuilt)
             {
-                if (buildingsBuilt.Contains(item.BuildingId))
-                {
-                    freeFood += item.FoodOutputIncrease;
-                }
+                var building = gameConfigCache.GetBuildingConfigById(item);
+                freeFood += building.FoodOutputIncrease;
             }
 
             var foodUpkeep = totalPopulation - (int)freeFood;
 
-            var farmersSubsistenceFloat = foodUpkeep / _settlement.RaceType.FarmingRate;
+            var farmersSubsistenceFloat = foodUpkeep / (float)_settlement.Race.FarmingRate;
             var farmersSubsistence = (int)Math.Ceiling(farmersSubsistenceFloat);
 
             return farmersSubsistence;

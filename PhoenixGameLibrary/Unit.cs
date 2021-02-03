@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using PhoenixGameData;
 using PhoenixGameData.Enumerations;
+using PhoenixGameData.StrongTypes;
 using PhoenixGameData.Tuples;
-using PhoenixGameLibrary.GameData;
 using Zen.Utilities;
 
 namespace PhoenixGameLibrary
@@ -15,36 +14,31 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Unit
     {
-        #region State
-        private readonly UnitRecord _unitRecord;
-        private List<Cell> _seenCells;
-        #endregion
+        private readonly GameConfigCache _gameConfigCache;
+        private readonly GameDataRepository _gameDataRepository;
+
+        private UnitRecord _unitRecord;
+        private List<Cell> SeenCells { get; set; }
 
         private string Name
         {
             get
             {
-                var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-                var unitTypes = gameMetadata.UnitTypes;
+                var name = _gameConfigCache.GetUnitConfigById(_unitRecord.UnitTypeId.Value).Name;
 
-                return unitTypes[_unitRecord.UnitTypeId].Name;
+                return name;
             }
         }
 
-        public float MovementPoints
-        {
-            get => _unitRecord.MovementPoints;
-            set => _unitRecord.MovementPoints = value;
-        }
+        public float MovementPoints => _unitRecord.MovementPoints.Value;
 
         public EnumerableList<string> Actions
         {
             get
             {
-                var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-                var unitTypes = gameMetadata.UnitTypes;
+                var actions = _gameConfigCache.GetUnitConfigById(_unitRecord.UnitTypeId.Value).ActionsThisUnitCanPerform;
 
-                return new EnumerableList<string>(unitTypes[_unitRecord.UnitTypeId].Actions);
+                return new EnumerableList<string>(actions);
             }
         }
 
@@ -52,10 +46,9 @@ namespace PhoenixGameLibrary
         {
             get
             {
-                var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-                var unitTypes = gameMetadata.UnitTypes;
+                var movements = _gameConfigCache.GetUnitConfigById(_unitRecord.UnitTypeId.Value).MovementTypesThisUnitCanPerform;
 
-                return new EnumerableList<string>(unitTypes[_unitRecord.UnitTypeId].MovementTypes);
+                return new EnumerableList<string>(movements);
             }
         }
 
@@ -63,93 +56,91 @@ namespace PhoenixGameLibrary
         {
             get
             {
-                var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-                var unitTypes = gameMetadata.UnitTypes; 
-                
-                return unitTypes[_unitRecord.UnitTypeId].TextureName;
+                var textureName = _gameConfigCache.GetUnitConfigById(_unitRecord.UnitTypeId.Value).TextureName;
+
+                return textureName;
             }
         }
 
-        public int SightRange => GetSightRange(_unitRecord.UnitTypeId, _unitRecord.StackId);
+        public int SightRange => GetSightRange(_unitRecord.UnitTypeId.Value, _unitRecord.StackId.Value);
 
-        public Unit(UnitRecord unit)
+        public Unit(int id)
         {
-            _unitRecord = unit;
+            _gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+            _gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
+            _unitRecord = _gameDataRepository.GetUnitById(id);
 
-            MovementPoints = unit.MovementPoints;
-
-            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
-            var stackRecord = gameDataRepository.GetStackById(unit.StackId);
-            SetSeenCells(stackRecord.LocationHex);
+            _gameDataRepository.UnitUpdated += UnitUpdated;
         }
 
-        public Unit(UnitType unitType, int stackId)
+        private void UnitUpdated(object sender, UnitRecord unitRecord)
         {
-            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
-            _unitRecord = new UnitRecord(unitType.Id, stackId);
-            gameDataRepository.Add(_unitRecord);
-
-            MovementPoints = unitType.MovementPoints;
-
-            var stackRecord = gameDataRepository.GetStackById(stackId);
-            SetSeenCells(stackRecord.LocationHex);
+            if (unitRecord.Id == _unitRecord.Id)
+            {
+                _unitRecord = unitRecord;
+            }
         }
 
         internal void DoPatrolAction()
         {
-            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
-            var stackRecord = gameDataRepository.GetStackById(_unitRecord.StackId);
-            stackRecord.Status = UnitStatus.Patrol;
-            MovementPoints = 0.0f;
-            SetSeenCells(stackRecord.LocationHex);
+            var stackRecord = _gameDataRepository.GetStackById(_unitRecord.StackId.Value);
+            var updatedStack = new StackRecord(stackRecord, new Status(UnitStatus.Patrol));
+            _gameDataRepository.Update(updatedStack);
+
+            _unitRecord = new UnitRecord(_unitRecord, new MovementPoints(0.0f));
+            _gameDataRepository.Update(_unitRecord);
+            //SetSeenCells(stackRecord.LocationHex.Value);
         }
 
         internal void DoFortifyAction()
         {
             // TODO: increment defense by 1
-            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
-            var stackRecord = gameDataRepository.GetStackById(_unitRecord.StackId);
-            stackRecord.Status = UnitStatus.Fortify;
-            MovementPoints = 0.0f;
-            SetSeenCells(stackRecord.LocationHex);
+            var stackRecord = _gameDataRepository.GetStackById(_unitRecord.StackId.Value);
+            var updatedStack = new StackRecord(stackRecord, new Status(UnitStatus.Fortify));
+            _gameDataRepository.Update(updatedStack);
+            
+            _unitRecord = new UnitRecord(_unitRecord, new MovementPoints(0.0f));
+            _gameDataRepository.Update(_unitRecord);
+            //SetSeenCells(stackRecord.LocationHex.Value);
         }
 
         internal void DoExploreAction()
         {
-            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
-            var stackRecord = gameDataRepository.GetStackById(_unitRecord.StackId);
-            stackRecord.Status = UnitStatus.Explore;
-            SetSeenCells(stackRecord.LocationHex);
+            var stackRecord = _gameDataRepository.GetStackById(_unitRecord.StackId.Value);
+            var updatedStack = new StackRecord(stackRecord, new Status(UnitStatus.Explore));
+            _gameDataRepository.Update(updatedStack);
+
+            //SetSeenCells(stackRecord.LocationHex.Value);
         }
 
         internal void DoBuildAction()
         {
             // assume settler for now
             var world = CallContext<World>.GetData("GameWorld");
-            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
-            var stackRecord = gameDataRepository.GetStackById(_unitRecord.StackId);
-            world.AddSettlement(stackRecord.LocationHex, "Barbarians"); // TODO: get new from user and race type name from faction
+            var stackRecord = _gameDataRepository.GetStackById(_unitRecord.StackId.Value);
+            world.AddSettlement(stackRecord.LocationHex.Value, 1); // TODO: get new from user and race type name from faction
         }
 
         internal void SetStatusToNone()
         {
-            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
-            var stackRecord = gameDataRepository.GetStackById(_unitRecord.StackId);
-            stackRecord.Status = UnitStatus.None;
-            SetSeenCells(stackRecord.LocationHex);
+            var stackRecord = _gameDataRepository.GetStackById(_unitRecord.StackId.Value);
+            var updatedStack = new StackRecord(stackRecord, new Status(UnitStatus.None));
+            _gameDataRepository.Update(updatedStack);
+            //SetSeenCells(stackRecord.LocationHex.Value);
         }
 
         internal void EndTurn()
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var unitTypes = gameMetadata.UnitTypes;
-            _unitRecord.MovementPoints = unitTypes[_unitRecord.UnitTypeId].MovementPoints;
+            var movementPoints = _gameConfigCache.GetUnitConfigById(_unitRecord.UnitTypeId.Value).MovementPoints;
+
+            var updatedUnit = new UnitRecord(_unitRecord, new MovementPoints(movementPoints));
+            _gameDataRepository.Update(updatedUnit);
         }
 
         internal bool CanSeeCell(Cell cell)
         {
             // if cell is within 4 hexes
-            foreach (var item in _seenCells)
+            foreach (var item in SeenCells)
             {
                 if (cell.Column == item.Column && cell.Row == item.Row)
                 {
@@ -160,102 +151,38 @@ namespace PhoenixGameLibrary
             return false;
         }
 
-        public GetCostToMoveIntoResult CostToMoveInto(PointI location)
-        {
-            var world = CallContext<World>.GetData("GameWorld");
-            var cellToMoveTo = world.OverlandMap.CellGrid.GetCell(location.X, location.Y);
-
-            return CostToMoveInto(cellToMoveTo);
-        }
-
-        private GetCostToMoveIntoResult CostToMoveInto(Cell cell)
-        {
-            if (cell == Cell.Empty) return new GetCostToMoveIntoResult(false);
-            if (cell.SeenState == SeenState.NeverSeen) return new GetCostToMoveIntoResult(true, 9999999.9f);
-
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var terrainTypes = gameMetadata.TerrainTypes;
-            var terrainType = terrainTypes[cell.TerrainTypeId];
-
-            return CostToMoveInto(terrainType);
-        }
-
-        private GetCostToMoveIntoResult CostToMoveInto(TerrainType terrainType)
-        {
-            var potentialMovementCosts = GetPotentialMovementCosts(terrainType);
-            var canMoveInto = potentialMovementCosts.Count > 0;
-
-            if (!canMoveInto) return new GetCostToMoveIntoResult(false);
-
-            float costToMoveInto = float.MaxValue;
-            bool foundCost = false;
-            foreach (var potentialMovementCost in potentialMovementCosts)
-            {
-                if (potentialMovementCost.Cost < costToMoveInto)
-                {
-                    costToMoveInto = potentialMovementCost.Cost;
-                    foundCost = true;
-                }
-            }
-
-            if (!foundCost) throw new Exception($"No cost found for Terrain Type [{terrainType}], UnitTypeMovementTypes [{UnitTypeMovementTypes}].");
-
-            return new GetCostToMoveIntoResult(true, costToMoveInto);
-        }
-
-        private List<MovementCost> GetPotentialMovementCosts(TerrainType terrainType)
-        {
-            var potentialMovementCosts = new List<MovementCost>();
-            foreach (var unitMovementType in UnitTypeMovementTypes)
-            {
-                foreach (var movementCost in terrainType.MovementCosts)
-                {
-                    if (unitMovementType != movementCost.MovementType.Name) continue;
-                    if (movementCost.Cost > 0.0)
-                    {
-                        potentialMovementCosts.Add(movementCost);
-                    }
-                }
-            }
-
-            return potentialMovementCosts;
-        }
-
         internal void SetSeenCells(PointI locationHex)
         {
             var world = CallContext<World>.GetData("GameWorld");
             var cellGrid = world.OverlandMap.CellGrid;
-            _seenCells = cellGrid.GetCatchment(locationHex.X, locationHex.Y, GetSightRange(_unitRecord.UnitTypeId, _unitRecord.StackId));
-            foreach (var item in _seenCells)
+            SeenCells = cellGrid.GetCatchment(locationHex.X, locationHex.Y, GetSightRange(_unitRecord.UnitTypeId.Value, _unitRecord.StackId.Value));
+            foreach (var item in SeenCells)
             {
                 var cell = cellGrid.GetCell(item.Column, item.Row);
                 cellGrid.SetCell(cell, SeenState.CurrentlySeen);
             }
         }
 
-        internal static int GetSightRange(int unitTypeId, int stackId)
+        internal static int GetSightRange(int unitId, int stackId)
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var movementTypes = gameMetadata.MovementTypes;
-            var unitTypes = gameMetadata.UnitTypes;
+            var gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
 
             var scoutingRange = 1;
 
             var incrementByForMovementType = 0;
-            foreach (var movementTypeKey in unitTypes[unitTypeId].MovementTypes)
-            {
-                var movementType = movementTypes[movementTypeKey];
-                var incrementSightBy = movementType.IncrementSightBy;
-                if (incrementSightBy > incrementByForMovementType)
+            var unitConfig = gameConfigCache.GetUnitConfigById(unitId);
+            foreach (var movementSightIncrement in unitConfig.MovementSightIncrements)
+            { 
+                if (movementSightIncrement > incrementByForMovementType)
                 {
-                    incrementByForMovementType = incrementSightBy;
+                    incrementByForMovementType = movementSightIncrement;
                 }
             }
             scoutingRange += incrementByForMovementType;
 
             var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
             var stackRecord = gameDataRepository.GetStackById(stackId);
-            if (stackRecord.Status == UnitStatus.Patrol)
+            if (stackRecord.Status.Value == UnitStatus.Patrol)
             {
                 scoutingRange += 1;
             }
@@ -263,17 +190,13 @@ namespace PhoenixGameLibrary
             return scoutingRange;
         }
 
-        public override string ToString()
-        {
-            return DebuggerDisplay;
-        }
+        public override string ToString() => DebuggerDisplay;
 
         private string DebuggerDisplay
         {
             get
             {
-                var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
-                var stackRecord = gameDataRepository.GetStackById(_unitRecord.StackId);
+                var stackRecord = _gameDataRepository.GetStackById(_unitRecord.StackId.Value);
                 var message = $"{{Id={_unitRecord.Id},Name={Name},LocationHex={stackRecord.LocationHex}}}";
 
                 return message;

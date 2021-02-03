@@ -46,7 +46,7 @@ namespace PhoenixGamePresentation.Views.StackView
             var hexToMoveTo = camera.ScreenPixelToWorldHex(mouseLocation);
             var cellToMoveTo = cellGrid.GetCell(hexToMoveTo.Col, hexToMoveTo.Row);
             if (cellToMoveTo.SeenState == SeenState.NeverSeen) return (false, new PointI(0, 0));
-            var costToMoveIntoResult = stack.GetCostToMoveInto(cellToMoveTo);
+            var costToMoveIntoResult = PhoenixGameLibrary.Helpers.MovementCosts.GetCostToMoveInto(cellToMoveTo, stack.MovementTypes, stack.MovementPoints);
 
             return (costToMoveIntoResult.CanMoveInto, new PointI(hexToMoveTo.Col, hexToMoveTo.Row));
         }

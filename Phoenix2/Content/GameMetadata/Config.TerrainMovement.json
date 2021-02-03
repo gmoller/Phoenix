@@ -1,0 +1,140 @@
+[
+  {
+    "Id": 1,
+    "TerrainId": 1,
+    "MovementId": 1,
+    "Cost": 1.0
+  },
+  {
+    "Id": 2,
+    "TerrainId": 1,
+    "MovementId": 3,
+    "Cost": 1.0
+  },
+  {
+    "Id": 3,
+    "TerrainId": 1,
+    "MovementId": 6,
+    "Cost": 3.0
+  },
+  {
+    "Id": 4,
+    "TerrainId": 2,
+    "MovementId": 1,
+    "Cost": 2.0
+  },
+  {
+    "Id": 5,
+    "TerrainId": 2,
+    "MovementId": 3,
+    "Cost": 1.0
+  },
+  {
+    "Id": 6,
+    "TerrainId": 2,
+    "MovementId": 5,
+    "Cost": 1.0
+  },
+  {
+    "Id": 7,
+    "TerrainId": 3,
+    "MovementId": 1,
+    "Cost": 1.0
+  },
+  {
+    "Id": 8,
+    "TerrainId": 3,
+    "MovementId": 3,
+    "Cost": 1.0
+  },
+  {
+    "Id": 9,
+    "TerrainId": 4,
+    "MovementId": 1,
+    "Cost": 3.0
+  },
+  {
+    "Id": 10,
+    "TerrainId": 4,
+    "MovementId": 2,
+    "Cost": 1.0
+  },
+  {
+    "Id": 11,
+    "TerrainId": 4,
+    "MovementId": 3,
+    "Cost": 1.0
+  },
+  {
+    "Id": 12,
+    "TerrainId": 7,
+    "MovementId": 1,
+    "Cost": 3.0
+  },
+  {
+    "Id": 13,
+    "TerrainId": 7,
+    "MovementId": 3,
+    "Cost": 1.0
+  },
+  {
+    "Id": 14,
+    "TerrainId": 7,
+    "MovementId": 6,
+    "Cost": 1.0
+  },
+  {
+    "Id": 15,
+    "TerrainId": 8,
+    "MovementId": 1,
+    "Cost": 4.0
+  },
+  {
+    "Id": 16,
+    "TerrainId": 8,
+    "MovementId": 3,
+    "Cost": 1.0
+  },
+  {
+    "Id": 17,
+    "TerrainId": 8,
+    "MovementId": 6,
+    "Cost": 1.0
+  },
+  {
+    "Id": 18,
+    "TerrainId": 10,
+    "MovementId": 1,
+    "Cost": 2.0
+  },
+  {
+    "Id": 19,
+    "TerrainId": 10,
+    "MovementId": 3,
+    "Cost": 1.0
+  },
+  {
+    "Id": 20,
+    "TerrainId": 10,
+    "MovementId": 2,
+    "Cost": 1.0
+  },
+  {
+    "Id": 21,
+    "TerrainId": 12,
+    "MovementId": 2,
+    "Cost": 1.0
+  },
+  {
+    "Id": 22,
+    "TerrainId": 12,
+    "MovementId": 3,
+    "Cost": 1.0
+  },
+  {
+    "Id": 23,
+    "TerrainId": 12,
+    "MovementId": 4,
+    "Cost": 1.0
+  }
+]

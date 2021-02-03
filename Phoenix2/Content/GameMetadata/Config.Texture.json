@@ -1,0 +1,92 @@
+[
+  {
+    "Id": 1,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 0
+  },
+  {
+    "Id": 2,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 1
+  },
+  {
+    "Id": 3,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 2
+  },
+  {
+    "Id": 4,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 3
+  },
+  {
+    "Id": 5,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 4
+  },
+  {
+    "Id": 6,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 5
+  },
+  {
+    "Id": 7,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 6
+  },
+  {
+    "Id": 8,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 7
+  },
+  {
+    "Id": 9,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 8
+  },
+  {
+    "Id": 10,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 9
+  },
+  {
+    "Id": 11,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 10
+  },
+  {
+    "Id": 12,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 11
+  },
+  {
+    "Id": 13,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 12
+  },
+  {
+    "Id": 14,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 13
+  },
+  {
+    "Id": 15,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 14
+  },
+  {
+    "Id": 16,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 15
+  },
+  {
+    "Id": 17,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 16
+  },
+  {
+    "Id": 18,
+    "TexturePalette": "NewTerrain",
+    "TextureId": 17
+  }
+]

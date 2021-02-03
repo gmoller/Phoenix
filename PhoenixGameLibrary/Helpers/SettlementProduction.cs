@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PhoenixGameData;
 using Zen.Utilities;
 
 namespace PhoenixGameLibrary.Helpers
@@ -9,21 +10,20 @@ namespace PhoenixGameLibrary.Helpers
         public static int DetermineProduction(Settlement settlement, List<Cell> catchmentCells)
         {
             // TODO: Trade Goods, Shared Terrain, Corruption, Gaia's Blessing, Inspirations, Cursed Lands, Sawmill, Forester's Guild, Miner's Guild, Mechanicians' Guild
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var terrainTypes = gameMetadata.TerrainTypes;
+            var gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
 
-            float farmerProduction = settlement.RaceType.FarmerProductionRate * settlement.Citizens.Farmers;
-            float workerProduction = settlement.RaceType.WorkerProductionRate * settlement.Citizens.Workers;
+            var farmerProduction = settlement.Race.FarmerProductionRate * settlement.Citizens.Farmers;
+            var workerProduction = settlement.Race.WorkerProductionRate * settlement.Citizens.Workers;
 
-            float total = farmerProduction + workerProduction;
+            var total = farmerProduction + workerProduction;
 
-            int totalProduction = (int)Math.Ceiling(total);
+            var totalProduction = (int)Math.Ceiling(total);
 
-            float productionBonus = 0.0f;
+            var productionBonus = 0.0f;
             foreach (var cell in catchmentCells)
             {
-                var terrainType = terrainTypes[cell.TerrainTypeId];
-                productionBonus += terrainType.ProductionPercentage;
+                var terrain = gameConfigCache.GetTerrainConfigById(cell.TerrainId);
+                productionBonus += terrain.ProductionPercentage;
             }
             total = totalProduction * (1.0f + productionBonus * 0.01f);
 

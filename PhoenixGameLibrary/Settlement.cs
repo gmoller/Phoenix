@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using PhoenixGameLibrary.GameData;
+using PhoenixGameData;
+using PhoenixGameData.GameData;
 using PhoenixGameLibrary.Helpers;
 using Zen.Hexagons;
 using Zen.Utilities;
@@ -16,9 +17,9 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Settlement
     {
-        #region State
-        private readonly GameMetadata _gameMetadata;
+        private readonly GameConfigCache _gameConfigCache;
 
+        #region State
         private readonly int _id;
 
         private readonly List<Cell> _catchmentCells;
@@ -28,7 +29,7 @@ namespace PhoenixGameLibrary
         private CurrentlyBuilding _currentlyBuilding;
 
         public string Name { get; }
-        public RaceType RaceType { get; }
+        public RaceConfig Race { get; }
 
         public PointI Location { get; }
 
@@ -39,8 +40,8 @@ namespace PhoenixGameLibrary
 
         public HexOffsetCoordinates LocationHex => new HexOffsetCoordinates(Location.X, Location.Y);
         public int Population => Citizens.TotalPopulation * 1000 + _populationGrowth; // every 1 citizen is 1000 population
-        public int GrowthRate => DetermineGrowthRate();
-        public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(Location, _catchmentCells);
+        public int GrowthRate => DetermineGrowthRate(_buildingsBuilt);
+        public int BaseFoodLevel => (int)Helpers.BaseFoodLevel.DetermineBaseFoodLevel(_catchmentCells);
         public FoodBreakdown SettlementFoodProduction => Helpers.SettlementFoodProduction.DetermineFoodProduction(this, _buildingsBuilt);
         public int SettlementProduction => Helpers.SettlementProduction.DetermineProduction(this, _catchmentCells);
         public int FoodSubsistence => Citizens.TotalPopulation;
@@ -51,23 +52,21 @@ namespace PhoenixGameLibrary
         public string CurrentlyBuilding => GetCurrentlyBuilding();
         public SettlementType SettlementType => GetSettlementType();
 
-        public Settlement(string name, string raceTypeName, PointI location, byte settlementSize, CellGrid cellGrid, params string[] buildings)
+        public Settlement(string name, int raceId, PointI location, byte settlementSize, CellGrid cellGrid, int[] buildingIds)
         {
-            _gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var raceTypes = _gameMetadata.RaceTypes;
-            var buildingTypes = _gameMetadata.BuildingTypes;
+            _gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
 
             _id = location.Y * Constants.WORLD_MAP_COLUMNS + location.X;
 
             Name = name;
-            RaceType = raceTypes[raceTypeName];
+            Race = _gameConfigCache.GetRaceConfigById(raceId);
             Location = location;
             _populationGrowth = 0;
             _currentlyBuilding = new CurrentlyBuilding(-1, -1, -1, 0);
             _buildingsBuilt = new List<int>();
-            foreach (var building in buildings)
+            foreach (var buildingId in buildingIds)
             {
-                _buildingsBuilt.Add(buildingTypes[building].Id);
+                _buildingsBuilt.Add(buildingId);
             }
             Citizens = new SettlementCitizens(this, settlementSize, _buildingsBuilt);
 
@@ -92,42 +91,47 @@ namespace PhoenixGameLibrary
 
         public bool BuildingHasBeenBuilt(string buildingName)
         {
-            var buildingTypes = _gameMetadata.BuildingTypes;
-            var building = buildingTypes[buildingName];
+            var building = _gameConfigCache.GetBuildingConfigByName(buildingName);
 
             return _buildingsBuilt.Contains(building.Id);
         }
 
         public bool BuildingCanBeBuilt(string buildingName)
         {
-            var buildingTypes = _gameMetadata.BuildingTypes;
-            var building = buildingTypes[buildingName];
+            var building = _gameConfigCache.GetBuildingConfigByName(buildingName);
+            var canBuild = building.RacesThatCanBuildThisBuilding.Contains(Race.Name);
 
-            return building.CanBeBuiltBy(RaceType.Name);
+            return canBuild;
         }
 
         public bool BuildingCanNotBeBuilt(string buildingName)
         {
-            var buildingTypes = _gameMetadata.BuildingTypes;
-            var building = buildingTypes[buildingName];
+            var canNotBuild = !BuildingCanBeBuilt(buildingName);
 
-            return building.CanNotBeBuiltBy(RaceType.Name);
+            return canNotBuild;
         }
 
         public bool BuildingReadyToBeBeBuilt(string buildingName)
         {
-            var buildingTypes = _gameMetadata.BuildingTypes;
-            var building = buildingTypes[buildingName];
-            var isReadyToBeBuilt = building.IsReadyToBeBuilt(_buildingsBuilt);
+            var building = _gameConfigCache.GetBuildingConfigByName(buildingName);
 
-            return isReadyToBeBuilt;
+            if (_buildingsBuilt.Contains(building.Id)) return false; // already built
+
+            foreach (var requiredBuilding in building.BuildingsRequiredToBuildThisBuilding)
+            {
+                var buildingId = _gameConfigCache.GetBuildingConfigByName(requiredBuilding).Id;
+                if (!_buildingsBuilt.Contains(buildingId)) return false;
+            }
+
+            return true;
         }
 
-        public bool UnitCanBeBuilt(string unitName)
+        public bool UnitCanBeBuilt(int unitId)
         {
-            var unitTypes = _gameMetadata.UnitTypes;
-            var unit = unitTypes[unitName];
-            if (unit.CanBeBuiltBy(RaceType.Name) && unit.IsReadyToBeBuilt(_buildingsBuilt))
+            var unitConfig = new UnitConfig(unitId);
+            var meetsRaceRequirements = unitConfig.RacesThatCanBuildThisUnit.Contains(Race.Name);
+            var meetsBuildingRequirements = IsReadyToBeBuilt(_buildingsBuilt, unitConfig);
+            if (meetsRaceRequirements && meetsBuildingRequirements)
             {
                 return true;
             }
@@ -135,12 +139,26 @@ namespace PhoenixGameLibrary
             return false;
         }
 
-        public void AddToProductionQueue(BuildingType building)
+        private bool IsReadyToBeBuilt(List<int> buildingsAlreadyBuilt, UnitConfig unitConfig)
+        {
+            foreach (var building in unitConfig.BuildingsRequiredToBuildThisUnit)
+            {
+                var buildingId = _gameConfigCache.GetBuildingConfigByName(building).Id;
+                if (!buildingsAlreadyBuilt.Contains(buildingId))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public void AddToProductionQueue(BuildingConfig building)
         {
             _currentlyBuilding = new CurrentlyBuilding(building.Id, -1, -1, _currentlyBuilding.ProductionAccrued);
         }
 
-        public void AddToProductionQueue(UnitType unit)
+        public void AddToProductionQueue(UnitConfig unit)
         {
             _currentlyBuilding = new CurrentlyBuilding(-1, unit.Id, -1, _currentlyBuilding.ProductionAccrued);
         }
@@ -167,14 +185,14 @@ namespace PhoenixGameLibrary
 
             if (_currentlyBuilding.BuildingId >= 0)
             {
-                var buildingTypes = _gameMetadata.BuildingTypes;
+                var building = _gameConfigCache.GetBuildingConfigById(_currentlyBuilding.BuildingId);
 
                 _currentlyBuilding = new CurrentlyBuilding(_currentlyBuilding.BuildingId, -1, -1, _currentlyBuilding.ProductionAccrued + SettlementProduction);
-                if (_currentlyBuilding.ProductionAccrued >= buildingTypes[_currentlyBuilding.BuildingId].ConstructionCost)
+                if (_currentlyBuilding.ProductionAccrued >= building.ConstructionCost)
                 {
                     _buildingsBuilt.Add(_currentlyBuilding.BuildingId);
                     var world = CallContext<World>.GetData("GameWorld");
-                    world.NotificationList.Add($"- {Name} has produced a {buildingTypes[_currentlyBuilding.BuildingId].Name}");
+                    world.NotificationList.Add($"- {Name} has produced a {building.Name}");
                     _currentlyBuilding = new CurrentlyBuilding(-1, -1, -1, 0);
 
                     OnSettlementOpened(EventArgs.Empty);
@@ -182,15 +200,14 @@ namespace PhoenixGameLibrary
             }
             if (_currentlyBuilding.UnitId >= 0)
             {
-                var unitTypes = _gameMetadata.UnitTypes;
-
                 _currentlyBuilding = new CurrentlyBuilding(-1, _currentlyBuilding.UnitId, -1, _currentlyBuilding.ProductionAccrued + SettlementProduction);
-                if (_currentlyBuilding.ProductionAccrued >= unitTypes[_currentlyBuilding.UnitId].ConstructionCost)
+
+                var unit = _gameConfigCache.GetUnitConfigById(_currentlyBuilding.UnitId);
+                if (_currentlyBuilding.ProductionAccrued >= unit.ConstructionCost)
                 {
-                    var unitType = unitTypes[_currentlyBuilding.UnitId];
                     var world = CallContext<World>.GetData("GameWorld");
-                    world.AddUnit(Location, unitType);
-                    world.NotificationList.Add($"- {Name} has produced a {unitType.Name}");
+                    //world.AddUnit(Location, unitType);
+                    world.NotificationList.Add($"- {Name} has produced a {unit.Name}");
                     _currentlyBuilding = new CurrentlyBuilding(-1, _currentlyBuilding.UnitId, -1, 0);
                 }
             }
@@ -223,15 +240,13 @@ namespace PhoenixGameLibrary
         {
             if (_currentlyBuilding.BuildingId >= 0)
             {
-                var buildingTypes = _gameMetadata.BuildingTypes;
-                var building = buildingTypes[_currentlyBuilding.BuildingId];
+                var building = _gameConfigCache.GetBuildingConfigById(_currentlyBuilding.BuildingId);
 
                 return $"Current: {building.Name} ({_currentlyBuilding.ProductionAccrued}/{building.ConstructionCost})";
             }
             if (_currentlyBuilding.UnitId >= 0)
             {
-                var unitTypes = _gameMetadata.UnitTypes;
-                var unit = unitTypes[_currentlyBuilding.UnitId];
+                var unit = _gameConfigCache.GetUnitConfigById(_currentlyBuilding.UnitId);
 
                 return $"Current: {unit.Name} ({_currentlyBuilding.ProductionAccrued}/{unit.ConstructionCost})";
             }
@@ -250,26 +265,23 @@ namespace PhoenixGameLibrary
             throw new Exception("Unknown settlement type.");
         }
 
-        private int DetermineGrowthRate()
+        private int DetermineGrowthRate(List<int> buildingsBuilt)
         {
-            var maxSettlementSize = DetermineMaximumSettlementSize();
-            var growthRate = PopulationGrowthRate.DetermineGrowthRate(maxSettlementSize, Citizens.TotalPopulation, RaceType, _buildingsBuilt);
+            var maxSettlementSize = DetermineMaximumSettlementSize(buildingsBuilt);
+            var growthRate = PopulationGrowthRate.DetermineGrowthRate(maxSettlementSize, Citizens.TotalPopulation, Race, _buildingsBuilt);
 
             return growthRate;
         }
 
-        private int DetermineMaximumSettlementSize()
+        private int DetermineMaximumSettlementSize(List<int> buildingsBuilt)
         {
             var baseFoodLevel = BaseFoodLevel;
 
             // settlement buildings
-            var buildingMaximumPopulationIncreaseTypes = _gameMetadata.BuildingMaximumPopulationIncreaseTypes;
-            foreach (var item in buildingMaximumPopulationIncreaseTypes)
+            foreach (var buildingBuilt in buildingsBuilt)
             {
-                if (_buildingsBuilt.Contains(item.BuildingId))
-                {
-                    baseFoodLevel += item.MaximumPopulationIncrease;
-                }
+                var building = _gameConfigCache.GetBuildingConfigById(buildingBuilt);
+                baseFoodLevel += (int)building.MaximumPopulationIncrease;
             }
 
             return baseFoodLevel > Constants.MAXIMUM_POPULATION_SIZE ? Constants.MAXIMUM_POPULATION_SIZE : baseFoodLevel;

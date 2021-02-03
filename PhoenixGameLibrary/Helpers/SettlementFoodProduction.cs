@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PhoenixGameData;
 using Zen.Utilities;
 
 namespace PhoenixGameLibrary.Helpers
@@ -12,7 +13,7 @@ namespace PhoenixGameLibrary.Helpers
 
             var foodBreakdown = new FoodBreakdown();
 
-            var foodFromFarmers = settlement.RaceType.FarmingRate * settlement.Citizens.Farmers;
+            var foodFromFarmers = settlement.Race.FarmingRate * settlement.Citizens.Farmers;
             var excess = foodFromFarmers - settlement.BaseFoodLevel;
             if (excess > 0.0f)
             {
@@ -21,16 +22,11 @@ namespace PhoenixGameLibrary.Helpers
             foodBreakdown.Add("Farmers", foodFromFarmers);
 
             // buildings
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var buildingFoodOutputIncreaseTypes = gameMetadata.BuildingFoodOutputIncreaseTypes;
-            var buildingTypes = gameMetadata.BuildingTypes;
-            foreach (var item in buildingFoodOutputIncreaseTypes)
+            var gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+            foreach (var buildingBuilt in buildingsBuilt)
             {
-                if (buildingsBuilt.Contains(item.BuildingId))
-                {
-                    var buildingName = buildingTypes[item.BuildingId].Name;
-                    foodBreakdown.Add(buildingName, item.FoodOutputIncrease);
-                }
+                var building = gameConfigCache.GetBuildingConfigById(buildingBuilt);
+                foodBreakdown.Add(building.Name, building.FoodOutputIncrease);
             }
 
             return foodBreakdown;

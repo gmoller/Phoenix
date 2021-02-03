@@ -1,0 +1,12 @@
+[
+  {
+    "Id": 1,
+    "UnitId": 100,
+    "BuildingId": 1
+  },
+  {
+    "Id": 2,
+    "UnitId": 100,
+    "BuildingId": 6
+  }
+]

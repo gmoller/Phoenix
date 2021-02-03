@@ -254,6 +254,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Maleficio-Regular-8.spritefont
 
+#begin Fonts/Pelagiad.ttf
+/copy:Fonts/Pelagiad.ttf
+
 #begin GameMetadata/Actions.json
 /copy:GameMetadata/Actions.json
 
@@ -268,6 +271,78 @@
 
 #begin GameMetadata/BuildingTypes.json
 /copy:GameMetadata/BuildingTypes.json
+
+#begin GameMetadata/Config.Action.json
+/copy:GameMetadata/Config.Action.json
+
+#begin GameMetadata/Config.Building.json
+/copy:GameMetadata/Config.Building.json
+
+#begin GameMetadata/Config.BuildingFoodOutputIncrease.json
+/copy:GameMetadata/Config.BuildingFoodOutputIncrease.json
+
+#begin GameMetadata/Config.BuildingMaximumPopulationIncrease.json
+/copy:GameMetadata/Config.BuildingMaximumPopulationIncrease.json
+
+#begin GameMetadata/Config.BuildingPopulationGrowthRateIncrease.json
+/copy:GameMetadata/Config.BuildingPopulationGrowthRateIncrease.json
+
+#begin GameMetadata/Config.Movement.json
+/copy:GameMetadata/Config.Movement.json
+
+#begin GameMetadata/Config.MovementIncrementSightBy.json
+/copy:GameMetadata/Config.MovementIncrementSightBy.json
+
+#begin GameMetadata/Config.Race.json
+/copy:GameMetadata/Config.Race.json
+
+#begin GameMetadata/Config.RaceBuilding.json
+/copy:GameMetadata/Config.RaceBuilding.json
+
+#begin GameMetadata/Config.RaceTownName.json
+/copy:GameMetadata/Config.RaceTownName.json
+
+#begin GameMetadata/Config.RequiredBuilding.json
+/copy:GameMetadata/Config.RequiredBuilding.json
+
+#begin GameMetadata/Config.Terrain.json
+/copy:GameMetadata/Config.Terrain.json
+
+#begin GameMetadata/Config.TerrainCanSettleOn.json
+/copy:GameMetadata/Config.TerrainCanSettleOn.json
+
+#begin GameMetadata/Config.TerrainFoodOutput.json
+/copy:GameMetadata/Config.TerrainFoodOutput.json
+
+#begin GameMetadata/Config.TerrainMovement.json
+/copy:GameMetadata/Config.TerrainMovement.json
+
+#begin GameMetadata/Config.TerrainProductionPercentage.json
+/copy:GameMetadata/Config.TerrainProductionPercentage.json
+
+#begin GameMetadata/Config.TerrainTexture.json
+/copy:GameMetadata/Config.TerrainTexture.json
+
+#begin GameMetadata/Config.Texture.json
+/copy:GameMetadata/Config.Texture.json
+
+#begin GameMetadata/Config.TownName.json
+/copy:GameMetadata/Config.TownName.json
+
+#begin GameMetadata/Config.Unit.json
+/copy:GameMetadata/Config.Unit.json
+
+#begin GameMetadata/Config.UnitAction.json
+/copy:GameMetadata/Config.UnitAction.json
+
+#begin GameMetadata/Config.UnitBuilding.json
+/copy:GameMetadata/Config.UnitBuilding.json
+
+#begin GameMetadata/Config.UnitMovement.json
+/copy:GameMetadata/Config.UnitMovement.json
+
+#begin GameMetadata/Config.UnitRace.json
+/copy:GameMetadata/Config.UnitRace.json
 
 #begin GameMetadata/MovementTypes.json
 /copy:GameMetadata/MovementTypes.json

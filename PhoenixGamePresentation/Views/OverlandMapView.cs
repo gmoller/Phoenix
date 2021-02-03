@@ -115,9 +115,10 @@ namespace PhoenixGamePresentation.Views
         private void DrawCell(SpriteBatch spriteBatch, Cell cell, Color color)
         {
             var neverSeen = cell.SeenState == SeenState.NeverSeen;
-            var texture = AssetsManager.Instance.GetTexture(neverSeen ? cell.TextureFogOfWar.TexturePalette  : cell.Texture.TexturePalette);
-            var spec = AssetsManager.Instance.GetAtlas(neverSeen ? cell.TextureFogOfWar.TexturePalette : cell.Texture.TexturePalette);
-            var frame = spec.Frames[neverSeen ? cell.TextureFogOfWar.TextureId : cell.Texture.TextureId];
+            //var foo = new PhoenixGameLibrary.GameData.Texture("NewTerrain", 13);
+            var texture = AssetsManager.Instance.GetTexture(neverSeen ? "NewTerrain" : cell.Texture.TexturePalette);
+            var spec = AssetsManager.Instance.GetAtlas(neverSeen ? "NewTerrain" : cell.Texture.TexturePalette);
+            var frame = spec.Frames[neverSeen ? 13 : cell.Texture.TextureId];
             var sourceRectangle = new Rectangle(frame.X, frame.Y, frame.Width, frame.Height);
 
             var centerPosition = WorldView.HexLibrary.FromOffsetCoordinatesToPixel(new HexOffsetCoordinates(cell.Column, cell.Row));

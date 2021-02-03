@@ -1,4 +1,5 @@
-﻿using PhoenixGameLibrary.GameData;
+﻿using PhoenixGameData;
+using PhoenixGameData.Tuples;
 using Zen.Utilities;
 
 namespace PhoenixGameLibrary.Commands
@@ -7,14 +8,16 @@ namespace PhoenixGameLibrary.Commands
     {
         public override void Execute()
         {
-            var payload = ((PointI position, UnitType unitType, Stacks stacks))Payload;
+            var payload = ((PointI position, int unitId, Stacks stacks))Payload;
 
-            var stacks = payload.stacks;
+            var stackRecord = new StackRecord(1, payload.position);
+            var unitRecord = new UnitRecord(payload.unitId, stackRecord.Id);
+            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
+            gameDataRepository.Add(stackRecord);
+            gameDataRepository.Add(unitRecord);
 
-            var newStack = new Stack(1, payload.position);
-            var unit = new Unit(payload.unitType, newStack.Id);
-
-            stacks.Add(newStack);
+            //var stacks = payload.stacks;
+            //stacks.Add(stackRecord);
         }
     }
 }

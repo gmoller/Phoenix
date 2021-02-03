@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using PhoenixGameLibrary.GameData;
+using PhoenixGameConfig;
+using PhoenixGameData;
 using Zen.Hexagons;
 using Zen.Utilities;
 
@@ -12,13 +13,12 @@ namespace PhoenixGameLibrary
     [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public readonly struct Cell
     {
-        public static readonly Cell Empty = new Cell(0, 0, TerrainType.Invalid.Id);
+        public static readonly Cell Empty = new Cell(-1, -1, -1);
 
         #region State
         public int Index { get; }
-        public int TerrainTypeId { get; }
+        public int TerrainId { get; }
         public Texture Texture { get; }
-        public Texture TextureFogOfWar { get; }
         public SeenState SeenState { get; }
         public int ControlledByFaction { get; }
         public byte Borders { get; }
@@ -28,27 +28,23 @@ namespace PhoenixGameLibrary
         public int Row => Index / Constants.WORLD_MAP_COLUMNS;
         public PointI ToPoint => new PointI(Column, Row);
 
-        public Cell(int col, int row, int terrainTypeId)
+        public Cell(int col, int row, int terrainId)
         {
             Index = row * Constants.WORLD_MAP_COLUMNS + col;
 
-            TerrainTypeId = terrainTypeId;
-            if (terrainTypeId == TerrainType.Invalid.Id)
+            TerrainId = terrainId;
+            if (terrainId == -1)
             {
                 Texture = new Texture("terrain_hextiles_basic_1", 36);
             }
             else
             {
-                var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-                var terrainTypes = gameMetadata.TerrainTypes;
-
-                var terrainType = terrainTypes[terrainTypeId];
-                var randomNumber = RandomNumberGenerator.Instance.GetRandomInt(0, terrainType.PossibleTextures.Count - 1);
-                Texture = terrainType.PossibleTextures[randomNumber];
+                var gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+                var terrainConfig = gameConfigCache.GetTerrainConfigById(terrainId);
+                var chosenIndex = RandomNumberGenerator.Instance.GetRandomInt(0, terrainConfig.PossibleTexturesForThisTerrain.Count - 1);
+                Texture = terrainConfig.PossibleTexturesForThisTerrain[chosenIndex];
             }
 
-            //TextureFogOfWar = new Texture("terrain_hextiles_basic_1", (byte)RandomNumberGenerator.Instance.GetRandomInt(36, 39)); //28-31,36-39
-            TextureFogOfWar = new Texture("NewTerrain", 13);
             SeenState = SeenState.NeverSeen;
             ControlledByFaction = 0; // None
             Borders = 0; // no borders
@@ -57,9 +53,8 @@ namespace PhoenixGameLibrary
         public Cell(Cell cell, SeenState seenState, int controlledByFaction, byte borders)
         {
             Index = cell.Index;
-            TerrainTypeId = cell.TerrainTypeId;
+            TerrainId = cell.TerrainId;
             Texture = cell.Texture;
-            TextureFogOfWar = cell.TextureFogOfWar;
             SeenState = seenState;
             ControlledByFaction = controlledByFaction;
             Borders = borders;
@@ -124,7 +119,7 @@ namespace PhoenixGameLibrary
 
         public static bool operator == (Cell a, Cell b)
         {
-            return a.Index == b.Index && a.TerrainTypeId == b.TerrainTypeId && a.Texture == b.Texture && a.TextureFogOfWar == b.TextureFogOfWar && a.SeenState == b.SeenState && a.ControlledByFaction == b.ControlledByFaction;
+            return a.Index == b.Index && a.TerrainId == b.TerrainId && a.Texture == b.Texture && a.SeenState == b.SeenState && a.ControlledByFaction == b.ControlledByFaction;
         }
 
         public static bool operator !=(Cell a, Cell b)
@@ -134,15 +129,12 @@ namespace PhoenixGameLibrary
 
         public override int GetHashCode()
         {
-            return Index.GetHashCode() ^ TerrainTypeId.GetHashCode() ^ Texture.GetHashCode() ^ TextureFogOfWar.GetHashCode() ^ SeenState.GetHashCode() ^ ControlledByFaction.GetHashCode();
+            return Index.GetHashCode() ^ TerrainId.GetHashCode() ^ Texture.GetHashCode() ^ SeenState.GetHashCode() ^ ControlledByFaction.GetHashCode();
         }
 
-        public override string ToString()
-        {
-            return DebuggerDisplay;
-        }
+        public override string ToString() => DebuggerDisplay;
 
-        private string DebuggerDisplay => $"{{Col={Column},Row={Row},TerrainTypeId={TerrainTypeId}}}";
+        private string DebuggerDisplay => $"{{Col={Column},Row={Row},TerrainTypeId={TerrainId}}}";
 
         #endregion
     }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using PhoenixGameLibrary;
+using PhoenixGameData;
 using PhoenixGamePresentation.ControlsX;
 using Zen.Assets;
 using Zen.GuiControls;
@@ -13,6 +13,8 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 {
     internal class BuildingsView : Control
     {
+        private readonly GameConfigCache _gameConfigCache;
+
         #region State
         private readonly SettlementView _settlementView;
 
@@ -25,6 +27,8 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         internal BuildingsView(string name, SettlementView settlementView, string textureAtlas) :
             base(name)
         {
+            _gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+
             Size = new PointI(515, 450);
             _settlementView = settlementView;
 
@@ -49,16 +53,17 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
         {
             if (input.IsLeftMouseButtonReleased)
             {
-                var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-                var buildingTypes = gameMetadata.BuildingTypes;
+                var buildingIds = _gameConfigCache.GetBuildingConfigIds();
 
                 // determine where mouse pointer is (is it over a slot? which slot?)
                 var baseTopLeftX = Left + 15;
                 var baseTopLeftY = Top + 25;
-                foreach (var building in buildingTypes)
+                foreach (var buildingId in buildingIds)
                 {
-                    var topLeftX = baseTopLeftX + building.Slot.X * 49;
-                    var topLeftY = baseTopLeftY + building.Slot.Y * 25;
+                    var building = _gameConfigCache.GetBuildingConfigById(buildingId);
+                    var slot = building.Slot;
+                    var topLeftX = baseTopLeftX + slot.X * 49;
+                    var topLeftY = baseTopLeftY + slot.Y * 25;
                     var slotRectangle = new Rectangle(topLeftX, topLeftY, 40, 20);
                     if (slotRectangle.Contains(input.MousePosition))
                     {
@@ -80,15 +85,16 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
 
         private void DrawBuildings(SpriteBatch spriteBatch)
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var buildingTypes = gameMetadata.BuildingTypes;
+            var buildingIds = _gameConfigCache.GetBuildingConfigIds();
 
             var baseTopLeftX = Left + 15;
             var baseTopLeftY = Top + 25;
-            foreach (var building in buildingTypes)
+            foreach (var buildingId in buildingIds)
             {
-                var topLeftX = baseTopLeftX + building.Slot.X * 49;
-                var topLeftY = baseTopLeftY + building.Slot.Y * 25;
+                var building = _gameConfigCache.GetBuildingConfigById(buildingId);
+                var slot = building.Slot;
+                var topLeftX = baseTopLeftX + slot.X * 49;
+                var topLeftY = baseTopLeftY + slot.Y * 25;
                 DrawBuilding(spriteBatch, building.Name, topLeftX, topLeftY);
             } 
         }

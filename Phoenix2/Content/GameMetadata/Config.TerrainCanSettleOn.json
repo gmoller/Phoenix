@@ -1,0 +1,37 @@
+[
+  {
+    "Id": 1,
+    "TerrainId": 1,
+    "Value": true
+  },
+  {
+    "Id": 2,
+    "TerrainId": 2,
+    "Value": true
+  },
+  {
+    "Id": 3,
+    "TerrainId": 3,
+    "Value": true
+  },
+  {
+    "Id": 4,
+    "TerrainId": 4,
+    "Value": true
+  },
+  {
+    "Id": 5,
+    "TerrainId": 7,
+    "Value": true
+  },
+  {
+    "Id": 6,
+    "TerrainId": 8,
+    "Value": true
+  },
+  {
+    "Id": 7,
+    "TerrainId": 10,
+    "Value": true
+  }
+]

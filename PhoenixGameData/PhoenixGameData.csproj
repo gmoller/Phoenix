@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PhoenixGameConfig\PhoenixGameConfig.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Zen.Utilities">
       <HintPath>..\Libraries\netcoreapp3.1\Zen.Utilities.dll</HintPath>
     </Reference>

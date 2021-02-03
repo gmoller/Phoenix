@@ -1,56 +1,61 @@
-﻿using PhoenixGameData;
+﻿using System.Diagnostics;
+using PhoenixGameConfig;
+using PhoenixGameData;
 using PhoenixGameData.Tuples;
 using Zen.Utilities;
 
 namespace PhoenixGameLibrary
 {
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + ",nq}")]
     public class Faction
     {
-        private readonly FactionRecord _factionRecord;
+        private readonly GameConfigCache _gameConfigCache;
+        private readonly GameDataRepository _gameDataRepository;
 
-        public string RaceTypeName
-        {
-            get
-            {
-                var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-                var raceType = gameMetadata.RaceTypes[_factionRecord.RaceTypeId];
-                var name = raceType.Name;
+        private FactionRecord _factionRecord;
 
-                return name;
-            }
-        }
-
-        public int GoldInTreasury
-        {
-            get => _factionRecord.GoldInTreasury;
-            set => _factionRecord.GoldInTreasury = value;
-        }
-
+        public string RaceName => GetRaceName();
+        public int GoldInTreasury => _factionRecord.GoldInTreasury.Value;
         public int GoldPerTurn => 0;
+        public int ManaInTreasury => _factionRecord.ManaInTreasury.Value;
+        public int ManaPerTurn => 0;
+        public int FoodPerTurn => GetFoodPerTurn();
 
-        public int ManaInTreasury
+        public Faction(int factionId)
         {
-            get => _factionRecord.ManaInTreasury;
-            set => _factionRecord.ManaInTreasury = value;
+            _gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+            _gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
+            _factionRecord = _gameDataRepository.GetFactionById(factionId);
+
+            _gameDataRepository.FactionUpdated += FactionUpdated;
         }
 
-        public int ManaPerTurn => 0;
-
-        public int FoodPerTurn
+        private void FactionUpdated(object sender, FactionRecord factionRecord)
         {
-            get
+            if (factionRecord.Id == _factionRecord.Id)
             {
-                var world = CallContext<World>.GetData("GameWorld");
-
-                return world.Settlements.FoodProducedThisTurn;
+                _factionRecord = factionRecord;
             }
         }
 
-        public Faction(int raceTypeId)
+        private string GetRaceName()
         {
-            var gameDataRepository = CallContext<GameDataRepository>.GetData("GameDataRepository");
-            _factionRecord = new FactionRecord(raceTypeId);
-            gameDataRepository.Add(_factionRecord);
+            var race = _gameConfigCache.GetRaceConfigById(_factionRecord.RaceTypeId.Value);
+            var name = race.Name;
+
+            return name;
         }
+
+        private int GetFoodPerTurn()
+        {
+            var world = CallContext<World>.GetData("GameWorld");
+            var foodPerTurn = world.Settlements.FoodProducedThisTurn;
+
+            return foodPerTurn;
+        }
+
+        public override string ToString() => DebuggerDisplay;
+
+        private string DebuggerDisplay => $"{{Id={_factionRecord.Id}}}";
     }
 }

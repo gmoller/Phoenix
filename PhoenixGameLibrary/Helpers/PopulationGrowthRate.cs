@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using PhoenixGameLibrary.GameData;
+using PhoenixGameData;
+using PhoenixGameData.GameData;
 using Zen.Utilities;
 
 namespace PhoenixGameLibrary.Helpers
 {
     public static class PopulationGrowthRate
     {
-        public static int DetermineGrowthRate(int maxSettlementSize, int numberOfCitizens, RaceType raceType, List<int> buildingsBuilt)
+        public static int DetermineGrowthRate(int maxSettlementSize, int numberOfCitizens, RaceConfig race, List<int> buildingsBuilt)
         {
             // base
             if (numberOfCitizens >= maxSettlementSize) return 0;
@@ -18,17 +19,14 @@ namespace PhoenixGameLibrary.Helpers
             var adjustedGrowthRate = baseGrowthRateFloored * 10;
 
             // racial modifiers
-            adjustedGrowthRate += raceType.GrowthRateModifier;
+            adjustedGrowthRate += (int)race.GrowthRateModifier;
 
             // settlement buildings (granary +20, farmers market +30)
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var buildingPopulationGrowthTypes = gameMetadata.BuildingPopulationGrowthTypes;
-            foreach (var item in buildingPopulationGrowthTypes)
+            var gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+            foreach (var buildingBuilt in buildingsBuilt)
             {
-                if (buildingsBuilt.Contains(item.BuildingId))
-                {
-                    adjustedGrowthRate += item.PopulationGrowthRateIncrease;
-                }
+                var building = gameConfigCache.GetBuildingConfigById(buildingBuilt);
+                adjustedGrowthRate += (int)building.PopulationGrowthRateIncrease;
             }
 
             // TODO: spells (stream of life, dark rituals)

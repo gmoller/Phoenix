@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using NUnit.Framework;
+using PhoenixGameData;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation;
 using PhoenixGamePresentation.Views;
@@ -17,12 +18,12 @@ namespace PhoenixTests
         public void Setup()
         {
             // Arrange
-            var gameMetadata = new GameMetadata();
+            var gameMetadata = new GameConfigCache();
             var presentationContext = new GlobalContextPresentation();
-            CallContext<GameMetadata>.SetData("GameMetadata", gameMetadata);
+            CallContext<GameConfigCache>.SetData("GameMetadata", gameMetadata);
             CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
 
-            var world = new World(60, 40);
+            var world = new World(60, 40, new Faction(1));
             var worldView = new WorldView(world, CameraClampMode.NoClamp, new InputHandler());
             _camera = worldView.Camera;
         }

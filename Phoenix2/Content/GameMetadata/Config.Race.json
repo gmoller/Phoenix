@@ -1,0 +1,114 @@
+[
+  {
+    "Id": 1,
+    "Name": "Barbarians",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 2.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": 20.0
+  },
+  {
+    "Id": 2,
+    "Name": "Beastmen",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 2.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": 0.0
+  },
+  {
+    "Id": 3,
+    "Name": "Dark Elves",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 2.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": -20.0
+  },
+  {
+    "Id": 4,
+    "Name": "Draconians",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 3.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": -10.0
+  },
+  {
+    "Id": 5,
+    "Name": "Dwarves",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 2.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": -20.0
+  },
+  {
+    "Id": 6,
+    "Name": "Gnolls",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 2.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": -10.0
+  },
+  {
+    "Id": 7,
+    "Name": "Halflings",
+    "FarmingRate": 3.0,
+    "WorkerProductionRate": 2.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": 0.0
+  },
+  {
+    "Id": 8,
+    "Name": "High Elves",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 2.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": -20.0
+  },
+  {
+    "Id": 9,
+    "Name": "High Men",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 2.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": 0.0
+  },
+  {
+    "Id": 10,
+    "Name": "Klackons",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 3.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": -10.0
+  },
+  {
+    "Id": 11,
+    "Name": "Lizardmen",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 2.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": 10.0
+  },
+  {
+    "Id": 12,
+    "Name": "Nomads",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 2.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": -10.0
+  },
+  {
+    "Id": 13,
+    "Name": "Orcs",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 2.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": 0.0
+  },
+  {
+    "Id": 14,
+    "Name": "Trolls",
+    "FarmingRate": 2.0,
+    "WorkerProductionRate": 2.0,
+    "FarmerProductionRate": 0.5,
+    "GrowthRateModifier": -20.0
+  }
+]

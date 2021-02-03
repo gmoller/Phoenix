@@ -1,20 +1,45 @@
-﻿using Zen.Utilities;
+﻿using PhoenixGameData.StrongTypes;
+using Zen.Utilities;
 
 namespace PhoenixGameData.Tuples
 {
-    public class FactionRecord : IIdentifiedById
+    public readonly struct FactionRecord : IIdentifiedById
     {
         public int Id { get; } // Primary key
-        public int RaceTypeId { get; } // Foreign key -> Config.RaceType
-        public int GoldInTreasury { get; set; }
-        public int ManaInTreasury { get; set; }
+        public RaceTypeId RaceTypeId { get; } // Foreign key -> Config.RaceType
+        public GoldInTreasury GoldInTreasury { get; }
+        public ManaInTreasury ManaInTreasury { get; }
 
-        public FactionRecord(int raceTypeId)
+        public FactionRecord(int raceTypeId, int goldInTreasury, int manaInTreasury) // for creation
         {
-            Id = GameDataRepository.GetNextSequence("Faction");
-            RaceTypeId = raceTypeId;
-            GoldInTreasury = 0;
-            ManaInTreasury = 0;
+            Id = GameDataSequences.GetNextSequence("Faction");
+            RaceTypeId = new RaceTypeId(raceTypeId);
+            GoldInTreasury = new GoldInTreasury(goldInTreasury);
+            ManaInTreasury = new ManaInTreasury(manaInTreasury);
+        }
+
+        public FactionRecord(FactionRecord faction, GoldInTreasury goldInTreasury, ManaInTreasury manaInTreasury) // for update
+        {
+            Id = faction.Id;
+            RaceTypeId = faction.RaceTypeId;
+            GoldInTreasury = goldInTreasury;
+            ManaInTreasury = manaInTreasury;
+        }
+
+        public FactionRecord(FactionRecord faction, GoldInTreasury goldInTreasury) // for update
+        {
+            Id = faction.Id;
+            RaceTypeId = faction.RaceTypeId;
+            GoldInTreasury = goldInTreasury;
+            ManaInTreasury = faction.ManaInTreasury;
+        }
+
+        public FactionRecord(FactionRecord faction, ManaInTreasury manaInTreasury) // for update
+        {
+            Id = faction.Id;
+            RaceTypeId = faction.RaceTypeId;
+            GoldInTreasury = faction.GoldInTreasury;
+            ManaInTreasury = manaInTreasury;
         }
     }
 

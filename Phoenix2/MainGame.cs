@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PhoenixGameConfig;
 using PhoenixGameData;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation;
@@ -26,13 +27,14 @@ namespace Phoenix2
             _graphicsDeviceManager = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            var gameMetadata = new GameMetadata();
-            CallContext<GameMetadata>.SetData("GameMetadata", gameMetadata);
+            var gameConfigRepository = new GameConfigRepository();
+            CallContext<GameConfigRepository>.SetData("GameConfigRepository", gameConfigRepository);
+            var gameConfigCache = new GameConfigCache();
+            CallContext<GameConfigCache>.SetData("GameConfigCache", gameConfigCache);
             var gameDataRepository = new GameDataRepository();
             CallContext<GameDataRepository>.SetData("GameDataRepository", gameDataRepository);
 
-            var presentationContext = new GlobalContextPresentation();
-            presentationContext.DesiredResolution = desiredResolution;
+            var presentationContext = new GlobalContextPresentation { DesiredResolution = desiredResolution };
             CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
         }
 

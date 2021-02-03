@@ -73,7 +73,7 @@ namespace PhoenixGamePresentation.Views.SettlementViewComposite
             var label = (Label)sender;
             var mainFrame = (MainFrame)label.Owner;
             var settlementView = mainFrame.SettlementView;
-            return $"{settlementView.Settlement.RaceType.Name}";
+            return $"{settlementView.Settlement.Race.Name}";
         }
 
         public static string GetTextFuncForPopulationGrowth(object sender)

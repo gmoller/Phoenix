@@ -68,7 +68,7 @@ namespace PhoenixGamePresentation.Views.StackView
         private bool MoveStackBetweenCells(float deltaTime)
         {
             // if stack cannot move into next hex in path
-            var cost = StackView.Stack.GetCostToMoveInto(StackView.MovementPath[0]);
+            var cost = PhoenixGameLibrary.Helpers.MovementCosts.GetCostToMoveInto(StackView.MovementPath[0], StackView.Stack.MovementTypes, StackView.Stack.MovementPoints);
             if (!cost.CanMoveInto)
             {
                 return true;

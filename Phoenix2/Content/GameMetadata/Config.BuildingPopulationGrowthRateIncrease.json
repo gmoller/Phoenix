@@ -1,0 +1,12 @@
+[
+  {
+    "Id": 1,
+    "BuildingId": 27,
+    "Value": 20.0
+  },
+  {
+    "Id": 2,
+    "BuildingId": 28,
+    "Value": 30.0
+  }
+]

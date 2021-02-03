@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PhoenixGameConfig\PhoenixGameConfig.csproj" />
     <ProjectReference Include="..\PhoenixGameData\PhoenixGameData.csproj" />
     <ProjectReference Include="..\PhoenixGamePresentation\PhoenixGamePresentation.csproj" />
   </ItemGroup>

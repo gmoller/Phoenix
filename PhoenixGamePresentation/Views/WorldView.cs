@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PhoenixGameData;
 using PhoenixGameLibrary;
 using PhoenixGamePresentation.ExtensionMethods;
 using PhoenixGamePresentation.Handlers;
@@ -20,6 +21,8 @@ namespace PhoenixGamePresentation.Views
 {
     public class WorldView : IDisposable
     {
+        private readonly GameConfigCache _gameConfigCache;
+
         #region State
         private World World { get; }
 
@@ -44,6 +47,8 @@ namespace PhoenixGamePresentation.Views
 
         public WorldView(World world, CameraClampMode cameraClampMode, InputHandler input)
         {
+            _gameConfigCache = CallContext<GameConfigCache>.GetData("GameConfigCache");
+
             World = world;
             GameStatusHandler = new GameStatusHandler(GameStatus.OverlandMap);
 
@@ -56,7 +61,7 @@ namespace PhoenixGamePresentation.Views
             OverlandMapView = new OverlandMapView(this, World.OverlandMap, Input);
             OverlandSettlementViews = new OverlandSettlementViews(this, World.Settlements, Input);
             StackViews = new StackViews(this, World.Stacks, Input);
-            SettlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement("Test", "Barbarians", PointI.Zero, 1, World.OverlandMap.CellGrid), Input);
+            SettlementView = new SettlementView(this, World.Settlements.Count > 0 ? World.Settlements[0] : new Settlement("Test", 1, PointI.Zero, 1, World.OverlandMap.CellGrid, new int[0]), Input);
             HudView = new HudView(this, StackViews, Input);
             //Tooltip = new Tooltip(Vector2.Zero, Alignment.TopLeft, new Vector2(200.0f, 300.0f), "GUI_Textures_1.sp_frame", 25, 25, 25, 25, "tooltip") { Enabled = false };
 
@@ -216,18 +221,18 @@ namespace PhoenixGamePresentation.Views
 
         private Dictionary<string, IControl> InitializeMovementTypeImages()
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var movementTypes = gameMetadata.MovementTypes;
+            var movementIds = _gameConfigCache.GetMovementConfigIds();
 
             var movementTypeImages = new Dictionary<string, IControl>();
-            foreach (var movementType in movementTypes)
+            foreach (var movementId in movementIds)
             {
+                var movementName = _gameConfigCache.GetMovementConfigById(movementId).Name;
                 var image = new Image("image")
                 {
-                    TextureNormal = $"MovementTypes.{movementType.Name}",
+                    TextureNormal = $"MovementTypes.{movementName}",
                     Size = new PointI(18, 12)
                 };
-                movementTypeImages.Add(movementType.Name, image);
+                movementTypeImages.Add(movementName, image);
             }
 
             return movementTypeImages;
@@ -235,23 +240,23 @@ namespace PhoenixGamePresentation.Views
 
         private Dictionary<string, IControl> InitializeActionButtons()
         {
-            var gameMetadata = CallContext<GameMetadata>.GetData("GameMetadata");
-            var actionTypes = gameMetadata.ActionTypes;
+            var actionIds = _gameConfigCache.GetActionConfigIds();
 
             var actionButtons = new Dictionary<string, IControl>();
             var i = 0;
             var x = 10;
             var y = 806;
             var buttonSize = new Vector2(110.0f, 30.0f);
-            foreach (var actionType in actionTypes)
+            foreach (var actionId in actionIds)
             {
+                var action = _gameConfigCache.GetActionConfigById(actionId);
                 var xOffset = buttonSize.X * (i % 2);
                 var yOffset = buttonSize.Y * (i / 2); // math.Floor
                 var position = new Vector2(x + xOffset, y + yOffset);
                 i++;
 
                 var textureString = "GUI_Textures_1.simpleb_";
-                var button = new Button(actionType.Name)
+                var button = new Button(action.Name)
                 {
                     TextureNormal = $"{textureString}n",
                     TextureActive = $"{textureString}a",
@@ -260,18 +265,18 @@ namespace PhoenixGamePresentation.Views
                     Size = buttonSize.ToPointI(),
                     Position = position.ToPointI()
                 };
-                button.AddPackage(new ControlClick((o, args) => BtnClick(o, new ButtonClickEventArgs(actionType.Name))));
+                button.AddPackage(new ControlClick((o, args) => BtnClick(o, new ButtonClickEventArgs(action.Name))));
                 var label = new Label($"label{i}")
                 {
                     FontName = "Maleficio-Regular-12",
                     Size = button.Size,
                     ContentAlignment = Alignment.MiddleCenter,
-                    Text = actionType.ButtonName,
+                    Text = action.ButtonName,
                     Color = Color.Black
                 };
                 button.AddControl(label, Alignment.MiddleCenter, Alignment.MiddleCenter);
 
-                actionButtons.Add(actionType.Name, button);
+                actionButtons.Add(action.Name, button);
             }
 
             return actionButtons;

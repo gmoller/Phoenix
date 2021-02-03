@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using NUnit.Framework;
-using PhoenixGameLibrary;
+using PhoenixGameData;
 using PhoenixGamePresentation;
 using Zen.Utilities;
 
@@ -15,9 +15,9 @@ namespace PhoenixTests
         public void Setup()
         {
             // Arrange
-            var gameMetadata = new GameMetadata();
+            var gameMetadata = new GameConfigCache();
             var presentationContext = new GlobalContextPresentation();
-            CallContext<GameMetadata>.SetData("GameMetadata", gameMetadata);
+            CallContext<GameConfigCache>.SetData("GameMetadata", gameMetadata);
             CallContext<GlobalContextPresentation>.SetData("GlobalContextPresentation", presentationContext);
 
             _phoenixGameView = new PhoenixGameView();
@@ -29,7 +29,7 @@ namespace PhoenixTests
         [Test]
         public void First()
         {
-            //_phoenixGameView.Update(0.0166666666666667f);
+            
         }
     }
 }
